@@ -46,7 +46,12 @@ public class Favorite {
     /**
      * 收藏几个了
      */
-    private int size = 0;
+    private int size;
+
+    /**
+     * 是否公开 true为公开
+     */
+    private Boolean open;
 
     /**
      * 收藏夹的上限容量
@@ -107,9 +112,18 @@ public class Favorite {
         this.size = size;
     }
 
+    public Boolean getOpen() {
+        return open;
+    }
+
+    public void setOpen(Boolean open) {
+        this.open = open;
+    }
+
     public static int getMAXSIZE() {
         return MAXSIZE;
     }
+
 
     /**
      * @return 返回前端 不 包含收藏夹的主人

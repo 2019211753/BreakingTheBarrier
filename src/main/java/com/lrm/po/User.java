@@ -7,7 +7,9 @@ import com.lrm.annotation.AccountInfoFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 用户

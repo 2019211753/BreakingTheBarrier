@@ -29,6 +29,11 @@ public class VisitController {
     /**
      * @param userId 目标用户Id
      * @return 该用户的个人信息
+     *
+     * 隐私策略的种类
+     * 1.关注/粉丝(following followed) 2.发布问题/评论/点赞 3.收藏夹（open的收藏夹）
+     * 111 = 7, 全开放; 110 = 6, 不开放收藏夹; 010 = 2 仅开放发布的问题/评论/点赞
+     * 共8种策略
      */
     @GetMapping("visit/{userId}")
     public Result visitUser(@PathVariable Long userId) {
@@ -92,15 +97,10 @@ public class VisitController {
                 user.setFavorites(null);
 
                 break;
+            default:
+
         }
         hashMap.put("user", user);
         return new Result(hashMap, "");
     }
-
-    /**
-     * 隐私策略的种类
-     * 1.关注/粉丝(following followed) 2.发布问题/评论/点赞 3.收藏夹（open的收藏夹）
-     * 111 = 7, 全开放; 110 = 6, 不开放收藏夹; 010 = 2 仅开放发布的问题/评论/点赞
-     * 共8种策略
-     */
 }
