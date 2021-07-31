@@ -7,9 +7,7 @@ import com.lrm.annotation.AccountInfoFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 用户
@@ -48,6 +46,7 @@ public class User {
     /**
      * 前端必填 账号 后端校验
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @AccountInfoFormat(message = "请输入正确账号格式————长度为7至12且不能包含汉字", need = "false")
     private String username;
 
@@ -121,6 +120,14 @@ public class User {
      * 被几个人关注了
      */
     private Integer followed;
+
+    /**
+     * 隐私策略的种类
+     * 1.关注/粉丝(following followed) 2.发布问题/评论/点赞 3.收藏夹（open的收藏夹）
+     * 111 = 7, 全开放; 110 = 6, 不开放收藏夹; 010 = 2 仅开放发布的问题/评论/点赞
+     * 共8种策略
+     */
+    private Integer privacyType;
 
 
     /**
@@ -321,6 +328,15 @@ public class User {
     public void setFollowed(Integer followed) {
         this.followed = followed;
     }
+
+    public Integer getPrivacyType() {
+        return privacyType;
+    }
+
+    public void setPrivacyType(Integer privacyType) {
+        this.privacyType = privacyType;
+    }
+
 
     /**
      * @return 返回前端保留自己发布的问题

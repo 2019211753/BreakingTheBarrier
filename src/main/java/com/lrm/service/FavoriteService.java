@@ -15,7 +15,7 @@ public interface FavoriteService {
 
     void deleteFavoriteById(Long favoriteId);
 
-    Favorite updateFavorite(Favorite favorite);
+    Favorite updateFavorite(Favorite favorite, Favorite f);
 
     Favorite addQuestion(Favorite favorite, Question question);
 
@@ -23,9 +23,11 @@ public interface FavoriteService {
 
     List<Favorite> getFavoritesByUserId(Long userId);
 
+    List<Favorite> getFavorites(Boolean open, Long userId);
+
     Favorite getFavoriteById(Long favoriteId);
 
-    Favorite getFavoriteByTitle(String title);
+    Favorite getFavoriteByTitle(String title, Long userId);
 
 
 }

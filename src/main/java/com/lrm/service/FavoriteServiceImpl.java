@@ -3,6 +3,8 @@ package com.lrm.service;
 import com.lrm.dao.FavoriteRepository;
 import com.lrm.po.Favorite;
 import com.lrm.po.Question;
+import com.lrm.util.MyBeanUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,8 @@ public class FavoriteServiceImpl implements FavoriteService {
     public Favorite saveFavorite(Favorite favorite) {
         favorite.setCreateTime(new Date());
         favorite.setUpdateTime(new Date());
+        favorite.setSize(0);
+        favorite.setOpen(true);
         return favoriteRepository.save(favorite);
     }
 
@@ -35,6 +39,11 @@ public class FavoriteServiceImpl implements FavoriteService {
         favoriteRepository.deleteById(favoriteId);
     }
 
+    /**
+     * @param favorite 收藏夹
+     * @param question 被加入收藏夹的问题
+     * @return 新收藏夹
+     */
     @Transactional
     @Override
     public Favorite addQuestion(Favorite favorite, Question question) {
@@ -44,6 +53,11 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteRepository.save(favorite);
     }
 
+    /**
+     * @param favorite 收藏夹
+     * @param question 被移出收藏夹的问题
+     * @return 新收藏夹
+     */
     @Override
     public Favorite removeQuestion(Favorite favorite, Question question) {
         favorite.getFavoriteQuestions().remove(question);
@@ -52,9 +66,15 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteRepository.save(favorite);
     }
 
+    /**
+     * @param favorite 新收藏夹
+     * @param f 旧收藏夹
+     * @return 新收藏夹
+     */
     @Transactional
     @Override
-    public Favorite updateFavorite(Favorite favorite) {
+    public Favorite updateFavorite(Favorite favorite, Favorite f) {
+        BeanUtils.copyProperties(favorite, f, MyBeanUtils.getNullPropertyNames(favorite));
         favorite.setUpdateTime(new Date());
         return favoriteRepository.save(favorite);
     }
@@ -76,10 +96,23 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favorite.orElse(null);
     }
 
+    /**
+     * @param title 收藏夹标题
+     * @param userId 用户Id
+     * @return 该用户的title标题对应的收藏夹
+     */
     @Override
-    public Favorite getFavoriteByTitle(String title) {
-        return favoriteRepository.findByTitle(title);
+    public Favorite getFavoriteByTitle(String title, Long userId) {
+        return favoriteRepository.findByTitleAndOwnerId(title, userId);
     }
 
-
+    /**
+     * @param open 公开么
+     * @param userId 用户Id
+     * @return 用户公开的收藏夹
+     */
+    @Override
+    public List<Favorite> getFavorites(Boolean open, Long userId) {
+        return favoriteRepository.findAllByOpenAndOwnerId(open, userId);
+    }
 }

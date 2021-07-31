@@ -67,7 +67,7 @@ public class FavoriteController {
                 throw new FailedOperationException("该收藏夹已存在");
             }
         }
-        if (favoriteService.getFavoriteByTitle(favorite.getTitle()) != null) {
+        if (favoriteService.getFavoriteByTitle(favorite.getTitle(), userId) != null) {
             throw new FailedOperationException("已有同名收藏夹");
         }
 
@@ -112,16 +112,24 @@ public class FavoriteController {
     }
 
     /**
-     * @param favoriteId 被修改的收藏夹Id
-     * @param title      收藏夹新标题
-     * @param request    获取Id
+     * 更新收藏夹名称和是否公开
+     * @param favorite0 前端封装好的收藏夹
+     * @param request  获取Id
      * @return 新收藏夹
      */
-    @GetMapping("favorite/{favoriteId}/edit/{title}")
-    public Result editFavorite(@PathVariable Long favoriteId, @PathVariable String title, HttpServletRequest request) {
+    @PostMapping("favorite/edit")
+    public Result editFavorite(Favorite favorite0, HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         Long customUserId = TokenInfo.getCustomUserId(request);
+        Long favoriteId = favorite0.getId();
+        String title = favorite0.getTitle();
+
+        //如果收藏夹不存在 抛出404异常
+        if (favoriteId == null) {
+            throw new NotFoundException("未查询到该收藏夹");
+        }
+        //查询到数据库中的对应该Id的收藏夹
         Favorite favorite = favoriteService.getFavoriteById(favoriteId);
         //如果收藏夹不存在 抛出404异常
         if (favorite == null) {
@@ -137,14 +145,14 @@ public class FavoriteController {
                 throw new IllegalParameterException("请输入收藏夹标题");
             }
             //新标题已存在了 而且不是他原来的标题（即改的结果不是跟原来的一样）
-            Favorite favorite1 = favoriteService.getFavoriteByTitle(favorite.getTitle());
+            //查询到数据库中的对应该title的收藏夹
+            Favorite favorite1 = favoriteService.getFavoriteByTitle(favorite.getTitle(), customUserId);
             if (favorite1 != null && !favorite1.getId().equals(favoriteId)) {
                 throw new FailedOperationException("已有同名收藏夹");
             }
         }
 
-        favorite.setTitle(title);
-        favoriteService.updateFavorite(favorite);
+        favoriteService.updateFavorite(favorite0, favorite);
 
         hashMap.put("favorite", favorite);
         return new Result(hashMap, "修改成功");

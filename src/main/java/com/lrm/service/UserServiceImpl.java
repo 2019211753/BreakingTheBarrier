@@ -73,6 +73,9 @@ public class UserServiceImpl implements UserService
         user.setCanSpeak(true);
         user.setAdmin(false);
         user.setRegisterTime(new Date());
+        user.setFollowed(0);
+        user.setFollowing(0);
+        user.setPrivacyType(7);
         return userRepository.save(user);
     }
 

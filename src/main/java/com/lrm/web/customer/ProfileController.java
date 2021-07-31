@@ -112,12 +112,13 @@ public class ProfileController {
      * @param personalSignature 个性标签
      * @param academy           学院
      * @param major             专业
+     * @param privacyType       隐私策略的种类
      * @return 新token
      */
     @PostMapping("/modifyAll")
     public Result modifyUserInformation(HttpServletRequest request, String nickname, String password, String email,
                                         String qqId, String wechatId, Boolean sex, String personalSignature, String academy,
-                                        String major) {
+                                        String major, Integer privacyType) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         StringBuilder errorMessage = null;
@@ -154,6 +155,17 @@ public class ProfileController {
 
         if (!"".equals(major) && major != null) {
             user.setMajor(major);
+        }
+
+        if (privacyType != null) {
+            if (privacyType > 7) {
+                user.setPrivacyType(7);
+            } else if (privacyType < 0) {
+                user.setPrivacyType(0);
+            } else {
+                user.setPrivacyType(privacyType);
+            }
+
         }
 
         if (!"".equals(password) && password != null) {

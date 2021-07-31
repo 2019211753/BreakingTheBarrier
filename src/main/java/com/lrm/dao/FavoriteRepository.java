@@ -19,9 +19,19 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
      */
     List<Favorite> findAllByOwnerId(Long ownerId);
 
+
+    /**
+     * @param open 是否公开
+     * @param ownerId 拥有者Id
+     * @return 公开/不公开的收藏夹
+     */
+    List<Favorite> findAllByOpenAndOwnerId(Boolean open, Long ownerId);
+
     /**
      * @param title 收藏夹标题
+     * @param ownerId 拥有者Id
      * @return 对应收藏夹
      */
-    Favorite findByTitle(String title);
+    Favorite findByTitleAndOwnerId(String title, Long ownerId);
+
 }
