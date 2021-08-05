@@ -51,7 +51,7 @@ public class RankController {
         //返回当前自己的排名
         Long myRank = userService.getRank(userService.getUser(customUserId).getDonation());
         hashMap.put("users", newUsers);
-        hashMap.put("myRank", myRank + 1);
+        hashMap.put("myRank", myRank);
         System.out.println(users);
         return new Result(hashMap, null);
     }

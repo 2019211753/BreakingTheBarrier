@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService
      */
     @Override
     public Long getRank(Integer donation) {
-        return userRepository.findAllByDonation(donation);
+        return userRepository.findAllByDonation(donation) + 1;
     }
 
     @Override

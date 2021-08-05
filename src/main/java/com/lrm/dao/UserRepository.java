@@ -56,6 +56,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     /**
+     * 计算有多少人的贡献值大于x
+     *
      * @param donation 某用户的贡献值
      * @return 他前面有几个人
      */
