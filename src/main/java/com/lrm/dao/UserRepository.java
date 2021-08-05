@@ -54,4 +54,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u")
     List<User> findTop(Pageable pageable);
 
+
+    /**
+     * @param donation 某用户的贡献值
+     * @return 他前面有几个人
+     */
+    @Query("select count(u) from User u where u.donation > ?1")
+    Long findAllByDonation(Integer donation);
+
 }

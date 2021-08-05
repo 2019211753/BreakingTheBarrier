@@ -26,6 +26,8 @@ public interface UserService {
 
     User getUser(String nickname);
 
+    Long getRank(Integer donation);
+
     Long countUser();
 
     List<User> listTopUsers(int size);

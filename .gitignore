@@ -1,0 +1,6 @@
+/src/main/resources/static/
+/src/main/resources/application-prod.yml
+/.idea/
+/request
+/target/
+/log/

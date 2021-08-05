@@ -124,6 +124,15 @@ public class UserServiceImpl implements UserService
         return userRepository.findByNickname(nickname);
     }
 
+    /**
+     * @param donation 某用户的贡献值
+     * @return 他前面有几个人
+     */
+    @Override
+    public Long getRank(Integer donation) {
+        return userRepository.findAllByDonation(donation);
+    }
+
     @Override
     public Long countUser() {
         return userRepository.count();
