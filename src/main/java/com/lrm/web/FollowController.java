@@ -2,7 +2,7 @@ package com.lrm.web;
 
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.User;
-import com.lrm.service.UserService;
+import com.lrm.service.UserServiceImpl;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class FollowController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     /**
      * 取关/关注
@@ -34,8 +34,8 @@ public class FollowController {
     @GetMapping("follow/{followedUserId}")
     public Result followUser(@PathVariable Long followedUserId, HttpServletRequest request) {
         Long followingUserId = TokenInfo.getCustomUserId(request);
-        User followingUser = userService.getUser(followingUserId);
-        User followedUser = userService.getUser(followedUserId);
+        User followingUser = userServiceImpl.getUser(followingUserId);
+        User followedUser = userServiceImpl.getUser(followedUserId);
 
         if (followedUser == null) {
             throw new NotFoundException("未查询到该用户");
@@ -49,8 +49,8 @@ public class FollowController {
             followingUser.getFollowingUsers().remove(followedUser);
             followingUser.setFollowing(followedUser.getFollowing() - 1);
 
-            userService.saveUser(followedUser);
-            userService.saveUser(followingUser);
+            userServiceImpl.saveUser(followedUser);
+            userServiceImpl.saveUser(followingUser);
             if (!followedUser.getFollowedUsers().contains(followingUser) &&
                     followingUser.getFollowingUsers().contains(followedUser)) {
                 return new Result(null, "取关成功");
@@ -64,8 +64,8 @@ public class FollowController {
             followingUser.getFollowingUsers().add(followedUser);
             followingUser.setFollowing(followedUser.getFollowing() + 1);
 
-            userService.saveUser(followedUser);
-            userService.saveUser(followingUser);
+            userServiceImpl.saveUser(followedUser);
+            userServiceImpl.saveUser(followingUser);
             if (followedUser.getFollowedUsers().contains(followingUser) &&
                     followingUser.getFollowingUsers().contains(followedUser)) {
                 return new Result(null, "关注成功");

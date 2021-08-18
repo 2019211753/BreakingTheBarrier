@@ -29,7 +29,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
      * @param pageable 排序要求
      * @return 标签集合
      */
-    @Query("select t from Tag t")
+    @Query("select t from #{#entityName} t")
     List<Tag> findTop(Pageable pageable);
 
     /**

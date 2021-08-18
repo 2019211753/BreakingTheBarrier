@@ -1,6 +1,9 @@
 package com.lrm.web.customer;
 
-import com.lrm.service.QuestionService;
+import com.lrm.po.Template;
+import com.lrm.service.BlogServiceImpl;
+import com.lrm.service.QuestionServiceImpl;
+import com.lrm.service.TemplateServiceImpl;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,10 @@ import java.util.Map;
 @RequestMapping("/customer")
 public class ArchiveShowController {
     @Autowired
-    private QuestionService questionService;
+    private QuestionServiceImpl questionServiceImpl;
+
+    @Autowired
+    private BlogServiceImpl blogServiceImpl;
 
     /**
      * 按年份归档 时间逆序
@@ -31,14 +37,29 @@ public class ArchiveShowController {
      * @param request 获取当前用户id
      * @return 已经分类的问题
      */
-    @GetMapping("/archives")
-    public Result archives(HttpServletRequest request) {
+    @GetMapping("/archivesQuestion")
+    public Result archivesQuestion(HttpServletRequest request) {
+        return archives(request, questionServiceImpl);
+    }
+
+    /**
+     * 按年份归档 时间逆序
+     *
+     * @param request 获取当前用户id
+     * @return 已经分类的博客
+     */
+    @GetMapping("/archivesBlog")
+    public Result archivesBlog(HttpServletRequest request) {
+        return archives(request, blogServiceImpl);
+    }
+
+    <T extends Template> Result archives(HttpServletRequest request, TemplateServiceImpl<T> templateServiceImpl) {
         Map<String, Object> hashMap = new HashMap<>(2);
 
         Long userId = TokenInfo.getCustomUserId(request);
 
-        hashMap.put("archiveMap", questionService.archivesQuestion(userId));
-        hashMap.put("questionCount", questionService.countQuestionByUser(userId));
+        hashMap.put("archiveMap", templateServiceImpl.archivesByUserId(userId));
+        hashMap.put("count", templateServiceImpl.countAllByUserId(userId));
 
         return new Result(hashMap, "");
     }

@@ -1,6 +1,5 @@
 package com.lrm.po;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,13 +27,14 @@ public class Comment {
     private Long id;
 
     /**
-     * 如果标识为1 即question.user是发布这个comment的人 那么它应该有一个类似楼主的标志
+     * 如果标识为1 即发布这个comment的人也是帖子的发布者
+     * 那么它应该有一个类似楼主的标志
      */
     private Boolean adminComment;
 
     /**
      * 通知是否已读 true为已读
-     * 不能用isRead 也不能用read关键字 只能这样了。。。
+     * 不能用isRead（jpa的问题） 也不能用read关键字 只好用looked了
      */
     private Boolean looked;
 
@@ -65,15 +65,18 @@ public class Comment {
 
     /**
      * 评论发布者Id
-     * 返回user对象被json忽略 只能加个这个了
      */
     private Long postUserId0;
 
     /**
      * 评论对应问题Id
-     * 返回question对象被json忽略 只能加个这个了
      */
     private Long questionId0;
+
+    /**
+     * 评论对应博客Id
+     */
+    private Long blogId0;
 
     /**
      * 父级评论Id
@@ -115,6 +118,13 @@ public class Comment {
 
     /**
      * 节约空间不入库
+     * 父级评论发布者昵称
+     */
+    @Transient
+    private String parentCommentName;
+
+    /**
+     * 节约空间不入库
      * 返回前端的判断该评论是否被当前用户点过赞 true为赞过
      */
     @Transient
@@ -129,13 +139,6 @@ public class Comment {
 
     /**
      * 节约空间不入库
-     * 父级评论发布者昵称
-     */
-    @Transient
-    private String parentCommentName;
-
-    /**
-     * 节约空间不入库
      * 作为传回前端评论区的Comments集合 评论的子评论
      */
     @Transient
@@ -145,8 +148,16 @@ public class Comment {
     /**
      * 评论所属的问题
      */
+    @JsonIgnore
     @ManyToOne
     private Question question;
+
+    /**
+     * 评论所属的博客
+     */
+    @JsonIgnore
+    @ManyToOne
+    private Blog blog;
 
     /**
      * 评论的子评论
@@ -158,18 +169,21 @@ public class Comment {
     /**
      * 评论的父评论
      */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Comment parentComment;
 
     /**
      * 评论收到的点赞
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Likes> likes;
 
     /**
      * 评论收到的点踩
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DisLikes> dislikes;
 
@@ -177,10 +191,12 @@ public class Comment {
      * 消息的接收者
      */
     @ManyToOne
+    @JsonIgnore
     private User receiveUser;
     /**
      * 消息的发送者
      */
+    @JsonIgnore
     @ManyToOne
     private User postUser;
 
@@ -313,6 +329,14 @@ public class Comment {
         this.questionId0 = questionId0;
     }
 
+    public Long getBlogId0() {
+        return blogId0;
+    }
+
+    public void setBlogId0(Long blogId0) {
+        this.blogId0 = blogId0;
+    }
+
     public Long getParentCommentId0() {
         return parentCommentId0;
     }
@@ -337,16 +361,21 @@ public class Comment {
         this.receiveComments = receiveComments;
     }
 
-    /**
-     * @return 返回前端 不 包含评论所属的问题
-     */
-    @JsonBackReference
+
     public Question getQuestion() {
         return question;
     }
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public Blog getBlog() {
+        return blog;
+    }
+
+    public void setBlog(Blog blog) {
+        this.blog = blog;
     }
 
     /**
@@ -360,10 +389,6 @@ public class Comment {
         this.replyComments = replyComments;
     }
 
-    /**
-     * @return 返回前端 不 包含父评论
-     */
-    @JsonBackReference
     public Comment getParentComment() {
         return parentComment;
     }
@@ -372,10 +397,6 @@ public class Comment {
         this.parentComment = parentComment;
     }
 
-    /**
-     * @return 返回前端 不 包含被评论者的信息
-     */
-    @JsonBackReference
     public User getReceiveUser() {
         return receiveUser;
     }
@@ -384,10 +405,6 @@ public class Comment {
         this.receiveUser = receiveUser;
     }
 
-    /**
-     * @return 返回前端 不 包含发布者的信息
-     */
-    @JsonBackReference
     public User getPostUser() {
         return postUser;
     }
@@ -396,10 +413,6 @@ public class Comment {
         this.postUser = postUser;
     }
 
-    /**
-     * @return 返回前端 不 包含收到的点赞
-     */
-    @JsonBackReference
     public List<Likes> getLikes() {
         return likes;
     }
@@ -408,10 +421,6 @@ public class Comment {
         this.likes = likes;
     }
 
-    /**
-     * @return 返回前端 不 包含收到的踩
-     */
-    @JsonBackReference
     public List<DisLikes> getDislikes() {
         return dislikes;
     }

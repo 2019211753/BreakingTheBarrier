@@ -2,7 +2,7 @@ package com.lrm.web.admin;
 
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.User;
-import com.lrm.service.UserService;
+import com.lrm.service.UserServiceImpl;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class UserController {
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     /**
      * 查找用户
@@ -30,10 +30,10 @@ public class UserController {
      * @return 查询得到的用户
      */
     @PostMapping("/searchUser")
-    public Result searchCustomer(String nickname) {
+    public Result searchCustomer(@RequestBody String nickname) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
-        hashMap.put("user", userService.getUser(nickname));
+        hashMap.put("user", userServiceImpl.getUser(nickname));
 
         return new Result(hashMap, "搜索完成");
     }
@@ -45,11 +45,11 @@ public class UserController {
      */
     @GetMapping("/controlSpeak/{userId}")
     public void controlSpeak(@PathVariable Long userId) {
-        User user = userService.getUser(userId);
+        User user = userServiceImpl.getUser(userId);
         if (user == null) {
             throw new NotFoundException("未查询到该用户");
         }
         user.setCanSpeak(!user.getCanSpeak());
-        userService.saveUser(user);
+        userServiceImpl.saveUser(user);
     }
 }

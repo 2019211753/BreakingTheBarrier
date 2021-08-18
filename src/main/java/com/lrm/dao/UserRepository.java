@@ -51,7 +51,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param pageable 内含分页顺序 其中的size属性与“Top”起限制作用
      * @return 返回前size个 按donation排序
      */
-    @Query("select u from User u")
+    @Query("select u from #{#entityName} u")
     List<User> findTop(Pageable pageable);
 
 
@@ -61,7 +61,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param donation 某用户的贡献值
      * @return 他前面有几个人
      */
-    @Query("select count(u) from User u where u.donation > ?1")
+    @Query("select count(u) from #{#entityName} u where u.donation > ?1")
     Long findAllByDonation(Integer donation);
 
 }

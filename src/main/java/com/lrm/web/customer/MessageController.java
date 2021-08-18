@@ -4,8 +4,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.lrm.po.Comment;
 import com.lrm.po.Likes;
 import com.lrm.po.User;
-import com.lrm.service.CommentService;
-import com.lrm.service.LikesService;
+import com.lrm.service.CommentServiceImpl;
+import com.lrm.service.LikesServiceImpl;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +30,10 @@ import java.util.Map;
 @RestController
 public class MessageController {
     @Autowired
-    private CommentService commentService;
+    private CommentServiceImpl commentServiceImpl;
 
     @Autowired
-    private LikesService likesService;
+    private LikesServiceImpl likesServiceImpl;
 
     /**
      * 返回所有通知
@@ -49,7 +49,7 @@ public class MessageController {
         Long userId = TokenInfo.getCustomUserId(request);
 
         //已读评论
-        List<Comment> lookedComments = commentService.listComments(userId, true);
+        List<Comment> lookedComments = commentServiceImpl.listComments(userId, true);
 
         for (Comment comment : lookedComments) {
             User postUser = comment.getPostUser();
@@ -58,7 +58,7 @@ public class MessageController {
         }
 
         //未读评论
-        List<Comment> unLookedComments = commentService.listComments(userId, false);
+        List<Comment> unLookedComments = commentServiceImpl.listComments(userId, false);
 
         for (Comment comment : unLookedComments) {
             User postUser = comment.getPostUser();
@@ -67,7 +67,7 @@ public class MessageController {
         }
 
         //已读点赞
-        List<Likes> lookedLikes = likesService.listLikes(userId, true);
+        List<Likes> lookedLikes = likesServiceImpl.list(userId, true);
 
         for (Likes likes1 : lookedLikes) {
             User postUser = likes1.getPostUser();
@@ -76,7 +76,7 @@ public class MessageController {
         }
 
         //未读点赞
-        List<Likes> unLookedLikes = likesService.listLikes(userId, false);
+        List<Likes> unLookedLikes = likesServiceImpl.list(userId, false);
 
         for (Likes likes1 : unLookedLikes) {
             User postUser = likes1.getPostUser();
@@ -99,9 +99,9 @@ public class MessageController {
      */
     @GetMapping("/comment/{commentId}/read")
     public void readComment(@PathVariable Long commentId) {
-        Comment comment = commentService.getComment(commentId);
+        Comment comment = commentServiceImpl.getComment(commentId);
         comment.setLooked(true);
-        commentService.saveComment(comment);
+        commentServiceImpl.saveComment(comment);
     }
 
     /**
@@ -111,9 +111,9 @@ public class MessageController {
      */
     @GetMapping("/likes/{likesId}/read")
     public void readLikes(@PathVariable Long likesId) {
-        Likes likes = likesService.getLikes(likesId);
+        Likes likes = likesServiceImpl.get(likesId);
         likes.setLooked(true);
-        likesService.saveLikes(likes);
+        likesServiceImpl.save(likes);
     }
 
     /**
@@ -124,10 +124,10 @@ public class MessageController {
     @GetMapping("/readAllComments")
     public void readAllComments(HttpServletRequest request) {
         Long userId = TokenInfo.getCustomUserId(request);
-        List<Comment> comments = commentService.listComments(userId, false);
+        List<Comment> comments = commentServiceImpl.listComments(userId, false);
         for (Comment comment : comments) {
             comment.setLooked(true);
-            commentService.saveComment(comment);
+            commentServiceImpl.saveComment(comment);
         }
     }
 
@@ -140,10 +140,10 @@ public class MessageController {
     public void readAllLikes(HttpServletRequest request) {
         Long userId = TokenInfo.getCustomUserId(request);
 
-        List<Likes> likes = likesService.listLikes(userId, false);
+        List<Likes> likes = likesServiceImpl.list(userId, false);
         for (Likes likes1 : likes) {
             likes1.setLooked(true);
-            likesService.saveLikes(likes1);
+            likesServiceImpl.save(likes1);
         }
     }
 }

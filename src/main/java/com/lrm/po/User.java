@@ -1,7 +1,6 @@
 package com.lrm.po;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lrm.annotation.AccountInfoFormat;
 
@@ -133,23 +132,10 @@ public class User {
 
 
     /**
-     * 没必要设置Remove 因为不打算做注销账号功能
-     * 发布的问题
-     */
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Question> questions = new ArrayList<>();
-
-    /**
      * 发布的评论
      */
     @OneToMany(mappedBy = "postUser", fetch = FetchType.LAZY)
     private List<Comment> postComments = new ArrayList<>();
-
-    /**
-     * 获得的评论
-     */
-    @OneToMany(mappedBy = "receiveUser", fetch = FetchType.LAZY)
-    private List<Comment> receiveComments = new ArrayList<>();
 
     /**
      * 发布的点赞
@@ -158,31 +144,59 @@ public class User {
     private List<Likes> postLikes = new ArrayList<>();
 
     /**
+     * 没必要设置Remove 因为不打算做注销账号功能
+     * 发布的问题
+     */
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Question> questions = new ArrayList<>();
+
+    /**
+     * 没必要设置Remove 因为不打算做注销账号功能
+     * 发布的问题
+     */
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Blog> blogs = new ArrayList<>();
+
+    /**
+     * 获得的评论
+     */
+    @JsonIgnore
+    @OneToMany(mappedBy = "receiveUser", fetch = FetchType.LAZY)
+    private List<Comment> receiveComments = new ArrayList<>();
+
+    /**
      * 接受的点赞
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "receiveUser", fetch = FetchType.LAZY)
     private List<Likes> receiveLikes = new ArrayList<>();
 
     /**
      * 发布的点踩
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "postUser", fetch = FetchType.LAZY)
     private List<DisLikes> postDisLikes = new ArrayList<>();
 
     /**
      * 用户的粉丝
      */
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(mappedBy = "followingUsers")
     private List<User> followedUsers = new ArrayList<>();
     /**
      * 用户关注的人
      */
+    @JsonIgnore
     @ManyToMany
     private List<User> followingUsers = new ArrayList<>();
 
     /**
      * 用户的收藏夹
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "owner")
     private List<Favorite> favorites = new ArrayList<>();
 
@@ -340,10 +354,6 @@ public class User {
     }
 
 
-    /**
-     * @return 返回前端保留自己发布的问题
-     */
-    @JsonManagedReference
     public List<Question> getQuestions() {
         return questions;
     }
@@ -352,10 +362,14 @@ public class User {
         this.questions = questions;
     }
 
-    /**
-     * @return 返回前端保留自己发布的评论
-     */
-    @JsonManagedReference
+    public List<Blog> getBlogs() {
+        return blogs;
+    }
+
+    public void setBlogs(List<Blog> blogs) {
+        this.blogs = blogs;
+    }
+
     public List<Comment> getPostComments() {
         return postComments;
     }
@@ -364,10 +378,6 @@ public class User {
         this.postComments = postComments;
     }
 
-    /**
-     * @return 返回前端 不 保留自己收到的评论 分开返回
-     */
-    @JsonBackReference
     public List<Comment> getReceiveComments() {
         return receiveComments;
     }
@@ -376,10 +386,6 @@ public class User {
         this.receiveComments = receiveComments;
     }
 
-    /**
-     * @return 返回前端保留自己点的赞
-     */
-    @JsonManagedReference
     public List<Likes> getPostLikes() {
         return postLikes;
     }
@@ -388,10 +394,6 @@ public class User {
         this.postLikes = postLikes;
     }
 
-    /**
-     * @return 返回前端 不 保留自己收到的点赞 分开返回
-     */
-    @JsonBackReference
     public List<Likes> getReceiveLikes() {
         return receiveLikes;
     }
@@ -400,10 +402,6 @@ public class User {
         this.receiveLikes = receiveLikes;
     }
 
-    /**
-     * @return 返回前端 不 保留自己点的踩
-     */
-    @JsonBackReference
     public List<DisLikes> getPostDisLikes() {
         return postDisLikes;
     }
@@ -412,10 +410,6 @@ public class User {
         this.postDisLikes = postDisLikes;
     }
 
-    /**
-     * @return 返回前端 不 保留自己的粉丝
-     */
-    @JsonBackReference
     public List<User> getFollowedUsers() {
         return followedUsers;
     }
@@ -424,10 +418,6 @@ public class User {
         this.followedUsers = followedUsers;
     }
 
-    /**
-     * @return 返回前端 不 保留自己的关注
-     */
-    @JsonBackReference
     public List<User> getFollowingUsers() {
         return followingUsers;
     }
@@ -436,10 +426,6 @@ public class User {
         this.followingUsers = followingUsers;
     }
 
-    /**
-     * @return 返回前端 不 保留自己的收藏夹
-     */
-    @JsonBackReference
     public List<Favorite> getFavorites() {
         return favorites;
     }

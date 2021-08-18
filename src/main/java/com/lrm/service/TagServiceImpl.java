@@ -3,7 +3,7 @@ package com.lrm.service;
 import com.lrm.dao.TagRepository;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.Tag;
-import com.lrm.util.ProcessData;
+import com.lrm.util.DataStructureUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,7 +95,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> listTag(String ids) { //1,2,3
         List<Tag> tags = new ArrayList<>();
-        List<Long> tagIds = convertToList(ids);
+        List<Long> tagIds = DataStructureUtils.convertToList(ids);
         //这里没有对应标签就不抛异常了 找有标签的就行
         for (Long tagId : tagIds) {
             Tag tag = getTag(tagId);
@@ -106,22 +106,11 @@ public class TagServiceImpl implements TagService {
         return tags;
     }
 
-    private List<Long> convertToList(String ids) {
-        List<Long> list = new ArrayList<>();
-        if (!"".equals(ids) && ids != null) {
-            String[] idArray = ids.split(",");
-            for (String s : idArray) {
-                list.add(new Long(s));
-            }
-        }
-        return list;
-    }
-
     /**
      * 由某标签列出其下所有标签
      */
     @Override
-    public Set<Tag> listTags (Tag tag)
+    public Set<Tag> listTags(Tag tag)
     {
         tagSet.add(tag);
         List<Tag> tags = tag.getSonTags();
@@ -146,7 +135,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public String listTagIdsFromSmallToBig(String tagIds) {
         String[] ids = tagIds.split(",");
-        ids = ProcessData.removeDuplicateElement(ids);
+        ids = DataStructureUtils.removeDuplicateElement(ids);
         //ids的非null部分长度
         int length = 0;
         for (String id : ids) {

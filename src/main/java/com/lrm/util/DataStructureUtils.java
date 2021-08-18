@@ -1,5 +1,6 @@
 package com.lrm.util;
 
+import com.lrm.po.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,7 @@ import java.util.*;
  * @version 1.0
  * @date 2021-07-21
  */
-public class ProcessData {
+public class DataStructureUtils {
 
     /**
      * @param list 某集合
@@ -73,5 +74,37 @@ public class ProcessData {
             list.add(x);
         }
         return list;
+    }
+
+    public static List<Long> convertToList(String ids) {
+        List<Long> list = new ArrayList<>();
+        if (!"".equals(ids) && ids != null) {
+            String[] idArray = ids.split(",");
+            for (String s : idArray) {
+                list.add(new Long(s));
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 前端Tag对象的格式是以,分割的 tagIds作为一个媒介
+     *
+     * @param tags 与question关联的tag集合
+     * @return , 分割的tagId
+     */
+    public static String tagsToIds(List<Tag> tags) {
+        StringBuilder ids = new StringBuilder();
+        boolean flag = false;
+        for (Tag tag : tags) {
+            if (flag) {
+                ids.append(",");
+            } else {
+                flag = true;
+            }
+            ids.append(tag.getId());
+        }
+        return ids.toString();
+
     }
 }

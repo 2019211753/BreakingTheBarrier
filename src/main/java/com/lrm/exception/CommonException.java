@@ -3,7 +3,7 @@ package com.lrm.exception;
 import com.lrm.enumeration.StatusCode;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 多个异常的公有类
  *
  * @author 山水夜止
  * @version 1.0

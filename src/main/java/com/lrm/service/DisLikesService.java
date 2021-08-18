@@ -1,8 +1,7 @@
 package com.lrm.service;
 
-import com.lrm.po.Comment;
 import com.lrm.po.DisLikes;
-import com.lrm.po.Question;
+import com.lrm.po.Template;
 import com.lrm.po.User;
 
 /**
@@ -12,15 +11,5 @@ import com.lrm.po.User;
  */
 public interface DisLikesService {
 
-    DisLikes saveDisLikes(DisLikes DisLikes, User postUser);
-
-    DisLikes saveDisLikes(DisLikes DisLikes);
-
-    void deleteDisLikes(DisLikes DisLikes);
-
-    DisLikes getDisLikes(User postUser, Question question);
-
-    DisLikes getDisLikes(User postUser, Comment comment);
-
-    DisLikes getDisLikes(Long DisLikesId);
+    <E extends Template> DisLikes save(E e, DisLikes disLikes, User postUser);
 }

@@ -1,17 +1,14 @@
 package com.lrm.service;
 
+import com.lrm.dao.EmotionRepository;
 import com.lrm.dao.LikesRepository;
-import com.lrm.po.Comment;
-import com.lrm.po.Likes;
-import com.lrm.po.Question;
-import com.lrm.po.User;
+import com.lrm.po.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author 山水夜止
@@ -19,61 +16,32 @@ import java.util.Optional;
  * @date 2021-07-21
  */
 @Service
-public class LikesServiceImpl implements LikesService{
+public class LikesServiceImpl extends EmotionServiceImpl<Likes> implements LikesService{
     @Autowired
     LikesRepository likesRepository;
 
+    @Override
+    public EmotionRepository<Likes> getEmotionRepository() {
+        return likesRepository;
+    }
+
     @Transactional
     @Override
-    public Likes saveLikes(Likes likes, User postUser, User receiveUser) {
+    public <E extends Template> Likes save(E e, Likes likes, User postUser, User receiveUser) {
+        if (e instanceof Blog) {
+            likes.setBlog((Blog) e);
+            likes.setBlogId0(e.getId());
+        }
+        if (e instanceof Question) {
+            likes.setQuestion((Question) e);
+            likes.setQuestionId0(e.getId());
+        }
         likes.setCreateTime(new Date());
         likes.setPostUser(postUser);
         likes.setReceiveUser(receiveUser);
-        likes.setLooked(receiveUser == postUser);
+        likes.setLooked(receiveUser.equals(postUser));
         likes.setPostUserId0(postUser.getId());
-
-        if (likes.getLikeComment()) {
-            if (likes.getComment().getPostUser().equals(likes.getPostUser())) {
-                likes.setLooked(true);
-            }
-            likes.setQuestionId0(likes.getComment().getQuestionId0());
-        }
-
-        if (likes.getLikeQuestion()) {
-            if (likes.getQuestion().getUser().equals(likes.getPostUser())) {
-                likes.setLooked(true);
-            }
-            likes.setQuestionId0(likes.getQuestion().getId());
-        }
         return likesRepository.save(likes);
-    }
-
-    @Override
-    @Transactional
-    public Likes saveLikes(Likes likes) {
-        return likesRepository.save(likes);
-    }
-
-    @Override
-    @Transactional
-    public void deleteLikes(Likes likes) {
-        likesRepository.delete(likes);
-    }
-
-    @Override
-    public Likes getLikes(User postUser, Question question) {
-        return likesRepository.findByPostUserAndQuestion(postUser, question);
-    }
-
-    @Override
-    public Likes getLikes(User postUser, Comment comment) {
-        return likesRepository.findByPostUserAndComment(postUser, comment);
-    }
-
-    @Override
-    public Likes getLikes(Long likesId) {
-        Optional<Likes> likes = likesRepository.findById(likesId);
-        return likes.orElse(null);
     }
 
     /**
@@ -83,7 +51,7 @@ public class LikesServiceImpl implements LikesService{
      * @return 未读或已读点赞集合
      */
     @Override
-    public List<Likes> listLikes(Long userId, Boolean looked) {
+    public List<Likes> list(Long userId, Boolean looked) {
         return likesRepository.findByReceiveUserIdAndLooked(userId, looked);
     }
 }

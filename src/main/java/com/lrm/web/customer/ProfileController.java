@@ -2,7 +2,7 @@ package com.lrm.web.customer;
 
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.User;
-import com.lrm.service.UserService;
+import com.lrm.service.UserServiceImpl;
 import com.lrm.util.FileUtils;
 import com.lrm.util.MD5Utils;
 import com.lrm.util.StringVerify;
@@ -12,10 +12,7 @@ import com.lrm.vo.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +31,7 @@ import java.util.Map;
 @RestController
 public class ProfileController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Value("${web.upload-path}")
     private String path;
@@ -52,7 +49,7 @@ public class ProfileController {
         Map<String, Object> hashMap = new HashMap<>(2);
 
         User user = new User();
-        BeanUtils.copyProperties(userService.getUser(TokenInfo.getCustomUserId(request)), user);
+        BeanUtils.copyProperties(userServiceImpl.getUser(TokenInfo.getCustomUserId(request)), user);
 
         //返回当前用户信息和院系选择
         hashMap.put("user", user);
@@ -88,9 +85,9 @@ public class ProfileController {
         FileUtils.rebuildFolder(realPath);
         String newName = FileUtils.upload(file, realPath, oldName);
 
-        User user = userService.getUser(userId);
+        User user = userServiceImpl.getUser(userId);
         user.setAvatar("images/" + userId + "/avatar/" + newName);
-        userService.saveUser(user);
+        userServiceImpl.saveUser(user);
 
         hashMap.put("avatar", "images/" + userId + "/avatar/" + newName);
         return new Result(hashMap, "上传成功");
@@ -116,16 +113,16 @@ public class ProfileController {
      * @return 新token
      */
     @PostMapping("/modifyAll")
-    public Result modifyUserInformation(HttpServletRequest request, String nickname, String password, String email,
-                                        String qqId, String wechatId, Boolean sex, String personalSignature, String academy,
-                                        String major, Integer privacyType) {
+    public Result modifyUserInformation(HttpServletRequest request, @RequestBody String nickname, @RequestBody String password, @RequestBody String email,
+                                        @RequestBody String qqId, @RequestBody String wechatId, @RequestBody Boolean sex, @RequestBody String personalSignature, @RequestBody String academy,
+                                        @RequestBody String major, @RequestBody Integer privacyType) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         StringBuilder errorMessage = null;
 
         //获得当前用户Id 检查用户需要更改的昵称有没用其他用户在使用
         Long customerUserId = TokenInfo.getCustomUserId(request);
-        User user0 = userService.getUser(nickname);
+        User user0 = userServiceImpl.getUser(nickname);
 
         User user = new User();
         user.setId(customerUserId);
@@ -178,9 +175,9 @@ public class ProfileController {
 
         if (!(user0 != null && user0.getId().equals(customerUserId))) {
             user.setNickname(nickname);
-            userService.updateUser(user, hashMap);
+            userServiceImpl.updateUser(user, hashMap);
         } else {
-            userService.updateUser(user, hashMap);
+            userServiceImpl.updateUser(user, hashMap);
 
             if (errorMessage == null) {
                 errorMessage = new StringBuilder("昵称已被占用；");

@@ -6,9 +6,10 @@ import com.lrm.exception.NoPermissionException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.Favorite;
 import com.lrm.po.User;
-import com.lrm.service.FavoriteService;
-import com.lrm.service.QuestionService;
-import com.lrm.service.UserService;
+import com.lrm.service.BlogServiceImpl;
+import com.lrm.service.FavoriteServiceImpl;
+import com.lrm.service.QuestionServiceImpl;
+import com.lrm.service.UserServiceImpl;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +33,19 @@ import java.util.Map;
  */
 @RequestMapping("/customer")
 @RestController
-public class FavoriteController {
+public class CustomerFavoriteController {
 
     @Autowired
-    private FavoriteService favoriteService;
+    private FavoriteServiceImpl favoriteServiceImpl;
 
     @Autowired
-    private QuestionService questionService;
+    private QuestionServiceImpl questionServiceImpl;
 
     @Autowired
-    private UserService userService;
+    private BlogServiceImpl blogServiceImpl;
+
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
     /**
      * 创建收藏夹
@@ -51,8 +55,8 @@ public class FavoriteController {
      * @param request       获取当前userId
      * @return 创建后的收藏夹
      */
-    @PostMapping("favorite/create")
-    public Result createFavorite(@Valid Favorite favorite, BindingResult bindingResult, HttpServletRequest request) {
+    @PostMapping("/favorite/create")
+    public Result createFavorite(@RequestBody @Valid Favorite favorite, BindingResult bindingResult, HttpServletRequest request) {
         Long userId = TokenInfo.getCustomUserId(request);
         Map<String, Object> hashMap = new HashMap<>(1);
 
@@ -63,17 +67,17 @@ public class FavoriteController {
 
         Long id;
         if ((id = favorite.getId()) != null) {
-            if (favoriteService.getFavoriteById(id) != null) {
+            if (favoriteServiceImpl.getFavoriteById(id) != null) {
                 throw new FailedOperationException("该收藏夹已存在");
             }
         }
-        if (favoriteService.getFavoriteByTitle(favorite.getTitle(), userId) != null) {
+        if (favoriteServiceImpl.getFavoriteByTitle(favorite.getTitle(), userId) != null) {
             throw new FailedOperationException("已有同名收藏夹");
         }
 
-        User owner = userService.getUser(userId);
+        User owner = userServiceImpl.getUser(userId);
         favorite.setOwner(owner);
-        Favorite favorite1 = favoriteService.saveFavorite(favorite);
+        Favorite favorite1 = favoriteServiceImpl.saveFavorite(favorite);
         if (favorite1 != null) {
             hashMap.put("favorite", favorite1);
             return new Result(hashMap, "发布成功");
@@ -92,7 +96,7 @@ public class FavoriteController {
     @GetMapping("/favorite/{favoriteId}/delete")
     public Result deleteFavorite(@PathVariable Long favoriteId, HttpServletRequest request) {
         Long customUserId = TokenInfo.getCustomUserId(request);
-        Favorite favorite = favoriteService.getFavoriteById(favoriteId);
+        Favorite favorite = favoriteServiceImpl.getFavoriteById(favoriteId);
         //如果收藏夹不存在 抛出404异常
         if (favorite == null) {
             throw new NotFoundException("未查询到该收藏夹");
@@ -103,8 +107,8 @@ public class FavoriteController {
 
         //解除外键
         favorite.setFavoriteQuestions(null);
-        favoriteService.deleteFavoriteById(favoriteId);
-        if (favoriteService.getFavoriteById(favoriteId) == null) {
+        favoriteServiceImpl.deleteFavoriteById(favoriteId);
+        if (favoriteServiceImpl.getFavoriteById(favoriteId) == null) {
             return new Result(null, "删除成功");
         } else {
             throw new FailedOperationException("删除失败");
@@ -117,7 +121,7 @@ public class FavoriteController {
      * @param request  获取Id
      * @return 新收藏夹
      */
-    @PostMapping("favorite/edit")
+    @PostMapping("/favorite/edit")
     public Result editFavorite(Favorite favorite0, HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
@@ -130,7 +134,7 @@ public class FavoriteController {
             throw new NotFoundException("未查询到该收藏夹");
         }
         //查询到数据库中的对应该Id的收藏夹
-        Favorite favorite = favoriteService.getFavoriteById(favoriteId);
+        Favorite favorite = favoriteServiceImpl.getFavoriteById(favoriteId);
         //如果收藏夹不存在 抛出404异常
         if (favorite == null) {
             throw new NotFoundException("未查询到该收藏夹");
@@ -146,13 +150,13 @@ public class FavoriteController {
             }
             //新标题已存在了 而且不是他原来的标题（即改的结果不是跟原来的一样）
             //查询到数据库中的对应该title的收藏夹
-            Favorite favorite1 = favoriteService.getFavoriteByTitle(favorite.getTitle(), customUserId);
+            Favorite favorite1 = favoriteServiceImpl.getFavoriteByTitle(favorite.getTitle(), customUserId);
             if (favorite1 != null && !favorite1.getId().equals(favoriteId)) {
                 throw new FailedOperationException("已有同名收藏夹");
             }
         }
 
-        favoriteService.updateFavorite(favorite0, favorite);
+        favoriteServiceImpl.updateFavorite(favorite0, favorite);
 
         hashMap.put("favorite", favorite);
         return new Result(hashMap, "修改成功");
@@ -164,11 +168,11 @@ public class FavoriteController {
      * @param request 返回当前用户Id
      * @return 用户的所有收藏夹
      */
-    @GetMapping("favorites")
+    @GetMapping("/favorites")
     public Result showFavorites(HttpServletRequest request) {
         Long customerUserId = TokenInfo.getCustomUserId(request);
         Map<String, Object> hashMap = new HashMap<>(1);
-        hashMap.put("favorites", favoriteService.getFavoritesByUserId(customerUserId));
+        hashMap.put("favorites", favoriteServiceImpl.getFavoritesByUserId(customerUserId));
         return new Result(hashMap, "");
     }
 
@@ -179,14 +183,14 @@ public class FavoriteController {
      * @param pageable   排序方式
      * @return 收藏夹下的问题
      */
-    @GetMapping("favorite/{favoriteId}")
+    @GetMapping("/favorite/{favoriteId}")
     public Result showQuestions(@PathVariable Long favoriteId,
                                 @PageableDefault(size = 7, direction = Sort.Direction.DESC) Pageable pageable,
                                 HttpServletRequest request) {
         Long customerUserId = TokenInfo.getCustomUserId(request);
-        Map<String, Object> hashMap = new HashMap<>(1);
+        Map<String, Object> hashMap = new HashMap<>(2);
 
-        Favorite favorite = favoriteService.getFavoriteById(favoriteId);
+        Favorite favorite = favoriteServiceImpl.getFavoriteById(favoriteId);
         if (favorite == null) {
             throw new NotFoundException("未查询到该收藏夹");
         } else {
@@ -195,7 +199,8 @@ public class FavoriteController {
             }
         }
 
-        hashMap.put("questions", questionService.listQuestionByFavoriteId(favoriteId, pageable));
+        hashMap.put("questions", questionServiceImpl.listByFavoriteId(favoriteId, pageable));
+        hashMap.put("blogs", blogServiceImpl.listByFavoriteId(favoriteId, pageable));
         return new Result(hashMap, "");
     }
 

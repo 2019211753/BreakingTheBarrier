@@ -1,7 +1,7 @@
 package com.lrm.web;
 
 import com.lrm.po.User;
-import com.lrm.service.UserService;
+import com.lrm.service.UserServiceImpl;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.Map;
 @RestController
 public class RankController {
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     /**
      * @return 按贡献值排序的用户集合 选择前十
@@ -36,7 +36,7 @@ public class RankController {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         //返回十个贡献度最高的用户
-        List<User> users = userService.listTopUsers(10);
+        List<User> users = userServiceImpl.listTopUsers(10);
 
         //真正要返回的数据
         List<User> newUsers = new ArrayList<>(10);
@@ -49,7 +49,7 @@ public class RankController {
             newUsers.add(model);
         }
         //返回当前自己的排名
-        Long myRank = userService.getRank(userService.getUser(customUserId).getDonation());
+        Long myRank = userServiceImpl.getRank(userServiceImpl.getUser(customUserId).getDonation());
         hashMap.put("users", newUsers);
         hashMap.put("myRank", myRank);
         System.out.println(users);

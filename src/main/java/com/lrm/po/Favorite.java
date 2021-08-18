@@ -1,7 +1,7 @@
 package com.lrm.po;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -62,15 +62,23 @@ public class Favorite {
     /**
      * 收藏夹的主人
      */
+    @JsonIgnore
     @ManyToOne
     private User owner;
 
     /**
      * 收藏夹里的问题
      */
+    @JsonIgnore
     @ManyToMany(mappedBy = "favorites")
     private List<Question> favoriteQuestions = new ArrayList<>();
 
+    /**
+     * 收藏夹里的博客
+     */
+    @JsonIgnore
+    @ManyToMany(mappedBy = "favorites")
+    private List<Blog> favoriteBlogs = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -125,10 +133,6 @@ public class Favorite {
     }
 
 
-    /**
-     * @return 返回前端 不 包含收藏夹的主人
-     */
-    @JsonBackReference
     public User getOwner() {
         return owner;
     }
@@ -137,15 +141,19 @@ public class Favorite {
         this.owner = owner;
     }
 
-    /**
-     * @return 返回前端 不 包含收藏夹里的内容
-     */
-    @JsonBackReference
     public List<Question> getFavoriteQuestions() {
         return favoriteQuestions;
     }
 
     public void setFavoriteQuestions(List<Question> favoriteQuestions) {
         this.favoriteQuestions = favoriteQuestions;
+    }
+
+    public List<Blog> getFavoriteBlogs() {
+        return favoriteBlogs;
+    }
+
+    public void setFavoriteBlogs(List<Blog> favoriteBlogs) {
+        this.favoriteBlogs = favoriteBlogs;
     }
 }

@@ -1,8 +1,8 @@
 package com.lrm.web;
 
 import com.lrm.po.User;
-import com.lrm.service.FavoriteService;
-import com.lrm.service.UserService;
+import com.lrm.service.FavoriteServiceImpl;
+import com.lrm.service.UserServiceImpl;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +22,9 @@ import java.util.Map;
 @RestController
 public class VisitController {
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
     @Autowired
-    FavoriteService favoriteService;
+    FavoriteServiceImpl favoriteServiceImpl;
 
     /**
      * @param userId 目标用户Id
@@ -39,11 +39,11 @@ public class VisitController {
     public Result visitUser(@PathVariable Long userId) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
-        User user = userService.getUser(userId);
+        User user = userServiceImpl.getUser(userId);
         user.setPostDisLikes(null);
         user.setReceiveComments(null);
         user.setReceiveLikes(null);
-        user.setFavorites(favoriteService.getFavorites(true, userId));
+        user.setFavorites(favoriteServiceImpl.getFavorites(true, userId));
 
         Integer privacyType = user.getPrivacyType();
         switch (privacyType) {

@@ -1,7 +1,7 @@
 package com.lrm.po;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,23 +15,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "t_likes")
-public class Likes {
-    /**
-     * 主键
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    /**
-     * 赞的是评论
-     */
-    private Boolean likeComment;
-    /**
-     * 赞的是问题
-     */
-    private Boolean likeQuestion;
-
+public class Likes extends Emotion{
     /**
      * 是否已读
      * 不能用isRead 也不能用read关键字 只能这样了。。。
@@ -40,20 +24,24 @@ public class Likes {
 
     /**
      * 返回前端的点赞发布者Id
-     * 返回user对象被json忽略 只能加个这个了
      */
     private Long postUserId0;
 
     /**
      * 返回前端的点赞所在问题Id
-     * 返回question对象被json忽略 只能加个这个了
      */
     private Long questionId0;
+
+    /**
+     * 返回前端的点赞所在问题Id
+     */
+    private Long blogId0;
 
     /**
      * 封装成完整的"yyyy-MM-dd HH:mm:ss"的Date类型
      * 点赞时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
@@ -74,52 +62,12 @@ public class Likes {
 
 
     /**
-     * 赞的评论
-     */
-    @ManyToOne
-    private Comment comment;
-
-    /**
-     * 赞的问题
-     */
-    @ManyToOne
-    private Question question;
-
-    /**
-     * 谁赞的
-     */
-    @ManyToOne
-    private User postUser;
-    /**
      * 赞的谁
      */
+    @JsonIgnore
     @ManyToOne
     private User receiveUser;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Boolean getLikeComment() {
-        return likeComment;
-    }
-
-    public void setLikeComment(Boolean likeComment) {
-        this.likeComment = likeComment;
-    }
-
-    public Boolean getLikeQuestion() {
-        return likeQuestion;
-    }
-
-    public void setLikeQuestion(Boolean likeQuestion) {
-        this.likeQuestion = likeQuestion;
-    }
 
     public Boolean getLooked() {
         return looked;
@@ -143,6 +91,14 @@ public class Likes {
 
     public void setQuestionId0(Long questionId0) {
         this.questionId0 = questionId0;
+    }
+
+    public Long getBlogId0() {
+        return blogId0;
+    }
+
+    public void setBlogId0(Long blogId0) {
+        this.blogId0 = blogId0;
     }
 
     public Date getCreateTime() {
@@ -170,46 +126,6 @@ public class Likes {
     }
 
 
-    /**
-     * @return 返回前端包含点赞所属的评论
-     */
-    @JsonManagedReference
-    public Comment getComment() {
-        return comment;
-    }
-
-    public void setComment(Comment comment) {
-        this.comment = comment;
-    }
-
-    /**
-     * @return 返回前端包含点赞所属的问题
-     */
-    @JsonManagedReference
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
-    /**
-     * @return 返回前端 不 包含谁点的赞
-     */
-    @JsonBackReference
-    public User getPostUser() {
-        return postUser;
-    }
-
-    public void setPostUser(User postUser) {
-        this.postUser = postUser;
-    }
-
-    /**
-     * @return 返回前端 不 包含谁被点赞了
-     */
-    @JsonBackReference
     public User getReceiveUser() {
         return receiveUser;
     }

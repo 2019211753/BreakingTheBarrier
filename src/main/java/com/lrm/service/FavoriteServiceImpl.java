@@ -1,8 +1,10 @@
 package com.lrm.service;
 
 import com.lrm.dao.FavoriteRepository;
+import com.lrm.po.Blog;
 import com.lrm.po.Favorite;
 import com.lrm.po.Question;
+import com.lrm.po.Template;
 import com.lrm.util.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +43,18 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     /**
      * @param favorite 收藏夹
-     * @param question 被加入收藏夹的问题
      * @return 新收藏夹
      */
     @Transactional
     @Override
-    public Favorite addQuestion(Favorite favorite, Question question) {
-        favorite.getFavoriteQuestions().add(question);
+    public <T extends Template> Favorite add(Favorite favorite, T t) {
+        if (t instanceof Question) {
+            favorite.getFavoriteQuestions().add((Question) t);
+        }
+
+        if (t instanceof Blog) {
+            favorite.getFavoriteBlogs().add((Blog) t);
+        }
         favorite.setUpdateTime(new Date());
         favorite.setSize(favorite.getSize() + 1);
         return favoriteRepository.save(favorite);
@@ -55,12 +62,17 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     /**
      * @param favorite 收藏夹
-     * @param question 被移出收藏夹的问题
      * @return 新收藏夹
      */
     @Override
-    public Favorite removeQuestion(Favorite favorite, Question question) {
-        favorite.getFavoriteQuestions().remove(question);
+    public <T extends Template> Favorite remove(Favorite favorite, T t) {
+        if (t instanceof Question) {
+            favorite.getFavoriteQuestions().remove((Question) t);
+        }
+
+        if (t instanceof Blog) {
+            favorite.getFavoriteBlogs().remove((Blog) t);
+        }
         favorite.setUpdateTime(new Date());
         favorite.setSize(favorite.getSize() - 1);
         return favoriteRepository.save(favorite);

@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService
 
     @Override
     public List<User> listTopUsers(int size) {
-        Sort sort = new Sort(Sort.Direction.DESC, "donation");
+        Sort sort = Sort.by(Sort.Direction.DESC, "donation");
         Pageable pageable = PageRequest.of(0, size, sort);
         return userRepository.findTop(pageable);
     }

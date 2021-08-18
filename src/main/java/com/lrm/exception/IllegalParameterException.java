@@ -8,7 +8,7 @@ import org.springframework.validation.ObjectError;
 import java.util.List;
 
 /**
- * 类<code>Doc</code>用于：TODO
+ * 参数类型异常
  *
  * @author 山水夜止
  * @version 1.0
@@ -26,14 +26,17 @@ public class IllegalParameterException extends CommonException {
         this.errorMsg = errorMsg;
     }
 
+    @Override
     public String getErrorMsg() {
         return errorMsg;
     }
 
+    @Override
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }
 
+    @Override
     public StatusCode getCode() {
         return code;
     }

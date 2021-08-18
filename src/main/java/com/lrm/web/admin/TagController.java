@@ -4,7 +4,7 @@ import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.Tag;
-import com.lrm.service.TagService;
+import com.lrm.service.TagServiceImpl;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping("/admin/tags")
 public class TagController {
     @Autowired
-    private TagService tagService;
+    private TagServiceImpl tagServiceImpl;
 
     /**
      * 新增或修改标签
@@ -35,7 +35,7 @@ public class TagController {
      * @return 返回报错信息; 已保存的Tag对象
      */
     @PostMapping("/input")
-    public Result post(@Valid Tag tag, BindingResult result) {
+    public Result post(@RequestBody @Valid Tag tag, BindingResult result) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         if (result.hasErrors()) {
@@ -43,7 +43,7 @@ public class TagController {
         }
 
         //检查是否存在同名标签 注意不区分大小写
-        Tag tag0 = tagService.getTagByName(tag.getName());
+        Tag tag0 = tagServiceImpl.getTagByName(tag.getName());
         if (tag0 != null) {
             hashMap.put("tag", tag);
             throw new FailedOperationException("不能添加同名的标签");
@@ -51,7 +51,7 @@ public class TagController {
 
         //检查是新增操作吗
         if (tag.getId() == null) {
-            Tag t = tagService.saveTag(tag);
+            Tag t = tagServiceImpl.saveTag(tag);
             if (t == null) {
                 throw new FailedOperationException("新增失败");
             } else {
@@ -61,7 +61,7 @@ public class TagController {
         }
 
         //如果是修改
-        Tag t = tagService.updateTag(tag);
+        Tag t = tagServiceImpl.updateTag(tag);
         if (t == null) {
             throw new FailedOperationException("修改失败");
         } else {
@@ -78,13 +78,13 @@ public class TagController {
      */
     @GetMapping("/{tagId}/delete")
     public Result delete(@PathVariable Long tagId) {
-        Tag tag = tagService.getTag(tagId);
+        Tag tag = tagServiceImpl.getTag(tagId);
         if (tag == null) {
             throw new NotFoundException("未查询到该标签");
         }
 
-        tagService.deleteTag(tagId);
-        tag = tagService.getTag(tagId);
+        tagServiceImpl.deleteTag(tagId);
+        tag = tagServiceImpl.getTag(tagId);
         if (tag != null) {
             throw new FailedOperationException("删除失败");
         } else {

@@ -1,7 +1,7 @@
 package com.lrm.service;
 
 import com.lrm.po.Favorite;
-import com.lrm.po.Question;
+import com.lrm.po.Template;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ public interface FavoriteService {
 
     Favorite updateFavorite(Favorite favorite, Favorite f);
 
-    Favorite addQuestion(Favorite favorite, Question question);
+    <T extends Template> Favorite add(Favorite favorite, T t);
 
-    Favorite removeQuestion(Favorite favorite, Question question);
+    <T extends Template> Favorite remove(Favorite favorite, T t);
 
     List<Favorite> getFavoritesByUserId(Long userId);
 

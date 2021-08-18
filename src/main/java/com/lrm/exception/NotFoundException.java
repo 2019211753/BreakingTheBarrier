@@ -21,14 +21,17 @@ public class NotFoundException extends CommonException {
         this.errorMsg = errorMsg;
     }
 
+    @Override
     public String getErrorMsg() {
         return errorMsg;
     }
 
+    @Override
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }
 
+    @Override
     public StatusCode getCode() {
         return code;
     }

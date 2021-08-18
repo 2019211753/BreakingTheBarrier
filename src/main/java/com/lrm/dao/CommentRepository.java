@@ -22,12 +22,22 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      * @param answer     哪类回答
      * @return 评论集合
      */
-    @Query("select c from Comment c where c.parentComment.id is null and c.question.id = ?1 and c.answer = ?2")
+    @Query("select c from #{#entityName} c where c.parentComment.id is null and c.question.id = ?1 and c.answer = ?2")
     List<Comment> findByQuestionIdAndAnswer(Long questionId, Boolean answer, Sort sort);
 
     //原本是这样的 会报错无法识别Answer 不过当时是用的isAnswer 似乎POJO属性不能是isxxx
     //List<Comment> findByQuestionIdAndParentCommentNullAndAnswer(Long questionId, Sort sort, Boolean answer);
 
+    /**
+     * 查询博客下的第一级评论
+     *
+     * @param blogId 博客id
+     * @param sort       排序顺序
+     * @param answer     哪类回答
+     * @return 评论集合
+     */
+    @Query("select c from #{#entityName} c where c.parentComment.id is null and c.blog.id = ?1 and c.answer = ?2")
+    List<Comment> findByBlogIdAndAnswer(Long blogId, Boolean answer, Sort sort);
 
     /**
      * 得到问题对应的所有评论
@@ -36,6 +46,14 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      * @return 评论集合
      */
     List<Comment> findByQuestionId(Long questionId);
+
+    /**
+     * 得到博客对应的所有评论
+     *
+     * @param blogId 博客对应Id
+     * @return 评论集合
+     */
+    List<Comment> findByBlogId(Long blogId);
 
     /**
      * 查询用户未读评论

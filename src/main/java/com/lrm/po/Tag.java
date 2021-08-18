@@ -1,8 +1,7 @@
 package com.lrm.po;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -48,14 +47,23 @@ public class Tag {
     /**
      * 标签的父标签
      */
+    @JsonIgnore
     @ManyToOne
     private Tag parentTag;
 
     /**
      * 不用级联删除 这块需要返回错误页面 告知管理员标签下有博客的情况下不能删除标签
      */
+    @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     private List<Question> questions = new ArrayList<>();
+
+    /**
+     * 同上
+     */
+    @JsonIgnore
+    @ManyToMany(mappedBy = "tags")
+    private List<Blog> blogs = new ArrayList<>();
 
 
     public Long getId() {
@@ -86,24 +94,20 @@ public class Tag {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
+        };
         if (!(o instanceof Tag)) {
             return false;
-        }
+        };
         Tag tag = (Tag) o;
-        return getId().equals(tag.getId()) && getName().equals(tag.getName()) && getSonTags().equals(tag.getSonTags()) && getParentTag().equals(tag.getParentTag()) && getQuestions().equals(tag.getQuestions());
+        return this.id.equals(tag.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getSonTags(), getQuestions());
+        return Objects.hash(getId(), getParentTagId0(), getName(), getSonTags(), getParentTag(), getQuestions(), blogs);
     }
 
 
-    /**
-     * @return 返回前端的标签 不 包含它下面的问题
-     */
-    @JsonBackReference
     public List<Question> getQuestions() {
         return questions;
     }
@@ -112,10 +116,14 @@ public class Tag {
         this.questions = questions;
     }
 
-    /**
-     * @return 返回前端的标签包含它下面的子标签
-     */
-    @JsonManagedReference
+    public List<Blog> getBlogs() {
+        return blogs;
+    }
+
+    public void setBlogs(List<Blog> blogs) {
+        this.blogs = blogs;
+    }
+
     public List<Tag> getSonTags() {
         return sonTags;
     }
@@ -124,10 +132,6 @@ public class Tag {
         this.sonTags = sonTags;
     }
 
-    /**
-     * @return 返回前端的标签 不 包含它的父标签
-     */
-    @JsonBackReference
     public Tag getParentTag() {
         return parentTag;
     }
