@@ -106,4 +106,33 @@ public class FileUtils {
 
         folder.mkdirs();
     }
+
+    /**
+     * @param path 由FileController中传进来的uploadFilePath + file.getOriginalFileName()
+     * @return dest 目标文件夹
+     */
+    public static File buildDest(String path) {
+        File dest = new File(path);
+
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdirs();
+        }
+        return dest;
+    }
+
+
+    /**
+     * 将multipartFile的信息储存在file中
+     * @param uploadFile
+     * @return 数据库中的file
+     */
+    public static com.lrm.po.File convertFile(MultipartFile uploadFile) {
+        com.lrm.po.File newFile = new com.lrm.po.File(uploadFile.getOriginalFilename());
+        //由于docu项目未实现登录功能，所以先忽略User这方面
+        newFile.setName(uploadFile.getOriginalFilename());
+        newFile.setSize(String.valueOf(uploadFile.getSize() / 1024) + "KB");
+        return newFile;
+    }
+
+
 }

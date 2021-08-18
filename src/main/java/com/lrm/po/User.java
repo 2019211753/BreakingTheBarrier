@@ -130,6 +130,11 @@ public class User {
      */
     private Integer privacyType;
 
+    /**
+     * 用户可用下载次数
+     * 必须默认设为0，否则初始为null，会抛空指针异常
+     */
+    private Integer availableNum = 0;
 
     /**
      * 发布的评论
@@ -199,6 +204,13 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "owner")
     private List<Favorite> favorites = new ArrayList<>();
+
+    /**
+     * 用户所上传的文件，这里可以用uploadUser来进行维护
+     * 所以添加的时候使用File.uploadUser来进行维护而不是通过User.uploadFiles
+     */
+    @OneToMany(mappedBy = "uploadUser")
+    private List<File> uploadedFiles = new ArrayList<>();
 
 
     public Long getId() {
@@ -353,6 +365,13 @@ public class User {
         this.privacyType = privacyType;
     }
 
+    public Integer getAvailableNum() {
+        return availableNum;
+    }
+
+    public void setAvailableNum(Integer availableNum) {
+        this.availableNum = availableNum;
+    }
 
     public List<Question> getQuestions() {
         return questions;
@@ -434,6 +453,12 @@ public class User {
         this.favorites = favorites;
     }
 
+    public List<File> getUploadedFiles() {
+        return uploadedFiles;
+    }
 
+    public void setUploadedFiles(List<File> uploadedFiles) {
+        this.uploadedFiles = uploadedFiles;
+    }
 }
 
