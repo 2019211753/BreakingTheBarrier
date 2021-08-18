@@ -1,0 +1,78 @@
+package com.lrm.service;
+
+
+import com.lrm.dao.FileRepository;
+import com.lrm.dao.FileTagRepository;
+import com.lrm.dao.UserRepository;
+import com.lrm.exception.CommonException;
+import com.lrm.exception.NotFoundException;
+import com.lrm.po.File;
+import com.lrm.po.FileTag;
+import com.lrm.po.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
+
+@Service
+public class FileServiceImpl implements FileService {
+    @Autowired
+    private FileRepository fileRepository;
+
+    @Autowired
+    private FileTagRepository fileTagRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Override
+    @Transactional
+    public File saveFile(File file, String tagName, String path, Long userId) {
+        //标签是否存在？
+        FileTag found = fileTagRepository.findByName(tagName);
+
+        //如果用户输入的tagName不存在，那么创建一个新的tag
+        if (found == null) {
+            found = new FileTag(tagName);
+        }
+        file.getFileTags().add(found);
+
+        //录入file的path
+        file.setPath(path);
+
+        //奖励5次下载次数
+        User uploadUser = userService.getUser(userId);
+        if (uploadUser == null)
+            throw new NotFoundException("当前用户不存在");
+        uploadUser.setAvailableNum(uploadUser.getAvailableNum() + 5);
+
+        return fileRepository.save(file);
+    }
+
+
+    @Override
+    @Transactional
+    public void downloadFile(String fileName, Long userId) {
+        File file = fileRepository.findByName(fileName);
+        if (file == null)
+            throw new NotFoundException("下载的文件资源不存在");
+        User user = userService.getUser(userId);
+        if (user == null)
+            throw new NotFoundException("当前用户不存在");
+        //可用下载次数
+        user.setAvailableNum(user.getAvailableNum() - 1);
+        file.setDownloadCount(file.getDownloadCount() + 1);
+    }
+
+
+    @Override
+    public Page<File> findFile(String query) {
+        return fileRepository.findByQuery(query, PageRequest.of(0, 10));
+    }
+}
