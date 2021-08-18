@@ -13,17 +13,11 @@ spring:
       ddl-auto: update
     show-sql: true
     open-in-view: true
-
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect  #不加这句则默认为myisam引擎
   mvc:
     # 处理前端访问的API路径不存在 令它抛出异常
     throw-exception-if-no-handler-found: true
   # 静态资源管理
-  resources:
-    # 上传文件临时存放位置
-    static-locations: classpath:/static/, file:${web.upload_path}
-    # 令它抛出异常
-    add-mappings: false
   # 配置文件上传
   servlet:
     multipart:
@@ -37,6 +31,10 @@ spring:
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
+  web:
+    resources:
+      static-locations: classpath:/static/, file:${web.upload_path}
+      add-mappings: false
 
 # 改成你本地的文件上传路径
 web.upload_path: D:\springboot开发\雏雁项目\WeSwallows\src\main\resources\static\images
@@ -50,4 +48,5 @@ logging:
   level:
     root: info
     com.lrm: debug
-  file: log/blog.log
+  file:
+    name: log/blog.log

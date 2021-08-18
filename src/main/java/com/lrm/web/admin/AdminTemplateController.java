@@ -96,13 +96,12 @@ public class AdminTemplateController {
      *
      * @param pageable 分页对象
      * @param question 对于Question的查询条件
-     * @param nickname 查询的用户昵称
      * @return 查询结果
      */
     @PostMapping("searchQuestions")
     public Result searchQuestions(@PageableDefault(size = 1000, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
-                                 @RequestBody Question question, @RequestBody String nickname) {
-        return customerTemplateController.searchTemplate(pageable, question, questionServiceImpl, nickname);
+                                 @RequestBody Question question) {
+        return customerTemplateController.searchTemplate(pageable, question, questionServiceImpl, question.getNickname());
     }
 
     /**
@@ -110,12 +109,11 @@ public class AdminTemplateController {
      *
      * @param pageable 分页对象
      * @param blog 对于Blog的查询条件
-     * @param nickname 查询的用户昵称
      * @return 查询结果
      */
     @PostMapping("searchBlogs")
     public Result searchBlogs(@PageableDefault(size = 1000, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
-                             @RequestBody Blog blog, @RequestBody String nickname) {
-        return customerTemplateController.searchTemplate(pageable, blog, blogServiceImpl, nickname);
+                             @RequestBody Blog blog) {
+        return customerTemplateController.searchTemplate(pageable, blog, blogServiceImpl, blog.getNickname());
     }
 }

@@ -68,16 +68,17 @@ public class LoginController {
     /**
      * 登录
      *
-     * @param username 账号
-     * @param password 密码
+     * @param user 前端封装的User对象
      * @return 登录成功的token; 登陆失败的报错信息
      */
     @PostMapping("/login")
-    public Result login(@RequestBody String username, @RequestBody String password) {
+    public Result login(@RequestBody User user) {
         //需要传递到前端的 包含在token内的信息 map用来存放payload
         //或传递报错信息
         Map<String, Object> hashMap = new HashMap<>(1);
 
+        String username = user.getUsername();
+        String password = user.getPassword();
         StringBuilder errorMsg = new StringBuilder(64);
         if (username == null & password != null) {
             errorMsg.append("请输入账号；");

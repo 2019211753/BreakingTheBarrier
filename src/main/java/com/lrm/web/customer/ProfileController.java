@@ -100,29 +100,29 @@ public class ProfileController {
      * 最后检查密码是否符合格式规范。
      *
      * @param request           获取当前用户Id
-     * @param nickname          昵称
-     * @param password          密码
-     * @param email             邮箱
-     * @param qqId              QQ号
-     * @param wechatId          微信号
-     * @param sex               性别
-     * @param personalSignature 个性标签
-     * @param academy           学院
-     * @param major             专业
-     * @param privacyType       隐私策略的种类
+     * @param user1 前端封装好的user对象
      * @return 新token
      */
     @PostMapping("/modifyAll")
-    public Result modifyUserInformation(HttpServletRequest request, @RequestBody String nickname, @RequestBody String password, @RequestBody String email,
-                                        @RequestBody String qqId, @RequestBody String wechatId, @RequestBody Boolean sex, @RequestBody String personalSignature, @RequestBody String academy,
-                                        @RequestBody String major, @RequestBody Integer privacyType) {
+    public Result modifyUserInformation(HttpServletRequest request, @RequestBody User user1) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         StringBuilder errorMessage = null;
 
         //获得当前用户Id 检查用户需要更改的昵称有没用其他用户在使用
         Long customerUserId = TokenInfo.getCustomUserId(request);
-        User user0 = userServiceImpl.getUser(nickname);
+        String nickname = user1.getNickname();
+        String password = user1.getPassword();
+        String email = user1.getEmail();
+        String qqId = user1.getQqId();
+        String wechatId = user1.getWechatId();
+        Boolean sex = user1.getSex();
+        String personalSignature = user1.getPersonalSignature();
+        String academy = user1.getAcademy();
+        String major = user1.getMajor();
+        Integer privacyType = user1.getPrivacyType();
+
+        User user0 = userServiceImpl.getUser(user1.getNickname());
 
         User user = new User();
         user.setId(customerUserId);
