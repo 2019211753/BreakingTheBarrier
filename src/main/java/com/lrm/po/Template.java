@@ -54,7 +54,6 @@ public class Template {
      * 前端传回多个标签 用,分割的字符组合 并且存储时要按id顺序重排 搜索时按标签查找需要用到这个属性
      * 前端必填 不允许不存在标签
      */
-    @JsonIgnore
     @NotBlank(message = "请输入标签")
     private String tagIds;
 

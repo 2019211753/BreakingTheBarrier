@@ -127,7 +127,8 @@ public class TagServiceImpl implements TagService {
     }
 
     /**
-     * 如tagIds = 1,3,2 转换为1,2,3 并去重
+     * 如tagIds = 1,3,2 转换为1,2,3
+     * 去重后检查tag是否存在
      *
      * @param tagIds 需要转换的字符串
      *               为什么要这样转换？方便在高级搜索中用predicate关联查询。
@@ -146,13 +147,29 @@ public class TagServiceImpl implements TagService {
         }
         String[] newIds = new String[length];
         System.arraycopy(ids, 0, newIds, 0, length);
+        //得到排序、去重后的新ids
+        Arrays.sort(newIds, (a, b) -> {
+            Long c = Long.parseLong(a);
+            Long d = Long.parseLong(b);
+            return c.compareTo(d);
+        });
 
-        Arrays.sort(newIds);
+        int begin = 0;
+        for (String id : newIds) {
+            if (getTag(Long.parseLong(id)) == null) {
+                begin = begin + 1;
+            } else {
+                break;
+            }
+        }
         StringBuilder tagIdsBuilder = new StringBuilder();
-        tagIdsBuilder.append(newIds[0]);
-        for (int i = 1; i < length; i++) {
-            tagIdsBuilder.append(",");
-            tagIdsBuilder.append(newIds[i]);
+        tagIdsBuilder.append(newIds[begin]);
+        begin++;
+        for (; begin < length; begin++) {
+            if (getTag(Long.parseLong(newIds[begin])) != null) {
+                tagIdsBuilder.append(",");
+                tagIdsBuilder.append(newIds[begin]);
+            }
         }
         return tagIdsBuilder.toString();
     }
