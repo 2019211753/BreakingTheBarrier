@@ -26,8 +26,8 @@ public class FavoriteServiceImpl implements FavoriteService {
     private FavoriteRepository favoriteRepository;
 
 
-    @Transactional
     @Override
+    @Transactional
     public Favorite saveFavorite(Favorite favorite) {
         favorite.setCreateTime(new Date());
         favorite.setUpdateTime(new Date());
@@ -37,6 +37,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
+    @Transactional
     public void deleteFavoriteById(Long favoriteId) {
         favoriteRepository.deleteById(favoriteId);
     }
@@ -55,6 +56,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         if (t instanceof Blog) {
             favorite.getFavoriteBlogs().add((Blog) t);
         }
+        t.setCollectedNum(t.getCollectedNum() + 1);
         favorite.setUpdateTime(new Date());
         favorite.setSize(favorite.getSize() + 1);
         return favoriteRepository.save(favorite);
@@ -65,6 +67,7 @@ public class FavoriteServiceImpl implements FavoriteService {
      * @return 新收藏夹
      */
     @Override
+    @Transactional
     public <T extends Template> Favorite remove(Favorite favorite, T t) {
         if (t instanceof Question) {
             favorite.getFavoriteQuestions().remove((Question) t);
@@ -73,6 +76,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         if (t instanceof Blog) {
             favorite.getFavoriteBlogs().remove((Blog) t);
         }
+        t.setCollectedNum(t.getCollectedNum() - 1);
         favorite.setUpdateTime(new Date());
         favorite.setSize(favorite.getSize() - 1);
         return favoriteRepository.save(favorite);
@@ -83,8 +87,8 @@ public class FavoriteServiceImpl implements FavoriteService {
      * @param f 旧收藏夹
      * @return 新收藏夹
      */
-    @Transactional
     @Override
+    @Transactional
     public Favorite updateFavorite(Favorite favorite, Favorite f) {
         BeanUtils.copyProperties(favorite, f, MyBeanUtils.getNullPropertyNames(favorite));
         favorite.setUpdateTime(new Date());

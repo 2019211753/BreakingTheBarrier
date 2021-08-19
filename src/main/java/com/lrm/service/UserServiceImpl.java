@@ -36,22 +36,6 @@ public class UserServiceImpl implements UserService
     //注册了的不能再注册（账号或昵称是否已经存在）
     //注册了的可以直接登录
 
-    /**
-     * 检查
-     */
-    @Override
-    public User checkRegister(String username, String nickname) {
-        User user1 = userRepository.findByUsername(username);
-        User user2 = userRepository.findByNickname(nickname);
-        //不返回就是返回null
-        if(user1 != null)
-        {
-            return user1;
-        } else {
-            return user2;
-        }
-    }
-
 
     /**
      * 保存到数据库
@@ -86,14 +70,6 @@ public class UserServiceImpl implements UserService
     }
 
     /**
-     * 登录
-     */
-    @Override
-    public User checkUser(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, "M#D5+" + MD5Utils.code(password));
-    }
-
-    /**
      * 更新用户
      */
     @Override
@@ -112,6 +88,21 @@ public class UserServiceImpl implements UserService
         return userRepository.save(u);
     }
 
+    /**
+     * 检查
+     */
+    @Override
+    public User checkRegister(String username, String nickname) {
+        User user1 = userRepository.findByUsername(username);
+        User user2 = userRepository.findByNickname(nickname);
+        //不返回就是返回null
+        if(user1 != null)
+        {
+            return user1;
+        } else {
+            return user2;
+        }
+    }
 
     @Override
     public User getUser(Long userId) {
@@ -122,6 +113,14 @@ public class UserServiceImpl implements UserService
     @Override
     public User getUser(String nickname) {
         return userRepository.findByNickname(nickname);
+    }
+
+    /**
+     * 登录
+     */
+    @Override
+    public User checkUser(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, "M#D5+" + MD5Utils.code(password));
     }
 
     /**

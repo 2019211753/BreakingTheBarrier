@@ -28,8 +28,8 @@ public class TagServiceImpl implements TagService {
 
     //简单的增删改查
 
-    @Transactional
     @Override
+    @Transactional
     public Tag saveTag(Tag tag) {
         Long parentTagId = tag.getParentTagId0();
         if (parentTagId != -1) {
@@ -50,6 +50,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional
     public void deleteTag(Long id) {
         tagRepository.deleteById(id);
     }

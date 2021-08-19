@@ -54,6 +54,7 @@ public class Template {
      * 前端传回多个标签 用,分割的字符组合 并且存储时要按id顺序重排 搜索时按标签查找需要用到这个属性
      * 前端必填 不允许不存在标签
      */
+    @JsonIgnore
     @NotBlank(message = "请输入标签")
     private String tagIds;
 
@@ -83,6 +84,11 @@ public class Template {
     private Integer disLikesNum;
 
     /**
+     * 被收藏数量
+     */
+    private Integer collectedNum;
+
+    /**
      * 是否被隐藏 true为被隐藏了
      */
     private Boolean isHidden;
@@ -97,14 +103,14 @@ public class Template {
      * 时间会封装成完整的"yyyy-MM-dd HH:mm:ss"的Date类型
      * 首页展示根据发布时间展示
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
     /**
      * 最新被评论时间展示
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date newCommentedTime;
 
@@ -250,6 +256,14 @@ public class Template {
 
     public void setCommentsNum(Integer commentsNum) {
         this.commentsNum = commentsNum;
+    }
+
+    public Integer getCollectedNum() {
+        return collectedNum;
+    }
+
+    public void setCollectedNum(Integer collectedNum) {
+        this.collectedNum = collectedNum;
     }
 
     public Integer getDisLikesNum() {

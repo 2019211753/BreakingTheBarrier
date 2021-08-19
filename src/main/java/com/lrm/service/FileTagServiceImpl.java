@@ -19,9 +19,9 @@ public class FileTagServiceImpl implements FileTagService {
     public FileTag saveTag(FileTag fileTag) {
         FileTag found = fileTagRepository.findByName(fileTag.getName());
         //没有同名
-        if (found == null)
+        if (found == null) {
             return fileTagRepository.save(fileTag);
-        else {
+        } else {
             throw new CommonException("存在同名标签");
         }
     }
@@ -41,7 +41,8 @@ public class FileTagServiceImpl implements FileTagService {
     @Override
     public FileTag updateTag(FileTag fileTag) {
         Optional<FileTag> optionalFileTag = fileTagRepository.findById(fileTag.getId());
-        FileTag targetTag = optionalFileTag.get();//如果存在，返回optional中的值，否则抛出异常
+        //如果存在，返回optional中的值，否则抛出异常
+        FileTag targetTag = optionalFileTag.get();
         BeanUtils.copyProperties(fileTag, targetTag);
         return fileTagRepository.save(targetTag);
     }

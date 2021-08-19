@@ -53,7 +53,7 @@ public class Blog extends Template
     /**
      * 博客更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 

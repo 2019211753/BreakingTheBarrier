@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
@@ -46,6 +47,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
      * @param user     发布者user
      * @return 新增了的Question或Blog
      */
+    @Transactional
     public T save(T t, User user) {
         TemplateRepository<T> repository = getTemplateRepository();
         //将tagIds按顺序重排
@@ -61,6 +63,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         t.setLikesNum(0);
         t.setCommentsNum(0);
         t.setDisLikesNum(0);
+        t.setCollectedNum(0);
         //默认为不隐藏
         t.setHidden(false);
         //根据发布t人的贡献初始化t的影响力
@@ -68,12 +71,14 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         t.setImpact(user.getDonation());
         return repository.save(t);    }
 
+    @Transactional
     public T save(T t) {
         TemplateRepository<T> repository = getTemplateRepository();
 
         return repository.save(t);
     }
 
+    @Transactional
     public void deleteById(Long id) {
         TemplateRepository<T> repository = getTemplateRepository();
 
@@ -81,6 +86,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
 
     }
 
+    @Transactional
     public T update(T newT) {
         TemplateRepository<T> repository = getTemplateRepository();
 

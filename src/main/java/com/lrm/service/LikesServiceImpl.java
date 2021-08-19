@@ -25,8 +25,8 @@ public class LikesServiceImpl extends EmotionServiceImpl<Likes> implements Likes
         return likesRepository;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public <E extends Template> Likes save(E e, Likes likes, User postUser, User receiveUser) {
         if (e instanceof Blog) {
             likes.setBlog((Blog) e);
@@ -51,6 +51,7 @@ public class LikesServiceImpl extends EmotionServiceImpl<Likes> implements Likes
      * @return 未读或已读点赞集合
      */
     @Override
+    @Transactional
     public List<Likes> list(Long userId, Boolean looked) {
         return likesRepository.findByReceiveUserIdAndLooked(userId, looked);
     }

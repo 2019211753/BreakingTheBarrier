@@ -4,7 +4,6 @@ package com.lrm.service;
 import com.lrm.dao.FileRepository;
 import com.lrm.dao.FileTagRepository;
 import com.lrm.dao.UserRepository;
-import com.lrm.exception.CommonException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.File;
 import com.lrm.po.FileTag;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -48,8 +46,9 @@ public class FileServiceImpl implements FileService {
 
         //奖励5次下载次数
         User uploadUser = userService.getUser(userId);
-        if (uploadUser == null)
+        if (uploadUser == null) {
             throw new NotFoundException("当前用户不存在");
+        }
         uploadUser.setAvailableNum(uploadUser.getAvailableNum() + 5);
 
         return fileRepository.save(file);
@@ -60,11 +59,13 @@ public class FileServiceImpl implements FileService {
     @Transactional
     public void downloadFile(String fileName, Long userId) {
         File file = fileRepository.findByName(fileName);
-        if (file == null)
+        if (file == null) {
             throw new NotFoundException("下载的文件资源不存在");
+        }
         User user = userService.getUser(userId);
-        if (user == null)
+        if (user == null) {
             throw new NotFoundException("当前用户不存在");
+        }
         //可用下载次数
         user.setAvailableNum(user.getAvailableNum() - 1);
         file.setDownloadCount(file.getDownloadCount() + 1);
