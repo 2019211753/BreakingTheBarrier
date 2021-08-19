@@ -98,7 +98,7 @@ public class AdminTemplateController {
      * @param question 对于Question的查询条件
      * @return 查询结果
      */
-    @PostMapping("searchQuestions")
+    @PostMapping("/searchQuestions")
     public Result searchQuestions(@PageableDefault(size = 1000, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                                  @RequestBody Question question) {
         return customerTemplateController.searchTemplate(pageable, question, questionServiceImpl, question.getNickname());
@@ -111,7 +111,7 @@ public class AdminTemplateController {
      * @param blog 对于Blog的查询条件
      * @return 查询结果
      */
-    @PostMapping("searchBlogs")
+    @PostMapping("/searchBlogs")
     public Result searchBlogs(@PageableDefault(size = 1000, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                              @RequestBody Blog blog) {
         return customerTemplateController.searchTemplate(pageable, blog, blogServiceImpl, blog.getNickname());
