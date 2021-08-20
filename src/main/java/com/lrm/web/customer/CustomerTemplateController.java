@@ -6,7 +6,6 @@ import com.lrm.exception.NoPermissionException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
-import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +15,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 个人问题管理
@@ -57,7 +54,7 @@ public class CustomerTemplateController {
      * @return 报错信息/成功信息
      */
     @PostMapping("/question/post")
-    public Result addQuestion(@RequestBody @Valid Question question, BindingResult bindingResult, HttpServletRequest request) {
+    public Result addQuestion(@RequestBody @Valid Question question, BindingResult bindingResult, HttpServletRequest request)  {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         Long userId = TokenInfo.getCustomUserId(request);
@@ -97,7 +94,7 @@ public class CustomerTemplateController {
      * @return 保存了的博客
      */
     @PostMapping("/blog/post")
-    public Result addOrUpdateBlog(@RequestBody Blog blog, BindingResult bindingResult, HttpServletRequest request)  {
+    public Result addOrUpdateBlog(@RequestBody Blog blog, BindingResult bindingResult, HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         Long userId = TokenInfo.getCustomUserId(request);
@@ -145,8 +142,7 @@ public class CustomerTemplateController {
      * @return 报错信息/成功信息
      */
     @GetMapping("/question/{questionId}/delete")
-    public Result deleteQuestion(@PathVariable Long questionId, HttpServletRequest request) throws
-            NoPermissionException, NotFoundException {
+    public Result deleteQuestion(@PathVariable Long questionId, HttpServletRequest request) {
         Long userId = TokenInfo.getCustomUserId(request);
         Boolean admin = TokenInfo.isAdmin(request);
 
@@ -168,8 +164,7 @@ public class CustomerTemplateController {
      * @return 报错信息/成功信息
      */
     @GetMapping("/blog/{blogId}/delete")
-    public Result deleteBlog(@PathVariable Long blogId, HttpServletRequest request) throws
-            NoPermissionException, NotFoundException {
+    public Result deleteBlog(@PathVariable Long blogId, HttpServletRequest request) {
         Long userId = TokenInfo.getCustomUserId(request);
         Boolean admin = TokenInfo.isAdmin(request);
 

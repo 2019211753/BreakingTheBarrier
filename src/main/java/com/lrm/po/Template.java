@@ -29,13 +29,15 @@ public class Template {
     private Long id;
 
     /**
-     * 标题 前端必填
+     * 标题
+     * 前端必填
      */
     @NotBlank(message = "请输入标题")
     private String title;
 
     /**
-     * 描述 前端必填
+     * 描述
+     * 前端必填
      */
     @Lob
     @NotBlank(message = "请输入概述")
@@ -43,7 +45,8 @@ public class Template {
 
     /**
      * 懒加载 只有getContent了才加载
-     * 内容 前端必填
+     * 内容
+     * 前端必填
      */
     @Basic(fetch = FetchType.LAZY)
     @Lob

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lrm.util.JWTUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +21,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2021-07-21
  */
-public class JWTInterceptor extends HandlerInterceptorAdapter
-{
+public class JWTInterceptor implements HandlerInterceptor {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -47,6 +46,10 @@ public class JWTInterceptor extends HandlerInterceptorAdapter
         } catch (AlgorithmMismatchException e){
             logger.error("exception : {}", "拦截器：加密算法不匹配");
             map.put("msg", "加密算法不匹配");
+            map.put("code", "401");
+        } catch (NullPointerException e) {
+            logger.error("exception : {}", "拦截器：令牌为空");
+            map.put("msg", "令牌为空");
             map.put("code", "401");
         } catch (Exception e) {
             logger.error("exception : {}", "拦截器：无效令牌");

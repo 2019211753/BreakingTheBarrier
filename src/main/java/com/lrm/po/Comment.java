@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,30 @@ public class Comment {
     private Long id;
 
     /**
+     * 父级评论Id
+     * 前端传回comment 保存parentCommentId的媒介
+     * 前端必填
+     */
+    @NotNull(message = "请输入父级评论Id")
+    private Long parentCommentId0;
+
+    /**
+     * 注解@Lob 长文本
+     * 评论内容
+     * 前端必填
+     */
+    @Lob
+    @NotBlank(message = "请输入评论内容")
+    private String content;
+
+    /**
+     * 是否是第二类回答 即正式回答 true为正式回答
+     * 前端必填
+     */
+    @NotNull(message = "请选择是否为正式回答")
+    private Boolean answer;
+
+    /**
      * 如果标识为1 即发布这个comment的人也是帖子的发布者
      * 那么它应该有一个类似楼主的标志
      */
@@ -37,11 +62,6 @@ public class Comment {
      * 不能用isRead（jpa的问题） 也不能用read关键字 只好用looked了
      */
     private Boolean looked;
-
-    /**
-     * 是否是第二类回答 即正式回答 true为正式回答
-     */
-    private Boolean answer;
 
     /**
      * 点赞数
@@ -77,21 +97,6 @@ public class Comment {
      * 评论对应博客Id
      */
     private Long blogId0;
-
-    /**
-     * 父级评论Id
-     * 前端传回comment 保存parentCommentId的媒介
-     */
-    private Long parentCommentId0;
-
-    /**
-     * 注解@Lob 长文本
-     * 前端必填内容
-     * 评论内容
-     */
-    @Lob
-    @NotBlank(message = "请输入评论内容")
-    private String content;
 
     /**
      * 封装成完整的"yyyy-MM-dd HH:mm:ss"的Date类型

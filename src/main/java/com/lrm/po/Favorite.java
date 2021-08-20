@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,20 @@ public class Favorite {
     private Long id;
 
     /**
+     * 收藏夹的名字
+     * 前端必填
+     */
+    @NotBlank(message = "请输入收藏夹标题")
+    private String title;
+
+    /**
+     * 是否公开 true为公开
+     * 前端必填
+     */
+    @NotNull(message = "请选择是否公开")
+    private Boolean open;
+
+    /**
      * 创建收藏夹的时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
@@ -38,20 +53,9 @@ public class Favorite {
     private Date updateTime;
 
     /**
-     * 收藏夹的名字 前端必填
-     */
-    @NotBlank(message = "请输入收藏夹标题")
-    private String title;
-
-    /**
      * 收藏几个了
      */
     private int size;
-
-    /**
-     * 是否公开 true为公开
-     */
-    private Boolean open;
 
     /**
      * 收藏夹的上限容量

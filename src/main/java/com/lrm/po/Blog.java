@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,9 +22,10 @@ import java.util.Objects;
 public class Blog extends Template
 {
     /**
-     * 博客是否原创 前端必填
+     * 博客是否原创
+     * 前端必填
      */
-    @NotBlank(message = "请选择是否原创")
+    @NotNull(message = "请选择是否原创")
     private Boolean origin;
 
     /**
@@ -33,21 +34,24 @@ public class Blog extends Template
     private String transferStatement;
 
     /**
-     * 是否接受赞赏 前端必填
+     * 是否接受赞赏
+     * 前端必填
      */
-    @NotBlank(message = "请选择是否接受赞赏")
+    @NotNull(message = "请选择是否接受赞赏")
     private Boolean appreciation;
 
     /**
-     * 是否允许评论 前端必填
+     * 是否允许评论
+     * 前端必填
      */
-    @NotBlank(message = "请选择是否允许评论")
+    @NotNull(message = "请选择是否允许评论")
     private Boolean commentAllowed;
 
     /**
-     * 是否公开 前端必填
+     * 是否公开
+     * 前端必填
      */
-    @NotBlank(message = "请选择是否公开发表")
+    @NotNull(message = "请选择是否公开发表")
     private Boolean open;
 
     /**

@@ -28,6 +28,31 @@ public class User {
     private Long id;
 
     /**
+     * NotBlank需要搭配有@Valid的controller方法使用 且只能用在String上
+     * 用户昵称
+     * 前端必填
+     */
+    @NotBlank(message = "请输入昵称")
+    private String nickname;
+
+    /**
+     * 账号 后端校验
+     * 前端必填
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @AccountInfoFormat(message = "请输入正确账号格式————长度为7至12且不能包含汉字", need = "false")
+    private String username;
+
+    /**
+     * 返回Json忽略password
+     * 密码
+     * 前端必填
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @AccountInfoFormat
+    private String password;
+
+    /**
      * 是否为管理员 true为管理员
      */
     private Boolean admin;
@@ -36,28 +61,6 @@ public class User {
      * 能否发言 true可以发言
      */
     private Boolean canSpeak;
-
-    /**
-     * NotBlank需要搭配有@Valid的controller方法使用 且只能用在String上
-     * 前端必填 用户昵称
-     */
-    @NotBlank(message = "请输入昵称")
-    private String nickname;
-
-    /**
-     * 前端必填 账号 后端校验
-     */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @AccountInfoFormat(message = "请输入正确账号格式————长度为7至12且不能包含汉字", need = "false")
-    private String username;
-
-    /**
-     * 返回Json忽略password
-     * 前端必填密码
-     */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @AccountInfoFormat
-    private String password;
 
     /**
      * 贡献值

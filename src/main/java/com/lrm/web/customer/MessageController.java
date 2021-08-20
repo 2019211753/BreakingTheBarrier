@@ -43,7 +43,7 @@ public class MessageController {
      * @throws JWTVerificationException JWT鉴权错误
      */
     @GetMapping("/")
-    public Result messages(HttpServletRequest request) throws JWTVerificationException {
+    public Result messages(HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(4);
 
         Long userId = TokenInfo.getCustomUserId(request);

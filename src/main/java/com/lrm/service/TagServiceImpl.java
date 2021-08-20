@@ -99,10 +99,7 @@ public class TagServiceImpl implements TagService {
         List<Long> tagIds = DataStructureUtils.convertToList(ids);
         //这里没有对应标签就不抛异常了 找有标签的就行
         for (Long tagId : tagIds) {
-            Tag tag = getTag(tagId);
-            if (tag != null) {
-                tags.add(tag);
-            }
+            tags.add(getTag(tagId));
         }
         return tags;
     }
@@ -127,7 +124,8 @@ public class TagServiceImpl implements TagService {
     }
 
     /**
-     * 如tagIds = 1,3,2 转换为1,2,3
+     * 得到去重&递增&有对应标签的tagIds
+     *  如tagIds = 1,3,2 转换为1,2,3
      * 去重后检查tag是否存在
      *
      * @param tagIds 需要转换的字符串
@@ -154,23 +152,20 @@ public class TagServiceImpl implements TagService {
             return c.compareTo(d);
         });
 
-        int begin = 0;
-        for (String id : newIds) {
-            if (getTag(Long.parseLong(id)) == null) {
-                begin = begin + 1;
-            } else {
-                break;
-            }
-        }
         StringBuilder tagIdsBuilder = new StringBuilder();
-        tagIdsBuilder.append(newIds[begin]);
-        begin++;
-        for (; begin < length; begin++) {
-            if (getTag(Long.parseLong(newIds[begin])) != null) {
+        for (int i = 0; i < length; i++) {
+            if (getTag(Long.parseLong(newIds[i])) != null) {
+                tagIdsBuilder.append(newIds[i]);
                 tagIdsBuilder.append(",");
-                tagIdsBuilder.append(newIds[begin]);
             }
         }
+
+        if (tagIdsBuilder.length() == 0) {
+            throw new NotFoundException("未查询到你选择的标签");
+        }
+
+        tagIdsBuilder.delete(tagIdsBuilder.length() - 1, tagIdsBuilder.length());
+
         return tagIdsBuilder.toString();
     }
 

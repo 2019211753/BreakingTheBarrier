@@ -153,7 +153,7 @@ public class CommentController
      * @return 新增的评论或新增失败报错
      */
     @PostMapping("/question/{questionId}/comment/post")
-    public Result postQuestionComment(@PathVariable Long questionId, @RequestBody @Valid Comment comment, BindingResult bindingResult, HttpServletRequest request) throws NotFoundException, NoPermissionException {
+    public Result postQuestionComment(@PathVariable Long questionId, @RequestBody @Valid Comment comment, BindingResult bindingResult, HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         //得到当前用户
@@ -169,7 +169,7 @@ public class CommentController
      * 提交评论到博客
      */
     @PostMapping("/blog/{blogId}/comment/post")
-    public Result postBlogComment(@PathVariable Long blogId, @RequestBody @Valid Comment comment, BindingResult bindingResult, HttpServletRequest request) throws NotFoundException, NoPermissionException {
+    public Result postBlogComment(@PathVariable Long blogId, @RequestBody @Valid Comment comment, BindingResult bindingResult, HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         //得到当前用户

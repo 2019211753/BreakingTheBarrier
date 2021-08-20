@@ -52,6 +52,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         TemplateRepository<T> repository = getTemplateRepository();
         //将tagIds按顺序重排
         t.setTagIds(tagService.listTagIdsFromSmallToBig(t.getTagIds()));
+        t.setTags(tagService.listTag(t.getTagIds()));
         //关联用户相关
         t.setUser(user);
         t.setPosterUserId0(user.getId());
@@ -152,7 +153,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
      * @param nickname 查询的用户昵称
      * @return 查询结果
      */
-    public Page<T> listByTitleAndTagIdsAndNickname(Pageable pageable, T t, String nickname) {
+    public Page<T> listByTitleAndTagIdsAndNickname(Pageable pageable, T t, String nickname)  {
         TemplateRepository<T> repository = getTemplateRepository();
 
         return repository.findAll((root, cq, cb) -> {

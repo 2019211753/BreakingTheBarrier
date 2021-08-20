@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,13 +28,15 @@ public class Tag {
     private Long id;
 
     /**
-     * 父级评论Id
-     * 避免json序列无限递归 只好出此下策 真拙劣啊...
+     * 父级标签Id
+     * 前端必填
      */
+    @NotNull(message = "请输入父级标签Id")
     Long parentTagId0;
 
     /**
-     * 标签名称 前端必填
+     * 标签名称
+     * 前端必填
      */
     @NotBlank(message = "请输入标签名称")
     private String name;

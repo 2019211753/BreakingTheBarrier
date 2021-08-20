@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     @Transactional
-    public <T extends Template> Comment saveComment(Comment comment, T t, User postUser) throws NotFoundException {
+    public <T extends Template> Comment saveComment(Comment comment, T t, User postUser) {
         //得到前端封装返回的对象的parentId
         Long parentCommentId = comment.getParentCommentId0();
 

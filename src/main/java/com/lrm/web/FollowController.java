@@ -1,5 +1,6 @@
 package com.lrm.web;
 
+import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.User;
 import com.lrm.service.UserServiceImpl;
@@ -31,7 +32,7 @@ public class FollowController {
      * @param request        获得当前用户Id
      * @return 取关/关注 成功/失败
      */
-    @GetMapping("follow/{followedUserId}")
+    @GetMapping("/follow/{followedUserId}")
     public Result followUser(@PathVariable Long followedUserId, HttpServletRequest request) {
         Long followingUserId = TokenInfo.getCustomUserId(request);
         User followingUser = userServiceImpl.getUser(followingUserId);
@@ -41,6 +42,9 @@ public class FollowController {
             throw new NotFoundException("未查询到该用户");
         }
 
+        if (followedUser == followingUser) {
+            throw new FailedOperationException("你不能关注你自己");
+        }
         //取关
         if (followedUser.getFollowedUsers().contains(followingUser) &&
                 followingUser.getFollowingUsers().contains(followedUser)) {
@@ -55,7 +59,7 @@ public class FollowController {
                     followingUser.getFollowingUsers().contains(followedUser)) {
                 return new Result(null, "取关成功");
             } else {
-                return new Result(null, "取关失败");
+                throw new FailedOperationException( "取关失败");
             }
         } else {
             //关注
@@ -70,7 +74,7 @@ public class FollowController {
                     followingUser.getFollowingUsers().contains(followedUser)) {
                 return new Result(null, "关注成功");
             } else {
-                return new Result(null, "关注失败");
+                throw new FailedOperationException( "关注失败");
             }
         }
 
