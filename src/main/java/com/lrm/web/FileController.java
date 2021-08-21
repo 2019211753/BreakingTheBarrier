@@ -40,7 +40,7 @@ public class FileController {
     }
 
     /**
-     *
+     * 查询关键词相关文件
      * @param query 用户想要查询的文件关键词
      * @return 查询结果
      */
