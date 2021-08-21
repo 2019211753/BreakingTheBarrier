@@ -168,7 +168,7 @@ public class CommentController
 
         postComment(comment, bindingResult, postUser, question, questionServiceImpl, hashMap);
 
-        hashMap.put("comments",  commentServiceImpl.listCommentByQuestionId(questionId, comment.getAnswer()));
+        hashMap.put("comments", dealComment(commentServiceImpl.listCommentByQuestionId(questionId, comment.getAnswer()), userId));
         return new Result(hashMap, "发布成功");
     }
 
@@ -191,7 +191,7 @@ public class CommentController
 
         postComment(comment, bindingResult, postUser, blog, blogServiceImpl, hashMap);
 
-        hashMap.put("comments",  commentServiceImpl.listCommentByBlogId(blogId, comment.getAnswer()));
+        hashMap.put("comments",  dealComment(commentServiceImpl.listCommentByBlogId(blogId, comment.getAnswer()), userId));
 
         return new Result(hashMap, "发布成功");
     }
@@ -230,6 +230,7 @@ public class CommentController
      */
     @GetMapping("/question/{questionId}/comment/{commentId}/delete")
     public Result deleteQuestionComment(@PathVariable Long questionId, @PathVariable Long commentId, HttpServletRequest request) {
+        Long userId = TokenInfo.getCustomUserId(request);
         Question question = questionServiceImpl.getById(questionId);
         if (question == null) {
             throw new NotFoundException("未查询到该问题");
@@ -238,7 +239,7 @@ public class CommentController
         deleteComment(comment, question, questionServiceImpl, request);
 
         Map<String, Object> hashMap = new HashMap<>(1);
-        hashMap.put("comments",  commentServiceImpl.listCommentByQuestionId(questionId, comment.getAnswer()));
+        hashMap.put("comments",  dealComment(commentServiceImpl.listCommentByQuestionId(questionId, comment.getAnswer()), userId));
         return new Result(hashMap, "删除成功");
     }
 
@@ -247,6 +248,7 @@ public class CommentController
      */
     @GetMapping("/blog/{blogId}/comment/{commentId}/delete")
     public Result deleteBlogComment(@PathVariable Long blogId, @PathVariable Long commentId, HttpServletRequest request) {
+        Long userId = TokenInfo.getCustomUserId(request);
         Blog blog = blogServiceImpl.getById(blogId);
         if (blog == null) {
             throw new NotFoundException("未查询到该博客");
@@ -255,7 +257,7 @@ public class CommentController
         deleteComment(comment, blog, blogServiceImpl, request);
 
         Map<String, Object> hashMap = new HashMap<>(1);
-        hashMap.put("comments",  commentServiceImpl.listCommentByBlogId(blogId, commentServiceImpl.getComment(commentId).getAnswer()));
+        hashMap.put("comments",  dealComment(commentServiceImpl.listCommentByBlogId(blogId, commentServiceImpl.getComment(commentId).getAnswer()), userId));
         return new Result(hashMap, "删除成功");
     }
 

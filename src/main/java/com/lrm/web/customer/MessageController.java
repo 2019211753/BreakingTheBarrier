@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,14 @@ public class MessageController {
         //已读评论
         List<Comment> lookedComments = commentServiceImpl.listComments(userId, true);
 
-        for (Comment comment : lookedComments) {
+        //使用iterator避免ConcurrentModificationException异常
+        Iterator<Comment> iterator = lookedComments.iterator();
+        while(iterator.hasNext()) {
+            Comment comment = iterator.next();
+            if (comment.getPostUser() == comment.getReceiveUser()) {
+                iterator.remove();
+                continue;
+            }
             User postUser = comment.getPostUser();
             comment.setAvatar(postUser.getAvatar());
             comment.setNickname(postUser.getNickname());
@@ -69,7 +77,13 @@ public class MessageController {
         //已读点赞
         List<Likes> lookedLikes = likesServiceImpl.list(userId, true);
 
-        for (Likes likes1 : lookedLikes) {
+        Iterator<Likes> iterator1 = lookedLikes.iterator();
+        while(iterator.hasNext()) {
+            Likes likes1 = iterator1.next();
+            if (likes1.getPostUser() == likes1.getReceiveUser()) {
+                iterator1.remove();
+                continue;
+            }
             User postUser = likes1.getPostUser();
             likes1.setAvatar(postUser.getAvatar());
             likes1.setNickname(postUser.getNickname());

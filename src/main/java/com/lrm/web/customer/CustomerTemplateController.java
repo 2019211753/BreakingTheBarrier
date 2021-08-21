@@ -239,7 +239,7 @@ public class CustomerTemplateController {
      * @return 查询所得问题分页
      */
     @PostMapping("/searchQuestions")
-    public Result searchQuestions(@PageableDefault(size = 6, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+    public Result searchQuestions(@PageableDefault(size = 6, sort = {"newCommentedTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                                   Question question, HttpServletRequest request) {
 
         //得到当前用户的昵称
