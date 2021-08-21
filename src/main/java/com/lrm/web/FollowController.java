@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 用户关注
@@ -34,6 +36,7 @@ public class FollowController {
      */
     @GetMapping("/follow/{followedUserId}")
     public Result followUser(@PathVariable Long followedUserId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(3);
         Long followingUserId = TokenInfo.getCustomUserId(request);
         User followingUser = userServiceImpl.getUser(followingUserId);
         User followedUser = userServiceImpl.getUser(followedUserId);
@@ -56,8 +59,11 @@ public class FollowController {
             userServiceImpl.saveUser(followedUser);
             userServiceImpl.saveUser(followingUser);
             if (!followedUser.getFollowedUsers().contains(followingUser) &&
-                    followingUser.getFollowingUsers().contains(followedUser)) {
-                return new Result(null, "取关成功");
+                    !followingUser.getFollowingUsers().contains(followedUser)) {
+                hashMap.put("myFollowingNum", followingUser.getFollowingUsers().size());
+                hashMap.put("hisFollowedNum", followedUser.getFollowedUsers().size());
+                hashMap.put("following", false);
+                return new Result(hashMap, "取关成功");
             } else {
                 throw new FailedOperationException( "取关失败");
             }
@@ -72,7 +78,10 @@ public class FollowController {
             userServiceImpl.saveUser(followingUser);
             if (followedUser.getFollowedUsers().contains(followingUser) &&
                     followingUser.getFollowingUsers().contains(followedUser)) {
-                return new Result(null, "关注成功");
+                hashMap.put("myFollowingNum", followingUser.getFollowingUsers().size());
+                hashMap.put("hisFollowedNum", followedUser.getFollowedUsers().size());
+                hashMap.put("following", true);
+                return new Result(hashMap, "关注成功");
             } else {
                 throw new FailedOperationException( "关注失败");
             }

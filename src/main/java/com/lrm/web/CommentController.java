@@ -162,7 +162,14 @@ public class CommentController
 
         Question question = questionServiceImpl.getById(questionId);
 
-        return postComment(comment, bindingResult, postUser, question, questionServiceImpl, hashMap);
+        if (question == null) {
+            throw new NotFoundException("未查询到该问题");
+        }
+
+        postComment(comment, bindingResult, postUser, question, questionServiceImpl, hashMap);
+
+        hashMap.put("comments",  commentServiceImpl.listCommentByQuestionId(questionId, comment.getAnswer()));
+        return new Result(hashMap, "发布成功");
     }
 
     /**
@@ -178,10 +185,18 @@ public class CommentController
 
         Blog blog = blogServiceImpl.getById(blogId);
 
-        return postComment(comment, bindingResult, postUser, blog, blogServiceImpl, hashMap);
+        if (blog == null) {
+            throw new NotFoundException("未查询到该博客");
+        }
+
+        postComment(comment, bindingResult, postUser, blog, blogServiceImpl, hashMap);
+
+        hashMap.put("comments",  commentServiceImpl.listCommentByBlogId(blogId, comment.getAnswer()));
+
+        return new Result(hashMap, "发布成功");
     }
 
-    private <T extends Template> Result postComment(Comment comment, BindingResult bindingResult, User postUser, T t, TemplateServiceImpl<T> templateServiceImpl, Map<String, Object> hashMap) {
+    private <T extends Template> void postComment(Comment comment, BindingResult bindingResult, User postUser, T t, TemplateServiceImpl<T> templateServiceImpl, Map<String, Object> hashMap) {
 
         if (postUser.getCanSpeak()) {
             //参数校验
@@ -196,10 +211,6 @@ public class CommentController
             if (commentServiceImpl.getComment(comment.getId()) != null) {
                 t.setNewCommentedTime(new Date());
                 templateServiceImpl.save(t);
-
-                hashMap.put("comment", comment);
-
-                return new Result(hashMap, "发布成功");
             } else {
                 throw new FailedOperationException("发布失败");
             }
@@ -220,7 +231,15 @@ public class CommentController
     @GetMapping("/question/{questionId}/comment/{commentId}/delete")
     public Result deleteQuestionComment(@PathVariable Long questionId, @PathVariable Long commentId, HttpServletRequest request) {
         Question question = questionServiceImpl.getById(questionId);
-        return deleteComment(commentId, question, questionServiceImpl, request);
+        if (question == null) {
+            throw new NotFoundException("未查询到该问题");
+        }
+        Comment comment = commentServiceImpl.getComment(commentId);
+        deleteComment(comment, question, questionServiceImpl, request);
+
+        Map<String, Object> hashMap = new HashMap<>(1);
+        hashMap.put("comments",  commentServiceImpl.listCommentByQuestionId(questionId, comment.getAnswer()));
+        return new Result(hashMap, "删除成功");
     }
 
     /**
@@ -229,15 +248,22 @@ public class CommentController
     @GetMapping("/blog/{blogId}/comment/{commentId}/delete")
     public Result deleteBlogComment(@PathVariable Long blogId, @PathVariable Long commentId, HttpServletRequest request) {
         Blog blog = blogServiceImpl.getById(blogId);
-        return deleteComment(commentId, blog, blogServiceImpl, request);
+        if (blog == null) {
+            throw new NotFoundException("未查询到该博客");
+        }
+        Comment comment = commentServiceImpl.getComment(commentId);
+        deleteComment(comment, blog, blogServiceImpl, request);
+
+        Map<String, Object> hashMap = new HashMap<>(1);
+        hashMap.put("comments",  commentServiceImpl.listCommentByBlogId(blogId, commentServiceImpl.getComment(commentId).getAnswer()));
+        return new Result(hashMap, "删除成功");
     }
 
-    private <T extends Template> Result deleteComment(Long commentId, T t, TemplateServiceImpl<T> templateServiceImpl, HttpServletRequest request) {
+    private <T extends Template> void deleteComment(Comment comment, T t, TemplateServiceImpl<T> templateServiceImpl, HttpServletRequest request) {
         //得到当前用户 以判断权限
         User customUser = userServiceImpl.getUser(TokenInfo.getCustomUserId(request));
         Boolean admin = TokenInfo.isAdmin(request);
 
-        Comment comment = commentServiceImpl.getComment(commentId);
 
         //如果评论不存在&没权限删除评论报错
         if (comment == null) {
@@ -247,15 +273,11 @@ public class CommentController
             throw new NoPermissionException("你无权删除该评论");
         }
 
-        commentServiceImpl.deleteComment(commentId, t, templateServiceImpl);
-        comment = commentServiceImpl.getComment(commentId);
+        commentServiceImpl.deleteComment(comment.getId(), t, templateServiceImpl);
+        comment = commentServiceImpl.getComment(comment.getId());
 
         if (comment != null) {
             throw new FailedOperationException("删除失败");
-        } else {
-            return new Result(null, "删除成功");
         }
     }
-
-
 }

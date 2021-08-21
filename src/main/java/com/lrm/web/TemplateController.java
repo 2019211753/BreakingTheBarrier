@@ -168,7 +168,6 @@ public class TemplateController {
 
         frontT = templateServiceImpl.getAndConvert(backT.getId(), frontT);
 
-
         if (likesServiceImp.get(userServiceImpl.getUser(userId), backT) != null) {
             frontT.setApproved(true);
         } else {
@@ -188,6 +187,9 @@ public class TemplateController {
                 frontT.setCollected(false);
             }
         }
+
+        frontT.setAvatar(backT.getUser().getAvatar());
+        frontT.setNickname(backT.getUser().getNickname());
 
         hashMap.put("template", frontT);
         return new Result(hashMap, "");

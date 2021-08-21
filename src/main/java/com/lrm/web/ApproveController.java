@@ -1,17 +1,21 @@
 package com.lrm.web;
 
+import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Magic;
+import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 点赞点踩类
@@ -47,13 +51,13 @@ public class ApproveController {
      * @param questionId 问题Id
      */
     @GetMapping("/question/{questionId}/approve")
-    public void approveQuestion(@PathVariable Long questionId, HttpServletRequest request) {
+    public Result approveQuestion(@PathVariable Long questionId, HttpServletRequest request) {
         Question question = questionServiceImpl.getById(questionId);
         if (question == null) {
             throw new NotFoundException("未查询到该问题");
         }
 
-       approve(question, questionServiceImpl, request);
+        return approve(question, questionServiceImpl, request);
     }
 
     /**
@@ -63,16 +67,17 @@ public class ApproveController {
      * @param blogId 博客Id
      */
     @GetMapping("/blog/{blogId}/approve")
-    public void approveBlog(@PathVariable Long blogId, HttpServletRequest request) {
+    public Result approveBlog(@PathVariable Long blogId, HttpServletRequest request) {
         Blog blog = blogServiceImpl.getById(blogId);
         if (blog == null) {
             throw new NotFoundException("未查询到该博客");
         }
 
-        approve(blog, blogServiceImpl, request);
+        return approve(blog, blogServiceImpl, request);
     }
 
-    public <E extends Template> void approve(E e, TemplateServiceImpl<E> repository, HttpServletRequest request) {
+    public <E extends Template> Result approve(E e, TemplateServiceImpl<E> repository, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(2);
         Long postUserId = TokenInfo.getCustomUserId(request);
 
         //得到消息接受双方
@@ -93,6 +98,9 @@ public class ApproveController {
             likesServiceImpl.delete(likes);
 
             dealLikes(e, receiveUser, -1, repository);
+            hashMap.put("approved", false);
+            hashMap.put("likesNum", e.getLikesNum());
+            return new Result(hashMap, "取消赞成功");
         } else {
             Likes likes1 = new Likes();
 
@@ -100,7 +108,12 @@ public class ApproveController {
 
             //处理部分属性
             dealLikes(e, receiveUser, 1, repository);
+            hashMap.put("approved", true);
+            hashMap.put("likesNum", e.getLikesNum());
+            return new Result(hashMap, "点赞成功");
         }
+
+
     }
 
 
@@ -111,14 +124,14 @@ public class ApproveController {
      * @param questionId 问题Id
      */
     @GetMapping("/question/{questionId}/disapprove")
-    public void disapproveQuestion(@PathVariable Long questionId, HttpServletRequest request)
+    public Result disapproveQuestion(@PathVariable Long questionId, HttpServletRequest request)
     {
         Question question = questionServiceImpl.getById(questionId);
         if (question == null) {
             throw new NotFoundException("未查询到该问题");
         }
 
-       disapprove(question, questionServiceImpl, request);
+       return disapprove(question, questionServiceImpl, request);
     }
 
     /**
@@ -128,19 +141,20 @@ public class ApproveController {
      * @param blogId 博客Id
      */
     @GetMapping("/blog/{blogId}/disapprove")
-    public void disapproveBlog(@PathVariable Long blogId, HttpServletRequest request)
+    public Result disapproveBlog(@PathVariable Long blogId, HttpServletRequest request)
     {
         Blog blog = blogServiceImpl.getById(blogId);
         if (blog == null) {
             throw new NotFoundException("未查询到该博客");
         }
 
-        disapprove(blog, blogServiceImpl, request);
+        return disapprove(blog, blogServiceImpl, request);
     }
 
-    <E extends Template> void disapprove(E e, TemplateServiceImpl<E> repository, HttpServletRequest request) {
-        Long postUserId = TokenInfo.getCustomUserId(request);
+    <E extends Template> Result disapprove(E e, TemplateServiceImpl<E> repository, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(2);
 
+        Long postUserId = TokenInfo.getCustomUserId(request);
         User postUser = userServiceImpl.getUser(postUserId);
         User receiveUser = e.getUser();
 
@@ -157,11 +171,17 @@ public class ApproveController {
             dislikesServiceImpl.delete(dislikes);
 
             hide(e, -1, repository);
+            hashMap.put("disapproved", false);
+            hashMap.put("disLikesNum", e.getDisLikesNum());
+            return new Result(hashMap, "取消踩成功");
         } else {
             DisLikes dislikes1 = new DisLikes();
 
             dislikesServiceImpl.save(e, dislikes1, postUser);
             hide(e, 1, repository);
+            hashMap.put("disapproved", true);
+            hashMap.put("disLikesNum", e.getDisLikesNum());
+            return new Result(hashMap, "点踩成功");
         }
     }
 
@@ -173,7 +193,8 @@ public class ApproveController {
      * @param request 获取执行点赞动作的用户Id
      */
     @GetMapping("comment/{commentId}/approve")
-    public void approve(@PathVariable Long commentId, HttpServletRequest request) {
+    public Result approve(@PathVariable Long commentId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(2);
         Comment comment = commentServiceImpl.getComment(commentId);
 
         //只能给有效问题点赞
@@ -199,6 +220,9 @@ public class ApproveController {
             if (likes != null) {
                 //取消点赞前的最高赞数 并处理
                 deleteCommentLikes(comment, likes, receiveUser);
+                hashMap.put("approved", false);
+                hashMap.put("likesNum", comment.getLikesNum());
+                return new Result(hashMap, "取消赞成功");
             } else {
                 Likes likes1 = new Likes();
 
@@ -206,17 +230,22 @@ public class ApproveController {
 
                 if (comment.getQuestion() != null) {
                     Integer maxNum0 = getMaxLikesNum(commentServiceImpl.listAllCommentByQuestionId(comment.getQuestion().getId()));
-                    likesServiceImpl.save(likes1);
-                    dealLikes(receiveUser, comment, comment.getQuestion(), maxNum0, -1, questionServiceImpl);
+                    likesServiceImpl.save(comment.getQuestion(), likes1, postUser, receiveUser);
+                    dealLikes(receiveUser, comment, comment.getQuestion(), maxNum0, 1, questionServiceImpl);
                 }
                 //取消点赞前的最高赞数 并处理
                 if (comment.getBlog() != null) {
                     Integer maxNum0 = getMaxLikesNum(commentServiceImpl.listAllCommentByBlogId(comment.getBlog().getId()));
-                    likesServiceImpl.save(likes1);
+                    likesServiceImpl.save(comment.getBlog(), likes1, postUser, receiveUser);
                     //对impact属性的处理
-                    dealLikes(receiveUser, comment, comment.getBlog(), maxNum0, -1, blogServiceImpl);
+                    dealLikes(receiveUser, comment, comment.getBlog(), maxNum0, 1, blogServiceImpl);
                 }
+                hashMap.put("approved", true);
+                hashMap.put("likesNum", comment.getLikesNum());
+                return new Result(hashMap, "点赞成功");
             }
+        } else {
+            throw new FailedOperationException("不能对灌水评论点赞");
         }
     }
 
@@ -228,7 +257,8 @@ public class ApproveController {
      * @param commentId 评论Id
      */
     @GetMapping("comment/{commentId}/disapprove")
-    public void disapprove(@PathVariable Long commentId, HttpServletRequest request) {
+    public Result disapprove(@PathVariable Long commentId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(2);
         Comment comment = commentServiceImpl.getComment(commentId);
 
         Long postUserId = TokenInfo.getCustomUserId(request);
@@ -247,6 +277,9 @@ public class ApproveController {
             dislikesServiceImpl.delete(disLikes);
 
             hideComment(comment, -1);
+            hashMap.put("disapproved", false);
+            hashMap.put("disLikesNum", comment.getDisLikesNum());
+            return new Result(hashMap, "取消踩成功");
         } else {
             DisLikes disLikes1 = new DisLikes();
 
@@ -255,6 +288,9 @@ public class ApproveController {
             dislikesServiceImpl.save(disLikes1);
 
             hideComment(comment, 1);
+            hashMap.put("disapproved", true);
+            hashMap.put("disLikesNum", comment.getDisLikesNum());
+            return new Result(hashMap, "点踩成功");
         }
     }
 

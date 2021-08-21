@@ -1,9 +1,7 @@
 package com.lrm.service;
 
 import com.lrm.dao.FavoriteRepository;
-import com.lrm.po.Blog;
 import com.lrm.po.Favorite;
-import com.lrm.po.Question;
 import com.lrm.po.Template;
 import com.lrm.util.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
@@ -49,14 +47,9 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Transactional
     @Override
     public <T extends Template> Favorite add(Favorite favorite, T t) {
-        if (t instanceof Question) {
-            favorite.getFavoriteQuestions().add((Question) t);
-        }
-
-        if (t instanceof Blog) {
-            favorite.getFavoriteBlogs().add((Blog) t);
-        }
+        t.getFavorites().add(favorite);
         t.setCollectedNum(t.getCollectedNum() + 1);
+
         favorite.setUpdateTime(new Date());
         favorite.setSize(favorite.getSize() + 1);
         return favoriteRepository.save(favorite);
@@ -69,13 +62,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     @Transactional
     public <T extends Template> Favorite remove(Favorite favorite, T t) {
-        if (t instanceof Question) {
-            favorite.getFavoriteQuestions().remove((Question) t);
-        }
-
-        if (t instanceof Blog) {
-            favorite.getFavoriteBlogs().remove((Blog) t);
-        }
+        t.getFavorites().remove(favorite);
         t.setCollectedNum(t.getCollectedNum() - 1);
         favorite.setUpdateTime(new Date());
         favorite.setSize(favorite.getSize() - 1);

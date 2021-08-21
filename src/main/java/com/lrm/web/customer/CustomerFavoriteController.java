@@ -250,8 +250,8 @@ public class CustomerFavoriteController {
     }
 
     <T extends Template> Result modifyFavorite(T t, TemplateServiceImpl<T> templateServiceImpl, Favorite favorite, Pageable pageable) {
-
-        if (favorite.getFavoriteQuestions().contains(t) || favorite.getFavoriteBlogs().contains(t)) {
+        Map<String, Object> hashMap = new HashMap<>(2);
+        if (!favorite.getFavoriteQuestions().contains(t) && !favorite.getFavoriteBlogs().contains(t)) {
 
             if (favorite.getSize() == Favorite.getMAXSIZE()) {
                 throw new FailedOperationException("收藏夹已满");
@@ -259,21 +259,15 @@ public class CustomerFavoriteController {
 
             favoriteServiceImpl.add(favorite, t);
 
-            if (templateServiceImpl.listByFavoriteId(favorite.getId(), pageable)
-                    .getContent().contains(t)) {
-                return new Result(null, "添加成功");
-            } else {
-                throw new FailedOperationException("添加失败");
-            }
+            hashMap.put("collectedNum", t.getCollectedNum());
+            hashMap.put("collected", true);
+            return new Result(hashMap, "添加成功");
         } else {
             favoriteServiceImpl.remove(favorite, t);
 
-            if (!templateServiceImpl.listByFavoriteId(favorite.getId(), pageable)
-                    .getContent().contains(t)) {
-                return new Result(null, "删除成功");
-            } else {
-                throw new FailedOperationException("删除失败");
-            }
+            hashMap.put("collectedNum", t.getCollectedNum());
+            hashMap.put("collected", false);
+            return new Result(hashMap, "删除成功");
         }
     }
 }
