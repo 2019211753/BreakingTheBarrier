@@ -1,0 +1,59 @@
+<template>
+  <div class="body">
+    <div class="main">
+      <div class="specific"><br /><specific></specific><br /></div>
+    </div>
+    <div class="side">
+      <div class="writer"><br /><writer></writer><br /></div>
+    </div>
+  </div>
+</template>
+
+<script>
+import specific from "./components/specific";
+
+import writer from "./components/writer";
+
+export default {
+  name: "details",
+  components: { specific, writer },
+};
+</script>
+
+<style scoped>
+.body {
+  width: 80%;
+  margin: auto;
+  /* height: 760px; */
+  /* background-color: aqua; */
+}
+
+.main {
+  margin-top: 20px;
+  width: 64%;
+  float: left;
+
+  background-color: bisque;
+}
+.side {
+  margin-top: 20px;
+  width: 35%;
+  float: left;
+  margin-left: 1%;
+  /* height: 600px; */
+  background-color: bisque;
+}
+.specific {
+  width: 90%;
+  margin: auto;
+  /*  height: 200px; */
+  /* background-color: red; */
+}
+
+.writer {
+  margin: auto;
+  width: 90%;
+  /* height: 200px; */
+  /* background-color: red; */
+}
+</style>
