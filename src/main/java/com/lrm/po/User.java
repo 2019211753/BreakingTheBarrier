@@ -215,6 +215,8 @@ public class User {
     @OneToMany(mappedBy = "uploadUser")
     private List<File> uploadedFiles = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "contributors")
+    private List<InfoEntry> infoEntries = new ArrayList<>();
 
     public Long getId() {
         return id;
