@@ -61,7 +61,7 @@ export default {
       .get("/customer/archivesQuestion")
       .then(function (response) {
         that.contentList = response.data.data.archiveMap[2021][8];
-        console.log(that.contentList);
+        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);

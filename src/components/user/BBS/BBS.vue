@@ -14,7 +14,11 @@
             <a href="" onclick="turnmine()"><i class="home icon"></i>问答</a>
           </li>
 
-          <li><a href="" onclick="turnmine()">排行榜</a></li>
+          <li>
+            <a href=""
+              ><router-link to="/helloWorld/rank">排行榜</router-link></a
+            >
+          </li>
         </ul>
       </div>
     </div>
@@ -23,12 +27,7 @@
         <div class="contents">
           <contents></contents>
         </div>
-        <el-pagination
-          class="el-pagination"
-          layout="prev, pager, next"
-          :total="1000"
-        >
-        </el-pagination>
+        
       </div>
       <br />
       <div class="hot">
@@ -52,6 +51,7 @@ export default {
       var that = this;
       that.$router.push("/BBS/addArticle");
     },
+    
   },
 };
 </script>
@@ -121,13 +121,10 @@ li {
 .hot {
   /* background-color: green; */
   /*  margin-top: 10px; */
-  
+
   width: 35%;
   float: left;
   margin-left: 1%;
 }
-.el-pagination {
-  margin-top: 20px;
-  margin-left: 25%;
-}
+
 </style>

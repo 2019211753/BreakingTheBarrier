@@ -16,12 +16,15 @@ import friends from "../components/user/mine/components/friends/friends";
 import information from "../components/user/mine/components/information/information";
 import message from "../components/user/mine/components/message/message";
 import questionFiles from "../components/user/mine/components/questionFiles/questionFiles";
+import collections from "../components/user/mine/components/collections/collections";
+import favorite from "../components/user/mine/components/collections/components/favorite";
+import rank from "../components/user/rank/rank";
 Vue.use(Router)
 
 export default new Router({
     mode: "history",
     routes: [{
-            path: '/helloWorld',
+            path: '/',
             name: 'helloWorld',
             component: helloWorld,
         }, {
@@ -65,28 +68,40 @@ export default new Router({
                     path: '/helloWorld/mine/blogFiles',
                     name: 'blogFiles',
                     component: blogFiles
-                },{
-                  path: '/helloWorld/mine/friends',
-                  name: 'friends',
-                  component: friends
-                },{
-                  path: '/helloWorld/mine/information',
-                  name: 'information',
-                  component: information
-                },{
-                  path: '/helloWorld/mine/message',
-                  name: 'message',
-                  component: message
-                },{
-                  path: '/helloWorld/mine/questionFiles',
-                  name: 'questionFiles',
-                  component: questionFiles
+                }, {
+                    path: '/helloWorld/mine/friends',
+                    name: 'friends',
+                    component: friends
+                }, {
+                    path: '/helloWorld/mine/information',
+                    name: 'information',
+                    component: information
+                }, {
+                    path: '/helloWorld/mine/message',
+                    name: 'message',
+                    component: message
+                }, {
+                    path: '/helloWorld/mine/questionFiles',
+                    name: 'questionFiles',
+                    component: questionFiles
+                }, {
+                    path: '/helloWorld/mine/collections',
+                    name: 'collections',
+                    component: collections
+                }, {
+                    path: '/helloWorld/mine/collections/favorite',
+                    name: 'favorite',
+                    component: favorite
                 }]
             }, {
                 path: '/helloWorld/wikipedia',
                 name: 'wikipedia',
                 component: wikipedia
-            }, ]
+            }, {
+                path: '/helloWorld/rank',
+                name: 'rank',
+                component:rank
+            }]
         }
     ]
 })

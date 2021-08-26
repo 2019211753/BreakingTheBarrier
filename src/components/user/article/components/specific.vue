@@ -28,7 +28,7 @@
       <div
         class="ui button"
         :class="collected == true ? articleCollectIsActive : button"
-        @click="collectArticle(template.id)"
+        @click="openCollections()"
       >
         <i class="star icon"></i>
         {{ articleCollectNumber }}
@@ -48,6 +48,7 @@
     <!-- <div class="ui divider"></div>
     <p style="float: left">转发</p>
     <p>举报</p> -->
+
     <!-- --------------------------- -->
     <br />
     <div>
@@ -99,6 +100,24 @@
       <div class="ui right floated button" @click="sure()">确定</div>
     </div>
     <br />
+    <div class="ui basic modal">
+      <div class="ui four stackable cards">
+        <div class="card" v-for="item in favoriteList">
+          <div class="image"><img src="../../../../assets/bg.jpg" /></div>
+          <div class="content">
+            <a class="header" @click="getFavoriteId(item.id)">
+              {{ item.title }}</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui green ok inverted button" @click="collectArticle()">
+          <i class="checkmark icon"></i>
+          确定
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -122,6 +141,7 @@ export default {
       articleDislikeIsActive: "ui blue button",
       articleCollectIsActive: "ui yellow button",
       nowUser: sessionStorage.getItem("nickname"),
+      favoriteList: [],
       /* ---------------------------------- */
       likeNumber: "",
       dislikeNumber: "",
@@ -135,16 +155,25 @@ export default {
   created() {
     var that = this;
     axios
+      .get("/customer/personal")
+      .then(function (response) {
+        console.log(response.data.data.user);
+        sessionStorage["nickname"] = response.data.data.user.nickname;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    axios
       .get("/question/" + this.$route.query.articleId)
       .then(function (response) {
         that.template = response.data.data.template;
-        that.approved = that.template.approved,
-        that.disapproved = that.template.disapproved,
-        that.collected = that.template.collected,
-        that.articleContent = that.template.content;
-        that.articleLikeNumber = that.template.disLikesNum;
+        (that.approved = that.template.approved),
+          (that.disapproved = that.template.disapproved),
+          (that.collected = that.template.collected),
+          (that.articleContent = that.template.content);
+        that.articleLikeNumber = that.template.likesNum;
         that.articleCollectNumber = that.template.collectedNum;
-        that.articleDislikeNumber = that.template.likesNum;
+        that.articleDislikeNumber = that.template.disLikesNum;
         sessionStorage["articleId"] = that.template.id;
         console.log(that.template);
       })
@@ -161,6 +190,7 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+    var that = this;
   },
   mounted() {
     // wangeditor
@@ -189,7 +219,7 @@ export default {
           that.approved = response.data.data.approved;
           that.articleLikeNumber = response.data.data.likesNum;
           that.$message({
-            message:  response.data.msg,
+            message: response.data.msg,
             type: "success",
           });
         })
@@ -198,7 +228,7 @@ export default {
         });
     },
     dislikeArticle(id) {
-      var that=this;
+      var that = this;
       axios
         .get("/question/" + id + "/disapprove")
         .then(function (response) {
@@ -206,7 +236,7 @@ export default {
           that.disapproved = response.data.data.disapproved;
           that.articleDislikeNumber = response.data.data.disLikesNum;
           that.$message({
-            message:  response.data.msg,
+            message: response.data.msg,
             type: "success",
           });
         })
@@ -214,16 +244,37 @@ export default {
           console.log(error);
         });
     },
-    collectArticle(id) {
-      var that=this;
+    openCollections() {
+      var that = this;
       axios
-        .get("/customer/favorite/{favoriteId}/modify/question/{questionId}")
+        .get("/customer/favorites")
+        .then(function (response) {
+          that.favoriteList = response.data.data.favorites;
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      $(".ui.basic.modal").modal("show");
+    },
+    getFavoriteId(id) {
+      sessionStorage["favoriteId"] = id;
+    },
+    collectArticle() {
+      var that = this;
+      axios
+        .get(
+          "/customer/favorite/" +
+            sessionStorage.getItem("favoriteId") +
+            "/modify/question/" +
+            this.$route.query.articleId
+        )
         .then(function (response) {
           console.log(response.data);
           that.collected = response.data.data.collected;
           that.articleCollectNumber = response.data.data.collectedNum;
           that.$message({
-            message:  response.data.msg,
+            message: response.data.msg,
             type: "success",
           });
         })

@@ -52,18 +52,7 @@ import wikipedia from "./components/wikipedia.vue";
 export default {
   name: "home",
   components: { carousel, questionnaire, team, database, wikipedia },
-  created() {
-    var that = this;
-    axios
-      .get("/customer/personal")
-      .then(function (response) {
-        console.log(response.data.data.user);
-        sessionStorage["nickname"] = response.data.data.user.nickname;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  },
+  
 };
 </script>
 

@@ -2,7 +2,11 @@
   <div>
     <div class="ui large feed">
       <h3 class="ui dividing header">未读消息</h3>
-      <div class="event" v-if="lookedComments" v-for="item in lookedComments">
+      <div
+        class="event"
+        v-if="unLookedComments"
+        v-for="item in unLookedComments"
+      >
         <div class="label">
           <img src="../../../../../assets/avatar.jpg" />
         </div>
@@ -26,7 +30,7 @@
           <i class="red circle icon"></i>
         </div>
       </div>
-      <div class="event" v-if="lookedLikes" v-for="item in lookedLikes">
+      <div class="event" v-if="unLookedLikes" v-for="item in unLookedLikes">
         <div class="label">
           <img src="../../../../../assets/avatar.jpg" />
         </div>
@@ -50,17 +54,54 @@
           <i class="red circle icon"></i>
         </div>
       </div>
-      <div class="ui right floated button" @click="readAll()">一键已读</div>
+      <div
+        class="ui right floated button"
+        v-if="unLookedLikes && unLookedComments"
+        @click="readAll()"
+      >
+        一键已读
+      </div>
       <br />
       <h3 class="ui dividing header">历史消息</h3>
-      <div class="event">
+      <div class="event" v-if="lookedComments" v-for="item in lookedComments">
         <div class="label">
           <img src="../../../../../assets/avatar.jpg" />
         </div>
         <div class="content">
           <div class="summary">
-            <a class="user"> Elliot Fu </a> added you as a friend
-            <div class="date">1 Hour Ago</div>
+            <a class="user"> {{ item.nickname }} </a> 评论了你：
+            <a href=""
+              ><router-link
+                :to="{
+                  path: '/BBS/article',
+                  query: { articleId: item.questionId0 },
+                }"
+              >
+                {{ item.content }}</router-link
+              ></a
+            >.
+            <div class="date">{{ item.createTime }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="event" v-if="lookedLikes" v-for="item in lookedLikes">
+        <div class="label">
+          <img src="../../../../../assets/avatar.jpg" />
+        </div>
+        <div class="content">
+          <div class="summary">
+            <a class="user"> {{ item.nickname }} </a> 点赞了你的：
+            <a href=""
+              ><router-link
+                :to="{
+                  path: '/BBS/article',
+                  query: { articleId: item.questionId0 },
+                }"
+              >
+                a</router-link
+              ></a
+            >.
+            <div class="date">{{ item.createTime }}</div>
           </div>
         </div>
       </div>

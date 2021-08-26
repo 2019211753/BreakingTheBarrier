@@ -24,11 +24,11 @@
                   <div class="label">贡献度</div>
                 </div>
                 <div class="statistic">
-                  <div class="value">{{ userData.followed }}</div>
+                  <div class="value">{{ userData.followedUserNum }}</div>
                   <div class="label">粉丝</div>
                 </div>
                 <div class="statistic">
-                  <div class="value">{{ userData.following }}</div>
+                  <div class="value">{{ userData.followingUserNum }}</div>
                   <div class="label">关注</div>
                 </div>
                 <!--  <div class="statistic">
@@ -44,15 +44,14 @@
                 <li>
                   <a href=""
                     ><router-link to="/helloWorld/mine/questionFiles">
-                      <i class="sticky note outline icon"></i
-                      >问题归档</router-link
+                      <i class="sticky note outline icon"></i>问题</router-link
                     ></a
                   >
                 </li>
                 <li>
                   <a href=""
                     ><router-link to="/helloWorld/mine/blogFiles">
-                      <i class="home icon"></i>博客归档</router-link
+                      <i class="home icon"></i>博客</router-link
                     ></a
                   >
                 </li>
@@ -66,14 +65,21 @@
                 <li>
                   <a href=""
                     ><router-link to="/helloWorld/mine/message">
-                      <i class="home icon"></i>消息通知</router-link
+                      <i class="home icon"></i>通知</router-link
                     ></a
                   >
                 </li>
                 <li>
                   <a href=""
                     ><router-link to="/helloWorld/mine/information">
-                      <i class="home icon"></i>资料编辑</router-link
+                      <i class="home icon"></i>资料</router-link
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a href=""
+                    ><router-link to="/helloWorld/mine/collections">
+                      <i class="home icon"></i>收藏</router-link
                     ></a
                   >
                 </li>
@@ -168,7 +174,7 @@ p {
 
 .nav ul li {
   float: left;
-  margin: -15px 10px;
+  margin: -15px 15px;
 }
 
 .nav ul li a {

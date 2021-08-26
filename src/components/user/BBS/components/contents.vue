@@ -41,6 +41,13 @@
       <br />
       <br />
     </div>
+    <el-pagination
+      class="el-pagination"
+      layout="prev, pager, next"
+      @current-change="handleCurrentChange"
+      :page-count="pageSize"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -49,19 +56,36 @@ import axios from "axios";
 export default {
   name: "contents",
   data() {
-    return { contentList: [] };
+    return { contentList: [], pageSize: 0 };
   },
   created() {
     var that = this;
     axios
-      .get("/listQuestions")
+      .get("/listQuestions/?page=0")
       .then(function (response) {
+        console.log(response.data);
         that.contentList = response.data.data.pages.content;
-        console.log(that.contentList);
+        that.pageSize = response.data.data.pages.totalPages;
       })
       .catch(function (error) {
         console.log(error);
       });
+  },
+  methods: {
+    handleCurrentChange(val) {
+      var that = this;
+      var nowPage = val - 1;
+      axios
+        .get("/listQuestions/?page=" + nowPage)
+        .then(function (response) {
+          console.log(response.data);
+          that.contentList = response.data.data.pages.content;
+          that.pageSize = response.data.data.pages.totalPages;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
@@ -84,5 +108,9 @@ export default {
 }
 img {
   height: 120px;
+}
+.el-pagination {
+  margin-top: 20px;
+  margin-left: 25%;
 }
 </style>
