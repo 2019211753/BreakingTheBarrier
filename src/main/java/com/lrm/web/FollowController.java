@@ -52,9 +52,9 @@ public class FollowController {
         if (followedUser.getFollowedUsers().contains(followingUser) &&
                 followingUser.getFollowingUsers().contains(followedUser)) {
             followedUser.getFollowedUsers().remove(followingUser);
-            followedUser.setFollowed(followedUser.getFollowed() - 1);
+            followedUser.setFollowedUserNum(followedUser.getFollowedUserNum() - 1);
             followingUser.getFollowingUsers().remove(followedUser);
-            followingUser.setFollowing(followedUser.getFollowing() - 1);
+            followingUser.setFollowingUserNum(followedUser.getFollowingUserNum() - 1);
 
             userServiceImpl.saveUser(followedUser);
             userServiceImpl.saveUser(followingUser);
@@ -70,9 +70,9 @@ public class FollowController {
         } else {
             //关注
             followedUser.getFollowedUsers().add(followingUser);
-            followedUser.setFollowed(followedUser.getFollowed() + 1);
+            followedUser.setFollowedUserNum(followedUser.getFollowedUserNum() + 1);
             followingUser.getFollowingUsers().add(followedUser);
-            followingUser.setFollowing(followedUser.getFollowing() + 1);
+            followingUser.setFollowingUserNum(followedUser.getFollowingUserNum() + 1);
 
             userServiceImpl.saveUser(followedUser);
             userServiceImpl.saveUser(followingUser);

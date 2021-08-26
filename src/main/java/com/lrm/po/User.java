@@ -118,12 +118,12 @@ public class User {
     /**
      * 关注了几个人
      */
-    private Integer following;
+    private Integer followingUserNum;
 
     /**
      * 被几个人关注了
      */
-    private Integer followed;
+    private Integer followedUserNum;
 
     /**
      * 隐私策略的种类
@@ -344,20 +344,20 @@ public class User {
         this.canSpeak = canSpeak;
     }
 
-    public Integer getFollowing() {
-        return following;
+    public Integer getFollowingUserNum() {
+        return followingUserNum;
     }
 
-    public void setFollowing(Integer following) {
-        this.following = following;
+    public void setFollowingUserNum(Integer following) {
+        this.followingUserNum = following;
     }
 
-    public Integer getFollowed() {
-        return followed;
+    public Integer getFollowedUserNum() {
+        return followedUserNum;
     }
 
-    public void setFollowed(Integer followed) {
-        this.followed = followed;
+    public void setFollowedUserNum(Integer followed) {
+        this.followedUserNum = followed;
     }
 
     public Integer getPrivacyType() {

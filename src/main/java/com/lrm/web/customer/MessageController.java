@@ -78,7 +78,7 @@ public class MessageController {
         List<Likes> lookedLikes = likesServiceImpl.list(userId, true);
 
         Iterator<Likes> iterator1 = lookedLikes.iterator();
-        while(iterator.hasNext()) {
+        while(iterator1.hasNext()) {
             Likes likes1 = iterator1.next();
             if (likes1.getPostUser() == likes1.getReceiveUser()) {
                 iterator1.remove();

@@ -46,6 +46,8 @@ public class RankController {
             model.setDonation(user.getDonation());
             model.setNickname(user.getNickname());
             model.setAvatar(user.getAvatar());
+            model.setFollowingUserNum(user.getFollowingUserNum());
+            model.setFollowedUserNum(user.getFollowedUserNum());
             newUsers.add(model);
         }
         //返回当前自己的排名

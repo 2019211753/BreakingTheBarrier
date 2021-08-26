@@ -1,14 +1,18 @@
 package com.lrm.web;
 
+import com.lrm.exception.NotFoundException;
 import com.lrm.po.User;
 import com.lrm.service.FavoriteServiceImpl;
 import com.lrm.service.UserServiceImpl;
+import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,69 +40,77 @@ public class VisitController {
      * 共8种策略
      */
     @GetMapping("visit/{userId}")
-    public Result visitUser(@PathVariable Long userId) {
+    public Result visitUser(@PathVariable Long userId, HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         User user = userServiceImpl.getUser(userId);
-        user.setPostDisLikes(null);
-        user.setReceiveComments(null);
-        user.setReceiveLikes(null);
-        user.setFavorites(favoriteServiceImpl.getFavorites(true, userId));
+        if (user == null) {
+            throw new NotFoundException("未查询到该用户");
+        }
+        if (userId.equals(TokenInfo.getCustomUserId(request))) {
+            User user1 = new User();
+            BeanUtils.copyProperties(user, user1);
+        } else {
+            user.setPostDisLikes(null);
+            user.setReceiveComments(null);
+            user.setReceiveLikes(null);
+            user.setFavorites(favoriteServiceImpl.getFavorites(true, userId));
 
-        Integer privacyType = user.getPrivacyType();
-        switch (privacyType) {
-            case 0:
-                user.setFollowedUsers(null);
-                user.setFollowingUsers(null);
+            Integer privacyType = user.getPrivacyType();
+            switch (privacyType) {
+                case 0:
+                    user.setFollowedUsers(null);
+                    user.setFollowingUsers(null);
 
-                user.setQuestions(null);
-                user.setPostComments(null);
-                user.setPostLikes(null);
+                    user.setQuestions(null);
+                    user.setPostComments(null);
+                    user.setPostLikes(null);
 
-                user.setFavorites(null);
+                    user.setFavorites(null);
 
-                break;
-            case 1:
-                user.setFollowedUsers(null);
-                user.setFollowingUsers(null);
+                    break;
+                case 1:
+                    user.setFollowedUsers(null);
+                    user.setFollowingUsers(null);
 
-                user.setQuestions(null);
-                user.setPostComments(null);
-                user.setPostLikes(null);
+                    user.setQuestions(null);
+                    user.setPostComments(null);
+                    user.setPostLikes(null);
 
-                break;
-            case 2:
-                user.setFollowedUsers(null);
-                user.setFollowingUsers(null);
+                    break;
+                case 2:
+                    user.setFollowedUsers(null);
+                    user.setFollowingUsers(null);
 
-                user.setFavorites(null);
+                    user.setFavorites(null);
 
-                break;
-            case 3:
-                user.setFollowedUsers(null);
-                user.setFollowingUsers(null);
+                    break;
+                case 3:
+                    user.setFollowedUsers(null);
+                    user.setFollowingUsers(null);
 
-                break;
-            case 4:
-                user.setQuestions(null);
-                user.setPostComments(null);
-                user.setPostLikes(null);
+                    break;
+                case 4:
+                    user.setQuestions(null);
+                    user.setPostComments(null);
+                    user.setPostLikes(null);
 
-                user.setFavorites(null);
+                    user.setFavorites(null);
 
-                break;
-            case 5:
-                user.setQuestions(null);
-                user.setPostComments(null);
-                user.setPostLikes(null);
+                    break;
+                case 5:
+                    user.setQuestions(null);
+                    user.setPostComments(null);
+                    user.setPostLikes(null);
 
-                break;
-            case 6:
-                user.setFavorites(null);
+                    break;
+                case 6:
+                    user.setFavorites(null);
 
-                break;
-            default:
+                    break;
+                default:
 
+            }
         }
         hashMap.put("user", user);
         return new Result(hashMap, "");

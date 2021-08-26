@@ -30,7 +30,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         favorite.setCreateTime(new Date());
         favorite.setUpdateTime(new Date());
         favorite.setSize(0);
-        favorite.setOpen(true);
         return favoriteRepository.save(favorite);
     }
 

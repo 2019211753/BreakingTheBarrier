@@ -1,6 +1,7 @@
 package com.lrm.service;
 
 import com.lrm.dao.UserRepository;
+import com.lrm.po.Favorite;
 import com.lrm.po.User;
 import com.lrm.util.MD5Utils;
 import com.lrm.util.MyBeanUtils;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private FavoriteServiceImpl favoriteServiceImpl;
+
     //验证该用户是否已经注册
     //注册了的不能再注册（账号或昵称是否已经存在）
     //注册了的可以直接登录
@@ -57,9 +61,14 @@ public class UserServiceImpl implements UserService
         user.setCanSpeak(true);
         user.setAdmin(false);
         user.setRegisterTime(new Date());
-        user.setFollowed(0);
-        user.setFollowing(0);
+        user.setFollowedUserNum(0);
+        user.setFollowingUserNum(0);
         user.setPrivacyType(7);
+        Favorite favorite = new Favorite();
+        favorite.setOpen(true);
+        favorite.setOwner(user);
+        favorite.setTitle("默认收藏夹");
+        favoriteServiceImpl.saveFavorite(favorite);
         return userRepository.save(user);
     }
 
