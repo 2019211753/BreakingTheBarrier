@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import tags from "./addArticleComponents/tags";
+import tags from "./tags";
 /* import choices from "./addArticleComponents/choices"; */
-import editor from "./addArticleComponents/editor";
+import editor from "./editor";
 export default {
   name: "addArticle",
   components: { editor, /* choices,  */ tags },

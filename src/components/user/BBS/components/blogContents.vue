@@ -18,13 +18,13 @@
         </div>
         <h3 class="title">
           <a href=""
-            ><router-link
-              :to="{
-                path: '/BBS/article',
+          ><router-link
+            :to="{
+                path: '/BBS/content',
                 query: { articleId: item.id },
               }"
-              >{{ item.title }}</router-link
-            ></a
+          >{{ item.title }}</router-link
+          ></a
           >
         </h3>
         <img class="ui left floated image" src="../../../../assets/bg.jpg" />
@@ -55,7 +55,7 @@
 import axios from "axios";
 axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
-  name: "contents",
+  name: "blogContents",
   data() {
     return { contentList: [], pageSize: 0 };
   },

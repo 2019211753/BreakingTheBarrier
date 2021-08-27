@@ -16,7 +16,7 @@
             <a href=""
               ><router-link
                 :to="{
-                  path: '/BBS/article',
+                  path: '/BBS/content',
                   query: { articleId: item.questionId0 },
                 }"
               >
@@ -40,7 +40,7 @@
             <a href=""
               ><router-link
                 :to="{
-                  path: '/BBS/article',
+                  path: '/BBS/content',
                   query: { articleId: item.questionId0 },
                 }"
               >
@@ -79,7 +79,7 @@
             <a href=""
               ><router-link
                 :to="{
-                  path: '/BBS/article',
+                  path: '/BBS/content',
                   query: { articleId: item.questionId0 },
                 }"
               >
@@ -100,7 +100,7 @@
             <a href=""
               ><router-link
                 :to="{
-                  path: '/BBS/article',
+                  path: '/BBS/content',
                   query: { articleId: item.questionId0 },
                 }"
               >

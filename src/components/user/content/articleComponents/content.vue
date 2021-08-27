@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import specific from "./components/specific";
-import writer from "./components/writer";
+import specific from "./specific";
+import writer from "./writer";
 export default {
-  name: "details",
+  name: "content",
   components: { specific, writer },
 };
 </script>

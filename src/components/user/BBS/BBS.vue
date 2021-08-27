@@ -5,19 +5,10 @@
       <div class="nav">
         <ul>
           <li>
-            <a href=""><i class="sticky note outline icon"></i>全部</a>
+            <a href="" ><router-link to="/helloWorld/BBS/question"><i class="home icon"></i>问答</router-link>></a>
           </li>
           <li>
-            <a href=""><i class="trophy icon"></i>博客</a>
-          </li>
-          <li>
-            <a href="" onclick="turnmine()"><i class="home icon"></i>问答</a>
-          </li>
-
-          <li>
-            <a href=""
-              ><router-link to="/helloWorld/rank">排行榜</router-link></a
-            >
+            <a href="" ><router-link to="/helloWorld/BBS/blog"><i class="home icon"></i>博客</router-link>></a>
           </li>
         </ul>
       </div>
@@ -25,7 +16,7 @@
     <div class="body">
       <div class="main">
         <div class="contents">
-          <contents></contents>
+         <router-view></router-view>
         </div>
       </div>
       <br />
@@ -44,7 +35,9 @@
 </template>
 
 <script>
-import contents from "./components/contents";
+import axios from "axios";
+axios.defaults.headers["token"] = sessionStorage.getItem("token");
+import contents from "./components/articleContents";
 import hot from "./components/hot";
 import bottom from "../../basic/bottom";
 export default {
@@ -61,7 +54,7 @@ export default {
     search() {
       var that = this;
       axios
-        .post("/customer/searchQuestions", {})
+        .post("/customer/searchQuestions", { title: that.searchContent })
         .then(function (response) {
           console.log(response.data);
         })

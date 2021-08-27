@@ -15,7 +15,7 @@
               <div class="summary">
                 <router-link
                   :to="{
-                    path: '/BBS/article',
+                    path: '/BBS/content',
                     query: { articleId: item.id },
                   }"
                   >{{ item.title }}</router-link

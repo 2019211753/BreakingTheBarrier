@@ -43,7 +43,6 @@
 </template>
 
 <script>
-
 import carousel from "./components/carousel";
 import questionnaire from "./components/questionnaire";
 import team from "./components/team";
@@ -52,7 +51,6 @@ import wikipedia from "./components/wikipedia.vue";
 export default {
   name: "home",
   components: { carousel, questionnaire, team, database, wikipedia },
-
 };
 </script>
 

@@ -5,11 +5,11 @@ import logIn from "../components/logIn";
 import register from "../components/register";
 import model from "../components/user/model";
 import home from "../components/user/home/home";
-import blog from "../components/user/blog/blog";
+
 import mine from "../components/user/mine/mine";
 import wikipedia from "../components/user/wikipedia/wikipedia";
 import BBS from "../components/user/BBS/BBS";
-import details from "../components/user/article/details";
+import details from "../components/user/content/articleComponents/content";
 import addArticle from "../components/user/BBS/components/addArticle";
 import blogFiles from "../components/user/mine/components/blogFiles/blogFiles";
 import friends from "../components/user/mine/components/friends/friends";
@@ -19,6 +19,9 @@ import questionFiles from "../components/user/mine/components/questionFiles/ques
 import collections from "../components/user/mine/components/collections/collections";
 import favorite from "../components/user/mine/components/collections/components/favorite";
 import rank from "../components/user/rank/rank";
+
+import articleContents from "../components/user/BBS/components/articleContents";
+import blogContents from "../components/user/BBS/components/blogContents";
 Vue.use(Router)
 
 export default new Router({
@@ -45,15 +48,20 @@ export default new Router({
                 name: 'home',
                 component: home
             }, {
-                path: '/helloWorld/blog',
-                name: 'blog',
-                component: blog
-            }, {
                 path: '/helloWorld/BBS',
                 name: 'BBS',
                 component: BBS,
+                children: [{
+                    path: '/helloWorld/BBS/question',
+                    name: 'articleContents',
+                    component: articleContents
+                }, {
+                    path: '/helloWorld/BBS/blog',
+                    name: 'blogContents',
+                    component: blogContents
+                }]
             }, {
-                path: '/BBS/article',
+                path: '/BBS/content',
                 name: 'details',
                 component: details
             }, {
@@ -100,7 +108,7 @@ export default new Router({
             }, {
                 path: '/helloWorld/rank',
                 name: 'rank',
-                component:rank
+                component: rank
             }]
         }
     ]

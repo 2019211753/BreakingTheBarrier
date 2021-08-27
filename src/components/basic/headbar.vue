@@ -12,14 +12,25 @@
         </li>
         <li>
           <a href=""
-            ><router-link to="/helloWorld/BBS">
+            ><router-link to="/helloWorld/BBS/question">
               <i class="home icon"></i>论坛</router-link
             ></a
           >
         </li>
-        <li style="margin-left:400px"><a href=""
+        <li>
+          <a href=""
+            ><router-link to="/helloWorld/rank">
+              <i class="trophy icon"></i>排行榜</router-link
+            ></a
+          >
+        </li>
+        <li style="margin-left: 300px">
+          <a href=""
             ><router-link to="/helloWorld/mine/questionFiles">
-              <img class="ui avatar image" src="../../assets/logo.png" /></i>我的</router-link
+              <img
+                class="ui avatar image"
+                src="../../assets/logo.png"
+              />我的</router-link
             ></a
           >
         </li>

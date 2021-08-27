@@ -293,7 +293,7 @@ export default {
             message: "删除成功",
             type: "success",
           });
-          that.$router.push("/helloWorld/BBS");
+          that.$router.push("/helloWorld/BBS/question");
         })
         .catch(function (error) {
           console.log(error);
