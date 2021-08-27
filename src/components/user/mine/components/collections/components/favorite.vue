@@ -1,16 +1,21 @@
 <template>
   <div>
-    <div class="framework" v-for="item in contentList">
+    <el-empty
+      :image-size="200"
+      v-if="!questions.length && !blogs.length"
+      description="收藏夹为空"
+    ></el-empty>
+    <div class="framework" v-for="item in questions">
       <br />
       <div class="frameworkBody">
         <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <img src="../../../../assets/logo.png" />
+              <img src="../../../../../../assets/logo.png" />
             </div>
             <div class="content">
               <div class="summary">
-                <a class="user"> {{ item.nickname }} </a>
+                <a class="user"> {{ nowUser }} </a>
                 <div class="date">{{ item.createTime }}</div>
               </div>
             </div>
@@ -27,7 +32,10 @@
             ></a
           >
         </h3>
-        <img class="ui left floated image" src="../../../../assets/bg.jpg" />
+        <img
+          class="ui left floated image"
+          src="../../../../../../assets/bg.jpg"
+        />
         <p>
           {{ item.description }}
         </p>
@@ -41,13 +49,50 @@
       <br />
       <br />
     </div>
-    <el-pagination
-      class="el-pagination"
-      layout="prev, pager, next"
-      @current-change="handleCurrentChange"
-      :page-count="pageSize"
-    >
-    </el-pagination>
+    <div class="framework" v-for="item in blogs">
+      <br />
+      <div class="frameworkBody">
+        <div class="ui large feed">
+          <div class="event">
+            <div class="label">
+              <img src="../../../../../../assets/logo.png" />
+            </div>
+            <div class="content">
+              <div class="summary">
+                <a class="user"> {{ nowUser }} </a>
+                <div class="date">{{ item.createTime }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3 class="title">
+          <a href=""
+            ><router-link
+              :to="{
+                path: '/BBS/article',
+                query: { articleId: item.id },
+              }"
+              >{{ item.title }}</router-link
+            ></a
+          >
+        </h3>
+        <img
+          class="ui left floated image"
+          src="../../../../../../assets/bg.jpg"
+        />
+        <p>
+          {{ item.description }}
+        </p>
+        <div>
+          <a class="ui label" v-for="tags in item.tags">
+            <!-- <i class="mail icon"></i> -->
+            {{ tags.name }}
+          </a>
+        </div>
+      </div>
+      <br />
+      <br />
+    </div>
   </div>
 </template>
 
@@ -55,18 +100,22 @@
 import axios from "axios";
 axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
-  name: "contents",
+  name: "favorite",
   data() {
-    return { contentList: [], pageSize: 0 };
+    return {
+      questions: [],
+      blogs: [],
+      nowUser: sessionStorage.getItem("nickname"),
+    };
   },
   created() {
     var that = this;
     axios
-      .get("/listQuestions/?page=0")
+      .get("/customer/favorite/" + this.$route.query.favoriteId)
       .then(function (response) {
         console.log(response.data);
-        that.contentList = response.data.data.pages.content;
-        that.pageSize = response.data.data.pages.totalPages;
+        that.questions = response.data.data.questions.content;
+        that.blogs = response.data.data.blogs.content;
       })
       .catch(function (error) {
         console.log(error);
@@ -109,9 +158,5 @@ export default {
 }
 img {
   height: 120px;
-}
-.el-pagination {
-  margin-top: 20px;
-  margin-left: 25%;
 }
 </style>

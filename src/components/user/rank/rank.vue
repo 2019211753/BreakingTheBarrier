@@ -1,20 +1,21 @@
 <template>
   <div class="body">
     <div class="main">
-      <div class="specific"><br /><specific></specific><br /></div>
+      <div class="left"><br /><left></left><br /></div>
     </div>
     <div class="side">
-      <div class="writer"><br /><writer></writer><br /></div>
+      <div class="right"><br /><right></right><br /></div>
     </div>
   </div>
 </template>
 
 <script>
-import specific from "./components/specific";
-import writer from "./components/writer";
+import left from "./components/left";
+import right from "./components/right";
+
 export default {
-  name: "details",
-  components: { specific, writer },
+  name: "rank",
+  components: { right, left },
 };
 </script>
 
@@ -28,18 +29,18 @@ export default {
 
 .main {
   margin-top: 20px;
-  width: 64%;
+  width: 54%;
   float: left;
 
-  background-color: bisque;
+  /* background-color: bisque; */
 }
 .side {
   margin-top: 20px;
   width: 35%;
   float: left;
-  margin-left: 1%;
+  margin-left: 11%;
   /* height: 600px; */
-  background-color: bisque;
+  /* background-color: bisque; */
 }
 .specific {
   width: 90%;

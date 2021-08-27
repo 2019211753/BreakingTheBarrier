@@ -30,7 +30,6 @@
 
 <script>
 import axios from "axios";
-
 export default {
   name: "logIn",
   data() {
@@ -39,10 +38,9 @@ export default {
   methods: {
     sure() {
       var that = this;
-
       if (that.userName && that.passWord) {
         axios
-          .post("http://39.105.212.210/login", {
+          .post("/login", {
             username: that.userName,
             password: that.passWord,
           })

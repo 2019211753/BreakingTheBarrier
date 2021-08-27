@@ -71,6 +71,7 @@
 
 <script>
 import axios from "axios";
+axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
   name: "writer",
   data() {

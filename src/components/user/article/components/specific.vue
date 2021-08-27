@@ -123,6 +123,7 @@
 
 <script>
 import axios from "axios";
+axios.defaults.headers["token"] = sessionStorage.getItem("token");
 import E from "wangeditor";
 export default {
   name: "specific",

@@ -56,13 +56,19 @@
       </div>
       <div
         class="ui right floated button"
-        v-if="unLookedLikes && unLookedComments"
+        v-if="unLookedLikes.length && unLookedComments.length"
         @click="readAll()"
       >
         一键已读
       </div>
+      <el-empty :image-size="100" v-else description="暂无消息"></el-empty>
       <br />
       <h3 class="ui dividing header">历史消息</h3>
+      <el-empty
+        :image-size="100"
+        v-if="!lookedLikes.length && !lookedComments.length"
+        description="暂无消息"
+      ></el-empty>
       <div class="event" v-if="lookedComments" v-for="item in lookedComments">
         <div class="label">
           <img src="../../../../../assets/avatar.jpg" />
@@ -111,6 +117,7 @@
 
 <script>
 import axios from "axios";
+axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
   name: "message",
   data() {

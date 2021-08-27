@@ -27,11 +27,15 @@
         <div class="contents">
           <contents></contents>
         </div>
-        
       </div>
       <br />
       <div class="hot">
         <hot></hot>
+        <br />
+        <div class="ui fluid icon input">
+          <input type="text" placeholder="搜索..." v-model="searchContent" />
+          <i class="inverted circular search link icon" @click="search()"></i>
+        </div>
         <br />
         <div class="ui fluid button" @click="turnToAddArticle()">发布内容</div>
       </div>
@@ -45,13 +49,26 @@ import hot from "./components/hot";
 import bottom from "../../basic/bottom";
 export default {
   name: "BBS",
+  data() {
+    return { searchContent: "" };
+  },
   components: { contents, hot, bottom },
   methods: {
     turnToAddArticle() {
       var that = this;
       that.$router.push("/BBS/addArticle");
     },
-    
+    search() {
+      var that = this;
+      axios
+        .post("/customer/searchQuestions", {})
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
@@ -126,5 +143,4 @@ li {
   float: left;
   margin-left: 1%;
 }
-
 </style>

@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-empty
+      :image-size="200"
+      v-if="count == 0"
+      description="还未发布过内容"
+    ></el-empty>
     <div class="framework" v-for="item in contentList">
       <br />
       <div class="frameworkBody">
@@ -49,19 +54,24 @@
 
 <script>
 import axios from "axios";
-
+axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
   name: "questions",
   data() {
-    return { contentList: [], nowUser: sessionStorage.getItem("nickname") };
+    return {
+      contentList: [],
+      count: 0,
+      nowUser: sessionStorage.getItem("nickname"),
+    };
   },
   created() {
     var that = this;
     axios
       .get("/customer/archivesQuestion")
       .then(function (response) {
-        that.contentList = response.data.data.archiveMap[2021][8];
         console.log(response.data);
+        that.count = response.data.data.count;
+        that.contentList = response.data.data.archiveMap[2021][8];
       })
       .catch(function (error) {
         console.log(error);

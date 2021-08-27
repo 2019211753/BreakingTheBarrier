@@ -58,7 +58,7 @@ export default {
         console.log(that.userName);
         if (that.passWord === that.surePassWord) {
           axios
-            .post("http://39.105.212.210/register", {
+            .post("/register", {
               username: that.userName,
               nickname: that.nickName,
               password: that.passWord,

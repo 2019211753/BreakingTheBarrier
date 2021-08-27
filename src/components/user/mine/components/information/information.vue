@@ -48,6 +48,7 @@
 
 <script>
 import axios from "axios";
+axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
   name: "information",
   data() {
@@ -81,7 +82,7 @@ export default {
       value: "",
     };
   },
-  methods: {uploadAvatar(){}},
+  methods: { uploadAvatar() {} },
 };
 </script>
 

@@ -99,6 +99,7 @@
 <script>
 import recommend from "./components/recommend";
 import axios from "axios";
+axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
   components: { recommend },
   name: "mine",
