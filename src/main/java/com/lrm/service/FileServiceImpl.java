@@ -27,7 +27,7 @@ public class FileServiceImpl implements FileService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Override
     @Transactional
@@ -45,7 +45,7 @@ public class FileServiceImpl implements FileService {
         file.setPath(path);
 
         //奖励5次下载次数
-        User uploadUser = userService.getUser(userId);
+        User uploadUser = userServiceImpl.getUser(userId);
         if (uploadUser == null) {
             throw new NotFoundException("当前用户不存在");
         }
@@ -62,7 +62,7 @@ public class FileServiceImpl implements FileService {
         if (file == null) {
             throw new NotFoundException("下载的文件资源不存在");
         }
-        User user = userService.getUser(userId);
+        User user = userServiceImpl.getUser(userId);
         if (user == null) {
             throw new NotFoundException("当前用户不存在");
         }

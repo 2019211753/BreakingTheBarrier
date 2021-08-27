@@ -465,5 +465,13 @@ public class User {
     public void setUploadedFiles(List<File> uploadedFiles) {
         this.uploadedFiles = uploadedFiles;
     }
+
+    public List<InfoEntry> getInfoEntries() {
+        return infoEntries;
+    }
+
+    public void setInfoEntries(List<InfoEntry> infoEntries) {
+        this.infoEntries = infoEntries;
+    }
 }
 

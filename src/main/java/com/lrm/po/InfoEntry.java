@@ -2,6 +2,8 @@ package com.lrm.po;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,6 @@ public class InfoEntry {
      * 前端必填
      */
     @Lob
-    @NotBlank(message = "请输入概述")
     @Basic(fetch = FetchType.LAZY)
     private String newContent;
 
@@ -44,7 +45,15 @@ public class InfoEntry {
      */
     private boolean isLocked = false;
 
+    /**
+     * 管理员是否审批
+     */
+    private boolean isApproved = false;
 
+    /**
+     *
+     */
+    private Timestamp lastApprovedTime;
 
     @ManyToMany
     private List<User> contributors = new ArrayList<>();
@@ -89,6 +98,22 @@ public class InfoEntry {
         isLocked = locked;
     }
 
+    public boolean isApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(boolean approved) {
+        isApproved = approved;
+    }
+
+    public Timestamp getLastApprovedTime() {
+        return lastApprovedTime;
+    }
+
+    public void setLastApprovedTime(Timestamp lastApprovedTime) {
+        this.lastApprovedTime = lastApprovedTime;
+    }
+
     public List<User> getContributors() {
         return contributors;
     }
@@ -96,4 +121,6 @@ public class InfoEntry {
     public void setContributors(List<User> contributors) {
         this.contributors = contributors;
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.lrm.web;
 
 import com.lrm.exception.NotFoundException;
 import com.lrm.service.FileService;
+import com.lrm.service.FileServiceImpl;
 import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
@@ -32,7 +33,7 @@ public class FileController {
     private String downloadFilePath;
 
     @Autowired
-    private FileService fileService;
+    private FileServiceImpl fileServiceImpl;
 
     @GetMapping
     public String index() {
@@ -47,7 +48,7 @@ public class FileController {
     @GetMapping(value = "/find")
     @ResponseBody
     public Result find(@RequestParam("query") String query) {
-        Page<com.lrm.po.File> filePage = fileService.findFile(query);
+        Page<com.lrm.po.File> filePage = fileServiceImpl.findFile(query);
 
         HashMap<String, Object> hashMap = new HashMap<>(2);
 
@@ -77,7 +78,7 @@ public class FileController {
         Long userId = TokenInfo.getCustomUserId(request);
 
         //调用service 服务，储存到数据库，进行上传相关逻辑的处理
-        fileService.saveFile(newFile, fileTagName, dest.getAbsolutePath(), userId);
+        fileServiceImpl.saveFile(newFile, fileTagName, dest.getAbsolutePath(), userId);
 
         Map<String, String> hashMap = new HashMap<>(16);
         hashMap.put("contentType", uploadFile.getContentType());
@@ -105,7 +106,7 @@ public class FileController {
 
         Long userId = TokenInfo.getCustomUserId(request);
 
-        fileService.downloadFile(fileName, userId);
+        fileServiceImpl.downloadFile(fileName, userId);
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("name", file.getName());
