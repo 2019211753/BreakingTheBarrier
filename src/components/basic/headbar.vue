@@ -24,7 +24,7 @@
             ></a
           >
         </li>
-        <li style="margin-left: 300px">
+        <li style="margin-left: 270px">
           <a href=""
             ><router-link to="/helloWorld/mine/questionFiles">
               <img
@@ -34,6 +34,11 @@
             ></a
           >
         </li>
+        <li>
+          <a href="" @click="logOut()"
+            ><router-link to="/"><i class="sign out icon"></i></router-link
+          ></a>
+        </li>
       </ul>
     </div>
   </div>
@@ -42,6 +47,15 @@
 <script>
 export default {
   name: "headbar",
+  methods: {
+    logOut() {
+      sessionStorage.clear();
+      history.pushState(null, null, document.URL);
+      window.addEventListener("popstate", function () {
+        history.pushState(null, null, document.URL);
+      });
+    },
+  },
 };
 </script>
 

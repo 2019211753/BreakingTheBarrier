@@ -1,6 +1,11 @@
 <template>
   <div>
     <div class="ui segment">
+      <img
+        class="ui centered medium circular image"
+        src="../assets/hello.jpg"
+        alt=""
+      />
       <div class="ui fluid button" @click="turnToLogIn()">登录</div>
       <div class="ui fluid button" @click="turnToRegister()">注册</div>
     </div>
@@ -23,8 +28,9 @@ export default {
 
 <style scoped>
 .ui.segment {
-  width: 40%;
+  width: 33%;
   margin: auto;
+  margin-top: 10%;
 }
 .ui.button {
   margin-top: 20px;

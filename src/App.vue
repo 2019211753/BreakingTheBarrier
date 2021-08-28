@@ -14,4 +14,7 @@ export default {
 .ui.container {
   width: 1200px;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 </style>

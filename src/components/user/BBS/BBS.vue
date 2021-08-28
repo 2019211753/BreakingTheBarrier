@@ -5,10 +5,18 @@
       <div class="nav">
         <ul>
           <li>
-            <a href="" ><router-link to="/helloWorld/BBS/question"><i class="home icon"></i>问答</router-link>></a>
+            <a href=""
+              ><router-link to="/helloWorld/BBS/question"
+                ><i class="home icon"></i>问答</router-link
+              >></a
+            >
           </li>
           <li>
-            <a href="" ><router-link to="/helloWorld/BBS/blog"><i class="home icon"></i>博客</router-link>></a>
+            <a href=""
+              ><router-link to="/helloWorld/BBS/blog"
+                ><i class="home icon"></i>博客</router-link
+              >></a
+            >
           </li>
         </ul>
       </div>
@@ -16,7 +24,7 @@
     <div class="body">
       <div class="main">
         <div class="contents">
-         <router-view></router-view>
+          <router-view></router-view>
         </div>
       </div>
       <br />
@@ -99,7 +107,7 @@ a {
 .header {
   height: 40px;
   background-color: rgb(100, 133, 208);
-  width: 50%;
+  width: 30%;
   margin: auto;
   margin-top: 20px;
 }

@@ -53,6 +53,10 @@ export default {
               });
               sessionStorage["token"] = response.data.data.token;
               that.$router.push("/helloWorld/home");
+              history.pushState(null, null, document.URL);
+              window.addEventListener("popstate", function () {
+                history.pushState(null, null, document.URL);
+              });
             } else {
               that.$message({
                 message: response.data.msg,
