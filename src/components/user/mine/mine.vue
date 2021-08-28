@@ -113,6 +113,7 @@ export default {
       .then(function (response) {
         console.log(response.data.data.user);
         that.userData = response.data.data.user;
+        sessionStorage["nickname"] = that.userData.nickname;
       })
       .catch(function (error) {
         console.log(error);
