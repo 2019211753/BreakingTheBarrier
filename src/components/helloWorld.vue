@@ -8,7 +8,7 @@
       />
       <div class="ui fluid button" @click="turnToLogIn()">登录</div>
       <div class="ui fluid button" @click="turnToRegister()">注册</div>
-    </div>
+     </div>
   </div>
 </template>
 
