@@ -1,8 +1,11 @@
 <template>
-  <div>
-    <headbar></headbar>
-    <div><router-view></router-view></div>
-  </div>
+  <el-container>
+    <el-header height="40px"><headbar></headbar></el-header>
+    <el-main
+      ><div><router-view></router-view></div
+    ></el-main>
+    <el-footer><bottom></bottom></el-footer>
+  </el-container>
 </template>
 
 <script>

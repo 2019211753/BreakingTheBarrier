@@ -93,9 +93,9 @@ export default {
 
 <style scoped>
 .framework {
-  background-color: bisque;
-  margin-top: 20px;
-  height: 260px;
+  /* background-color: bisque; */
+  margin-top: 10px;
+  height: 240px;
 }
 .frameworkBody {
   width: 90%;
@@ -113,5 +113,9 @@ img {
 .el-pagination {
   margin-top: 20px;
   margin-left: 25%;
+}
+p {
+  font-size: 15px;
+  font-weight: 900;
 }
 </style>

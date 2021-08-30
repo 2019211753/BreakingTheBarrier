@@ -157,7 +157,7 @@ export default {
   float: left;
 }
 .information {
-  width: 444px;
+  width: 400px;
   height: 150px;
   margin-left: 20px;
   /* background-color: rgb(50, 236, 236); */

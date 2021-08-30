@@ -67,13 +67,14 @@ export default {
 
 .nav ul li {
   float: left;
-  margin: -15px 10px;
+  margin: auto;
+  margin-top: -15px;
 }
 
 .nav ul li a {
   display: block;
   height: 42px;
-  padding: 0 10px;
+  padding: 0px 10px;
   line-height: 42px;
   font-size: 16px;
   color: white;
@@ -93,7 +94,7 @@ a {
   width: 80%;
   height: 40px;
   background-color: rgb(100, 133, 208);
-  margin: 0 auto;
+  margin: 0px auto;
 }
 
 .logo {

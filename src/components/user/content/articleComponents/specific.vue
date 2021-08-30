@@ -48,7 +48,6 @@
     <!-- <div class="ui divider"></div>
     <p style="float: left">转发</p>
     <p>举报</p> -->
-
     <!-- --------------------------- -->
     <br />
     <div>
@@ -104,6 +103,9 @@
       <div class="ui four stackable cards">
         <div class="card" v-for="item in favoriteList">
           <div class="image"><img src="../../../../assets/bg.jpg" /></div>
+          <a v-if="item.id == favoriteId" class="ui red right corner label">
+            <i class="save icon"></i>
+          </a>
           <div class="content">
             <a class="header" @click="getFavoriteId(item.id)">
               {{ item.title }}</a
@@ -143,6 +145,7 @@ export default {
       articleCollectIsActive: "ui yellow button",
       nowUser: sessionStorage.getItem("nickname"),
       favoriteList: [],
+      favoriteId: sessionStorage["favoriteId"],
       /* ---------------------------------- */
       likeNumber: "",
       dislikeNumber: "",
@@ -259,6 +262,8 @@ export default {
       $(".ui.basic.modal").modal("show");
     },
     getFavoriteId(id) {
+      var that = this;
+      that.favoriteId = id;
       sessionStorage["favoriteId"] = id;
     },
     collectArticle() {

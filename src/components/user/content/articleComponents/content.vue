@@ -31,7 +31,7 @@ export default {
   width: 64%;
   float: left;
 
-  background-color: bisque;
+  /* background-color: bisque; */
 }
 .side {
   margin-top: 20px;
@@ -39,7 +39,7 @@ export default {
   float: left;
   margin-left: 1%;
   /* height: 600px; */
-  background-color: bisque;
+  /* background-color: bisque; */
 }
 .specific {
   width: 90%;

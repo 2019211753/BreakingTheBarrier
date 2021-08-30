@@ -18,13 +18,13 @@
         </div>
         <h3 class="title">
           <a href=""
-          ><router-link
-            :to="{
+            ><router-link
+              :to="{
                 path: '/BBS/content',
                 query: { articleId: item.id },
               }"
-          >{{ item.title }}</router-link
-          ></a
+              >{{ item.title }}</router-link
+            ></a
           >
         </h3>
         <img class="ui left floated image" src="../../../../assets/bg.jpg" />
@@ -93,7 +93,7 @@ export default {
 
 <style scoped>
 .framework {
-  background-color: bisque;
+  /* background-color: bisque; */
   margin-top: 20px;
   height: 260px;
 }

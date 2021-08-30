@@ -82,7 +82,8 @@ export default {
 
 <style scoped>
 .framework {
-  background-color: bisque;
+  /* 
+  background-color: bisque; */
   margin-top: 20px;
   height: 260px;
 }
