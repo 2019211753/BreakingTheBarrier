@@ -22,6 +22,8 @@ import rank from "../components/user/rank/rank";
 
 import articleContents from "../components/user/BBS/components/articleContents";
 import blogContents from "../components/user/BBS/components/blogContents";
+import adminLogIn from "../components/admin/adminLogIn";
+import admin from "../components/admin/admin";
 Vue.use(Router)
 
 export default new Router({
@@ -39,6 +41,16 @@ export default new Router({
             path: '/helloWorld/register',
             name: 'register',
             component: register
+        },
+        {
+            path: '/helloWorld/admin/logIn',
+            name: 'adminLogIn',
+            component: adminLogIn
+        },
+        {
+            path: '/helloWorld/admin',
+            name: 'admin',
+            component: admin
         }, {
             path: '/helloWorld/model',
             name: 'model',

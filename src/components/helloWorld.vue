@@ -8,6 +8,7 @@
       />
       <div class="ui fluid button" @click="turnToLogIn()">登录</div>
       <div class="ui fluid button" @click="turnToRegister()">注册</div>
+      <div class="ui fluid button" @click="turnToAdmin()">管理员</div>
      </div>
   </div>
 </template>
@@ -22,6 +23,9 @@ export default {
     turnToRegister() {
       this.$router.push("/helloWorld/register");
     },
+    turnToAdmin(){
+      this.$router.push("/helloWorld/admin/logIn");
+    }
   },
 };
 </script>

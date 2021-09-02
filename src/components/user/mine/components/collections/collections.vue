@@ -108,7 +108,7 @@ export default {
     deleteFavorite(id) {
       var that = this;
       axios
-        .post("/customer/favorite/" + id + "/delete")
+        .get("/customer/favorite/" + id + "/delete")
         .then(function (response) {
           console.log(response.data);
           that.$message({
