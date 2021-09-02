@@ -101,8 +101,6 @@ public class CustomerFavoriteController {
             throw new NoPermissionException("你无权删除该收藏夹");
         }
 
-        //解除外键
-        favorite.setFavoriteQuestions(null);
         favoriteServiceImpl.deleteFavoriteById(favoriteId);
         if (favoriteServiceImpl.getFavoriteById(favoriteId) == null) {
             return new Result(null, "删除成功");

@@ -1,7 +1,9 @@
 package com.lrm.service;
 
 import com.lrm.dao.FavoriteRepository;
+import com.lrm.po.Blog;
 import com.lrm.po.Favorite;
+import com.lrm.po.Question;
 import com.lrm.po.Template;
 import com.lrm.util.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
@@ -9,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author 山水夜止
@@ -36,6 +36,17 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     @Transactional
     public void deleteFavoriteById(Long favoriteId) {
+        Favorite favorite = getFavoriteById(favoriteId);
+        Iterator<Question> it1 = favorite.getFavoriteQuestions().iterator();
+        while (it1.hasNext()) {
+             Question q = it1.next();
+             q.getFavorites().remove(favorite);
+        }
+        Iterator<Blog> it2 = favorite.getFavoriteBlogs().iterator();
+        while (it2.hasNext()) {
+            Blog b = it2.next();
+            b.getFavorites().remove(favorite);
+        }
         favoriteRepository.deleteById(favoriteId);
     }
 
@@ -46,6 +57,9 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Transactional
     @Override
     public <T extends Template> Favorite add(Favorite favorite, T t) {
+        if (t.getFavorites() == null) {
+            t.setFavorites(new ArrayList<>());
+        }
         t.getFavorites().add(favorite);
         t.setCollectedNum(t.getCollectedNum() + 1);
 
@@ -67,6 +81,8 @@ public class FavoriteServiceImpl implements FavoriteService {
         favorite.setSize(favorite.getSize() - 1);
         return favoriteRepository.save(favorite);
     }
+
+
 
     /**
      * @param favorite 新收藏夹

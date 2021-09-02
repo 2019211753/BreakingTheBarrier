@@ -92,11 +92,11 @@ public class TemplateController {
      * @param query    查询条件
      * @return 查询结果、查询条件
      */
-    @PostMapping("/searchQuestions")
-    public Result searchQuestions(@PageableDefault(size = 1000, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
-                         @RequestBody String query) {
+    @GetMapping("/searchQuestions")
+    public Result searchQuestions(@PageableDefault(size = 10, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+                              @RequestBody Map<String, String> query) {
 
-        return searchTemplates(questionServiceImpl, query, pageable);
+        return searchTemplates(questionServiceImpl, query.get("query"), pageable);
     }
 
     /**
@@ -108,9 +108,9 @@ public class TemplateController {
      */
     @PostMapping("/searchBlogs")
     public Result searchBlogs(@PageableDefault(size = 1000, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
-                              @RequestBody String query) {
+                              @RequestBody Map<String, String> query) {
 
-        return searchTemplates(blogServiceImpl, query, pageable);
+        return searchTemplates(blogServiceImpl, query.get("query"), pageable);
     }
 
     <T extends Template> Result searchTemplates(TemplateServiceImpl<T> templateServiceImpl, String query, Pageable pageable) {

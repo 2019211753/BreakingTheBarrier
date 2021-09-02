@@ -30,10 +30,10 @@ public class UserController {
      * @return 查询得到的用户
      */
     @PostMapping("/searchUser")
-    public Result searchCustomer(@RequestBody String nickname) {
+    public Result searchCustomer(@RequestBody Map<String, String> nickname) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
-        hashMap.put("user", userServiceImpl.getUser(nickname));
+        hashMap.put("user", userServiceImpl.getUser(nickname.get("nickname")));
 
         return new Result(hashMap, "搜索完成");
     }

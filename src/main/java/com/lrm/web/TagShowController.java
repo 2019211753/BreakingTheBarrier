@@ -55,8 +55,8 @@ public class TagShowController {
      * @return 所有标签及其子集下的所有问题分页
      */
     @PostMapping("/searchQuestions")
-    public Result showQuestions(@RequestBody String tagIds) {
-        return getTemplateByTagIds(tagIds, questionServiceImpl);
+    public Result showQuestions(@RequestBody Map<String, String> tagIds) {
+        return getTemplateByTagIds(tagIds.get("tagIds"), questionServiceImpl);
     }
 
     /**
@@ -66,8 +66,8 @@ public class TagShowController {
      * @return 所有标签及其子集下的所有问题分页
      */
     @PostMapping("/searchBlogs")
-    public Result showBlogs(@RequestBody String tagIds) {
-        return getTemplateByTagIds(tagIds, blogServiceImpl);
+    public Result showBlogs(@RequestBody Map<String, String> tagIds) {
+        return getTemplateByTagIds(tagIds.get("tagIds"), blogServiceImpl);
     }
 
     <T extends Template> Result getTemplateByTagIds(String tagIds, TemplateServiceImpl<T> templateServiceImpl) {

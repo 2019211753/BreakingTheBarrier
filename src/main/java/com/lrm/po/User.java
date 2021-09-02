@@ -218,6 +218,7 @@ public class User {
     @ManyToMany(mappedBy = "contributors")
     private List<InfoEntry> infoEntries = new ArrayList<>();
 
+
     public Long getId() {
         return id;
     }

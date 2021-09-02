@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,14 +74,14 @@ public class Favorite {
      */
     @JsonIgnore
     @ManyToMany(mappedBy = "favorites")
-    private List<Question> favoriteQuestions = new ArrayList<>();
+    private List<Question> favoriteQuestions;
 
     /**
      * 收藏夹里的博客
      */
     @JsonIgnore
     @ManyToMany(mappedBy = "favorites")
-    private List<Blog> favoriteBlogs = new ArrayList<>();
+    private List<Blog> favoriteBlogs;
 
     public Long getId() {
         return id;

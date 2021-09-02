@@ -156,7 +156,7 @@ public class Template {
      */
     @ManyToMany
     @JsonIgnore
-    private List<Favorite> favorites;
+    private List<Favorite> favorites = new ArrayList<>();
 
     /**
      * 发布者
