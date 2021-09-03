@@ -18,7 +18,7 @@
           <br />
           <div class="event">
             <div class="label">
-              <img src="../../../assets/avatar.jpg" />
+              <img src="../../../../assets/avatar.jpg" />
             </div>
             <div class="content">
               <div class="summary">
@@ -57,7 +57,7 @@
           </div>
           <div class="event">
             <div class="label">
-              <img src="../../../assets/avatar.jpg" />
+              <img src="../../../../assets/avatar.jpg" />
             </div>
             <div class="content">
               <div class="summary">
@@ -95,20 +95,18 @@
             </div>
           </div></div
       ></el-aside>
-      <el-main><articleSpecific></articleSpecific></el-main>
+      <el-main><router-link></router-link></el-main>
     </el-container>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import articleSpecific from "../../user/content/articleComponents/components/articleSpecific";
 export default {
   name: "adminArticle",
-  components: { articleSpecific },
   methods: {
     search() {
- var that = this;
+      var that = this;
       axios
         .post("/admin/searchQuestions", { title: "test" })
         .then(function (response) {
@@ -123,7 +121,4 @@ export default {
 </script>
 
 <style scoped>
-.el-aside {
-  background-color: aqua;
-}
 </style>

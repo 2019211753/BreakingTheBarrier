@@ -18,7 +18,7 @@
           <br />
           <div class="event">
             <div class="label">
-              <img src="../../../assets/avatar.jpg" />
+              <img src="../../../../assets/avatar.jpg" />
             </div>
             <div class="content">
               <div class="summary">
@@ -57,7 +57,7 @@
           </div>
           <div class="event">
             <div class="label">
-              <img src="../../../assets/avatar.jpg" />
+              <img src="../../../../assets/avatar.jpg" />
             </div>
             <div class="content">
               <div class="summary">
@@ -95,7 +95,7 @@
             </div>
           </div></div
       ></el-aside>
-      <el-main><articleSpecific></articleSpecific></el-main>
+      <el-main><router-view></router-view></el-main>
     </el-container>
   </div>
 </template>
@@ -121,7 +121,4 @@ export default {
 </script>
 
 <style scoped>
-.el-aside {
-  background-color: aqua;
-}
 </style>

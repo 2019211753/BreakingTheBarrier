@@ -24,6 +24,10 @@ import blog from "../components/user/BBS/components/blog/blog";
 import addBlog from "../components/user/BBS/components/blog/components/addBlog";
 import blogContent from "../components/user/content/blogComponents/blogContent";
 import articleContent from "../components/user/content/articleComponents/articleContent";
+import adminArticle from "../components/admin/components/adminArticleFunctions/adminArticle";
+import adminBlog from "../components/admin/components/adminBlogFunctions/adminBlog";
+import adminArticleContent from "../components/admin/components/adminArticleFunctions/components/adminArticleContent";
+import adminBlogContent from "../components/admin/components/adminBlogFunctions/components/adminBlogContent";
 Vue.use(Router)
 
 export default new Router({
@@ -50,8 +54,28 @@ export default new Router({
         {
             path: '/helloWorld/admin',
             name: 'admin',
-            component: admin
+            component: admin,
+
         }, {
+            path: '/helloWorld/admin/adminBlog',
+            name: 'adminBlog',
+            component: adminBlog,
+            children: [{
+                path: '/helloWorld/admin/adminBlog/adminBlogContent',
+                name: 'adminBlogContent',
+                component: adminBlogContent,
+            }]
+        }, {
+            path: '/helloWorld/admin/adminArticle',
+            name: 'adminArticle',
+            component: adminArticle,
+            children: [{
+                path: '/helloWorld/admin/adminArticle/adminArticleContent',
+                name: 'adminArticleContent',
+                component: adminArticleContent,
+            }]
+        },
+        {
             path: '/helloWorld/model',
             name: 'model',
             component: model,
