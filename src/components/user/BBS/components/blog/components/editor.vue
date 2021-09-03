@@ -9,6 +9,38 @@
       <input type="text" placeholder="" v-model="description" />
     </div>
     <div id="websiteEditorElem"></div>
+    <el-switch
+      class="el-switch"
+      v-model="origin"
+      active-color="#13ce66"
+      inactive-color="grey"
+      active-text="原创"
+    >
+    </el-switch>
+    <el-switch
+      class="el-switch"
+      v-model="open"
+      active-color="#13ce66"
+      inactive-color="grey"
+      active-text="公开"
+    >
+    </el-switch
+    ><el-switch
+      class="el-switch"
+      v-model="commentAllowed"
+      active-color="#13ce66"
+      inactive-color="grey"
+      active-text="允许评论"
+    >
+    </el-switch
+    ><el-switch
+      class="el-switch"
+      v-model="appreciation"
+      active-color="#13ce66"
+      inactive-color="grey"
+      active-text="接受赞赏"
+    >
+    </el-switch>
     <div class="ui right floated button" @click="sure()">确定</div>
   </div>
 </template>
@@ -20,7 +52,14 @@ axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
   name: "editor",
   data() {
-    return { title: "", description: "" };
+    return {
+      title: "",
+      description: "",
+      origin: true,
+      appreciation: true,
+      open: true,
+      commentAllowed: true,
+    };
   },
   /* props: ["chooseTagIdList"], */
   mounted() {
@@ -41,6 +80,9 @@ export default {
     this.phoneEditor.txt.html();
   },
   methods: {
+    getOrigin(name) {
+      alert(name);
+    },
     sure() {
       var that = this;
       /*      alert(that.chooseTagIdList); */
@@ -52,11 +94,15 @@ export default {
           });
         } else {
           axios
-            .post("/customer/question/post", {
+            .post("/customer/blog/post", {
               title: that.title,
               description: that.description,
               content: that.phoneEditor.txt.html(),
               tagIds: sessionStorage.getItem("chooseTagIdList"),
+              origin: that.origin,
+              appreciation: that.appreciation,
+              open: that.open,
+              commentAllowed: that.commentAllowed,
             })
             .then(function (response) {
               console.log(response);
@@ -68,7 +114,7 @@ export default {
             message: "发布成功",
             type: "success",
           });
-          this.$router.push("/helloWorld/BBS");
+          this.$router.push("/helloWorld/BBS/blog");
         }
       } else {
         this.$message({
@@ -90,5 +136,9 @@ export default {
 }
 .button {
   margin-top: 20px;
+}
+.el-switch {
+  margin-left: 10px;
+  margin-top: 30px;
 }
 </style>

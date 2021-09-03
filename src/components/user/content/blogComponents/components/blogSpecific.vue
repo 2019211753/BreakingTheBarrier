@@ -165,7 +165,7 @@ export default {
         console.log(error);
       });
     axios
-      .get("/blog/" + this.$route.query.articleId)
+      .get("/blog/" + this.$route.query.blogId)
       .then(function (response) {
         that.template = response.data.data.template;
         (that.approved = that.template.approved),

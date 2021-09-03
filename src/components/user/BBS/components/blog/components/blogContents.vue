@@ -20,14 +20,17 @@
           <a href=""
             ><router-link
               :to="{
-                path: '/BBS/content',
-                query: { articleId: item.id },
+                path: '/helloWorld/BBS/blogContent',
+                query: { blogId: item.id },
               }"
               >{{ item.title }}</router-link
             ></a
           >
         </h3>
-        <img class="ui left floated image" src="../../../../../../assets/bg.jpg" />
+        <img
+          class="ui left floated image"
+          src="../../../../../../assets/bg.jpg"
+        />
         <p>
           {{ item.description }}
         </p>
@@ -46,6 +49,7 @@
       layout="prev, pager, next"
       @current-change="handleCurrentChange"
       :page-count="pageSize"
+      :hide-on-single-page="true"
     >
     </el-pagination>
   </div>
@@ -62,7 +66,7 @@ export default {
   created() {
     var that = this;
     axios
-      .get("/listQuestions/?page=0")
+      .get("/listBlogs/?page=0")
       .then(function (response) {
         console.log(response.data);
         that.contentList = response.data.data.pages.content;
@@ -77,7 +81,7 @@ export default {
       var that = this;
       var nowPage = val - 1;
       axios
-        .get("/listQuestions/?page=" + nowPage)
+        .get("/listBlogs/?page=" + nowPage)
         .then(function (response) {
           console.log(response.data);
           that.contentList = response.data.data.pages.content;

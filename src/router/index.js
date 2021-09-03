@@ -5,11 +5,9 @@ import logIn from "../components/logIn";
 import register from "../components/register";
 import model from "../components/user/model";
 import home from "../components/user/home/home";
-
 import mine from "../components/user/mine/mine";
 import wikipedia from "../components/user/wikipedia/wikipedia";
 import BBS from "../components/user/BBS/BBS";
-import details from "../components/user/content/articleComponents/articleContent";
 import addArticle from "../components/user/BBS/components/article/components/addArticle";
 import blogFiles from "../components/user/mine/components/blogFiles/blogFiles";
 import friends from "../components/user/mine/components/friends/friends";
@@ -24,6 +22,8 @@ import admin from "../components/admin/admin";
 import article from "../components/user/BBS/components/article/article";
 import blog from "../components/user/BBS/components/blog/blog";
 import addBlog from "../components/user/BBS/components/blog/components/addBlog";
+import blogContent from "../components/user/content/blogComponents/blogContent";
+import articleContent from "../components/user/content/articleComponents/articleContent";
 Vue.use(Router)
 
 export default new Router({
@@ -71,20 +71,24 @@ export default new Router({
                     path: '/helloWorld/BBS/blog',
                     name: 'blog',
                     component: blog
-                },{
-                  path: '/BBS/content',
-                  name: 'details',
-                  component: details
                 }, {
-                  path: 'helloWorld/BBS/article/addArticle',
-                  name: 'addArticle',
-                  component: addArticle
-                },{
-                  path: 'helloWorld/BBS/blog/addBlog',
-                  name: 'addBlog',
-                  component: addBlog
+                    path: '/helloWorld/BBS/article/addArticle',
+                    name: 'addArticle',
+                    component: addArticle
+                }, {
+                    path: '/helloWorld/BBS/blog/addBlog',
+                    name: 'addBlog',
+                    component: addBlog
                 }]
-            },  {
+            }, {
+                path: '/helloWorld/BBS/articleContent',
+                name: 'articleContent',
+                component: articleContent
+            }, {
+                path: '/helloWorld/BBS/blogContent',
+                name: 'blogContent',
+                component: blogContent
+            }, {
                 path: '/helloWorld/mine',
                 name: 'mine',
                 component: mine,

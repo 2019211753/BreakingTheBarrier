@@ -68,7 +68,7 @@ export default {
             message: "发布成功",
             type: "success",
           });
-          this.$router.push("/helloWorld/BBS");
+          this.$router.push("/helloWorld/BBS/question");
         }
       } else {
         this.$message({

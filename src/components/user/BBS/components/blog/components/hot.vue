@@ -41,7 +41,7 @@ export default {
   created() {
     var that = this;
     axios
-      .get("/listQuestions")
+      .get("/listBlogs")
       .then(function (response) {
         that.impactList = response.data.data.impacts;
         console.log(that.impactList);

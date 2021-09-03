@@ -30,7 +30,7 @@ export default {
   methods: {
     turnToAddArticle() {
       var that = this;
-      that.$router.push("helloWorld/BBS/article/addArticle");
+      that.$router.push("/helloWorld/BBS/article/addArticle");
     },
     search() {
       var that = this;

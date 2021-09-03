@@ -20,14 +20,17 @@
           <a href=""
             ><router-link
               :to="{
-                path: '/BBS/content',
+                path: '/helloWorld/BBS/articleContent',
                 query: { articleId: item.id },
               }"
               >{{ item.title }}</router-link
             ></a
           >
         </h3>
-        <img class="ui left floated image" src="../../../../../../assets/bg.jpg" />
+        <img
+          class="ui left floated image"
+          src="../../../../../../assets/bg.jpg"
+        />
         <p>
           {{ item.description }}
         </p>
@@ -46,6 +49,7 @@
       layout="prev, pager, next"
       @current-change="handleCurrentChange"
       :page-count="pageSize"
+      :hide-on-single-page="true"
     >
     </el-pagination>
   </div>
