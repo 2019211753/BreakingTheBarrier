@@ -4,12 +4,12 @@ import com.lrm.po.User;
 import com.lrm.service.UserServiceImpl;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
+import com.lrm.web.customer.CustomerFollowController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,17 +39,7 @@ public class RankController {
         List<User> users = userServiceImpl.listTopUsers(10);
 
         //真正要返回的数据
-        List<User> newUsers = new ArrayList<>(10);
-        for (User user : users) {
-            //规范需要返回啥数据
-            User model = new User();
-            model.setDonation(user.getDonation());
-            model.setNickname(user.getNickname());
-            model.setAvatar(user.getAvatar());
-            model.setFollowingUserNum(user.getFollowingUserNum());
-            model.setFollowedUserNum(user.getFollowedUserNum());
-            newUsers.add(model);
-        }
+        List<User> newUsers = CustomerFollowController.insertUserAttribute(users);
         //返回当前自己的排名
         Long myRank = userServiceImpl.getRank(userServiceImpl.getUser(customUserId).getDonation());
         hashMap.put("users", newUsers);

@@ -83,7 +83,7 @@ public class TagShowController {
         }
 
         //将标签下的所有问题全塞进去 用set去重
-        Set<T> ts = new LinkedHashSet<>();
+        LinkedHashSet<T> ts = new LinkedHashSet<>();
         for (Tag tag : tagSet) {
             ts.addAll(templateServiceImpl.listByTagId(tag.getId()));
         }
@@ -92,7 +92,7 @@ public class TagShowController {
         Pageable pageRequest = PageRequest.of(1, Magic.PAGE_SIZE);
 
         //将set转换为Page
-        hashMap.put("pages", DataStructureUtils.listConvertToPage(DataStructureUtils.setConvertToList(ts), pageRequest));
+        hashMap.put("pages", DataStructureUtils.listConvertToPage(new ArrayList<>(ts), pageRequest));
 
         return new Result(hashMap, "搜索成功");
     }

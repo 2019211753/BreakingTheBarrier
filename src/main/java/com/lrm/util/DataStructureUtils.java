@@ -5,7 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 数据结构间转换
@@ -64,24 +66,15 @@ public class DataStructureUtils {
     }
 
     /**
-     * @param set 原set集合 应该是LinkListSet集合
-     * @param <T> 集合泛型
-     * @return 按原set集合add的顺序得到的List集合
+     * @param ids 将tagIds分割
+     * @return 分割结果List集合
      */
-    public static <T> List<T> setConvertToList(Set<T> set) {
-        List<T> list = new LinkedList<>();
-        for (T x : set) {
-            list.add(x);
-        }
-        return list;
-    }
-
     public static List<Long> convertToList(String ids) {
         List<Long> list = new ArrayList<>();
         if (!"".equals(ids) && ids != null) {
             String[] idArray = ids.split(",");
             for (String s : idArray) {
-                list.add(new Long(s));
+                list.add(Long.parseLong(s));
             }
         }
         return list;
