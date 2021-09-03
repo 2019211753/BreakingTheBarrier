@@ -1,20 +1,20 @@
 <template>
   <div class="body">
     <div class="main">
-      <div class="specific"><br /><specific></specific><br /></div>
+      <div class="specific"><br /><articleSpecific></articleSpecific><br /></div>
     </div>
     <div class="side">
-      <div class="writer"><br /><writer></writer><br /></div>
+      <div class="writer"><br /><articleWriter></articleWriter><br /></div>
     </div>
   </div>
 </template>
 
 <script>
-import specific from "./specific";
-import writer from "./writer";
+import articleWriter from "./components/articleWriter";
+import articleSpecific from "./components/articleSpecific";
 export default {
-  name: "content",
-  components: { specific, writer },
+  name: "articleContent",
+  components: { articleSpecific, articleWriter },
 };
 </script>
 

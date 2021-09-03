@@ -21,56 +21,16 @@
         </ul>
       </div>
     </div>
-    <div class="body">
-      <div class="main">
-        <div class="contents">
-          <router-view></router-view>
-        </div>
-      </div>
-      <br />
-      <div class="hot">
-        <hot></hot>
-        <br />
-        <div class="ui fluid icon input">
-          <input type="text" placeholder="搜索..." v-model="searchContent" />
-          <i class="inverted circular search link icon" @click="search()"></i>
-        </div>
-        <br />
-        <div class="ui fluid button" @click="turnToAddArticle()">发布内容</div>
-      </div>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-axios.defaults.headers["token"] = sessionStorage.getItem("token");
-import contents from "./components/articleContents";
-import hot from "./components/hot";
-import bottom from "../../basic/bottom";
+
 export default {
   name: "BBS",
-  data() {
-    return { searchContent: "" };
-  },
-  components: { contents, hot, bottom },
-  methods: {
-    turnToAddArticle() {
-      var that = this;
-      that.$router.push("/BBS/addArticle");
-    },
-    search() {
-      var that = this;
-      axios
-        .post("/customer/searchQuestions", { title: that.searchContent })
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-  },
+
+
 };
 </script>
 
@@ -112,36 +72,8 @@ a {
   margin-top: 20px;
 }
 
-.logo {
-  float: left;
-  width: 6%;
-  height: 100%;
-}
-
 li {
   list-style: none;
 }
-.body {
-  width: 80%;
-  /* height: 760px; */
-  margin: auto;
-  margin-top: 20px;
-  /* background-color: aqua; */
-}
-/* contents {
-  margin-top: 200px;
-} */
-.main {
-  width: 64%;
-  float: left;
-}
 
-.hot {
-  /* background-color: green; */
-  /*  margin-top: 10px; */
-
-  width: 35%;
-  float: left;
-  margin-left: 1%;
-}
 </style>

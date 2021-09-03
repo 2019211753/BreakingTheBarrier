@@ -3,7 +3,7 @@
     <div class="ui large feed">
       <div class="event">
         <div class="label">
-          <img src="../../../../assets/logo.png" />
+          <img src="../../../../../assets/logo.png" />
         </div>
         <div class="content">
           <div class="summary">
@@ -60,7 +60,7 @@
             v-for="item in commentList"
           >
             <a class="avatar">
-              <img src="../../../../assets/logo.png" />
+              <img src="../../../../../assets/logo.png" />
             </a>
             <div class="content">
               <a class="author">{{ item.nickname }}</a>
@@ -102,7 +102,7 @@
     <div class="ui basic modal">
       <div class="ui four stackable cards">
         <div class="card" v-for="item in favoriteList">
-          <div class="image"><img src="../../../../assets/bg.jpg" /></div>
+          <div class="image"><img src="../../../../../assets/bg.jpg" /></div>
           <a v-if="item.id == favoriteId" class="ui red right corner label">
             <i class="save icon"></i>
           </a>
@@ -128,7 +128,7 @@ import axios from "axios";
 axios.defaults.headers["token"] = sessionStorage.getItem("token");
 import E from "wangeditor";
 export default {
-  name: "specific",
+  name: "articleSpecific",
   data() {
     return {
       template: "",

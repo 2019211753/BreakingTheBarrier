@@ -8,7 +8,7 @@
         <div class="ui large feed">
           <div class="event" v-for="item in impactList">
             <div class="label">
-              <img src="../../../../assets/logo.png" />
+              <img src="../../../../../../assets/logo.png" />
             </div>
             <div class="content">
               <!-- <div class="date">{{ item.createTime }}</div> -->

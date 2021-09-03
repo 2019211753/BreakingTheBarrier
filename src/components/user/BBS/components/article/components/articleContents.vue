@@ -6,7 +6,7 @@
         <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <img src="../../../../assets/logo.png" />
+              <img src="../../../../../../assets/logo.png" />
             </div>
             <div class="content">
               <div class="summary">
@@ -27,7 +27,7 @@
             ></a
           >
         </h3>
-        <img class="ui left floated image" src="../../../../assets/bg.jpg" />
+        <img class="ui left floated image" src="../../../../../../assets/bg.jpg" />
         <p>
           {{ item.description }}
         </p>
@@ -55,7 +55,7 @@
 import axios from "axios";
 axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
-  name: "blogContents",
+  name: "articleContents",
   data() {
     return { contentList: [], pageSize: 0 };
   },
@@ -94,8 +94,8 @@ export default {
 <style scoped>
 .framework {
   /* background-color: bisque; */
-  margin-top: 20px;
-  height: 260px;
+  margin-top: 10px;
+  height: 240px;
 }
 .frameworkBody {
   width: 90%;
@@ -113,5 +113,9 @@ img {
 .el-pagination {
   margin-top: 20px;
   margin-left: 25%;
+}
+p {
+  font-size: 15px;
+  font-weight: 900;
 }
 </style>

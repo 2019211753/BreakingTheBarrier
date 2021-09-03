@@ -2,7 +2,7 @@
   <div>
     <img
       class="ui tiny centered circular image"
-      src="../../../../assets/logo.png"
+      src="../../../../../assets/logo.png"
     />
     <h3>dongwushenhua</h3>
     <p>helloWorld!</p>
@@ -37,7 +37,7 @@
     <div class="ui feed">
       <div class="event">
         <div class="label">
-          <img src="../../../../assets/logo.png" />
+          <img src="../../../../../assets/logo.png" />
         </div>
         <div class="content">
           <div class="summary">
@@ -47,7 +47,7 @@
       </div>
       <div class="event">
         <div class="label">
-          <img src="../../../../assets/logo.png" />
+          <img src="../../../../../assets/logo.png" />
         </div>
         <div class="content">
           <div class="summary">
@@ -57,7 +57,7 @@
       </div>
       <div class="event">
         <div class="label">
-          <img src="../../../../assets/logo.png" />
+          <img src="../../../../../assets/logo.png" />
         </div>
         <div class="content">
           <div class="summary">
@@ -73,7 +73,7 @@
 import axios from "axios";
 axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
-  name: "writer",
+  name: "blogWriter",
   data() {
     return { following: "", userFollow: "ui red button", button: "ui button" };
   },

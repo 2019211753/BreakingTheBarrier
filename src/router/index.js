@@ -9,8 +9,8 @@ import home from "../components/user/home/home";
 import mine from "../components/user/mine/mine";
 import wikipedia from "../components/user/wikipedia/wikipedia";
 import BBS from "../components/user/BBS/BBS";
-import details from "../components/user/content/articleComponents/content";
-import addArticle from "../components/user/BBS/components/addArticle";
+import details from "../components/user/content/articleComponents/articleContent";
+import addArticle from "../components/user/BBS/components/article/components/addArticle";
 import blogFiles from "../components/user/mine/components/blogFiles/blogFiles";
 import friends from "../components/user/mine/components/friends/friends";
 import information from "../components/user/mine/components/information/information";
@@ -19,11 +19,11 @@ import questionFiles from "../components/user/mine/components/questionFiles/ques
 import collections from "../components/user/mine/components/collections/collections";
 import favorite from "../components/user/mine/components/collections/components/favorite";
 import rank from "../components/user/rank/rank";
-
-import articleContents from "../components/user/BBS/components/articleContents";
-import blogContents from "../components/user/BBS/components/blogContents";
 import adminLogIn from "../components/admin/adminLogIn";
 import admin from "../components/admin/admin";
+import article from "../components/user/BBS/components/article/article";
+import blog from "../components/user/BBS/components/blog/blog";
+import addBlog from "../components/user/BBS/components/blog/components/addBlog";
 Vue.use(Router)
 
 export default new Router({
@@ -65,22 +65,26 @@ export default new Router({
                 component: BBS,
                 children: [{
                     path: '/helloWorld/BBS/question',
-                    name: 'articleContents',
-                    component: articleContents
+                    name: 'article',
+                    component: article
                 }, {
                     path: '/helloWorld/BBS/blog',
-                    name: 'blogContents',
-                    component: blogContents
+                    name: 'blog',
+                    component: blog
+                },{
+                  path: '/BBS/content',
+                  name: 'details',
+                  component: details
+                }, {
+                  path: 'helloWorld/BBS/article/addArticle',
+                  name: 'addArticle',
+                  component: addArticle
+                },{
+                  path: 'helloWorld/BBS/blog/addBlog',
+                  name: 'addBlog',
+                  component: addBlog
                 }]
-            }, {
-                path: '/BBS/content',
-                name: 'details',
-                component: details
-            }, {
-                path: '/BBS/addArticle',
-                name: 'addArticle',
-                component: addArticle
-            }, {
+            },  {
                 path: '/helloWorld/mine',
                 name: 'mine',
                 component: mine,
