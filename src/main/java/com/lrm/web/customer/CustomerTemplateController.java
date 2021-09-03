@@ -61,7 +61,6 @@ public class CustomerTemplateController {
         User user = userServiceImpl.getUser(userId);
 
         if (user.getCanSpeak()) {
-            //后端检验valid 如果校验失败 返回input页面
             if (bindingResult.hasErrors()) {
                 throw new IllegalParameterException(IllegalParameterException.getMessage(bindingResult));
             }
@@ -94,7 +93,7 @@ public class CustomerTemplateController {
      * @return 保存了的博客
      */
     @PostMapping("/blog/post")
-    public Result addOrUpdateBlog(@RequestBody Blog blog, BindingResult bindingResult, HttpServletRequest request) {
+    public Result addOrUpdateBlog(@RequestBody @Valid Blog blog, BindingResult bindingResult, HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         Long userId = TokenInfo.getCustomUserId(request);
@@ -235,17 +234,18 @@ public class CustomerTemplateController {
      *
      * @param request  获得当前用户id
      * @param pageable 分页标准
-     * @param question 封装的query对象
+     * @param query 查询条件
      * @return 查询所得问题分页
      */
     @PostMapping("/searchQuestions")
     public Result searchQuestions(@PageableDefault(size = 6, sort = {"newCommentedTime"}, direction = Sort.Direction.DESC) Pageable pageable,
-                                  Question question, HttpServletRequest request) {
+                                  @RequestBody Map<String, String> query, HttpServletRequest request) {
 
         //得到当前用户的昵称
         String nickname = TokenInfo.getCustomNickname(request);
+        query.put("nickname", nickname);
 
-        return searchTemplate(pageable, question, questionServiceImpl, nickname);
+        return searchTemplate(pageable, query, questionServiceImpl);
     }
 
     /**
@@ -253,31 +253,31 @@ public class CustomerTemplateController {
      *
      * @param request  获得当前用户id
      * @param pageable 分页标准
-     * @param blog 封装的query对象
+     * @param query 查询条件
      * @return 查询所得博客分页
      */
     @PostMapping("/searchBlogs")
     public Result searchBlogs(@PageableDefault(size = 6, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
-                              Blog blog, HttpServletRequest request) {
+                              @RequestBody Map<String, String> query, HttpServletRequest request) {
 
         //得到当前用户的昵称
         String nickname = TokenInfo.getCustomNickname(request);
+        query.put("nickname", nickname);
 
-        return searchTemplate(pageable, blog, blogServiceImpl, nickname);
+        return searchTemplate(pageable, query, blogServiceImpl);
     }
 
     /**
      * @param pageable 分页对象
-     * @param t Blog/Question
+     * @param query    查询条件
      * @param templateServiceImpl 对应的service层
-     * @param nickname 用户昵称
      * @param <T> t的类型
      * @return 搜索结果
      */
-    public <T extends Template> Result searchTemplate(Pageable pageable, T t, TemplateServiceImpl<T> templateServiceImpl, String nickname) {
+    public <T extends Template> Result searchTemplate(Pageable pageable, Map<String, String> query, TemplateServiceImpl<T> templateServiceImpl) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
-        Page<T> ts = templateServiceImpl.listByTitleAndTagIdsAndNickname(pageable, t, nickname);
+        Page<T> ts = templateServiceImpl.listByQueryAndTagIdsAndNickname(pageable, query);
 
         for (T t0 : ts.getContent()) {
             //得到发布问题的人

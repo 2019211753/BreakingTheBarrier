@@ -31,7 +31,7 @@ public class LoginController {
 
     /**
      * 注册
-     * 为什么用@Validated就能进入方法被BindingResult“捕获”，@Valid不行？？？
+     * 为什么用@Validated就能进入方法被BindingResult“捕获”，@Valid不行？也许是用了自定义校验器
      *
      * @param user 前端封装好的User对象 包含账号、密码、昵称
      * @return 返回注册成功得到的User对象 需要确定泛型，否则操作无效了; 返回注册失败的报错信息

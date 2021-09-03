@@ -70,7 +70,8 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         //根据发布t人的贡献初始化t的影响力
         user.setDonation(user.getDonation() + 2);
         t.setImpact(user.getDonation());
-        return repository.save(t);    }
+        return repository.save(t);
+    }
 
     @Transactional
     public T save(T t) {
@@ -149,25 +150,29 @@ public abstract class TemplateServiceImpl<T extends Template>  {
      * 多重条件查询
      *
      * @param pageable 分页对象
-     * @param t 查询对象
-     * @param nickname 查询的用户昵称
+     * @param queryMap 查询条件
      * @return 查询结果
      */
-    public Page<T> listByTitleAndTagIdsAndNickname(Pageable pageable, T t, String nickname)  {
+    public Page<T> listByQueryAndTagIdsAndNickname(Pageable pageable, Map<String, String> queryMap) {
         TemplateRepository<T> repository = getTemplateRepository();
+
+        String query = queryMap.get("query");
+        String nickname = queryMap.get("nickname");
+        String tagIds = queryMap.get("tagIds");
 
         return repository.findAll((root, cq, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             //""是空字节，而不是null 下面这种写法 而不是Question.getTitle().equals("")是防止它是null 从而造成空指针异常
-            if (t.getTitle() != null && !"".equals(t.getTitle())) {
-                predicates.add(cb.like(root.get("title"), "%" + t.getTitle() + "%"));
+            if (query != null && !"".equals(query)) {
+                predicates.add(cb.like(root.get("title"), "%" + query + "%"));
+                predicates.add(cb.like(root.get("description"), "%" + query + "%"));
+                predicates.add(cb.like(root.get("content"), "%" + query + "%"));
             }
             if (nickname != null && !"".equals(nickname)) {
                 Join<Object, Object> join = root.join("user");
                 predicates.add(cb.equal(join.get("nickname"), nickname));
             }
 
-            String tagIds = t.getTagIds();
             if (tagIds != null && !"".equals(tagIds)) {
                 String newTagIds = tagService.listTagIdsFromSmallToBig(tagIds);
 
