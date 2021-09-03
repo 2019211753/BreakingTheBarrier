@@ -1,74 +1,116 @@
 <template>
   <div class="admin">
+    <el-container>
+      <el-header>Header</el-header>
+      <el-main
+        ><div class="adminTag">
+          <h4 class="ui horizontal divider header">
+            <i class="bar chart icon"></i>
+            标签管理
+          </h4>
+          <adminTag style="float: left"></adminTag>
+        </div>
+        <div class="functions">
+          <h4 class="ui horizontal divider header">
+            <i class="bar chart icon"></i>
+            快捷入口
+          </h4>
+          <div class="ui fluid vertical buttons">
+            <button class="ui button">首页</button>
+            <button class="ui button">论坛</button>
+            <button class="ui button">空间</button>
+          </div>
+          <!-- <div class="functionButtons">
+            <div class="ui icon buttons">
+              <button class="ui button"><i class="align left icon"></i></button>
+              <button class="ui button">
+                <i class="align center icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align right icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align justify icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align justify icon"></i>
+              </button>
+            </div>
+            <div class="ui icon buttons">
+              <button class="ui button"><i class="align left icon"></i></button>
+              <button class="ui button">
+                <i class="align center icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align right icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align justify icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align justify icon"></i>
+              </button>
+            </div>
+            <div class="ui icon buttons">
+              <button class="ui button"><i class="align left icon"></i></button>
+              <button class="ui button">
+                <i class="align justify icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align center icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align right icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align justify icon"></i>
+              </button>
+            </div>
+            <div class="ui icon buttons">
+              <button class="ui button"><i class="align left icon"></i></button>
+              <button class="ui button">
+                <i class="align center icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align justify icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align right icon"></i>
+              </button>
+              <button class="ui button">
+                <i class="align justify icon"></i>
+              </button>
+            </div>
+          </div> -->
+        </div>
+        <br />
+        <div class="adminUser">
+          <h4 class="ui horizontal divider header">
+            <i class="bar chart icon"></i>
+            用户管理
+          </h4>
+          <adminUser></adminUser>
+        </div>
+        <br />
+        <div class="adminArticle">
+          <h4 class="ui horizontal divider header">
+            <i class="bar chart icon"></i>
+            问题管理
+          </h4>
+          <adminArticle></adminArticle>
+        </div>
+        <br />
+        <div class="adminBlog">
+          <h4 class="ui horizontal divider header">
+            <i class="bar chart icon"></i>
+            博客管理
+          </h4>
+          <adminBlog></adminBlog></div
+      ></el-main>
+      <el-footer>Footer</el-footer>
+    </el-container>
     <!-- 
     <div class="ui fluid image"><img src="../../assets/bg.jpg" /></div> -->
-    <div class="adminTag">
-      <h4 class="ui horizontal divider header">
-        <i class="bar chart icon"></i>
-        标签管理
-      </h4>
-      <adminTag style="float: left"></adminTag>
-    </div>
-    <div class="functions">
-      <h4 class="ui horizontal divider header">
-        <i class="bar chart icon"></i>
-        快捷入口
-      </h4>
-      <div class="functionButtons">
-        <div class="ui icon buttons">
-          <button class="ui button"><i class="align left icon"></i></button>
-          <button class="ui button"><i class="align center icon"></i></button>
-          <button class="ui button"><i class="align right icon"></i></button>
-          <button class="ui button"><i class="align justify icon"></i></button>
-          <button class="ui button"><i class="align justify icon"></i></button>
-        </div>
-        <div class="ui icon buttons">
-          <button class="ui button"><i class="align left icon"></i></button>
-          <button class="ui button"><i class="align center icon"></i></button>
-          <button class="ui button"><i class="align right icon"></i></button>
-          <button class="ui button"><i class="align justify icon"></i></button>
-          <button class="ui button"><i class="align justify icon"></i></button>
-        </div>
-        <div class="ui icon buttons">
-          <button class="ui button"><i class="align left icon"></i></button>
-          <button class="ui button"><i class="align justify icon"></i></button>
-          <button class="ui button"><i class="align center icon"></i></button>
-          <button class="ui button"><i class="align right icon"></i></button>
-          <button class="ui button"><i class="align justify icon"></i></button>
-        </div>
-        <div class="ui icon buttons">
-          <button class="ui button"><i class="align left icon"></i></button>
-          <button class="ui button"><i class="align center icon"></i></button>
-          <button class="ui button"><i class="align justify icon"></i></button>
-          <button class="ui button"><i class="align right icon"></i></button>
-          <button class="ui button"><i class="align justify icon"></i></button>
-        </div>
-      </div>
-    </div>
-    <br />
-    <div class="adminUser">
-      <h4 class="ui horizontal divider header">
-        <i class="bar chart icon"></i>
-        用户管理
-      </h4>
-      <adminUser></adminUser>
-    </div>
-    <br />
-    <div class="adminArticle">
-      <h4 class="ui horizontal divider header">
-        <i class="bar chart icon"></i>
-        问题管理
-      </h4>
-      <adminArticle></adminArticle>
-    </div>
-    <br />
-    <div class="adminBlog">
-      <h4 class="ui horizontal divider header">
-        <i class="bar chart icon"></i>
-        博客管理
-      </h4>
-      <adminBlog></adminBlog>
-    </div>
   </div>
 </template>
 
@@ -100,27 +142,30 @@ export default {
   width: 30%;
   float: left;
 }
-.functionButtons {
+/* .functionButtons {
   width: 90%;
   margin: auto;
-}
-.buttons {
+} */
+/* .buttons {
   margin-top: 15px;
   margin-left: 5%;
-}
+} */
 .adminUser {
+  width: 100%;
   float: left;
   margin-top: 20px;
-  background-color: rgb(192, 16, 54);
+  /* background-color: rgb(192, 16, 54); */
 }
 .adminArticle {
+  width: 100%;
   float: left;
   margin-top: 20px;
-  background-color: rgb(192, 16, 54);
+  /* background-color: rgb(192, 16, 54); */
 }
 .adminBlog {
+  width: 100%;
   float: left;
   margin-top: 20px;
-  background-color: rgb(192, 16, 54);
+  /* background-color: rgb(192, 16, 54); */
 }
 </style>

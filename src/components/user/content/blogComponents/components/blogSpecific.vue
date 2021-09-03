@@ -56,6 +56,11 @@
       <div>
         <div class="ui comments">
           <h3 class="ui dividing header">全部评论</h3>
+          <el-empty
+            :image-size="100"
+            v-if="commentList.length == 0"
+            description="暂无评论"
+          ></el-empty>
           <div
             :class="item.parentCommentId0 == -1 ? parent : child"
             v-for="item in commentList"
@@ -389,9 +394,7 @@ export default {
       if (that.phoneEditor.txt.html()) {
         axios
           .post(
-            "/blog/" +
-              sessionStorage.getItem("articleId") +
-              "/comment/post",
+            "/blog/" + sessionStorage.getItem("articleId") + "/comment/post",
             {
               content: that.phoneEditor.txt.html(),
               answer: true,
@@ -443,9 +446,7 @@ export default {
       if (that.phoneEditor.txt.html()) {
         axios
           .post(
-            "/blog/" +
-              sessionStorage.getItem("articleId") +
-              "/comment/post",
+            "/blog/" + sessionStorage.getItem("articleId") + "/comment/post",
             {
               content: that.phoneEditor.txt.html(),
               answer: true,
