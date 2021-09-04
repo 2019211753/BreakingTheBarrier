@@ -30,6 +30,10 @@ import adminArticleContent from "../components/admin/components/adminArticleFunc
 import adminBlogContent from "../components/admin/components/adminBlogFunctions/components/adminBlogContent";
 import following from "../components/user/mine/components/friends/components/following";
 import followed from "../components/user/mine/components/friends/components/followed";
+import searchBlogResult from "../components/user/BBS/components/blog/components/searchBlogResult";
+import searchArticleResult from "../components/user/BBS/components/article/components/searchArticleResult";
+import blogContents from "../components/user/BBS/components/blog/components/blogContents";
+import articleContents from "../components/user/BBS/components/article/components/articleContents";
 Vue.use(Router)
 
 export default new Router({
@@ -57,7 +61,6 @@ export default new Router({
             path: '/helloWorld/admin',
             name: 'admin',
             component: admin,
-
         }, {
             path: '/helloWorld/admin/adminBlog',
             name: 'adminBlog',
@@ -85,36 +88,60 @@ export default new Router({
                 path: '/helloWorld/home',
                 name: 'home',
                 component: home
-            }, {
+            },
+              {
                 path: '/helloWorld/BBS',
                 name: 'BBS',
                 component: BBS,
                 children: [{
-                    path: '/helloWorld/BBS/question',
-                    name: 'article',
-                    component: article
-                }, {
-                    path: '/helloWorld/BBS/blog',
-                    name: 'blog',
-                    component: blog
-                }, {
-                    path: '/helloWorld/BBS/article/addArticle',
-                    name: 'addArticle',
-                    component: addArticle
-                }, {
-                    path: '/helloWorld/BBS/blog/addBlog',
-                    name: 'addBlog',
-                    component: addBlog
-                }]
-            }, {
+                        path: '/helloWorld/BBS/question',
+                        name: 'article',
+                        component: article,
+                        children: [{
+                            path: '/helloWorld/BBS/questions',
+                            name: 'articleContents',
+                            component: articleContents,
+                        },
+                          {
+                            path: '/helloWorld/BBS/searchArticleResult',
+                            name: 'searchArticleResult',
+                            component: searchArticleResult,
+                        }]
+                    }, {
+                        path: '/helloWorld/BBS/blog',
+                        name: 'blog',
+                        component: blog,
+                        children: [{
+                            path: '/helloWorld/BBS/blogs',
+                            name: 'blogContents',
+                            component: blogContents,
+                        }, {
+                            path: '/helloWorld/BBS/searchBlogResult',
+                            name: 'searchBlogResult',
+                            component: searchBlogResult,
+                        }]
+                    }, {
+                        path: '/helloWorld/BBS/article/addArticle',
+                        name: 'addArticle',
+                        component: addArticle
+                    }, {
+                        path: '/helloWorld/BBS/blog/addBlog',
+                        name: 'addBlog',
+                        component: addBlog
+                    }
+                ]
+            },
+              {
                 path: '/helloWorld/BBS/articleContent',
                 name: 'articleContent',
                 component: articleContent
-            }, {
+            },
+              {
                 path: '/helloWorld/BBS/blogContent',
                 name: 'blogContent',
                 component: blogContent
-            }, {
+            },
+              {
                 path: '/helloWorld/mine',
                 name: 'mine',
                 component: mine,
@@ -156,11 +183,13 @@ export default new Router({
                     name: 'favorite',
                     component: favorite
                 }]
-            }, {
+            },
+              {
                 path: '/helloWorld/wikipedia',
                 name: 'wikipedia',
                 component: wikipedia
-            }, {
+            },
+              {
                 path: '/helloWorld/rank',
                 name: 'rank',
                 component: rank

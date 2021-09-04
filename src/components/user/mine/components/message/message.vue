@@ -56,7 +56,7 @@
       </div>
       <div
         class="ui right floated button"
-        v-if="unLookedLikes.length && unLookedComments.length"
+        v-if="unLookedLikes.length || unLookedComments.length"
         @click="readAll()"
       >
         一键已读

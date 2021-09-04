@@ -2,49 +2,45 @@
   <div class="body">
     <div class="main">
       <div class="contents">
-        <blogContents></blogContents>
+        <router-view></router-view>
       </div>
     </div>
     <br />
     <div class="hot">
       <hot></hot>
       <br />
-      <div class="ui fluid icon input">
+      <div class="ui fluid input">
         <input type="text" placeholder="搜索..." v-model="searchContent" />
-        <i class="inverted circular search link icon" @click="search()"></i>
+        <router-link
+          :to="{
+            path: '/helloWorld/BBS/searchBlogResult',
+            query: { searchContent: this.searchContent },
+          }"
+        >
+          <button class="ui button" v-if="this.searchContent">搜索</button>
+        </router-link>
       </div>
       <br />
-      <div class="ui fluid button" @click="turnToAddArticle()">发布内容</div>
+      <div class="ui fluid button" @click="turnToAddBlog()">发布内容</div>
     </div>
   </div>
 </template>
 
 <script>
-import blogContents from "./components/blogContents";
 import hot from "./components/hot";
-import axios from "axios";
-
 export default {
-  name: "blog",components:{blogContents,hot},
-  data(){return {searchContent:""}},
+  name: "blog",
+  components: { hot },
+  data() {
+    return { searchContent: "" };
+  },
   methods: {
-    turnToAddArticle() {
+    turnToAddBlog() {
       var that = this;
       that.$router.push("/helloWorld/BBS/blog/addBlog");
     },
-    search() {
-      var that = this;
-      axios
-        .post("/customer/searchQuestions", { title: that.searchContent })
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
   },
-}
+};
 </script>
 
 <style scoped>

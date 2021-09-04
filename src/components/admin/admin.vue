@@ -147,6 +147,12 @@ import adminArticle from "./components/adminArticleFunctions/adminArticle";
 import adminTag from "./components/adminTag";
 import adminUser from "./components/adminUser";
 import adminBlog from "./components/adminBlogFunctions/adminBlog";
+import axios from "axios";
+axios.defaults.headers["token"] = sessionStorage.getItem("token");
+window.addEventListener("setItem", (e) => {
+  console.log(e);
+  axios.defaults.headers["token"] = e.newValue;
+});
 export default {
   name: "admin",
   components: { adminArticle, adminTag, adminBlog, adminUser },
