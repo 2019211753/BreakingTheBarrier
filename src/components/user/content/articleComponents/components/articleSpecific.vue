@@ -303,7 +303,7 @@ export default {
             message: "删除成功",
             type: "success",
           });
-          that.$router.push("/helloWorld/BBS/question");
+          that.$router.push("/helloWorld/BBS/questions");
         })
         .catch(function (error) {
           console.log(error);

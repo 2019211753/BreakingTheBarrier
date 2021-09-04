@@ -6,14 +6,14 @@
         <ul>
           <li>
             <a href=""
-              ><router-link to="/helloWorld/BBS/question"
+              ><router-link to="/helloWorld/BBS/questions"
                 ><i class="home icon"></i>问答</router-link
               >></a
             >
           </li>
           <li>
             <a href=""
-              ><router-link to="/helloWorld/BBS/blog"
+              ><router-link to="/helloWorld/BBS/blogs"
                 ><i class="home icon"></i>博客</router-link
               >></a
             >
@@ -72,5 +72,4 @@ a {
 li {
   list-style: none;
 }
-
 </style>

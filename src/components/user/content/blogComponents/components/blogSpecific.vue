@@ -298,7 +298,7 @@ export default {
             message: "删除成功",
             type: "success",
           });
-          that.$router.push("/helloWorld/BBS/blog");
+          that.$router.push("/helloWorld/BBS/blogs");
         })
         .catch(function (error) {
           console.log(error);

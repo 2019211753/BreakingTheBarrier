@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-empty
+      :image-size="200"
+      v-if="!contentList.length"
+      description="没有找到相关内容"
+    ></el-empty>
     <div class="framework" v-for="item in contentList">
       <br />
       <div class="frameworkBody">
@@ -20,8 +25,8 @@
           <a href=""
             ><router-link
               :to="{
-                path: '/helloWorld/BBS/blogContent',
-                query: { blogId: item.id },
+                path: '/helloWorld/BBS/articleContent',
+                query: { articleId: item.id },
               }"
               >{{ item.title }}</router-link
             ></a
@@ -57,20 +62,18 @@
 
 <script>
 import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 export default {
-  name: "blogContents",
+  name: "searchArticleResult",
   data() {
     return { contentList: [], pageSize: 0 };
   },
   created() {
     var that = this;
     axios
-      .get("/listBlogs/?page=0")
+      .post("/searchQuestions/", { query: that.$route.query.searchContent })
       .then(function (response) {
-        console.log(response.data);
         that.contentList = response.data.data.pages.content;
-        that.pageSize = response.data.data.pages.totalPages;
+        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -117,9 +120,5 @@ img {
 .el-pagination {
   margin-top: 20px;
   margin-left: 25%;
-}
-p {
-  font-size: 15px;
-  font-weight: 900;
 }
 </style>

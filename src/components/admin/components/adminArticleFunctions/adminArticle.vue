@@ -1,16 +1,12 @@
 <template>
   <div>
     <div class="ui icon input">
-      <input type="text" placeholder="搜索..." />
+      <input
+        type="text"
+        placeholder="请输入关键字搜索..."
+        v-model="searchContent"
+      />
       <i class="inverted circular search link icon" @click="search()"></i>
-    </div>
-    <div class="ui icon input">
-      <input type="text" placeholder="搜索..." />
-      <i class="inverted circular search link icon"></i>
-    </div>
-    <div class="ui icon input">
-      <input type="text" placeholder="搜索..." />
-      <i class="inverted circular search link icon"></i>
     </div>
     <el-container>
       <el-aside width="250px"
@@ -104,17 +100,31 @@
 import axios from "axios";
 export default {
   name: "adminArticle",
+  data() {
+    return { searchContent: "" };
+  },
   methods: {
     search() {
       var that = this;
-      axios
-        .post("/admin/searchQuestions", { title: "test" })
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
+      if (that.searchContent) {
+        axios
+          .post("/admin/searchQuestions", {
+            query: that.searchContent,
+            tagIds: [],
+            nickname: "",
+          })
+          .then(function (response) {
+            console.log(response.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        that.$message({
+          message: "请输入查找内容",
+          type: "warning",
         });
+      }
     },
   },
 };

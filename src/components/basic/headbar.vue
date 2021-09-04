@@ -12,7 +12,7 @@
         </li>
         <li>
           <a href=""
-            ><router-link to="/helloWorld/BBS/question">
+            ><router-link to="/helloWorld/BBS/questions">
               <i class="home icon"></i>论坛</router-link
             ></a
           >

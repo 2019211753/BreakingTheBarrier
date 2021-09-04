@@ -51,7 +51,7 @@ export default {
           .then(function (response) {
             console.log(response);
             if (response.data.code == 200) {
-              sessionStorage["token"] = response.data.data.token;
+              that.resetSetItem("token", response.data.data.token);
             }
           })
           .catch(function (error) {

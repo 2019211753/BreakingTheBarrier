@@ -2,16 +2,23 @@
   <div class="body">
     <div class="main">
       <div class="contents">
-        <articleContents></articleContents>
+        <router-view></router-view>
       </div>
     </div>
     <br />
     <div class="hot">
       <hot></hot>
       <br />
-      <div class="ui fluid icon input">
+      <div class="ui fluid input">
         <input type="text" placeholder="搜索..." v-model="searchContent" />
-        <i class="inverted circular search link icon" @click="search()"></i>
+        <router-link
+          :to="{
+            path: '/helloWorld/BBS/searchArticleResult',
+            query: { searchContent: this.searchContent },
+          }"
+        >
+          <button class="ui button" v-if="this.searchContent">搜索</button>
+        </router-link>
       </div>
       <br />
       <div class="ui fluid button" @click="turnToAddArticle()">发布内容</div>
@@ -20,13 +27,10 @@
 </template>
 
 <script>
-import articleContents from "./components/articleContents";
 import hot from "./components/hot";
-import axios from "axios";
-
 export default {
   name: "article",
-  components: { articleContents, hot },
+  components: { hot },
   data() {
     return { searchContent: "" };
   },
@@ -34,24 +38,6 @@ export default {
     turnToAddArticle() {
       var that = this;
       that.$router.push("/helloWorld/BBS/article/addArticle");
-    },
-    search() {
-      var that = this;
-      if (that.searchContent) {
-        axios
-          .post("/customer/searchQuestions", { query: that.searchContent })
-          .then(function (response) {
-            console.log(response.data);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      } else {
-        that.$message({
-          message: "请输入搜索内容",
-          type: "warning",
-        });
-      }
     },
   },
 };
