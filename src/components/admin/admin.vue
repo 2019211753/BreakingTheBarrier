@@ -1,9 +1,23 @@
 <template>
   <div class="admin">
     <el-container>
-      <el-header class="el-header"></el-header>
+      <el-header style="height: 40px" class="el-header"></el-header>
       <el-main
-        ><div class="adminTag">
+        ><el-container>
+          <el-aside width="640px"
+            ><img src="../../assets/adminBG.jpg" style="width: 100%"
+          /></el-aside>
+          <el-main
+            ><img
+              class="ui centered small circular image"
+              src="../../assets/avatar.jpg"
+            />
+            <h2>东无神话</h2>
+
+            <h4>你好世界</h4>
+          </el-main> </el-container
+        ><br /><br />
+        <div class="adminTag">
           <h4 class="ui horizontal divider header">
             <i class="bar chart icon"></i>
             标签管理
@@ -151,9 +165,15 @@ export default {
 </script>
 
 <style scoped>
-/* .el-header {
-  background-color: brown;
-} */
+h2 {
+  text-align: center;
+}
+h4 {
+  text-align: center;
+}
+.el-header {
+  background-color: rgb(100, 133, 208);
+}
 .admin {
   width: 80%;
   margin: auto;

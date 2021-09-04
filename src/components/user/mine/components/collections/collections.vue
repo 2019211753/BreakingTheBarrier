@@ -1,5 +1,27 @@
 <template>
   <div>
+    <div class="ui basic modal">
+      <div class="ui icon header">
+        <i class="archive icon"></i>
+        创建收藏夹
+        <br />
+        <br />
+        <div class="ui labeled input">
+          <div class="ui label">名称</div>
+          <input type="text" placeholder="" v-model="fileName" />
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui toggle checkbox">
+          <input type="checkbox" name="public" />
+          <label>是否公开</label>
+        </div>
+        <div class="ui green ok inverted button" @click="sure()">
+          <i class="checkmark icon"></i>
+          确定
+        </div>
+      </div>
+    </div>
     <br />
     <div class="ui four stackable cards">
       <div class="card" v-for="item in favoriteList">
@@ -31,42 +53,18 @@
           {{ item.createTime }}
         </div> -->
       </div>
-      <div class="card">
-        <!-- <div class="image"><img src="../../../../../assets/bg.jpg" /></div> -->
-        <div class="ui button" style="height: 100%" @click="createFavorites()">
-          创建收藏夹
-        </div>
-      </div>
+      <!-- <div class="image"><img src="../../../../../assets/bg.jpg" /></div> -->
     </div>
     <br />
-    <div class="ui basic modal">
-      <div class="ui icon header">
-        <i class="archive icon"></i>
-        创建收藏夹
-        <br />
-        <br />
-        <div class="ui labeled input">
-          <div class="ui label">名称</div>
-          <input type="text" placeholder="" v-model="fileName" />
-        </div>
-      </div>
-      <div class="actions">
-        <div class="ui toggle checkbox">
-          <input type="checkbox" name="public" />
-          <label>是否公开</label>
-        </div>
-        <div class="ui green ok inverted button" @click="sure()">
-          <i class="checkmark icon"></i>
-          确定
-        </div>
-      </div>
+    <div class="ui button" style="height: 100%" @click="createFavorites()">
+      创建收藏夹
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-axios.defaults.headers["token"] = sessionStorage.getItem("token");
+/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 export default {
   name: "collections",
   data() {
@@ -111,6 +109,12 @@ export default {
         .get("/customer/favorite/" + id + "/delete")
         .then(function (response) {
           console.log(response.data);
+          for (var i = 0; i < that.favoriteList.length; i++) {
+            if (that.favoriteList[i].id == id) {
+              that.favoriteList.pop(that.favoriteList[i]);
+              break;
+            }
+          }
           that.$message({
             message: response.data.msg,
             type: "success",

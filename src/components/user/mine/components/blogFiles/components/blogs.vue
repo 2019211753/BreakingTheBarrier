@@ -25,8 +25,8 @@
           <a href=""
             ><router-link
               :to="{
-                path: '/helloWorld/BBS/articleContent',
-                query: { articleId: item.id },
+                path: '/helloWorld/BBS/blogContent',
+                query: { blogId: item.id },
               }"
               >{{ item.title }}</router-link
             ></a
@@ -56,7 +56,7 @@
 import axios from "axios";
 /* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 export default {
-  name: "questions",
+  name: "blogs",
   data() {
     return {
       contentList: [],
@@ -79,7 +79,7 @@ export default {
   created() {
     var that = this;
     axios
-      .get("/customer/archivesQuestion")
+      .get("/customer/archivesBlog")
       .then(function (response) {
         console.log(response.data);
         that.count = response.data.data.count;

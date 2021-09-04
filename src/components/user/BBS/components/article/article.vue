@@ -25,8 +25,11 @@ import hot from "./components/hot";
 import axios from "axios";
 
 export default {
-  name: "article",components:{articleContents,hot},
-  data(){return {searchContent:""}},
+  name: "article",
+  components: { articleContents, hot },
+  data() {
+    return { searchContent: "" };
+  },
   methods: {
     turnToAddArticle() {
       var that = this;
@@ -34,17 +37,24 @@ export default {
     },
     search() {
       var that = this;
-      axios
-        .post("/customer/searchQuestions", { title: that.searchContent })
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
+      if (that.searchContent) {
+        axios
+          .post("/customer/searchQuestions", { query: that.searchContent })
+          .then(function (response) {
+            console.log(response.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        that.$message({
+          message: "请输入搜索内容",
+          type: "warning",
         });
+      }
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -66,7 +76,6 @@ export default {
 .hot {
   /* background-color: green; */
   /*  margin-top: 10px; */
-
   width: 35%;
   float: left;
   margin-left: 1%;

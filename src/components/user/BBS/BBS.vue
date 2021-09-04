@@ -26,11 +26,8 @@
 </template>
 
 <script>
-
 export default {
   name: "BBS",
-
-
 };
 </script>
 

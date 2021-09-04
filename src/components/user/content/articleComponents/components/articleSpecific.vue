@@ -38,7 +38,7 @@
         :class="disapproved == true ? articleDislikeIsActive : button"
         @click="dislikeArticle(template.id)"
       >
-        <i class="heart icon"></i>
+        <i class="thumbs down icon"></i>
         {{ articleDislikeNumber }}
       </div>
       <div class="ui blue icon button" v-if="template.nickname == nowUser">
@@ -130,7 +130,7 @@
 
 <script>
 import axios from "axios";
-axios.defaults.headers["token"] = sessionStorage.getItem("token");
+/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 import E from "wangeditor";
 export default {
   name: "articleSpecific",
@@ -148,7 +148,7 @@ export default {
       articleLikeIsActive: "ui red button",
       articleDislikeIsActive: "ui blue button",
       articleCollectIsActive: "ui yellow button",
-      nowUser: sessionStorage.getItem("nickname"),
+      nowUser: "",
       favoriteList: [],
       favoriteId: sessionStorage["favoriteId"],
       /* ---------------------------------- */
@@ -167,7 +167,7 @@ export default {
       .get("/customer/personal")
       .then(function (response) {
         console.log(response.data.data.user);
-        sessionStorage["nickname"] = response.data.data.user.nickname;
+        that.nowUser = response.data.data.user.nickname;
       })
       .catch(function (error) {
         console.log(error);

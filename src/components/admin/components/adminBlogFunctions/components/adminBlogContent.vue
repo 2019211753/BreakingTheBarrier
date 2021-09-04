@@ -38,7 +38,7 @@
         :class="disapproved == true ? articleDislikeIsActive : button"
         @click="dislikeArticle(template.id)"
       >
-        <i class="thumbs down icon"></i>
+        <i class="heart icon"></i>
         {{ articleDislikeNumber }}
       </div>
       <div class="ui blue icon button" v-if="template.nickname == nowUser">
@@ -79,16 +79,16 @@
                   class="reply"
                   @click="likeComment(item.id)"
                   v-model="likeNumber"
-                  >赞( {{ item.likesNum }})</a
+                >赞( {{ item.likesNum }})</a
                 ><a class="reply" @click="dislikeComment(item.id)"
-                  >踩({{ item.disLikesNum }})</a
-                ><a class="reply" @click="replyComment(item.id)">回复</a
-                ><a
-                  class="reply"
-                  @click="deleteComment(item.id)"
-                  v-if="item.nickname == nowUser"
-                  >删除</a
-                >
+              >踩({{ item.disLikesNum }})</a
+              ><a class="reply" @click="replyComment(item.id)">回复</a
+              ><a
+                class="reply"
+                @click="deleteComment(item.id)"
+                v-if="item.nickname == nowUser"
+              >删除</a
+              >
               </div>
             </div>
           </div>
@@ -128,10 +128,10 @@
 
 <script>
 import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+axios.defaults.headers["token"] = sessionStorage.getItem("token");
 import E from "wangeditor";
 export default {
-  name: "blogSpecific",
+  name: "adminBlogContent",
   data() {
     return {
       template: "",
@@ -146,7 +146,7 @@ export default {
       articleLikeIsActive: "ui red button",
       articleDislikeIsActive: "ui blue button",
       articleCollectIsActive: "ui yellow button",
-      nowUser: "",
+      nowUser: sessionStorage.getItem("nickname"),
       favoriteList: [],
       /* ---------------------------------- */
       likeNumber: "",
@@ -164,7 +164,7 @@ export default {
       .get("/customer/personal")
       .then(function (response) {
         console.log(response.data.data.user);
-        that.nowUser = response.data.data.user.nickname;
+        sessionStorage["nickname"] = response.data.data.user.nickname;
       })
       .catch(function (error) {
         console.log(error);
@@ -271,9 +271,9 @@ export default {
       axios
         .get(
           "/customer/favorite/" +
-            sessionStorage.getItem("favoriteId") +
-            "/modify/question/" +
-            this.$route.query.articleId
+          sessionStorage.getItem("favoriteId") +
+          "/modify/question/" +
+          this.$route.query.articleId
         )
         .then(function (response) {
           console.log(response.data);
@@ -423,10 +423,10 @@ export default {
       axios
         .get(
           "/blog/" +
-            sessionStorage.getItem("articleId") +
-            "/comment/" +
-            id +
-            "/delete"
+          sessionStorage.getItem("articleId") +
+          "/comment/" +
+          id +
+          "/delete"
         )
         .then(function (response) {
           console.log(response.data);

@@ -6,8 +6,8 @@
           <br />
           <div class="avatar">
             <img
-              class="ui small rounded image"
-              src="../../../assets/logo.png"
+              class="ui small circular image"
+              src="../../../assets/avatar.jpg"
             />
           </div>
           <div class="information">
@@ -57,8 +57,8 @@
                 </li>
                 <li>
                   <a href=""
-                    ><router-link to="/helloWorld/mine/friends">
-                      <i class="home icon"></i>关注</router-link
+                    ><router-link to="/helloWorld/mine/friends/following">
+                      <i class="home icon"></i>朋友</router-link
                     ></a
                   >
                 </li>
@@ -99,7 +99,6 @@
 <script>
 import recommend from "./components/recommend";
 import axios from "axios";
-axios.defaults.headers["token"] = sessionStorage.getItem("token");
 export default {
   components: { recommend },
   name: "mine",
@@ -113,7 +112,6 @@ export default {
       .then(function (response) {
         console.log(response.data.data.user);
         that.userData = response.data.data.user;
-        sessionStorage["nickname"] = that.userData.nickname;
       })
       .catch(function (error) {
         console.log(error);
@@ -134,7 +132,7 @@ export default {
   margin-top: 20px;
   width: 64%;
   float: left;
-  height: 600px;
+  /* height: 600px; */
   /* background-color: bisque; */
 }
 .side {

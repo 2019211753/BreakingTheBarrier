@@ -28,6 +28,8 @@ import adminArticle from "../components/admin/components/adminArticleFunctions/a
 import adminBlog from "../components/admin/components/adminBlogFunctions/adminBlog";
 import adminArticleContent from "../components/admin/components/adminArticleFunctions/components/adminArticleContent";
 import adminBlogContent from "../components/admin/components/adminBlogFunctions/components/adminBlogContent";
+import following from "../components/user/mine/components/friends/components/following";
+import followed from "../components/user/mine/components/friends/components/followed";
 Vue.use(Router)
 
 export default new Router({
@@ -123,7 +125,16 @@ export default new Router({
                 }, {
                     path: '/helloWorld/mine/friends',
                     name: 'friends',
-                    component: friends
+                    component: friends,
+                    children: [{
+                        path: '/helloWorld/mine/friends/following',
+                        name: 'following',
+                        component: following
+                    }, {
+                        path: '/helloWorld/mine/friends/followed',
+                        name: 'followed',
+                        component: followed
+                    }]
                 }, {
                     path: '/helloWorld/mine/information',
                     name: 'information',

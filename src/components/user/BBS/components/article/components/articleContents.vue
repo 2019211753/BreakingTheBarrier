@@ -57,7 +57,7 @@
 
 <script>
 import axios from "axios";
-axios.defaults.headers["token"] = sessionStorage.getItem("token");
+/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 export default {
   name: "articleContents",
   data() {
@@ -65,6 +65,7 @@ export default {
   },
   created() {
     var that = this;
+
     axios
       .get("/listQuestions/?page=0")
       .then(function (response) {

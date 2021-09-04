@@ -12,7 +12,6 @@
 <script>
 import left from "./components/left";
 import right from "./components/right";
-
 export default {
   name: "rank",
   components: { right, left },

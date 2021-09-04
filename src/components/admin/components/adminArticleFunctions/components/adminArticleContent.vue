@@ -38,7 +38,7 @@
         :class="disapproved == true ? articleDislikeIsActive : button"
         @click="dislikeArticle(template.id)"
       >
-        <i class="thumbs down icon"></i>
+        <i class="heart icon"></i>
         {{ articleDislikeNumber }}
       </div>
       <div class="ui blue icon button" v-if="template.nickname == nowUser">
@@ -48,7 +48,6 @@
     <!-- <div class="ui divider"></div>
     <p style="float: left">转发</p>
     <p>举报</p> -->
-
     <!-- --------------------------- -->
     <br />
     <div>
@@ -79,16 +78,16 @@
                   class="reply"
                   @click="likeComment(item.id)"
                   v-model="likeNumber"
-                  >赞( {{ item.likesNum }})</a
+                >赞( {{ item.likesNum }})</a
                 ><a class="reply" @click="dislikeComment(item.id)"
-                  >踩({{ item.disLikesNum }})</a
-                ><a class="reply" @click="replyComment(item.id)">回复</a
-                ><a
-                  class="reply"
-                  @click="deleteComment(item.id)"
-                  v-if="item.nickname == nowUser"
-                  >删除</a
-                >
+              >踩({{ item.disLikesNum }})</a
+              ><a class="reply" @click="replyComment(item.id)">回复</a
+              ><a
+                class="reply"
+                @click="deleteComment(item.id)"
+                v-if="item.nickname == nowUser"
+              >删除</a
+              >
               </div>
             </div>
           </div>
@@ -109,6 +108,9 @@
       <div class="ui four stackable cards">
         <div class="card" v-for="item in favoriteList">
           <div class="image"><img src="../../../../../assets/bg.jpg" /></div>
+          <a v-if="item.id == favoriteId" class="ui red right corner label">
+            <i class="save icon"></i>
+          </a>
           <div class="content">
             <a class="header" @click="getFavoriteId(item.id)">
               {{ item.title }}</a
@@ -128,10 +130,10 @@
 
 <script>
 import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+axios.defaults.headers["token"] = sessionStorage.getItem("token");
 import E from "wangeditor";
 export default {
-  name: "blogSpecific",
+  name: "adminArticleContent",
   data() {
     return {
       template: "",
@@ -146,8 +148,9 @@ export default {
       articleLikeIsActive: "ui red button",
       articleDislikeIsActive: "ui blue button",
       articleCollectIsActive: "ui yellow button",
-      nowUser: "",
+      nowUser: sessionStorage.getItem("nickname"),
       favoriteList: [],
+      favoriteId: sessionStorage["favoriteId"],
       /* ---------------------------------- */
       likeNumber: "",
       dislikeNumber: "",
@@ -164,13 +167,13 @@ export default {
       .get("/customer/personal")
       .then(function (response) {
         console.log(response.data.data.user);
-        that.nowUser = response.data.data.user.nickname;
+        sessionStorage["nickname"] = response.data.data.user.nickname;
       })
       .catch(function (error) {
         console.log(error);
       });
     axios
-      .get("/blog/" + this.$route.query.blogId)
+      .get("/question/" + this.$route.query.articleId)
       .then(function (response) {
         that.template = response.data.data.template;
         (that.approved = that.template.approved),
@@ -188,7 +191,7 @@ export default {
       });
     /* ------------------------- */
     axios
-      .get("/blog/" + this.$route.query.articleId + "/comments")
+      .get("/question/" + this.$route.query.articleId + "/comments")
       .then(function (response) {
         console.log(that.flatten(response.data.data.comments2));
         that.commentList = that.flatten(response.data.data.comments2);
@@ -219,7 +222,7 @@ export default {
     likeArticle(id) {
       var that = this;
       axios
-        .get("/blog/" + id + "/approve")
+        .get("/question/" + id + "/approve")
         .then(function (response) {
           console.log(response.data);
           that.approved = response.data.data.approved;
@@ -236,7 +239,7 @@ export default {
     dislikeArticle(id) {
       var that = this;
       axios
-        .get("/blog/" + id + "/disapprove")
+        .get("/question/" + id + "/disapprove")
         .then(function (response) {
           console.log(response.data);
           that.disapproved = response.data.data.disapproved;
@@ -264,6 +267,8 @@ export default {
       $(".ui.basic.modal").modal("show");
     },
     getFavoriteId(id) {
+      var that = this;
+      that.favoriteId = id;
       sessionStorage["favoriteId"] = id;
     },
     collectArticle() {
@@ -271,9 +276,9 @@ export default {
       axios
         .get(
           "/customer/favorite/" +
-            sessionStorage.getItem("favoriteId") +
-            "/modify/question/" +
-            this.$route.query.articleId
+          sessionStorage.getItem("favoriteId") +
+          "/modify/question/" +
+          this.$route.query.articleId
         )
         .then(function (response) {
           console.log(response.data);
@@ -291,14 +296,14 @@ export default {
     deleteArticle(id) {
       var that = this;
       axios
-        .get("/customer/blog/" + id + "/delete")
+        .get("/customer/question/" + id + "/delete")
         .then(function (response) {
           console.log(response.data);
           that.$message({
             message: "删除成功",
             type: "success",
           });
-          that.$router.push("/helloWorld/BBS/blog");
+          that.$router.push("/helloWorld/BBS/question");
         })
         .catch(function (error) {
           console.log(error);
@@ -394,7 +399,9 @@ export default {
       if (that.phoneEditor.txt.html()) {
         axios
           .post(
-            "/blog/" + sessionStorage.getItem("articleId") + "/comment/post",
+            "/question/" +
+            sessionStorage.getItem("articleId") +
+            "/comment/post",
             {
               content: that.phoneEditor.txt.html(),
               answer: true,
@@ -422,11 +429,11 @@ export default {
       var that = this;
       axios
         .get(
-          "/blog/" +
-            sessionStorage.getItem("articleId") +
-            "/comment/" +
-            id +
-            "/delete"
+          "/question/" +
+          sessionStorage.getItem("articleId") +
+          "/comment/" +
+          id +
+          "/delete"
         )
         .then(function (response) {
           console.log(response.data);
@@ -446,7 +453,9 @@ export default {
       if (that.phoneEditor.txt.html()) {
         axios
           .post(
-            "/blog/" + sessionStorage.getItem("articleId") + "/comment/post",
+            "/question/" +
+            sessionStorage.getItem("articleId") +
+            "/comment/post",
             {
               content: that.phoneEditor.txt.html(),
               answer: true,
