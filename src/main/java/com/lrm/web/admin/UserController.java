@@ -44,12 +44,16 @@ public class UserController {
      * @param userId 用户Id
      */
     @GetMapping("/controlSpeak/{userId}")
-    public void controlSpeak(@PathVariable Long userId) {
+    public Result controlSpeak(@PathVariable Long userId) {
+        Map<String, Object> hashMap = new HashMap<>(1);
         User user = userServiceImpl.getUser(userId);
         if (user == null) {
             throw new NotFoundException("未查询到该用户");
         }
         user.setCanSpeak(!user.getCanSpeak());
         userServiceImpl.saveUser(user);
+
+        hashMap.put("canSpeak", user.getCanSpeak());
+        return new Result(hashMap, "操作成功");
     }
 }

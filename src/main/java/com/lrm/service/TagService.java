@@ -20,7 +20,7 @@ public interface TagService {
 
     List<Tag> listTagTop();
 
-    List<Tag> listTag(String ids);
+    List<Tag> listTags(String ids);
 
     Set<Tag> listTags(Tag tag);
 

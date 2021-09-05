@@ -1,5 +1,7 @@
 package com.lrm.web.customer;
 
+import com.lrm.enumeration.DonationGrow;
+import com.lrm.enumeration.ImpactGrow;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.exception.NoPermissionException;
@@ -256,12 +258,18 @@ public class CustomerFavoriteController {
             }
 
             favoriteServiceImpl.add(favorite, t);
+            t.setImpact(t.getImpact() + ImpactGrow.COLLECTED.getGrow());
+            t.getUser().setDonation(t.getUser().getDonation() + DonationGrow.TEMPLATE_COLLECTED.getGrow());
+
+            templateServiceImpl.save(t);
 
             hashMap.put("collectedNum", t.getCollectedNum());
             hashMap.put("collected", true);
             return new Result(hashMap, "添加成功");
         } else {
             favoriteServiceImpl.remove(favorite, t);
+            t.setImpact(t.getImpact() - ImpactGrow.COLLECTED.getGrow());
+            templateServiceImpl.save(t);
 
             hashMap.put("collectedNum", t.getCollectedNum());
             hashMap.put("collected", false);

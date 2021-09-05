@@ -1,5 +1,7 @@
 package com.lrm.web;
 
+import com.lrm.enumeration.DonationGrow;
+import com.lrm.enumeration.ImpactGrow;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
@@ -298,11 +300,11 @@ public class ApproveController {
         //不明白为什么把他们放在saveLikes之前就可以update
         e.setLikesNum(e.getLikesNum() + p * 1);
 
-        //提问者贡献值对问题影响力+-8 (取消）点赞本身+-2
-        e.setImpact(e.getImpact() + p * 2 + p * 8);
+        //点赞对问题/博客影响力
+        e.setImpact(e.getImpact() + p * ImpactGrow.APPROVED.getGrow());
 
-        //问题被（取消）点赞 提问者贡献值+-2
-        receiveUser.setDonation(receiveUser.getDonation() + p * 2);
+        //问题被（取消）点赞 提问者贡献值+-
+        receiveUser.setDonation(receiveUser.getDonation() + p * DonationGrow.APPROVED_TEMPLATE.getGrow());
 
         repository.save(e);
         userServiceImpl.saveUser(receiveUser);
@@ -366,11 +368,10 @@ public class ApproveController {
         comment.setLikesNum(comment.getLikesNum() + p * 1);
         commentServiceImpl.saveComment(comment);
 
-        //问题被（取消）点赞 提问者贡献值+-3
-        receiveUser.setDonation(receiveUser.getDonation() + p * 3);
+        //问题被（取消）点赞 提问者贡献值+-
+        receiveUser.setDonation(receiveUser.getDonation() + p * DonationGrow.APPROVED_TEMPLATE.getGrow());
         userServiceImpl.saveUser(receiveUser);
 
-        //提问者贡献值对问题影响力+-12
         //（取消）点赞后的最高赞数
         Integer maxNum1 = 0;
         if (e instanceof Blog) {
@@ -380,7 +381,7 @@ public class ApproveController {
         if (e instanceof Question) {
             maxNum1 = getMaxLikesNum(commentServiceImpl.listAllCommentByBlogId(e.getId()));
         }
-        e.setImpact(e.getImpact() + p * 2 * (maxNum1 - maxNum0) + p * 12);
+        e.setImpact(e.getImpact() + p * ImpactGrow.MAX_APPROVED.getGrow() * (maxNum1 - maxNum0));
 
         repository.save(e);
     }

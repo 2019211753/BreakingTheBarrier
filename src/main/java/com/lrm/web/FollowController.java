@@ -1,5 +1,6 @@
 package com.lrm.web;
 
+import com.lrm.enumeration.DonationGrow;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.User;
@@ -48,13 +49,15 @@ public class FollowController {
         if (followedUser == followingUser) {
             throw new FailedOperationException("你不能关注你自己");
         }
+
         //取关
         if (followedUser.getFollowedUsers().contains(followingUser) &&
                 followingUser.getFollowingUsers().contains(followedUser)) {
             followedUser.getFollowedUsers().remove(followingUser);
             followedUser.setFollowedUserNum(followedUser.getFollowedUserNum() - 1);
             followingUser.getFollowingUsers().remove(followedUser);
-            followingUser.setFollowingUserNum(followedUser.getFollowingUserNum() - 1);
+            followingUser.setFollowingUserNum(followingUser.getFollowingUserNum() - 1);
+            followedUser.setDonation(followedUser.getDonation() + DonationGrow.FOLLOWED.getGrow());
 
             userServiceImpl.saveUser(followedUser);
             userServiceImpl.saveUser(followingUser);
@@ -72,7 +75,8 @@ public class FollowController {
             followedUser.getFollowedUsers().add(followingUser);
             followedUser.setFollowedUserNum(followedUser.getFollowedUserNum() + 1);
             followingUser.getFollowingUsers().add(followedUser);
-            followingUser.setFollowingUserNum(followedUser.getFollowingUserNum() + 1);
+            followingUser.setFollowingUserNum(followingUser.getFollowingUserNum() + 1);
+            followedUser.setDonation(followedUser.getDonation() - DonationGrow.FOLLOWED.getGrow());
 
             userServiceImpl.saveUser(followedUser);
             userServiceImpl.saveUser(followingUser);

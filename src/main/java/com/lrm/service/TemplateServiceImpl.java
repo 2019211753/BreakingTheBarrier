@@ -1,6 +1,8 @@
 package com.lrm.service;
 
 import com.lrm.dao.TemplateRepository;
+import com.lrm.enumeration.DonationGrow;
+import com.lrm.enumeration.ImpactGrow;
 import com.lrm.po.Template;
 import com.lrm.po.User;
 import com.lrm.util.DataStructureUtils;
@@ -52,7 +54,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         TemplateRepository<T> repository = getTemplateRepository();
         //将tagIds按顺序重排
         t.setTagIds(tagService.listTagIdsFromSmallToBig(t.getTagIds()));
-        t.setTags(tagService.listTag(t.getTagIds()));
+        t.setTags(tagService.listTags(t.getTagIds()));
         //关联用户相关
         t.setUser(user);
         t.setPosterUserId0(user.getId());
@@ -68,7 +70,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         //默认为不隐藏
         t.setHidden(false);
         //根据发布t人的贡献初始化t的影响力
-        user.setDonation(user.getDonation() + 2);
+        user.setDonation(user.getDonation() + DonationGrow.APPROVED_TEMPLATE.getGrow());
         t.setImpact(user.getDonation());
         return repository.save(t);
     }
@@ -161,25 +163,35 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         String tagIds = queryMap.get("tagIds");
 
         return repository.findAll((root, cq, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
+            //或查询
+            List<Predicate> listOr = new ArrayList<>();
             //""是空字节，而不是null 下面这种写法 而不是Question.getTitle().equals("")是防止它是null 从而造成空指针异常
             if (query != null && !"".equals(query)) {
-                predicates.add(cb.like(root.get("title"), "%" + query + "%"));
-                predicates.add(cb.like(root.get("description"), "%" + query + "%"));
-                predicates.add(cb.like(root.get("content"), "%" + query + "%"));
+                listOr.add(cb.like(root.get("title"), "%" + query + "%"));
+                listOr.add(cb.like(root.get("description"), "%" + query + "%"));
+                listOr.add(cb.like(root.get("content"), "%" + query + "%"));
+
             }
+            //or查询加入查询条件
+            Predicate predicateOr = cb.or(listOr.toArray(new Predicate[0]));
+
+            //与查询
+            List<Predicate> listAnd = new ArrayList<>();
+
             if (nickname != null && !"".equals(nickname)) {
                 Join<Object, Object> join = root.join("user");
-                predicates.add(cb.equal(join.get("nickname"), nickname));
+                listAnd.add(cb.equal(join.get("nickname"), nickname));
             }
 
             if (tagIds != null && !"".equals(tagIds)) {
                 String newTagIds = tagService.listTagIdsFromSmallToBig(tagIds);
-
-                predicates.add(cb.like(root.get("tagIds"), "%" + newTagIds + "%"));
+                listAnd.add(cb.like(root.get("tagIds"), "%" + newTagIds + "%"));
             }
 
-            cq.where(predicates.toArray(new Predicate[0]));
+            //and查询加入查询条件
+            Predicate predicateAnd = cb.and(listAnd.toArray(new Predicate[0]));
+
+            cq.where(predicateOr, predicateAnd);
             return null;
         }, pageable);
     }
@@ -189,9 +201,9 @@ public abstract class TemplateServiceImpl<T extends Template>  {
 
         //后端数据库查询得到的T对象
         T backT = getById(id);
-        //每多1次浏览，影响力+2
+        //每多1次浏览，影响力+
         backT.setView(backT.getView()+1);
-        backT.setImpact(backT.getImpact() + 2);
+        backT.setImpact(backT.getImpact() + ImpactGrow.CLICKED.getGrow());
         repository.save(backT);
         BeanUtils.copyProperties(backT, frontT);
         String content = backT.getContent();
@@ -220,7 +232,8 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         {
             return ts.subList(0, size - 1);
         }
-        return ts;    }
+        return ts;
+    }
 
     public Map<String, Map<String, List<T>>> archivesByUserId(Long userId) {
         TemplateRepository<T> repository = getTemplateRepository();

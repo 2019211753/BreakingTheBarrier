@@ -92,8 +92,8 @@ public class TemplateController {
      * @param query    查询条件
      * @return 查询结果、查询条件
      */
-    @GetMapping("/searchQuestions")
-    public Result searchQuestions(@PageableDefault(size = 10, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+    @PostMapping("/searchQuestions")
+    public Result searchQuestions(@PageableDefault(size = 6, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                               @RequestBody Map<String, String> query) {
 
         return searchTemplates(questionServiceImpl, query.get("query"), pageable);
@@ -118,6 +118,12 @@ public class TemplateController {
 
         //mysql语句 模糊查询的格式 jpa不会帮处理string前后有没有%的
         Page<T> pages = templateServiceImpl.listByQuery("%" + query + "%", pageable);
+        for (T t0 : pages.getContent()) {
+            //得到发布问题的人
+            User postUser = t0.getUser();
+
+            t0.setNickname(postUser.getNickname());
+        }
 
         hashMap.put("pages", pages);
 

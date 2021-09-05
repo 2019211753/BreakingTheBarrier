@@ -74,7 +74,7 @@ public class TagShowController {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         //需要查询的初始标签
-        List<Tag> tags = tagServiceImpl.listTag(tagIds);
+        List<Tag> tags = tagServiceImpl.listTags(tagIds);
 
         //初始标签+子标签，按标签名排序
         Set<Tag> tagSet = new TreeSet<>(Comparator.comparing(Tag::getName));

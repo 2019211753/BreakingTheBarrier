@@ -124,10 +124,11 @@ public class MessageController {
      * @param likesId 点赞id
      */
     @GetMapping("/likes/{likesId}/read")
-    public void readLikes(@PathVariable Long likesId) {
+    public Result readLikes(@PathVariable Long likesId) {
         Likes likes = likesServiceImpl.get(likesId);
         likes.setLooked(true);
         likesServiceImpl.save(likes);
+        return new Result(null, "已读成功");
     }
 
     /**
@@ -136,13 +137,14 @@ public class MessageController {
      * @param request 获取当前用户id
      */
     @GetMapping("/readAllComments")
-    public void readAllComments(HttpServletRequest request) {
+    public Result readAllComments(HttpServletRequest request) {
         Long userId = TokenInfo.getCustomUserId(request);
         List<Comment> comments = commentServiceImpl.listComments(userId, false);
         for (Comment comment : comments) {
             comment.setLooked(true);
             commentServiceImpl.saveComment(comment);
         }
+        return new Result(null, "已读成功");
     }
 
     /**
@@ -151,7 +153,7 @@ public class MessageController {
      * @param request 获取当前用户id
      */
     @GetMapping("/readAllLikes")
-    public void readAllLikes(HttpServletRequest request) {
+    public Result readAllLikes(HttpServletRequest request) {
         Long userId = TokenInfo.getCustomUserId(request);
 
         List<Likes> likes = likesServiceImpl.list(userId, false);
@@ -159,6 +161,7 @@ public class MessageController {
             likes1.setLooked(true);
             likesServiceImpl.save(likes1);
         }
+        return new Result(null, "已读成功");
     }
 }
 

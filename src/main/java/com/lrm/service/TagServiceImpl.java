@@ -84,7 +84,9 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public List<Tag> listTagTop() {
-        return tagRepository.findByParentTagNull();
+        List<Tag> tagList = tagRepository.findByParentTagNull();
+        insertChildTags(tagList);
+        return tagList;
     }
 
     /**
@@ -94,7 +96,7 @@ public class TagServiceImpl implements TagService {
      * @return 标签集合
      */
     @Override
-    public List<Tag> listTag(String ids) { //1,2,3
+    public List<Tag> listTags(String ids) { //1,2,3
         List<Tag> tags = new ArrayList<>();
         List<Long> tagIds = DataStructureUtils.convertToList(ids);
         //这里没有对应标签就不抛异常了 找有标签的就行
@@ -169,4 +171,9 @@ public class TagServiceImpl implements TagService {
         return tagIdsBuilder.toString();
     }
 
+    public void insertChildTags(List<Tag> tags) {
+        for (Tag tag : tags) {
+            tag.setChildTags(tag.getSonTags());
+        }
+    }
 }

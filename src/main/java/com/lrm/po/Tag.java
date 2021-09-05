@@ -43,16 +43,24 @@ public class Tag {
 
 
     /**
-     * 标签的子标签
+     * 标签的子标签 不返回前端 只在展示全部标签时以childTags形式展示
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "parentTag", cascade = CascadeType.REMOVE)
     private List<Tag> sonTags = new ArrayList<>();
+
     /**
      * 标签的父标签
      */
     @JsonIgnore
     @ManyToOne
     private Tag parentTag;
+
+    /**
+     * sonTags的替代品
+     */
+    @Transient
+    private List<Tag> childTags = new ArrayList<>();;
 
     /**
      * 不用级联删除 这块需要返回错误页面 告知管理员标签下有博客的情况下不能删除标签
@@ -133,6 +141,14 @@ public class Tag {
 
     public void setSonTags(List<Tag> sonTags) {
         this.sonTags = sonTags;
+    }
+
+    public List<Tag> getChildTags() {
+        return childTags;
+    }
+
+    public void setChildTags(List<Tag> childTags) {
+        this.childTags = childTags;
     }
 
     public Tag getParentTag() {

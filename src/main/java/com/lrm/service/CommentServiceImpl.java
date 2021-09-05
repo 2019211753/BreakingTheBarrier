@@ -1,6 +1,8 @@
 package com.lrm.service;
 
 import com.lrm.dao.CommentRepository;
+import com.lrm.enumeration.DonationGrow;
+import com.lrm.enumeration.ImpactGrow;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import org.springframework.beans.BeanUtils;
@@ -88,7 +90,7 @@ public class CommentServiceImpl implements CommentService {
         //所属问题评论数增加 包含评论下的子评论了
         t.setCommentsNum(t.getCommentsNum() + 1);
         //影响力
-        t.setImpact(t.getImpact() + 2);
+        t.setImpact(t.getImpact() + ImpactGrow.COMMENTED.getGrow());
         if (t instanceof Question) {
             comment.setQuestion((Question) t);
             comment.setQuestionId0(t.getId());
@@ -107,7 +109,7 @@ public class CommentServiceImpl implements CommentService {
 
         //如果是有效回答 回答者贡献+3 问题影响力+2 否则仅仅问题影响力+2
         if (comment.getAnswer()) {
-            postUser.setDonation(postUser.getDonation() + 4);
+            postUser.setDonation(postUser.getDonation() + DonationGrow.POST_EFFECTIVE_COMMENT.getGrow());
         }
 
         return commentRepository.save(comment);
@@ -138,9 +140,9 @@ public class CommentServiceImpl implements CommentService {
         t.setCommentsNum(t.getCommentsNum() - 1);
 
         if (comment.getAnswer()) {
-            postUser.setDonation(postUser.getDonation() - 4);
+            postUser.setDonation(postUser.getDonation() - DonationGrow.POST_EFFECTIVE_COMMENT.getGrow());
         }
-        t.setImpact(t.getImpact() - 2);
+        t.setImpact(t.getImpact() - ImpactGrow.COMMENTED.getGrow());
 
         templateServiceImpl.save(t);
         commentRepository.deleteById(commentId);
