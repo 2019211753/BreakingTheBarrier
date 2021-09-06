@@ -6,6 +6,7 @@ import com.lrm.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,11 +31,23 @@ public class ControllerExceptionHandler {
 
 
     /**
+     * 前端发送的请求方式有错
+     * 如POST发送成GET
+     *
+     * @return 给前端展示的结果 code为407
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public Result illegalRequestExceptionHandler(HttpServletRequest request, HttpRequestMethodNotSupportedException exception) {
+        logger.error("Request URL: {}, exception : {}", request.getRequestURL(), exception.getMessage());
+        return Result.returnIllegalRequestException("请使用正确的请求方式", request.getRequestURL());
+    }
+
+    /**
      * @param e 自定义四种异常类的公共父类 通过多态简化为一个Handler
      * @return 给前端展示的结果 code为407-403
      */
     @ExceptionHandler(CommonException.class)
-    public Result CommonExceptionHandler(HttpServletRequest request, CommonException e) {
+    public Result commonExceptionHandler(HttpServletRequest request, CommonException e) {
         logger.error("Request URL: {}, exception : {}", request.getRequestURL(), e);
         return Result.returnCommonException(e, request.getRequestURL());
     }
@@ -44,7 +57,7 @@ public class ControllerExceptionHandler {
      *
      * @return 给前端展示的结果 code为404
      */
-    @ExceptionHandler(value = {NoHandlerFoundException.class})
+    @ExceptionHandler(NoHandlerFoundException.class)
     public Result handleNotFoundExceptions(HttpServletRequest request) {
         return Result.returnNoHandlerFoundException(request.getRequestURL());
     }
@@ -56,7 +69,7 @@ public class ControllerExceptionHandler {
      * @return 给前端展示的结果 code为402
      */
     @ExceptionHandler({IOException.class})
-    public Result IOEHandler(HttpServletRequest request, IOException e) {
+    public Result iOEHandler(HttpServletRequest request, IOException e) {
         logger.error("Request URL: {}, exception : {}", request.getRequestURL(), e);
         return Result.returnIOAndMaxSizeException(request.getRequestURL());
     }
@@ -68,7 +81,7 @@ public class ControllerExceptionHandler {
      * @return 给前端展示的结果 code为402
      */
     @ExceptionHandler({MaxUploadSizeExceededException.class})
-    public Result IOEHandler(HttpServletRequest request, MaxUploadSizeExceededException e) {
+    public Result iOEHandler(HttpServletRequest request, MaxUploadSizeExceededException e) {
         logger.error("Request URL: {}, exception : {}", request.getRequestURL(), e);
         return Result.returnIOAndMaxSizeException(request.getRequestURL());
     }

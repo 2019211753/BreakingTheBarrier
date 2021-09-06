@@ -31,6 +31,15 @@ public class Result {
 
     }
 
+    public static Result returnIllegalRequestException(String msg, StringBuffer url) {
+        Result result = new Result();
+        result.setData(null);
+        result.setMsg(msg);
+        result.setUrl(url);
+        result.setCode(StatusCode.ILLEGAL_REQUEST);
+        return result;
+    }
+
     public static Result returnCommonException(CommonException commonException, StringBuffer url) {
         Result result = new Result();
         result.setData(null);

@@ -3,7 +3,6 @@ package com.lrm.web.admin;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.exception.NotFoundException;
-import com.lrm.po.Blog;
 import com.lrm.po.Question;
 import com.lrm.service.BlogServiceImpl;
 import com.lrm.service.QuestionServiceImpl;
@@ -80,7 +79,7 @@ public class AdminTemplateController {
         }
 
         //令前端只传回tagIds而不是tag对象 将它转换为List<Tag> 在service层找到对应的Tag保存到数据库
-        question.setTags(tagServiceImpl.listTag(question.getTagIds()));
+        question.setTags(tagServiceImpl.listTags(question.getTagIds()));
         Question q = questionServiceImpl.update(question);
 
         if (q == null) {

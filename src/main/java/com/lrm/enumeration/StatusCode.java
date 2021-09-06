@@ -9,7 +9,8 @@ package com.lrm.enumeration;
  * @date 2021-07-29
  */
 public enum StatusCode {
-    /*
+    /**
+     * 407 定义为前端请求方式有错误
      * 406 定义为操作失败 如改名已有同名昵称了所以没改成功等等（不是跳转到异常页面，而是直接在当前页给出提示）
      * 405 定义为参数校验失败 如登录没写密码（不是跳转到异常页面，而是直接在当前页给出提示）
      * 404 定义为没找到对应资源
@@ -19,6 +20,7 @@ public enum StatusCode {
      * 400 定义其他未知错误
      * 200 为操作成功
      */
+    ILLEGAL_REQUEST(407),
     FAILED_OPERATION(406),
     ILLEGAL_PARAMETER(405),
     NOT_FOUND(404),
