@@ -79,16 +79,16 @@
                   class="reply"
                   @click="likeComment(item.id)"
                   v-model="likeNumber"
-                >赞( {{ item.likesNum }})</a
+                  >赞( {{ item.likesNum }})</a
                 ><a class="reply" @click="dislikeComment(item.id)"
-              >踩({{ item.disLikesNum }})</a
-              ><a class="reply" @click="replyComment(item.id)">回复</a
-              ><a
-                class="reply"
-                @click="deleteComment(item.id)"
-                v-if="item.nickname == nowUser"
-              >删除</a
-              >
+                  >踩({{ item.disLikesNum }})</a
+                ><a class="reply" @click="replyComment(item.id)">回复</a
+                ><a
+                  class="reply"
+                  @click="deleteComment(item.id)"
+                  v-if="item.nickname == nowUser"
+                  >删除</a
+                >
               </div>
             </div>
           </div>
@@ -170,7 +170,7 @@ export default {
         console.log(error);
       });
     axios
-      .get("/blog/" + this.$route.query.blogId)
+      .get("/blog/" + sessionStorage.getItem("blogId"))
       .then(function (response) {
         that.template = response.data.data.template;
         (that.approved = that.template.approved),
@@ -188,7 +188,7 @@ export default {
       });
     /* ------------------------- */
     axios
-      .get("/blog/" + this.$route.query.articleId + "/comments")
+      .get("/blog/" + sessionStorage.getItem("blogId") + "/comments")
       .then(function (response) {
         console.log(that.flatten(response.data.data.comments2));
         that.commentList = that.flatten(response.data.data.comments2);
@@ -271,9 +271,9 @@ export default {
       axios
         .get(
           "/customer/favorite/" +
-          sessionStorage.getItem("favoriteId") +
-          "/modify/question/" +
-          this.$route.query.articleId
+            sessionStorage.getItem("favoriteId") +
+            "/modify/question/" +
+            this.$route.query.articleId
         )
         .then(function (response) {
           console.log(response.data);
@@ -423,10 +423,10 @@ export default {
       axios
         .get(
           "/blog/" +
-          sessionStorage.getItem("articleId") +
-          "/comment/" +
-          id +
-          "/delete"
+            sessionStorage.getItem("articleId") +
+            "/comment/" +
+            id +
+            "/delete"
         )
         .then(function (response) {
           console.log(response.data);

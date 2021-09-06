@@ -78,16 +78,16 @@
                   class="reply"
                   @click="likeComment(item.id)"
                   v-model="likeNumber"
-                >赞( {{ item.likesNum }})</a
+                  >赞( {{ item.likesNum }})</a
                 ><a class="reply" @click="dislikeComment(item.id)"
-              >踩({{ item.disLikesNum }})</a
-              ><a class="reply" @click="replyComment(item.id)">回复</a
-              ><a
-                class="reply"
-                @click="deleteComment(item.id)"
-                v-if="item.nickname == nowUser"
-              >删除</a
-              >
+                  >踩({{ item.disLikesNum }})</a
+                ><a class="reply" @click="replyComment(item.id)">回复</a
+                ><a
+                  class="reply"
+                  @click="deleteComment(item.id)"
+                  v-if="item.nickname == nowUser"
+                  >删除</a
+                >
               </div>
             </div>
           </div>
@@ -173,7 +173,7 @@ export default {
         console.log(error);
       });
     axios
-      .get("/question/" + this.$route.query.articleId)
+      .get("/question/" + sessionStorage.getItem("articleId"))
       .then(function (response) {
         that.template = response.data.data.template;
         (that.approved = that.template.approved),
@@ -191,7 +191,7 @@ export default {
       });
     /* ------------------------- */
     axios
-      .get("/question/" + this.$route.query.articleId + "/comments")
+      .get("/question/" + sessionStorage.getItem("articleId") + "/comments")
       .then(function (response) {
         console.log(that.flatten(response.data.data.comments2));
         that.commentList = that.flatten(response.data.data.comments2);
@@ -276,9 +276,9 @@ export default {
       axios
         .get(
           "/customer/favorite/" +
-          sessionStorage.getItem("favoriteId") +
-          "/modify/question/" +
-          this.$route.query.articleId
+            sessionStorage.getItem("favoriteId") +
+            "/modify/question/" +
+            this.$route.query.articleId
         )
         .then(function (response) {
           console.log(response.data);
@@ -400,8 +400,8 @@ export default {
         axios
           .post(
             "/question/" +
-            sessionStorage.getItem("articleId") +
-            "/comment/post",
+              sessionStorage.getItem("articleId") +
+              "/comment/post",
             {
               content: that.phoneEditor.txt.html(),
               answer: true,
@@ -430,10 +430,10 @@ export default {
       axios
         .get(
           "/question/" +
-          sessionStorage.getItem("articleId") +
-          "/comment/" +
-          id +
-          "/delete"
+            sessionStorage.getItem("articleId") +
+            "/comment/" +
+            id +
+            "/delete"
         )
         .then(function (response) {
           console.log(response.data);
@@ -454,8 +454,8 @@ export default {
         axios
           .post(
             "/question/" +
-            sessionStorage.getItem("articleId") +
-            "/comment/post",
+              sessionStorage.getItem("articleId") +
+              "/comment/post",
             {
               content: that.phoneEditor.txt.html(),
               answer: true,

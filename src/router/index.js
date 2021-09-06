@@ -26,14 +26,13 @@ import blogContent from "../components/user/content/blogComponents/blogContent";
 import articleContent from "../components/user/content/articleComponents/articleContent";
 import adminArticle from "../components/admin/components/adminArticleFunctions/adminArticle";
 import adminBlog from "../components/admin/components/adminBlogFunctions/adminBlog";
-import adminArticleContent from "../components/admin/components/adminArticleFunctions/components/adminArticleContent";
-import adminBlogContent from "../components/admin/components/adminBlogFunctions/components/adminBlogContent";
 import following from "../components/user/mine/components/friends/components/following";
 import followed from "../components/user/mine/components/friends/components/followed";
 import searchBlogResult from "../components/user/BBS/components/blog/components/searchBlogResult";
 import searchArticleResult from "../components/user/BBS/components/article/components/searchArticleResult";
 import blogContents from "../components/user/BBS/components/blog/components/blogContents";
 import articleContents from "../components/user/BBS/components/article/components/articleContents";
+
 Vue.use(Router)
 
 export default new Router({
@@ -65,48 +64,38 @@ export default new Router({
             path: '/helloWorld/admin/adminBlog',
             name: 'adminBlog',
             component: adminBlog,
-            children: [{
-                path: '/helloWorld/admin/adminBlog/adminBlogContent',
-                name: 'adminBlogContent',
-                component: adminBlogContent,
-            }]
         }, {
             path: '/helloWorld/admin/adminArticle',
             name: 'adminArticle',
             component: adminArticle,
-            children: [{
-                path: '/helloWorld/admin/adminArticle/adminArticleContent',
-                name: 'adminArticleContent',
-                component: adminArticleContent,
-            }]
-        },
-        {
+        }, {
             path: '/helloWorld/model',
             name: 'model',
             component: model,
             children: [{
-                path: '/helloWorld/home',
-                name: 'home',
-                component: home
-            },
-              {
-                path: '/helloWorld/BBS',
-                name: 'BBS',
-                component: BBS,
-                children: [{
+                    path: '/helloWorld/home',
+                    name: 'home',
+                    component: home
+                },
+                {
+                    path: '/helloWorld/BBS',
+                    name: 'BBS',
+                    component: BBS,
+                    children: [{
                         path: '/helloWorld/BBS/question',
                         name: 'article',
                         component: article,
                         children: [{
-                            path: '/helloWorld/BBS/questions',
-                            name: 'articleContents',
-                            component: articleContents,
-                        },
-                          {
-                            path: '/helloWorld/BBS/searchArticleResult',
-                            name: 'searchArticleResult',
-                            component: searchArticleResult,
-                        }]
+                                path: '/helloWorld/BBS/questions',
+                                name: 'articleContents',
+                                component: articleContents,
+                            },
+                            {
+                                path: '/helloWorld/BBS/searchArticleResult',
+                                name: 'searchArticleResult',
+                                component: searchArticleResult,
+                            }
+                        ]
                     }, {
                         path: '/helloWorld/BBS/blog',
                         name: 'blog',
@@ -128,72 +117,72 @@ export default new Router({
                         path: '/helloWorld/BBS/blog/addBlog',
                         name: 'addBlog',
                         component: addBlog
-                    }
-                ]
-            },
-              {
-                path: '/helloWorld/BBS/articleContent',
-                name: 'articleContent',
-                component: articleContent
-            },
-              {
-                path: '/helloWorld/BBS/blogContent',
-                name: 'blogContent',
-                component: blogContent
-            },
-              {
-                path: '/helloWorld/mine',
-                name: 'mine',
-                component: mine,
-                children: [{
-                    path: '/helloWorld/mine/blogFiles',
-                    name: 'blogFiles',
-                    component: blogFiles
-                }, {
-                    path: '/helloWorld/mine/friends',
-                    name: 'friends',
-                    component: friends,
-                    children: [{
-                        path: '/helloWorld/mine/friends/following',
-                        name: 'following',
-                        component: following
-                    }, {
-                        path: '/helloWorld/mine/friends/followed',
-                        name: 'followed',
-                        component: followed
                     }]
-                }, {
-                    path: '/helloWorld/mine/information',
-                    name: 'information',
-                    component: information
-                }, {
-                    path: '/helloWorld/mine/message',
-                    name: 'message',
-                    component: message
-                }, {
-                    path: '/helloWorld/mine/questionFiles',
-                    name: 'questionFiles',
-                    component: questionFiles
-                }, {
-                    path: '/helloWorld/mine/collections',
-                    name: 'collections',
-                    component: collections
-                }, {
-                    path: '/helloWorld/mine/collections/favorite',
-                    name: 'favorite',
-                    component: favorite
-                }]
-            },
-              {
-                path: '/helloWorld/wikipedia',
-                name: 'wikipedia',
-                component: wikipedia
-            },
-              {
-                path: '/helloWorld/rank',
-                name: 'rank',
-                component: rank
-            }]
+                },
+                {
+                    path: '/helloWorld/BBS/articleContent',
+                    name: 'articleContent',
+                    component: articleContent
+                },
+                {
+                    path: '/helloWorld/BBS/blogContent',
+                    name: 'blogContent',
+                    component: blogContent
+                },
+                {
+                    path: '/helloWorld/mine',
+                    name: 'mine',
+                    component: mine,
+                    children: [{
+                        path: '/helloWorld/mine/blogFiles',
+                        name: 'blogFiles',
+                        component: blogFiles
+                    }, {
+                        path: '/helloWorld/mine/friends',
+                        name: 'friends',
+                        component: friends,
+                        children: [{
+                            path: '/helloWorld/mine/friends/following',
+                            name: 'following',
+                            component: following
+                        }, {
+                            path: '/helloWorld/mine/friends/followed',
+                            name: 'followed',
+                            component: followed
+                        }]
+                    }, {
+                        path: '/helloWorld/mine/information',
+                        name: 'information',
+                        component: information
+                    }, {
+                        path: '/helloWorld/mine/message',
+                        name: 'message',
+                        component: message
+                    }, {
+                        path: '/helloWorld/mine/questionFiles',
+                        name: 'questionFiles',
+                        component: questionFiles
+                    }, {
+                        path: '/helloWorld/mine/collections',
+                        name: 'collections',
+                        component: collections
+                    }, {
+                        path: '/helloWorld/mine/collections/favorite',
+                        name: 'favorite',
+                        component: favorite
+                    }]
+                },
+                {
+                    path: '/helloWorld/wikipedia',
+                    name: 'wikipedia',
+                    component: wikipedia
+                },
+                {
+                    path: '/helloWorld/rank',
+                    name: 'rank',
+                    component: rank
+                }
+            ]
         }
     ]
 })

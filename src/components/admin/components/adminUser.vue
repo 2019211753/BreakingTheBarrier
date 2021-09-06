@@ -53,7 +53,8 @@
         </div></el-aside
       >
       <el-main
-        ><div class="ui tiny statistics">
+        >
+        <div class="ui tiny statistics">
           <div class="statistic">
             <div class="value">{{ nowUser.id }}</div>
             <div class="label">id</div>
