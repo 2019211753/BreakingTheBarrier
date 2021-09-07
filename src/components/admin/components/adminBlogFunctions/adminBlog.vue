@@ -7,6 +7,11 @@
         v-model="searchContent"
       /><i class="inverted circular search link icon" @click="search()"></i>
     </div>
+    <el-empty
+      :image-size="200"
+      v-if="!contentList.length"
+      description="找不到任何结果"
+    ></el-empty>
     <el-container v-for="(item, index) in contentList">
       <el-aside width="250px"
         ><div class="ui large feed">
@@ -116,7 +121,7 @@ export default {
             for (var i = 0; i < that.contentList.length; i++) {
               var newTag = { id: that.contentList[i].id, state: "1" };
               that.tag.push(newTag);
-            } 
+            }
           })
           .catch(function (error) {
             console.log(error);

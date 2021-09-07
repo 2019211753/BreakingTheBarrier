@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div class="framework" v-for="item in contentList">
-      <br />
+    <div class="framework" v-for="(item, index) in contentList">
       <div class="frameworkBody">
         <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <img src="../../../../../../assets/logo.png" />
+              <img src="../../../../../../assets/avatar.jpg" />
             </div>
             <div class="content">
               <div class="summary">
@@ -16,7 +15,7 @@
             </div>
           </div>
         </div>
-        <h3 class="title">
+        <h3 class="title" style="margin-top: -10px">
           <a href=""
             ><router-link
               :to="{
@@ -27,22 +26,22 @@
             ></a
           >
         </h3>
-        <img
-          class="ui left floated image"
-          src="../../../../../../assets/bg.jpg"
-        />
-        <p>
-          {{ item.description }}
-        </p>
-        <div>
+        <div style="width: 100%; height: 130px">
+          <img
+            class="ui left floated image"
+            style="height: 80%"
+            :src="cover[index]"
+          />
+          <div class="ui basic very padded segment">
+            {{ item.description }}
+          </div>
+        </div>
+        <div style="margin-top: -10px">
           <a class="ui label" v-for="tags in item.tags">
-            <!-- <i class="mail icon"></i> -->
             {{ tags.name }}
           </a>
         </div>
       </div>
-      <br />
-      <br />
     </div>
     <el-pagination
       class="el-pagination"
@@ -61,17 +60,23 @@ import axios from "axios";
 export default {
   name: "articleContents",
   data() {
-    return { contentList: [], pageSize: 0 };
+    return { contentList: [], pageSize: 0, cover: [] };
   },
   created() {
     var that = this;
-
     axios
       .get("/listQuestions/?page=0")
       .then(function (response) {
         console.log(response.data);
         that.contentList = response.data.data.pages.content;
         that.pageSize = response.data.data.pages.totalPages;
+        for (var i = 0; i < that.contentList.length; i++) {
+          var url = require("../../../../../../assets/cover/cover (" +
+            Math.floor(Math.random() * 51) +
+            ").jpg");
+          that.cover.push(url);
+        }
+        console.log(that.cover);
       })
       .catch(function (error) {
         console.log(error);
@@ -99,7 +104,7 @@ export default {
 <style scoped>
 .framework {
   /* background-color: bisque; */
-  margin-top: 10px;
+  margin-top: 20px;
   height: 240px;
 }
 .frameworkBody {
@@ -119,7 +124,7 @@ img {
   margin-top: 20px;
   margin-left: 25%;
 }
-p {
+.ui.basic.very.padded.segment {
   font-size: 15px;
   font-weight: 900;
 }

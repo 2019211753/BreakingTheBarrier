@@ -1,16 +1,29 @@
 <template>
-  <div class="ui one cards">
-    <div class="card" v-for="item in userList">
+  <!-- <div class="ui one cards">
+    <div class="ui basic segment">
       <div class="content">
         <div class="header">{{ item.nickname }}</div>
         <div class="description">{{ item.personalSignature }}</div>
-        <div class="ui small statistics">
+      </div>
+      <div class="ui bottom attached button">
+        <i class="add icon"></i>
+        关注
+      </div>
+    </div>
+  </div> -->
+  <div>
+    <el-container v-for="item in userList" style="margin-top: 20px">
+      <el-aside width="500px">
+        <div class="ui small five statistics">
           <div class="statistic">
             <div class="value">
               <img
                 src="../../../../assets/avatar.jpg"
                 class="ui circular inline image"
               />
+            </div>
+            <div class="label">
+              <a href="">{{ item.nickname }}</a>
             </div>
           </div>
           <div class="statistic">
@@ -29,13 +42,17 @@
             <div class="value">0{{ item.following }}</div>
             <div class="label">关注</div>
           </div>
-        </div>
-      </div>
-      <div class="ui bottom attached button">
-        <i class="add icon"></i>
-        关注
-      </div>
-    </div>
+        </div></el-aside
+      >
+      <el-main
+        ><button
+          style="margin-top: -10px"
+          class="ui circular linkedin icon button"
+        >
+          <i class="linkedin icon"></i>
+        </button>
+      </el-main>
+    </el-container>
   </div>
 </template>
 

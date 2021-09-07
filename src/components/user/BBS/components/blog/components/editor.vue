@@ -114,7 +114,7 @@ export default {
             message: "发布成功",
             type: "success",
           });
-          this.$router.push("/helloWorld/BBS/blog");
+          this.$router.push("/helloWorld/BBS/blogs");
         }
       } else {
         this.$message({

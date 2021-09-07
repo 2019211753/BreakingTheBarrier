@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <div class="main">
-      <div class="left"><br /><left></left><br /></div>
+      <div class="left"><left></left><br /></div>
     </div>
     <div class="side">
       <div class="right"><br /><right></right><br /></div>
@@ -28,16 +28,15 @@ export default {
 
 .main {
   margin-top: 20px;
-  width: 54%;
+  width: 60%;
   float: left;
-
   /* background-color: bisque; */
 }
 .side {
   margin-top: 20px;
   width: 35%;
   float: left;
-  margin-left: 11%;
+  margin-left: 5%;
   /* height: 600px; */
   /* background-color: bisque; */
 }
