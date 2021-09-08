@@ -1,9 +1,10 @@
 package com.lrm.util;
 
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.Base64;
 import java.util.UUID;
 
 /**
@@ -120,7 +121,6 @@ public class FileUtils {
         return dest;
     }
 
-
     /**
      * 将multipartFile的信息储存在file中
      * @param uploadFile
@@ -134,5 +134,71 @@ public class FileUtils {
         return newFile;
     }
 
+    public static String convertAvatar(String path, String avatar) {
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(path + File.separator + avatar);
+            return Base64.getEncoder().encodeToString(FileUtils.inputStream2Byte(fileInputStream));
+        } catch (IOException e) {
+            //没找到文件就返回null
+            return null;
+        } finally {
+            //如果fileInputStream不为null就关闭。
+            try {
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
+     /**
+     * 将inputstream转为byte[]
+     *
+     * @param is 服务器的文件流
+     * @return byte[]文件而不是base64编码后的文件
+     */
+    public static byte[] inputStream2Byte(InputStream is) throws IOException {
+        byte[] data = null;
+        try {
+            ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+            byte[] buff = new byte[100];
+            int rc = 0;
+            while ((rc = is.read(buff, 0, 100)) > 0) {
+                swapStream.write(buff, 0, rc);
+            }
+            data = swapStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    throw new IOException("输入流关闭异常");
+                }
+            }
+        }
+        return data;
+    }
+
+    /**
+     * base64转inputStream
+     *
+     * @param base64string base64编码的文件字符串
+     * @return 返回指向文件的文件输入流
+     */
+    public static InputStream base2InputStream(String base64string) {
+        ByteArrayInputStream stream = null;
+        try {
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] bytes1 = decoder.decodeBuffer(base64string);
+            stream = new ByteArrayInputStream(bytes1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stream;
+    }
 }

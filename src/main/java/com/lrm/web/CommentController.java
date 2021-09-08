@@ -6,9 +6,11 @@ import com.lrm.exception.NoPermissionException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
+import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,9 @@ import java.util.Map;
 @RestController
 public class CommentController
 {
+    @Value("${web.upload-path}")
+    private String path;
+
     @Autowired
     private CommentServiceImpl commentServiceImpl;
 
@@ -137,7 +142,7 @@ public class CommentController
             comment.setDisapproved(false);
         }
 
-        comment.setAvatar(postUser.getAvatar());
+        comment.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
         comment.setNickname(postUser.getNickname());
     }
 

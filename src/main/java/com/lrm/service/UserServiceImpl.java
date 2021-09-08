@@ -5,8 +5,6 @@ import com.lrm.po.Favorite;
 import com.lrm.po.User;
 import com.lrm.util.MD5Utils;
 import com.lrm.util.MyBeanUtils;
-import com.lrm.util.TokenInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -83,16 +81,11 @@ public class UserServiceImpl implements UserService
      */
     @Override
     @Transactional
-    public User updateUser(User user, Map<String, Object> hashMap) {
-        //user里为null的属性
-        String[] str = MyBeanUtils.getNullPropertyNames(user);
-
+    public User updateUser(User user) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         //这个u和user虽然id相同，但是已经不是一个对象了
         User u = getUser(user.getId());
-        //user赋值给u 为null的属性就不赋了
-        BeanUtils.copyProperties(user, u, str);
 
-        hashMap.put("token", TokenInfo.postToken(u));
+        MyBeanUtils.populate(User.class, user, u);
 
         return userRepository.save(u);
     }

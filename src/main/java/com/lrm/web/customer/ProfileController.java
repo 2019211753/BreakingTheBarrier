@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,12 +31,11 @@ import java.util.Map;
 @RequestMapping("/customer")
 @RestController
 public class ProfileController {
-    @Autowired
-    private UserServiceImpl userServiceImpl;
-
     @Value("${web.upload-path}")
     private String path;
 
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
     /**
      * 返回个人信息
@@ -76,7 +76,7 @@ public class ProfileController {
         //创建存放文件的文件夹的流程
 
         //头像文件夹的绝对路径
-        String realPath = path + "/" + userId + "/avatar";
+        String realPath = path + "/images/" + userId + "/avatar";
 
         //所上传的文件原名
         String oldName = file.getOriginalFilename();
@@ -104,13 +104,14 @@ public class ProfileController {
      * @return 新token
      */
     @PostMapping("/modifyAll")
-    public Result modifyUserInformation(HttpServletRequest request, @RequestBody User user1) {
+    public Result modifyUserInformation(HttpServletRequest request, @RequestBody User user1) throws IOException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         StringBuilder errorMessage = null;
 
         //获得当前用户Id 检查用户需要更改的昵称有没用其他用户在使用
         Long customerUserId = TokenInfo.getCustomUserId(request);
+
         String nickname = user1.getNickname();
         String password = user1.getPassword();
         String email = user1.getEmail();
@@ -173,11 +174,12 @@ public class ProfileController {
             }
         }
 
+        User newUser = null;
         if (!(user0 != null && user0.getId().equals(customerUserId))) {
             user.setNickname(nickname);
-            userServiceImpl.updateUser(user, hashMap);
+            newUser = userServiceImpl.updateUser(user);
         } else {
-            userServiceImpl.updateUser(user, hashMap);
+            newUser = userServiceImpl.updateUser(user);
 
             if (errorMessage == null) {
                 errorMessage = new StringBuilder("昵称已被占用；");
@@ -189,6 +191,8 @@ public class ProfileController {
         if (errorMessage != null) {
             throw new IllegalParameterException(errorMessage.append("其他信息修改成功；").toString());
         }
+
+        hashMap.put("token", TokenInfo.postToken(newUser, path));
 
         return new Result(hashMap, "修改成功");
     }

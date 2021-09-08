@@ -3,6 +3,7 @@ package com.lrm.service;
 import com.lrm.po.Favorite;
 import com.lrm.po.Template;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public interface FavoriteService {
 
     void deleteFavoriteById(Long favoriteId);
 
-    Favorite updateFavorite(Favorite favorite, Favorite f);
+    Favorite updateFavorite(Favorite favorite, Favorite f) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException;
 
     <T extends Template> Favorite add(Favorite favorite, T t);
 

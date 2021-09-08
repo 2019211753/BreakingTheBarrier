@@ -37,7 +37,7 @@ spring:
       add-mappings: false
 
 # 改成你本地的文件上传路径
-web.upload_path: D:\springboot开发\雏雁项目\WeSwallows\src\main\resources\static\images
+web.upload_path: D:\springboot开发\BreakingTheBarrier\src\main\resources\static
 file.upload_path: F://uploadTest//
 file.download_path: F://uploadTest//
 

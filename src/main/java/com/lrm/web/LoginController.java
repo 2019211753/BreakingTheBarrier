@@ -7,12 +7,14 @@ import com.lrm.service.UserServiceImpl;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,9 @@ import java.util.Map;
 @Validated
 @RestController
 public class LoginController {
+    @Value("${web.upload-path}")
+    private String path;
+
     @Autowired
     private UserServiceImpl userServiceImpl;
 
@@ -72,7 +77,7 @@ public class LoginController {
      * @return 登录成功的token; 登陆失败的报错信息
      */
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
+    public Result login(@RequestBody User user) throws IOException {
         //需要传递到前端的 包含在token内的信息 map用来存放payload
         //或传递报错信息
         Map<String, Object> hashMap = new HashMap<>(1);
@@ -97,7 +102,7 @@ public class LoginController {
         User user1 = userServiceImpl.checkUser(username, password);
         if(user1 != null)
         {
-            String token = TokenInfo.postToken(user1);
+            String token = TokenInfo.postToken(user1, path);
 
             hashMap.put("token", token);
             //返回首页

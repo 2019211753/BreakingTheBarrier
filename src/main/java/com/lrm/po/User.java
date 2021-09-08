@@ -139,6 +139,7 @@ public class User {
      */
     private Integer availableNum = 0;
 
+
     /**
      * 发布的评论
      */

@@ -3,10 +3,12 @@ package com.lrm.web;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
+import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Magic;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,6 +28,9 @@ import java.util.Map;
  */
 @RestController
 public class TemplateController {
+    @Value("${web.upload-path}")
+    private String path;
+
     @Autowired
     private QuestionServiceImpl questionServiceImpl;
 
@@ -76,7 +81,7 @@ public class TemplateController {
             //得到发布问题的人
             User postUser = t.getUser();
             //这里到底要不要用计算力代替空间还要考虑
-            t.setAvatar(postUser.getAvatar());
+            t.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
             t.setNickname(postUser.getNickname());
         }
         hashMap.put("pages", pages);

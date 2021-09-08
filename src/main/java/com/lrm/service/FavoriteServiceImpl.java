@@ -6,11 +6,11 @@ import com.lrm.po.Favorite;
 import com.lrm.po.Question;
 import com.lrm.po.Template;
 import com.lrm.util.MyBeanUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -91,10 +91,10 @@ public class FavoriteServiceImpl implements FavoriteService {
      */
     @Override
     @Transactional
-    public Favorite updateFavorite(Favorite favorite, Favorite f) {
-        BeanUtils.copyProperties(favorite, f, MyBeanUtils.getNullPropertyNames(favorite));
-        favorite.setUpdateTime(new Date());
-        return favoriteRepository.save(favorite);
+    public Favorite updateFavorite(Favorite favorite, Favorite f) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        MyBeanUtils.populate(Favorite.class, favorite, f);
+        f.setUpdateTime(new Date());
+        return favoriteRepository.save(f);
     }
 
     /**

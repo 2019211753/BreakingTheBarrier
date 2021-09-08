@@ -6,9 +6,11 @@ import com.lrm.po.Likes;
 import com.lrm.po.User;
 import com.lrm.service.CommentServiceImpl;
 import com.lrm.service.LikesServiceImpl;
+import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,9 @@ import java.util.Map;
 @RequestMapping("/customer/messages")
 @RestController
 public class MessageController {
+    @Value("${web.upload-path}")
+    private String path;
+
     @Autowired
     private CommentServiceImpl commentServiceImpl;
 
@@ -61,7 +66,7 @@ public class MessageController {
                 continue;
             }
             User postUser = comment.getPostUser();
-            comment.setAvatar(postUser.getAvatar());
+            comment.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
             comment.setNickname(postUser.getNickname());
         }
 
@@ -70,7 +75,7 @@ public class MessageController {
 
         for (Comment comment : unLookedComments) {
             User postUser = comment.getPostUser();
-            comment.setAvatar(postUser.getAvatar());
+            comment.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
             comment.setNickname(postUser.getNickname());
         }
 
@@ -85,7 +90,7 @@ public class MessageController {
                 continue;
             }
             User postUser = likes1.getPostUser();
-            likes1.setAvatar(postUser.getAvatar());
+            likes1.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
             likes1.setNickname(postUser.getNickname());
         }
 
@@ -94,7 +99,7 @@ public class MessageController {
 
         for (Likes likes1 : unLookedLikes) {
             User postUser = likes1.getPostUser();
-            likes1.setAvatar(postUser.getAvatar());
+            likes1.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
             likes1.setNickname(postUser.getNickname());
         }
 
