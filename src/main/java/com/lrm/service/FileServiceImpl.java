@@ -38,6 +38,7 @@ public class FileServiceImpl implements FileService {
         //如果用户输入的tagName不存在，那么创建一个新的tag
         if (found == null) {
             found = new FileTag(tagName);
+            fileTagRepository.save(found);
         }
         file.getFileTags().add(found);
 
