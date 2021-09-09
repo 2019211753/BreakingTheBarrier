@@ -47,9 +47,10 @@
       <el-main
         ><button
           style="margin-top: -10px"
-          class="ui circular linkedin icon button"
+          class="ui circular red icon button"
+          @click="follow(item.id)"
         >
-          <i class="linkedin icon"></i>
+          <i class="heart icon"></i>
         </button>
       </el-main>
     </el-container>
@@ -75,6 +76,19 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+  },
+  methods: {
+    follow(id) {
+      var that = this;
+      axios
+        .get("/follow/" + id)
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
 };
 </script>

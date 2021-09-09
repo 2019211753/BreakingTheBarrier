@@ -5,7 +5,7 @@
       v-if="!questions.length && !blogs.length"
       description="收藏夹为空"
     ></el-empty>
-    <div class="framework" v-for="item in questions">
+    <div class="framework" v-for="(item, index) in questions">
       <br />
       <div class="frameworkBody">
         <div class="ui large feed">
@@ -21,7 +21,7 @@
             </div>
           </div>
         </div>
-        <h3 class="title">
+        <h3 class="title" style="margin-top: -10px">
           <a href=""
             ><router-link
               :to="{
@@ -32,24 +32,25 @@
             ></a
           >
         </h3>
-        <img
-          class="ui left floated image"
-          src="../../../../../../assets/bg.jpg"
-        />
-        <p>
-          {{ item.description }}
-        </p>
-        <div>
+        <div style="width: 100%; height: 130px">
+          <img
+            class="ui left floated image"
+            style="height: 80%"
+            :src="cover[index]"
+          />
+          <div class="ui basic very padded segment">
+            {{ item.description }}
+          </div>
+        </div>
+        <div style="margin-top: -10px">
           <a class="ui label" v-for="tags in item.tags">
             <!-- <i class="mail icon"></i> -->
             {{ tags.name }}
           </a>
         </div>
       </div>
-      <br />
-      <br />
     </div>
-    <div class="framework" v-for="item in blogs">
+    <div class="framework" v-for="(item, index) in blogs">
       <br />
       <div class="frameworkBody">
         <div class="ui large feed">
@@ -65,7 +66,7 @@
             </div>
           </div>
         </div>
-        <h3 class="title">
+        <h3 class="title" style="margin-top: -10px">
           <a href=""
             ><router-link
               :to="{
@@ -76,22 +77,22 @@
             ></a
           >
         </h3>
-        <img
-          class="ui left floated image"
-          src="../../../../../../assets/bg.jpg"
-        />
-        <p>
-          {{ item.description }}
-        </p>
-        <div>
+        <div style="width: 100%; height: 130px">
+          <img
+            class="ui left floated image"
+            style="height: 80%"
+            :src="cover[index]"
+          />
+          <div class="ui basic very padded segment">
+            {{ item.description }}
+          </div>
+        </div>
+        <div style="margin-top: -10px">
           <a class="ui label" v-for="tags in item.tags">
-            <!-- <i class="mail icon"></i> -->
             {{ tags.name }}
           </a>
         </div>
       </div>
-      <br />
-      <br />
     </div>
   </div>
 </template>
@@ -103,6 +104,7 @@ export default {
   name: "favorite",
   data() {
     return {
+      cover: [],
       questions: [],
       blogs: [],
       nowUser: sessionStorage.getItem("nickname"),
@@ -116,6 +118,18 @@ export default {
         console.log(response.data);
         that.questions = response.data.data.questions.content;
         that.blogs = response.data.data.blogs.content;
+        for (var i = 0; i < that.questions.length; i++) {
+          var url = require("../../../../../../assets/cover/cover (" +
+            Math.floor(Math.random() * 51) +
+            ").jpg");
+          that.cover.push(url);
+        }
+        for (var i = 0; i < that.blogs.length; i++) {
+          var url = require("../../../../../../assets/cover/cover (" +
+            Math.floor(Math.random() * 51) +
+            ").jpg");
+          that.cover.push(url);
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -142,7 +156,6 @@ export default {
 
 <style scoped>
 .framework {
-  background-color: bisque;
   margin-top: 20px;
   height: 260px;
 }
@@ -158,5 +171,9 @@ export default {
 }
 img {
   height: 120px;
+}
+.ui.basic.very.padded.segment {
+  font-size: 15px;
+  font-weight: 900;
 }
 </style>

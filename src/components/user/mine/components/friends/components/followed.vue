@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-empty :image-size="200" v-if="list" description="暂无粉丝"></el-empty>
+    <el-empty
+      :image-size="200"
+      v-if="!list.length"
+      description="暂无粉丝"
+    ></el-empty>
     <div class="ui large feed">
       <div class="event" v-for="item in list">
         <div class="label">
@@ -8,18 +12,17 @@
         </div>
         <div class="content">
           <div class="summary">
-            <a>Jenny Hess</a>
-            <div class="date">3 days ago</div>
-            <div class="ui icon buttons">
-              <button class="ui button"><i class="align left icon"></i></button>
-              <button class="ui button">
-                <i class="align center icon"></i>
+            <a>{{ item.nickname }}</a>
+            <div class="date">{{ item.personalSignature }}</div>
+            <div class="buttons">
+              <button class="ui disabled circular blue icon button">
+                <i class="envelope icon"></i>
               </button>
-              <button class="ui button">
-                <i class="align right icon"></i>
-              </button>
-              <button class="ui button">
-                <i class="align justify icon"></i>
+              <button
+                class="ui circular blue icon button"
+                @click="unfollow(item.id)"
+              >
+                <i class="heart icon"></i>
               </button>
             </div>
           </div>
@@ -48,6 +51,23 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+  },methods: {
+    unfollow(id) {
+      var that = this;
+      axios
+        .get("/follow/" + id)
+        .then(function (response) {
+          console.log(response.data);
+          for (var i = 0; i < that.list.length; i++) {
+            if (that.list[i].id == id) {
+              that.list.pop(that.list[i]);
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
 };
 </script>

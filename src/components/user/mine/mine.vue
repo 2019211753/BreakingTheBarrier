@@ -5,10 +5,7 @@
         <div>
           <br />
           <div class="avatar">
-            <img
-              class="ui small circular image"
-              src="../../../assets/avatar.jpg"
-            />
+            <img class="ui small circular image" :src="avatarUrl" />
           </div>
           <div class="information">
             <h2>{{ userData.nickname }}</h2>
@@ -103,7 +100,7 @@ export default {
   components: { recommend },
   name: "mine",
   data() {
-    return { userData: "" };
+    return { userData: "", avatarUrl: "" };
   },
   created() {
     var that = this;
@@ -112,6 +109,13 @@ export default {
       .then(function (response) {
         console.log(response.data.data.user);
         that.userData = response.data.data.user;
+        that.avatarUrl =
+          "http://39.105.212.210/" + response.data.data.user.avatar;
+        /* that.avatarUrl= 'data:image/png;base64,' + Buffer.from(response.data.data.user.avatar).toString('base64'); */
+        /*  let res = this.$http.get(response.data.data.user.avatar, {
+          responseType: "blob",
+        });
+        this.avatarUrl = window.URL.createObjectURL(res.data); */
       })
       .catch(function (error) {
         console.log(error);
