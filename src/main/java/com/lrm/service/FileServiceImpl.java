@@ -51,7 +51,7 @@ public class FileServiceImpl implements FileService {
             throw new NotFoundException("当前用户不存在");
         }
         uploadUser.setAvailableNum(uploadUser.getAvailableNum() + 5);
-
+        file.setUploadUser(uploadUser);
         return fileRepository.save(file);
     }
 
