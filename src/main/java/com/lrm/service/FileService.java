@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 public interface FileService {
     File saveFile(File file, String tagName, String path, Long userId);
 
-    Page<File> findFile(String query);
+    Page<File> findFile(String query, Short pageIndex);
 
     void downloadFile(String fileName, Long userId);
 }

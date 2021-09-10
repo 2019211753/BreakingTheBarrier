@@ -1,6 +1,9 @@
 package com.lrm.web;
 
+import com.lrm.dao.FileRepository;
+import com.lrm.dao.FileTagRepository;
 import com.lrm.exception.NotFoundException;
+import com.lrm.po.FileTag;
 import com.lrm.service.FileService;
 import com.lrm.service.FileServiceImpl;
 import com.lrm.util.FileUtils;
@@ -11,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/files")
@@ -33,11 +39,31 @@ public class FileController {
     private String downloadFilePath;
 
     @Autowired
+    private FileRepository fileRepository;
+
+    @Autowired
+    private FileTagRepository fileTagRepository;
+
+    @Autowired
     private FileServiceImpl fileServiceImpl;
 
     @GetMapping
     public String index() {
         return "index";
+    }
+
+    /**
+     * 返回所有标签
+     * @return 所有文件标签
+     */
+    @GetMapping("/getAllTags")
+    @ResponseBody
+    public Result getAllTags() {
+//        Page<FileTag> fileTags = fileTagRepository.findAll(PageRequest.of(0, 10));
+        List<FileTag> fileTags = fileTagRepository.findAll();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("fileTags", fileTags);
+        return new Result(hashMap, "文件标签");
     }
 
     /**
@@ -47,8 +73,8 @@ public class FileController {
      */
     @GetMapping(value = "/find")
     @ResponseBody
-    public Result find(@RequestParam("query") String query) {
-        Page<com.lrm.po.File> filePage = fileServiceImpl.findFile(query);
+    public Result find(@RequestParam("query") String query, @RequestParam("pageIndex") Short pageIndex) {
+        Page<com.lrm.po.File> filePage = fileServiceImpl.findFile(query, pageIndex);
 
         HashMap<String, Object> hashMap = new HashMap<>(2);
 
@@ -92,13 +118,17 @@ public class FileController {
 
     /**
      * 有待优化，感觉应该用{id}这样，直接get，不用文件名
-     * @param fileName 文件名
-     * @param response 响应，下载真正的文件
-     * @param request  请求，获取UserId
+     * @param fileId
      */
     @GetMapping("/download")
     @ResponseBody
-    public Result fileDownload(@RequestParam("fileName") String fileName, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public Result fileDownload(@RequestParam("fileId") Long fileId, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        Optional<com.lrm.po.File> found = fileRepository.findById(fileId);
+        if (!found.isPresent()) {
+            throw new NotFoundException("下载文件不存在");
+        }
+        String fileName = found.get().getName();
+
         File file = new File(downloadFilePath + fileName);//如何解决中文问题
         if (!file.exists()) {
             throw new NotFoundException("下载文件不存在");

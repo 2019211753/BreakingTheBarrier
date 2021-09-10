@@ -51,7 +51,7 @@ public class FileServiceImpl implements FileService {
             throw new NotFoundException("当前用户不存在");
         }
         uploadUser.setAvailableNum(uploadUser.getAvailableNum() + 5);
-
+        file.setUploadUser(uploadUser);
         return fileRepository.save(file);
     }
 
@@ -74,7 +74,9 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    public Page<File> findFile(String query) {
-        return fileRepository.findByQuery(query, PageRequest.of(0, 10));
+    public Page<File> findFile(String query, Short pageIndex) {
+        if (query == null)
+            return fileRepository.findAll(PageRequest.of(pageIndex, 10));
+        return fileRepository.findByQuery(query, PageRequest.of(pageIndex, 10));
     }
 }
