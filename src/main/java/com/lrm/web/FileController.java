@@ -51,6 +51,10 @@ public class FileController {
         return "index";
     }
 
+    /**
+     * 返回所有标签
+     * @return 所有文件标签
+     */
     @GetMapping("/getAllTags")
     @ResponseBody
     public Result getAllTags() {
@@ -67,8 +71,8 @@ public class FileController {
      */
     @GetMapping(value = "/find")
     @ResponseBody
-    public Result find(@RequestParam("query") String query) {
-        Page<com.lrm.po.File> filePage = fileServiceImpl.findFile(query);
+    public Result find(@RequestParam("query") String query, @RequestParam("pageIndex") Short pageIndex) {
+        Page<com.lrm.po.File> filePage = fileServiceImpl.findFile(query, pageIndex);
 
         HashMap<String, Object> hashMap = new HashMap<>(2);
 
