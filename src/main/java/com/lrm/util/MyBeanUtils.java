@@ -68,7 +68,8 @@ public class MyBeanUtils {
             //得到source中对应属性
             Object[] args = new Object[1];
             args[0] = getMethod.invoke(source);
-            ArrayList arg = new ArrayList(0);
+            ArrayList arg = new ArrayList(1);
+            arg.add(new Object());
             if (args[0] instanceof ArrayList) {
                 arg = (ArrayList) args[0];
             }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -191,14 +192,30 @@ public class TemplateController {
             frontT.setDisapproved(false);
         }
 
-        for (Favorite favorite : favoriteServiceImpl.getFavoritesByUserId(userId)) {
-            if (favorite.getFavoriteQuestions().contains(backT) || favorite.getFavoriteBlogs().contains(backT)) {
+        StringBuilder favoriteIds = new StringBuilder("");
+        Favorite favorite0;
+        Iterator<Favorite> it = favoriteServiceImpl.getFavoritesByUserId(userId).iterator();
+        if (it.hasNext()) {
+            favorite0 = it.next();
+            favoriteIds.append(favorite0.getId());
+            if (favorite0.getFavoriteQuestions().contains(backT) || favorite0.getFavoriteBlogs().contains(backT)) {
                 frontT.setCollected(true);
             } else {
                 frontT.setCollected(false);
             }
         }
 
+        while (it.hasNext()) {
+            favorite0 = it.next();
+            favoriteIds.append(",").append(favorite0.getId());
+            if (favorite0.getFavoriteQuestions().contains(backT) || favorite0.getFavoriteBlogs().contains(backT)) {
+                frontT.setCollected(true);
+            } else {
+                frontT.setCollected(false);
+            }
+        }
+
+        frontT.setFavoriteIds(favoriteIds.toString());
         frontT.setAvatar(backT.getUser().getAvatar());
         frontT.setNickname(backT.getUser().getNickname());
 

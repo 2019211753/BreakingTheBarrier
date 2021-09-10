@@ -150,6 +150,8 @@ public class Template {
     @Transient
     private Boolean collected;
 
+    @Transient
+    private String favoriteIds;
 
     /**
      * 所在的收藏夹
@@ -330,6 +332,14 @@ public class Template {
 
     public void setCollected(Boolean collected) {
         this.collected = collected;
+    }
+
+    public String getFavoriteIds() {
+        return favoriteIds;
+    }
+
+    public void setFavoriteIds(String favoriteIds) {
+        this.favoriteIds = favoriteIds;
     }
 
     /**
