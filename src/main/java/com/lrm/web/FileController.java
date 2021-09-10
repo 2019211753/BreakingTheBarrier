@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -58,7 +59,8 @@ public class FileController {
     @GetMapping("/getAllTags")
     @ResponseBody
     public Result getAllTags() {
-        Page<FileTag> fileTags = fileTagRepository.findAll(PageRequest.of(0, 10));
+//        Page<FileTag> fileTags = fileTagRepository.findAll(PageRequest.of(0, 10));
+        List<FileTag> fileTags = fileTagRepository.findAll();
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("fileTags", fileTags);
         return new Result(hashMap, "文件标签");

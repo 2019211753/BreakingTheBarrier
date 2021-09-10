@@ -15,6 +15,7 @@ public interface FileTagRepository extends JpaRepository<FileTag, Long> {
      */
     FileTag findByName(String name);
 
+    List<FileTag> findAll();
 
     /**
      * 查找标签 按pageable内定义的排序顺序和数量返回
