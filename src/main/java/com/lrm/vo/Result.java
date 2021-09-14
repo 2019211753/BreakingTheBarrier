@@ -61,7 +61,7 @@ public class Result {
     public static Result returnIOAndMaxSizeException(StringBuffer url) {
         Result result = new Result();
         result.setData(null);
-        result.setMsg("文件超过了1MB");
+        result.setMsg("服务器文件或流出现异常");
         result.setUrl(url);
         result.setCode(StatusCode.FAILED_TRANSFER);
         return result;
