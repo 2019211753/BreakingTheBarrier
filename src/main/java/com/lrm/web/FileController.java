@@ -73,7 +73,8 @@ public class FileController {
      */
     @GetMapping(value = "/find")
     @ResponseBody
-    public Result find(@RequestParam("query") String query, @RequestParam("pageIndex") Short pageIndex) {
+    public Result find(@RequestParam("query") String query,
+                       @RequestParam("pageIndex") Short pageIndex) {
         Page<com.lrm.po.File> filePage = fileServiceImpl.findFile(query, pageIndex);
 
         HashMap<String, Object> hashMap = new HashMap<>(2);
@@ -89,7 +90,9 @@ public class FileController {
      */
     @PostMapping(value = "/upload")
     @ResponseBody
-    public Result upload(@RequestParam("uploadFile") MultipartFile uploadFile, @RequestParam("fileTagName") String fileTagName, HttpServletRequest request) throws IOException {
+    public Result upload(@RequestParam("uploadFile") MultipartFile uploadFile,
+                         @RequestParam("fileTagName") String fileTagName,
+                         HttpServletRequest request) throws IOException {
         //打印上传文件信息
         logFileInfo(uploadFile, uploadFilePath);
 
@@ -100,9 +103,6 @@ public class FileController {
         for (int i = 0; i < tagNames.length; i++) {
             tagNames[i] = tagNames[i].substring(1, tagNames[i].length() - 1);
         }
-        for (String tagName : tagNames) {
-            logger.info(tagName);
-        };
 
         //判断文件所在目录是否存在，不存在就创建对应的目录
         File dest = FileUtils.buildDest(uploadFilePath + uploadFile.getOriginalFilename());
@@ -129,7 +129,9 @@ public class FileController {
      */
     @GetMapping("/download")
     @ResponseBody
-    public Result fileDownload(@RequestParam("fileId") Long fileId, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public Result fileDownload(@RequestParam("fileId") Long fileId,
+                               HttpServletResponse response,
+                               HttpServletRequest request) throws IOException {
         Optional<com.lrm.po.File> found = fileRepository.findById(fileId);
         if (!found.isPresent()) {
             throw new NotFoundException("下载文件不存在");
