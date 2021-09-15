@@ -31,16 +31,19 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public File saveFile(File file, String tagName, String path, Long userId) {
+    public File saveFile(File file, String[] tagNames, String path, Long userId) {
         //标签是否存在？
-        FileTag found = fileTagRepository.findByName(tagName);
+        for (int i = 0; i < tagNames.length; i++) {
+        FileTag found = fileTagRepository.findByName(tagNames[i]);
 
         //如果用户输入的tagName不存在，那么创建一个新的tag
         if (found == null) {
-            found = new FileTag(tagName);
+            found = new FileTag(tagNames[i]);
             fileTagRepository.save(found);
         }
         file.getFileTags().add(found);
+        }
+
 
         //录入file的path
         file.setPath(path);

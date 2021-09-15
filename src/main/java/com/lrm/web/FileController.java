@@ -95,6 +95,14 @@ public class FileController {
 
         //多媒体文件转为po file
         com.lrm.po.File newFile = FileUtils.convertFile(uploadFile);
+        String realTagNames = fileTagName.substring(1, fileTagName.length() - 1);
+        String[] tagNames = realTagNames.split(",");
+        for (int i = 0; i < tagNames.length; i++) {
+            tagNames[i] = tagNames[i].substring(1, tagNames[i].length() - 1);
+        }
+        for (String tagName : tagNames) {
+            logger.info(tagName);
+        };
 
         //判断文件所在目录是否存在，不存在就创建对应的目录
         File dest = FileUtils.buildDest(uploadFilePath + uploadFile.getOriginalFilename());
@@ -102,9 +110,8 @@ public class FileController {
 
         //获取用户
         Long userId = TokenInfo.getCustomUserId(request);
-
         //调用service 服务，储存到数据库，进行上传相关逻辑的处理
-        fileServiceImpl.saveFile(newFile, fileTagName, dest.getAbsolutePath(), userId);
+        fileServiceImpl.saveFile(newFile, tagNames, dest.getAbsolutePath(), userId);
 
         Map<String, String> hashMap = new HashMap<>(16);
         hashMap.put("contentType", uploadFile.getContentType());
