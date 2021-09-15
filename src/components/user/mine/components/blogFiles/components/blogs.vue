@@ -9,7 +9,7 @@
       <div class="frameworkBody">
         <div class="ui large feed">
           <div class="event">
-            <div class="label">
+<!--            <div class="label">
               <img :src="'data:image/jpg;base64,' + avatar" alt="">
             </div>
             <div class="content">
@@ -17,7 +17,7 @@
                 <a class="user"> {{ nowUser }} </a>
                 <div class="date">{{ item.createTime }}</div>
               </div>
-            </div>
+            </div>-->
           </div>
         </div>
         <h3 class="title" style="margin-top: -10px">
@@ -51,8 +51,7 @@
           </a>
         </div>
       </div>
-      <br/>
-      <br/>
+
     </div>
   </div>
 </template>
@@ -110,7 +109,7 @@ export default {
   /*
   background-color: bisque; */
   margin-top: 20px;
-  height: 260px;
+  height: 200px;
 }
 
 .frameworkBody {

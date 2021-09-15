@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="statistic">
-            <div class="value">22</div>
+            <div class="value">5</div>
             <div class="label">内容</div>
           </div>
           <div class="statistic">
@@ -36,11 +36,11 @@
             <div class="label">贡献度</div>
           </div>
           <div class="statistic">
-            <div class="value">0{{ item.followed }}</div>
+            <div class="value">{{ item.followedUserNum }}</div>
             <div class="label">粉丝</div>
           </div>
           <div class="statistic">
-            <div class="value">0{{ item.following }}</div>
+            <div class="value">{{ item.followingUserNum }}</div>
             <div class="label">关注</div>
           </div>
         </div>

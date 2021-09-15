@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import axios from "_axios@0.21.1@axios";
+import axios from "axios";
 
 export default {
   name: "headbar",

@@ -44,7 +44,7 @@
                   query: { articleId: item.questionId0 },
                 }"
               >
-                a</router-link
+                文章</router-link
               ></a
             >.
             <div class="date">{{ item.createTime }}</div>
@@ -71,7 +71,7 @@
       ></el-empty>
       <div class="event" v-if="lookedComments" v-for="item in lookedComments">
         <div class="label">
-          <img src="../../../../../assets/avatar.jpg" />
+          <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
         </div>
         <div class="content">
           <div class="summary">
@@ -85,7 +85,7 @@
               >
                 {{ item.content }}</router-link
               ></a
-            >.
+            >文章.
             <div class="date">{{ item.createTime }}</div>
           </div>
         </div>
