@@ -45,9 +45,11 @@ public class Template {
 
     /**
      * 懒加载 只有getContent了才加载
+     * 但是前端序列化的时候默认会getContent，所以直接JsonIgnore吧
      * 内容
      * 前端必填
      */
+    @JsonIgnore
     @Basic(fetch = FetchType.LAZY)
     @Lob
     @NotBlank(message = "请输入内容")
@@ -118,6 +120,12 @@ public class Template {
 
 
     /**
+     * 前端展示的内容 只在需要具体展示内容的时候才展示
+     */
+    @Transient
+    private String details;
+
+    /**
      * 前端展示的头像 在发布和用户修改头像时刷新
      */
     @Transient
@@ -130,28 +138,29 @@ public class Template {
     private String nickname;
 
     /**
-     * 节约空间不入库
      * 返回前端的判断是否被当前用户点过赞
      **/
     @Transient
     private Boolean approved;
 
     /**
-     * 节约空间不入库
      * 返回前端的判断该是否被当前用户点过踩
      **/
     @Transient
     private Boolean disapproved;
 
     /**
-     * 节约空间不入库
      * 返回前端的判断该是否被当前用户收藏了
      **/
     @Transient
     private Boolean collected;
 
+    /**
+     * 返回前端的博客/问题对应当前用户被收藏夹收藏了的收藏夹Id 以,分割
+     */
     @Transient
     private String favoriteIds;
+
 
     /**
      * 所在的收藏夹
@@ -212,6 +221,14 @@ public class Template {
 
     public void setTagIds(String tagIds) {
         this.tagIds = tagIds;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public String getAvatar() {

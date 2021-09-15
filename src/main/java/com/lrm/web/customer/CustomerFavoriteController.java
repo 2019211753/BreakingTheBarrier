@@ -252,6 +252,7 @@ public class CustomerFavoriteController {
 
     <T extends Template> Result modifyFavorite(T t, TemplateServiceImpl<T> templateServiceImpl, Favorite favorite, Pageable pageable) {
         Map<String, Object> hashMap = new HashMap<>(2);
+        User owner = t.getUser();
         if (!favorite.getFavoriteQuestions().contains(t) && !favorite.getFavoriteBlogs().contains(t)) {
 
             if (favorite.getSize() == Favorite.getMAXSIZE()) {
@@ -260,8 +261,9 @@ public class CustomerFavoriteController {
 
             favoriteServiceImpl.add(favorite, t);
             t.setImpact(t.getImpact() + ImpactGrow.COLLECTED.getGrow());
-            t.getUser().setDonation(t.getUser().getDonation() + DonationGrow.TEMPLATE_COLLECTED.getGrow());
+            owner.setDonation(owner.getDonation() + DonationGrow.TEMPLATE_COLLECTED.getGrow());
 
+            userServiceImpl.saveUser(owner);
             templateServiceImpl.save(t);
 
             hashMap.put("collectedNum", t.getCollectedNum());
@@ -270,6 +272,9 @@ public class CustomerFavoriteController {
         } else {
             favoriteServiceImpl.remove(favorite, t);
             t.setImpact(t.getImpact() - ImpactGrow.COLLECTED.getGrow());
+            owner.setDonation(owner.getDonation() - DonationGrow.TEMPLATE_COLLECTED.getGrow());
+
+            userServiceImpl.saveUser(owner);
             templateServiceImpl.save(t);
 
             hashMap.put("collectedNum", t.getCollectedNum());

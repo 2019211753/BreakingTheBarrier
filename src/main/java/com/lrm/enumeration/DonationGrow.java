@@ -17,8 +17,9 @@ public enum DonationGrow {
      */
     POST_TEMPLATE(2),
     POST_EFFECTIVE_COMMENT(4),
-    APPROVED_TEMPLATE(2),
+    TEMPLATE_APPROVED(2),
     TEMPLATE_COLLECTED(2),
+    COMMENT_APPROVED(4),
     FOLLOWED(2);
 
     Integer grow;

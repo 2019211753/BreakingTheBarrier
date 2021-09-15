@@ -91,7 +91,7 @@ public class ApproveController {
         if (dislikes != null) {
             dislikesServiceImpl.delete(dislikes);
 
-            hide(e, -1, repository);
+            hideTemplate(e, -1, repository);
         }
 
         //如果存在点赞对象 就删除 即取消点赞 否则点赞
@@ -172,7 +172,7 @@ public class ApproveController {
         if (dislikes != null) {
             dislikesServiceImpl.delete(dislikes);
 
-            hide(e, -1, repository);
+            hideTemplate(e, -1, repository);
             hashMap.put("disapproved", false);
             hashMap.put("disLikesNum", e.getDisLikesNum());
             return new Result(hashMap, "取消踩成功");
@@ -180,7 +180,7 @@ public class ApproveController {
             DisLikes dislikes1 = new DisLikes();
 
             dislikesServiceImpl.save(e, dislikes1, postUser);
-            hide(e, 1, repository);
+            hideTemplate(e, 1, repository);
             hashMap.put("disapproved", true);
             hashMap.put("disLikesNum", e.getDisLikesNum());
             return new Result(hashMap, "点踩成功");
@@ -296,6 +296,9 @@ public class ApproveController {
         }
     }
 
+    /**
+     * 处理问题/博客的点赞
+     */
     <E extends Template> void dealLikes(E e, User receiveUser, int p, TemplateServiceImpl<E> repository) {
         //不明白为什么把他们放在saveLikes之前就可以update
         e.setLikesNum(e.getLikesNum() + p * 1);
@@ -304,16 +307,18 @@ public class ApproveController {
         e.setImpact(e.getImpact() + p * ImpactGrow.APPROVED.getGrow());
 
         //问题被（取消）点赞 提问者贡献值+-
-        receiveUser.setDonation(receiveUser.getDonation() + p * DonationGrow.APPROVED_TEMPLATE.getGrow());
+        receiveUser.setDonation(receiveUser.getDonation() + p * DonationGrow.TEMPLATE_APPROVED.getGrow());
 
         repository.save(e);
         userServiceImpl.saveUser(receiveUser);
     }
 
-    <E extends Template> void hide(E e, int p, TemplateServiceImpl<E> repository) {
+    /**
+     * 被踩到一定程度隐藏问题/博客
+     */
+    <E extends Template> void hideTemplate(E e, int p, TemplateServiceImpl<E> repository) {
         e.setDisLikesNum(e.getDisLikesNum() + p);
 
-        //被踩到一定程度隐藏
         if ((e.getDisLikesNum() >= Magic.HIDE_STANDARD1) & (e.getLikesNum() <= Magic.HIDE_STANDARD2 * e.getDisLikesNum())) {
             e.setHidden(true);
         } else {
@@ -322,9 +327,12 @@ public class ApproveController {
         repository.save(e);
     }
 
+
+    /**
+     * 被踩到一定程度隐藏评论
+     */
     void hideComment(Comment comment, int p) {
         comment.setDisLikesNum(comment.getDisLikesNum() + p);
-        //被踩到一定程度隐藏评论
         if ((comment.getDisLikesNum() >= Magic.HIDE_STANDARD1) & (comment.getLikesNum() <= Magic.HIDE_STANDARD2 * comment.getDisLikesNum())) {
             comment.setHidden(true);
         } else {
@@ -348,6 +356,9 @@ public class ApproveController {
         return max;
     }
 
+    /**
+     * 取消对评论的点赞
+     */
     void deleteCommentLikes(Comment comment, Likes likes, User receiveUser) {
         if (comment.getQuestion() != null) {
             Integer maxNum0 = getMaxLikesNum(commentServiceImpl.listAllCommentByQuestionId(comment.getQuestion().getId()));
@@ -363,13 +374,16 @@ public class ApproveController {
         }
     }
 
+    /**
+     * 处理评论的点赞
+     */
     <E extends Template> void dealLikes(User receiveUser, Comment comment, E e, int maxNum0, int p, TemplateServiceImpl<E> repository) {
 
         comment.setLikesNum(comment.getLikesNum() + p * 1);
         commentServiceImpl.saveComment(comment);
 
         //问题被（取消）点赞 提问者贡献值+-
-        receiveUser.setDonation(receiveUser.getDonation() + p * DonationGrow.APPROVED_TEMPLATE.getGrow());
+        receiveUser.setDonation(receiveUser.getDonation() + p * DonationGrow.COMMENT_APPROVED.getGrow());
         userServiceImpl.saveUser(receiveUser);
 
         //（取消）点赞后的最高赞数

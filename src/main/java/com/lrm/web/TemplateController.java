@@ -151,7 +151,7 @@ public class TemplateController {
             throw new NotFoundException("未查询到该问题");
         }
         //返回前端的问题
-        Question frontQuestion =new Question();
+        Question frontQuestion = new Question();
 
         return getTemplate(request, backQuestion, frontQuestion, questionServiceImpl);
     }
@@ -169,7 +169,7 @@ public class TemplateController {
             throw new NotFoundException("未查询到该博客");
         }
         //返回前端的问题
-        Blog frontBlog =new Blog();
+        Blog frontBlog = new Blog();
 
         return getTemplate(request, backBlog, frontBlog, blogServiceImpl);
     }
@@ -180,39 +180,23 @@ public class TemplateController {
 
         frontT = templateServiceImpl.getAndConvert(backT.getId(), frontT);
 
-        if (likesServiceImp.get(userServiceImpl.getUser(userId), backT) != null) {
-            frontT.setApproved(true);
-        } else {
-            frontT.setApproved(false);
-        }
+        frontT.setApproved(likesServiceImp.get(userServiceImpl.getUser(userId), backT) != null);
 
-        if (dislikesServiceImp.get(userServiceImpl.getUser(userId), backT) != null) {
-            frontT.setDisapproved(true);
-        } else {
-            frontT.setDisapproved(false);
-        }
+        frontT.setDisapproved(dislikesServiceImp.get(userServiceImpl.getUser(userId), backT) != null);
 
-        StringBuilder favoriteIds = new StringBuilder("");
+        StringBuilder favoriteIds = new StringBuilder();
         Favorite favorite0;
         Iterator<Favorite> it = favoriteServiceImpl.getFavoritesByUserId(userId).iterator();
         if (it.hasNext()) {
             favorite0 = it.next();
             favoriteIds.append(favorite0.getId());
-            if (favorite0.getFavoriteQuestions().contains(backT) || favorite0.getFavoriteBlogs().contains(backT)) {
-                frontT.setCollected(true);
-            } else {
-                frontT.setCollected(false);
-            }
+            frontT.setCollected(favorite0.getFavoriteQuestions().contains(backT) || favorite0.getFavoriteBlogs().contains(backT));
         }
 
         while (it.hasNext()) {
             favorite0 = it.next();
             favoriteIds.append(",").append(favorite0.getId());
-            if (favorite0.getFavoriteQuestions().contains(backT) || favorite0.getFavoriteBlogs().contains(backT)) {
-                frontT.setCollected(true);
-            } else {
-                frontT.setCollected(false);
-            }
+            frontT.setCollected(favorite0.getFavoriteQuestions().contains(backT) || favorite0.getFavoriteBlogs().contains(backT));
         }
 
         frontT.setFavoriteIds(favoriteIds.toString());

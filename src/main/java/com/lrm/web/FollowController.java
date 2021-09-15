@@ -57,7 +57,7 @@ public class FollowController {
             followedUser.setFollowedUserNum(followedUser.getFollowedUserNum() - 1);
             followingUser.getFollowingUsers().remove(followedUser);
             followingUser.setFollowingUserNum(followingUser.getFollowingUserNum() - 1);
-            followedUser.setDonation(followedUser.getDonation() + DonationGrow.FOLLOWED.getGrow());
+            followedUser.setDonation(followedUser.getDonation() - DonationGrow.FOLLOWED.getGrow());
 
             userServiceImpl.saveUser(followedUser);
             userServiceImpl.saveUser(followingUser);
@@ -76,7 +76,7 @@ public class FollowController {
             followedUser.setFollowedUserNum(followedUser.getFollowedUserNum() + 1);
             followingUser.getFollowingUsers().add(followedUser);
             followingUser.setFollowingUserNum(followingUser.getFollowingUserNum() + 1);
-            followedUser.setDonation(followedUser.getDonation() - DonationGrow.FOLLOWED.getGrow());
+            followedUser.setDonation(followedUser.getDonation() + DonationGrow.FOLLOWED.getGrow());
 
             userServiceImpl.saveUser(followedUser);
             userServiceImpl.saveUser(followingUser);

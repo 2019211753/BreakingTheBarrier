@@ -70,7 +70,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         //默认为不隐藏
         t.setHidden(false);
         //根据发布t人的贡献初始化t的影响力
-        user.setDonation(user.getDonation() + DonationGrow.APPROVED_TEMPLATE.getGrow());
+        user.setDonation(user.getDonation() + DonationGrow.POST_TEMPLATE.getGrow());
         t.setImpact(user.getDonation());
         return repository.save(t);
     }
@@ -207,7 +207,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         repository.save(backT);
         BeanUtils.copyProperties(backT, frontT);
         String content = backT.getContent();
-        frontT.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
+        frontT.setDetails(MarkdownUtils.markdownToHtmlExtensions(content));
         return frontT;
     }
 

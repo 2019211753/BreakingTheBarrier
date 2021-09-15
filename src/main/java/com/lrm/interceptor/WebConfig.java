@@ -31,27 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new JWTInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login")
-                .excludePathPatterns("/register")
-                .excludePathPatterns("/test")
-                .excludePathPatterns("/layui-v2.5.7/**")
-                .excludePathPatterns("/images/**")
-                .excludePathPatterns("/css/**")
-                .excludePathPatterns("/js/**")
-                .excludePathPatterns("/backstage.html")
-                .excludePathPatterns("/404.html")
-                .excludePathPatterns("classify.html")
-                .excludePathPatterns("/comment.html")
-                .excludePathPatterns("/editmine.html")
-                .excludePathPatterns("/editor.html")
-                .excludePathPatterns("/files.html")
-                .excludePathPatterns("/homepage.html")
-                .excludePathPatterns("/honor.html")
-                .excludePathPatterns("/loginn.html")
-                .excludePathPatterns("/message.html")
-                .excludePathPatterns("/mine.html")
-                .excludePathPatterns("/others.html")
-                .excludePathPatterns("/search.html")
-                .excludePathPatterns("/signin.html");
+                .excludePathPatterns("/register");
         registry.addInterceptor(new AuthorityInterceptor())
                 .addPathPatterns("/admin/**");
     }

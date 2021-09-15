@@ -107,7 +107,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setPostUser(postUser);
         comment.setPostUserId0(postUser.getId());
 
-        //如果是有效回答 回答者贡献+3 问题影响力+2 否则仅仅问题影响力+2
+        //如果是有效回答 回答者贡献+ 问题影响力+ 否则仅仅问题影响力+
         if (comment.getAnswer()) {
             postUser.setDonation(postUser.getDonation() + DonationGrow.POST_EFFECTIVE_COMMENT.getGrow());
         }
