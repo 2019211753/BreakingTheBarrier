@@ -3,7 +3,7 @@
     <div class="ui large feed">
       <div class="event">
         <div class="label">
-          <img src="../../../../../assets/logo.png" />
+          <img :src="'data:image/jpg;base64,' + template.avatar" alt="">
         </div>
         <div class="content">
           <div class="summary">
@@ -66,7 +66,7 @@
             v-for="item in commentList"
           >
             <a class="avatar">
-              <img src="../../../../../assets/logo.png" />
+              <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
             </a>
             <div class="content">
               <a class="author">{{ item.nickname }}</a>
@@ -176,7 +176,7 @@ export default {
         (that.approved = that.template.approved),
           (that.disapproved = that.template.disapproved),
           (that.collected = that.template.collected),
-          (that.articleContent = that.template.content);
+          (that.articleContent = that.template.details);
         that.articleLikeNumber = that.template.likesNum;
         that.articleCollectNumber = that.template.collectedNum;
         that.articleDislikeNumber = that.template.disLikesNum;

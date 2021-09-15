@@ -6,12 +6,11 @@
       description="还未发布过内容"
     ></el-empty>
     <div class="framework" v-for="(item, index) in contentList[0]">
-      <br />
       <div class="frameworkBody">
         <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <img src="../../../../../../assets/logo.png" />
+              <img :src="'data:image/jpg;base64,' + avatar" alt="">
             </div>
             <div class="content">
               <div class="summary">
@@ -23,13 +22,16 @@
         </div>
         <h3 class="title" style="margin-top: -10px">
           <a href=""
-            ><router-link
+          >
+            <router-link
               :to="{
                 path: '/helloWorld/BBS/blogContent',
                 query: { blogId: item.id },
               }"
-              >{{ item.title }}</router-link
-            ></a
+            >{{ item.title }}
+            </router-link
+            >
+          </a
           >
         </h3>
         <div style="width: 100%; height: 130px">
@@ -49,8 +51,8 @@
           </a>
         </div>
       </div>
-      <br />
-      <br />
+      <br/>
+      <br/>
     </div>
   </div>
 </template>
@@ -61,7 +63,7 @@ import axios from "axios";
 export default {
   name: "blogs",
   data() {
-    return { cover: [], contentList: [], count: 0, nowUser: "" };
+    return {cover: [], contentList: [], count: 0, nowUser: "", avatar: sessionStorage.getItem("imgSrc")};
   },
   mounted() {
     var that = this;
@@ -110,19 +112,24 @@ export default {
   margin-top: 20px;
   height: 260px;
 }
+
 .frameworkBody {
   width: 90%;
   margin: auto;
 }
+
 .title {
   margin-top: 0px;
 }
+
 .ui.label {
   margin-top: 5px;
 }
+
 img {
   height: 120px;
 }
+
 .ui.basic.very.padded.segment {
   font-size: 15px;
   font-weight: 900;

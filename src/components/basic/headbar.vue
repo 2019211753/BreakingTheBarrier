@@ -5,39 +5,52 @@
       <ul>
         <li>
           <a href=""
-            ><router-link to="/helloWorld/home">
-              <i class="sticky note outline icon"></i>首页</router-link
-            ></a
+          >
+            <router-link to="/helloWorld/home">
+              <i class="sticky note outline icon"></i>首页
+            </router-link
+            >
+          </a
           >
         </li>
         <li>
           <a href=""
-            ><router-link to="/helloWorld/BBS/questions">
-              <i class="home icon"></i>论坛</router-link
-            ></a
+          >
+            <router-link to="/helloWorld/BBS/questions">
+              <i class="home icon"></i>论坛
+            </router-link
+            >
+          </a
           >
         </li>
         <li>
           <a href=""
-            ><router-link to="/helloWorld/rank">
-              <i class="trophy icon"></i>排行榜</router-link
-            ></a
+          >
+            <router-link to="/helloWorld/rank">
+              <i class="trophy icon"></i>排行榜
+            </router-link
+            >
+          </a
           >
         </li>
         <li style="margin-left: 270px">
           <a href=""
-            ><router-link to="/helloWorld/mine/questionFiles">
-              <img
-                class="ui avatar image"
-                src="../../assets/logo.png"
-              />我的</router-link
-            ></a
+          >
+            <router-link to="/helloWorld/mine/questionFiles">
+              <img :src="'data:image/jpg;base64,' +imgSrc" alt=""
+                   class="ui avatar image">
+              我的
+            </router-link
+            >
+          </a
           >
         </li>
         <li>
           <a href="" @click="logOut()"
-            ><router-link to="/"><i class="sign out icon"></i></router-link
-          ></a>
+          >
+            <router-link to="/"><i class="sign out icon"></i></router-link
+            >
+          </a>
         </li>
       </ul>
     </div>
@@ -45,8 +58,13 @@
 </template>
 
 <script>
+import axios from "_axios@0.21.1@axios";
+
 export default {
   name: "headbar",
+  data() {
+    return {imgSrc: ""}
+  },
   methods: {
     logOut() {
       sessionStorage.clear();
@@ -55,6 +73,19 @@ export default {
         history.pushState(null, null, document.URL);
       });
     },
+  },
+  created() {
+    var that = this;
+    axios
+      .get("/customer/personal")
+      .then(function (response) {
+        console.log(response.data.data.user);
+        that.imgSrc = response.data.data.user.avatar;
+        sessionStorage["imgSrc"]=that.imgSrc;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
 };
 </script>

@@ -3,9 +3,9 @@
     <div class="main">
       <div class="personalCard">
         <div>
-          <br />
+          <br/>
           <div class="avatar">
-            <img class="ui small circular image" :src="avatarUrl" />
+            <img :src="'data:image/jpg;base64,' + userData.avatar" alt="" class="ui small circular image">
           </div>
           <div class="information">
             <h2>{{ userData.nickname }}</h2>
@@ -40,44 +40,62 @@
               <ul>
                 <li>
                   <a href=""
-                    ><router-link to="/helloWorld/mine/questionFiles">
-                      <i class="sticky note outline icon"></i>问题</router-link
-                    ></a
+                  >
+                    <router-link to="/helloWorld/mine/questionFiles">
+                      <i class="sticky note outline icon"></i>问题
+                    </router-link
+                    >
+                  </a
                   >
                 </li>
                 <li>
                   <a href=""
-                    ><router-link to="/helloWorld/mine/blogFiles">
-                      <i class="home icon"></i>博客</router-link
-                    ></a
+                  >
+                    <router-link to="/helloWorld/mine/blogFiles">
+                      <i class="home icon"></i>博客
+                    </router-link
+                    >
+                  </a
                   >
                 </li>
                 <li>
                   <a href=""
-                    ><router-link to="/helloWorld/mine/friends/following">
-                      <i class="home icon"></i>朋友</router-link
-                    ></a
+                  >
+                    <router-link to="/helloWorld/mine/friends/following">
+                      <i class="home icon"></i>朋友
+                    </router-link
+                    >
+                  </a
                   >
                 </li>
                 <li>
                   <a href=""
-                    ><router-link to="/helloWorld/mine/message">
-                      <i class="home icon"></i>通知</router-link
-                    ></a
+                  >
+                    <router-link to="/helloWorld/mine/message">
+                      <i class="home icon"></i>通知
+                    </router-link
+                    >
+                  </a
                   >
                 </li>
                 <li>
                   <a href=""
-                    ><router-link to="/helloWorld/mine/information">
-                      <i class="home icon"></i>资料</router-link
-                    ></a
+                  >
+                    <router-link to="/helloWorld/mine/information">
+                      <i class="home icon"></i>资料
+                    </router-link
+                    >
+                  </a
                   >
                 </li>
                 <li>
                   <a href=""
-                    ><router-link to="/helloWorld/mine/collections">
-                      <i class="home icon"></i>收藏</router-link
-                    ></a
+                  >
+                    <router-link to="/helloWorld/mine/collections">
+                      <i class="home icon"></i>收藏
+                    </router-link
+                    >
+                  </a
                   >
                 </li>
               </ul>
@@ -85,7 +103,9 @@
           </div>
         </div>
       </div>
-      <div><router-view></router-view></div>
+      <div>
+        <router-view></router-view>
+      </div>
     </div>
     <div class="side">
       <recommend></recommend>
@@ -96,11 +116,12 @@
 <script>
 import recommend from "./components/recommend";
 import axios from "axios";
+
 export default {
-  components: { recommend },
+  components: {recommend},
   name: "mine",
   data() {
-    return { userData: "", avatarUrl: "" };
+    return {userData: ""};
   },
   created() {
     var that = this;
@@ -109,14 +130,7 @@ export default {
       .then(function (response) {
         console.log(response.data.data.user);
         that.userData = response.data.data.user;
-        that.avatarUrl =
-          "http://39.105.212.210/" + response.data.data.user.avatar;
-        /* that.avatarUrl= 'data:image/png;base64,' + Buffer.from(response.data.data.user.avatar).toString('base64'); */
-        /*  let res = this.$http.get(response.data.data.user.avatar, {
-          responseType: "blob",
-        });
-        this.avatarUrl = window.URL.createObjectURL(res.data); */
-      })
+             })
       .catch(function (error) {
         console.log(error);
       });
@@ -139,6 +153,7 @@ export default {
   /* height: 600px; */
   /* background-color: bisque; */
 }
+
 .side {
   margin-top: 20px;
   width: 35%;
@@ -147,17 +162,20 @@ export default {
   height: 380px;
   /* background-color: bisque; */
 }
+
 .personalCard {
   width: 100%;
   height: 220px;
   /* background-color: red; */
 }
+
 .avatar {
   width: 150px;
   height: 150px;
   /* background-color: rgb(82, 168, 168); */
   float: left;
 }
+
 .information {
   width: 400px;
   height: 150px;
@@ -165,13 +183,16 @@ export default {
   /* background-color: rgb(50, 236, 236); */
   float: left;
 }
+
 h2 {
   margin-top: 20px;
   margin-left: 5%;
 }
+
 p {
   margin-left: 5%;
 }
+
 .data {
   width: 50%;
 }

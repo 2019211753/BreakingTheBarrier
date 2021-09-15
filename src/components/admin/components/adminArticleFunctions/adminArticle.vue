@@ -12,7 +12,7 @@
       v-if="!contentList.length"
       description="找不到任何结果"
     ></el-empty>
-    <el-container v-for="(item, index) in contentList">
+    <el-container v-for="(item, index) in contentList" key="item.id">
       <el-aside width="250px"
         ><div class="ui large feed">
           <br />

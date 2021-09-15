@@ -12,15 +12,16 @@
     </div>
   </div> -->
   <div>
-    <el-container v-for="item in userList" style="margin-top: 20px">
+    <el-container
+      v-for="item in userList"
+      key="item.id"
+      style="margin-top: 20px"
+    >
       <el-aside width="500px">
         <div class="ui small five statistics">
           <div class="statistic">
             <div class="value">
-              <img
-                src="../../../../assets/avatar.jpg"
-                class="ui circular inline image"
-              />
+              <img :src="'data:image/jpg;base64,' + item.avatar" alt="" class="ui circular inline image">
             </div>
             <div class="label">
               <a href="">{{ item.nickname }}</a>
@@ -42,10 +43,12 @@
             <div class="value">0{{ item.following }}</div>
             <div class="label">关注</div>
           </div>
-        </div></el-aside
+        </div>
+      </el-aside
       >
       <el-main
-        ><button
+      >
+        <button
           style="margin-top: -10px"
           class="ui circular red icon button"
           @click="follow(item.id)"
@@ -63,7 +66,7 @@ import axios from "axios";
 export default {
   name: "left",
   data() {
-    return { userList: [] };
+    return {userList: []};
   },
   created() {
     var that = this;

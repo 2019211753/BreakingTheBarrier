@@ -8,7 +8,7 @@
         v-for="item in unLookedComments"
       >
         <div class="label">
-          <img src="../../../../../assets/avatar.jpg" />
+          <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
         </div>
         <div class="content">
           <div class="summary">
@@ -32,7 +32,7 @@
       </div>
       <div class="event" v-if="unLookedLikes" v-for="item in unLookedLikes">
         <div class="label">
-          <img src="../../../../../assets/avatar.jpg" />
+          <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
         </div>
         <div class="content">
           <div class="summary">

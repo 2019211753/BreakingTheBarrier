@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container class="el-container">
     <el-header height="40px"><headbar></headbar></el-header>
     <el-main
       ><div><router-view></router-view></div
@@ -26,5 +26,5 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped>.el-container{width: 1200px}
 </style>

@@ -6,16 +6,15 @@
       description="收藏夹为空"
     ></el-empty>
     <div class="framework" v-for="(item, index) in questions">
-      <br />
       <div class="frameworkBody">
         <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <img src="../../../../../../assets/logo.png" />
+              <img :src="'data:image/jpg;base64,' + avatar" alt="">
             </div>
             <div class="content">
               <div class="summary">
-                <a class="user"> {{ nowUser }} </a>
+                <a class="user"> {{ item.nickname }} </a>
                 <div class="date">{{ item.createTime }}</div>
               </div>
             </div>
@@ -25,8 +24,8 @@
           <a href=""
             ><router-link
               :to="{
-                path: '/BBS/content',
-                query: { articleId: item.id },
+                path: '/helloWorld/BBS/blogContent',
+                query: { blogId: item.id },
               }"
               >{{ item.title }}</router-link
             ></a
@@ -56,11 +55,11 @@
         <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <img src="../../../../../../assets/logo.png" />
+              <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
             </div>
             <div class="content">
               <div class="summary">
-                <a class="user"> {{ nowUser }} </a>
+                <a class="user"> {{ item.nickname }} </a>
                 <div class="date">{{ item.createTime }}</div>
               </div>
             </div>
@@ -70,7 +69,7 @@
           <a href=""
             ><router-link
               :to="{
-                path: '/BBS/content',
+                path: '/helloWorld/BBS/articleContent',
                 query: { articleId: item.id },
               }"
               >{{ item.title }}</router-link
@@ -104,6 +103,7 @@ export default {
   name: "favorite",
   data() {
     return {
+      avatar:sessionStorage.getItem("imgSrc"),
       cover: [],
       questions: [],
       blogs: [],

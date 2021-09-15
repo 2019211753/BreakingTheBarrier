@@ -5,7 +5,7 @@
         <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <img src="../../../../../../assets/avatar.jpg" />
+              <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
             </div>
             <div class="content">
               <div class="summary">
