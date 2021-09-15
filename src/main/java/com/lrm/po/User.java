@@ -213,9 +213,11 @@ public class User {
      * 用户所上传的文件，这里可以用uploadUser来进行维护
      * 所以添加的时候使用File.uploadUser来进行维护而不是通过User.uploadFiles
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "uploadUser")
     private List<File> uploadedFiles = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "contributors")
     private List<InfoEntry> infoEntries = new ArrayList<>();
 
