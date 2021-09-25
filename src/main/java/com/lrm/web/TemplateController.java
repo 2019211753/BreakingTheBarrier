@@ -128,6 +128,7 @@ public class TemplateController {
             //得到发布问题的人
             User postUser = t0.getUser();
 
+            t0.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
             t0.setNickname(postUser.getNickname());
         }
 
@@ -200,7 +201,7 @@ public class TemplateController {
         }
 
         frontT.setFavoriteIds(favoriteIds.toString());
-        frontT.setAvatar(backT.getUser().getAvatar());
+        frontT.setAvatar(FileUtils.convertAvatar(path, backT.getUser().getAvatar()));
         frontT.setNickname(backT.getUser().getNickname());
 
         hashMap.put("template", frontT);

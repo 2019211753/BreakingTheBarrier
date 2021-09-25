@@ -50,6 +50,7 @@ public class ProfileController {
 
         User user = new User();
         BeanUtils.copyProperties(userServiceImpl.getUser(TokenInfo.getCustomUserId(request)), user);
+        user.setAvatar(FileUtils.convertAvatar(path, user.getAvatar()));
 
         //返回当前用户信息和院系选择
         hashMap.put("user", user);
@@ -89,7 +90,7 @@ public class ProfileController {
         user.setAvatar("images/" + userId + "/avatar/" + newName);
         userServiceImpl.saveUser(user);
 
-        hashMap.put("avatar", "images/" + userId + "/avatar/" + newName);
+        hashMap.put("avatar", FileUtils.convertAvatar(path, user.getAvatar()));
         return new Result(hashMap, "上传成功");
     }
 
@@ -192,7 +193,7 @@ public class ProfileController {
             throw new IllegalParameterException(errorMessage.append("其他信息修改成功；").toString());
         }
 
-        hashMap.put("token", TokenInfo.postToken(newUser, path));
+        hashMap.put("token", TokenInfo.postToken(newUser));
 
         return new Result(hashMap, "修改成功");
     }

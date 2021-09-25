@@ -218,6 +218,7 @@ public class CustomerTemplateController {
         Map<String, Object> hashMap = new HashMap<>(2);
 
         t.init();
+        t.setDetails(t.getContent());
 
         List<Tag> tags = tagServiceImpl.listTagTop();
 

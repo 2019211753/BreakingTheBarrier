@@ -5,9 +5,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.lrm.po.User;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,18 +60,14 @@ public class TokenInfo {
      * @param user 当前用户对象
      * @return token
      */
-    public static String postToken(User user, String avatarPath) throws IOException {
+    public static String postToken(User user) {
         Map<String, String> map = new HashMap<>(5);
 
         //把这些字段放在请求头里 其他东西在需要的时候可以另外返回
         //注意！！！这里放进去map是什么数据类型，取出来就得是什么类型！！
-        FileInputStream is = new FileInputStream(avatarPath + File.separator + user.getAvatar());
-        byte[] avatar = FileUtils.inputStream2Byte(is);
-        is.close();
 
         map.put("userId", user.getId().toString());
         map.put("nickname", user.getNickname());
-        map.put("avatar", avatar.toString());
         map.put("admin", user.getAdmin().toString());
         map.put("canSpeak", user.getCanSpeak().toString());
         String token = JWTUtils.getToken(map);

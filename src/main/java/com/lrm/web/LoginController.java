@@ -4,6 +4,7 @@ import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.User;
 import com.lrm.service.UserServiceImpl;
+import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,7 +77,7 @@ public class LoginController {
      * @return 登录成功的token; 登陆失败的报错信息
      */
     @PostMapping("/login")
-    public Result login(@RequestBody User user) throws IOException {
+    public Result login(@RequestBody User user) {
         //需要传递到前端的 包含在token内的信息 map用来存放payload
         //或传递报错信息
         Map<String, Object> hashMap = new HashMap<>(1);
@@ -102,9 +102,10 @@ public class LoginController {
         User user1 = userServiceImpl.checkUser(username, password);
         if(user1 != null)
         {
-            String token = TokenInfo.postToken(user1, path);
+            String token = TokenInfo.postToken(user1);
 
             hashMap.put("token", token);
+            hashMap.put("avatar", FileUtils.convertAvatar(path, user1.getAvatar()));
             //返回首页
             return new Result(hashMap, "登录成功");
         } else {

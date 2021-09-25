@@ -8,9 +8,12 @@ import com.lrm.exception.NoPermissionException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
+import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 /**
  * 管理收藏夹
@@ -33,6 +38,8 @@ import java.util.Map;
 @RequestMapping("/customer")
 @RestController
 public class CustomerFavoriteController {
+    @Value("${web.upload-path}")
+    private String path;
 
     @Autowired
     private FavoriteServiceImpl favoriteServiceImpl;
@@ -196,9 +203,20 @@ public class CustomerFavoriteController {
             }
         }
 
-        hashMap.put("questions", questionServiceImpl.listByFavoriteId(favoriteId, pageable));
-        hashMap.put("blogs", blogServiceImpl.listByFavoriteId(favoriteId, pageable));
+        hashMap.put("questions", insertAttribute(questionServiceImpl.listByFavoriteId(favoriteId, pageable)));
+        hashMap.put("blogs", insertAttribute(blogServiceImpl.listByFavoriteId(favoriteId, pageable)));
         return new Result(hashMap, "");
+    }
+
+    <T extends Template> Page<T> insertAttribute(Page<T> pages) {
+        List<T> ts = pages.getContent();
+        for (T t : ts) {
+            t.setDetails(t.getContent());
+            User postUser = t.getUser();
+            t.setNickname(postUser.getNickname());
+            t.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
+        }
+        return pages;
     }
 
     /**

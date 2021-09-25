@@ -86,14 +86,6 @@ public class ApproveController {
         User postUser = userServiceImpl.getUser(postUserId);
         User receiveUser = e.getUser();
 
-        //若点过踩 取消点踩
-        DisLikes dislikes = dislikesServiceImpl.get(postUser, e);
-        if (dislikes != null) {
-            dislikesServiceImpl.delete(dislikes);
-
-            hideTemplate(e, -1, repository);
-        }
-
         //如果存在点赞对象 就删除 即取消点赞 否则点赞
         Likes likes = likesServiceImpl.get(postUser, e);
         if (likes != null) {
@@ -102,8 +94,17 @@ public class ApproveController {
             dealLikes(e, receiveUser, -1, repository);
             hashMap.put("approved", false);
             hashMap.put("likesNum", e.getLikesNum());
+            hashMap.put("disLikesNum", e.getDisLikesNum());
             return new Result(hashMap, "取消赞成功");
         } else {
+            //若点过踩 取消点踩
+            DisLikes dislikes = dislikesServiceImpl.get(postUser, e);
+            if (dislikes != null) {
+                dislikesServiceImpl.delete(dislikes);
+
+                hideTemplate(e, -1, repository);
+            }
+
             Likes likes1 = new Likes();
 
             likesServiceImpl.save(e, likes1, postUser, receiveUser);
@@ -112,6 +113,7 @@ public class ApproveController {
             dealLikes(e, receiveUser, 1, repository);
             hashMap.put("approved", true);
             hashMap.put("likesNum", e.getLikesNum());
+            hashMap.put("disLikesNum", e.getDisLikesNum());
             return new Result(hashMap, "点赞成功");
         }
 
@@ -160,13 +162,6 @@ public class ApproveController {
         User postUser = userServiceImpl.getUser(postUserId);
         User receiveUser = e.getUser();
 
-        //若点过赞 取消点赞 贡献值复原
-        Likes likes = likesServiceImpl.get(postUser, e);
-        if (likes != null) {
-            likesServiceImpl.delete(likes);
-            dealLikes(e, receiveUser, -1, repository);
-        }
-
         //若点过踩 取消点踩 否则点踩
         DisLikes dislikes = dislikesServiceImpl.get(postUser, e);
         if (dislikes != null) {
@@ -174,14 +169,23 @@ public class ApproveController {
 
             hideTemplate(e, -1, repository);
             hashMap.put("disapproved", false);
+            hashMap.put("likesNum", e.getLikesNum());
             hashMap.put("disLikesNum", e.getDisLikesNum());
             return new Result(hashMap, "取消踩成功");
         } else {
+            //若点过赞 取消点赞 贡献值复原
+            Likes likes = likesServiceImpl.get(postUser, e);
+            if (likes != null) {
+                likesServiceImpl.delete(likes);
+                dealLikes(e, receiveUser, -1, repository);
+            }
+
             DisLikes dislikes1 = new DisLikes();
 
             dislikesServiceImpl.save(e, dislikes1, postUser);
             hideTemplate(e, 1, repository);
             hashMap.put("disapproved", true);
+            hashMap.put("likesNum", e.getLikesNum());
             hashMap.put("disLikesNum", e.getDisLikesNum());
             return new Result(hashMap, "点踩成功");
         }
@@ -208,14 +212,6 @@ public class ApproveController {
             //被点赞的人
             User receiveUser = comment.getReceiveUser();
 
-            //若点过踩 取消点踩
-            DisLikes disLikes = dislikesServiceImpl.get(postUser, comment);
-            if (disLikes != null) {
-                dislikesServiceImpl.delete(disLikes);
-                //复原
-                hideComment(comment, -1);
-            }
-
             Likes likes = likesServiceImpl.get(postUser, comment);
 
             //点过赞删除，无则增加
@@ -224,8 +220,17 @@ public class ApproveController {
                 deleteCommentLikes(comment, likes, receiveUser);
                 hashMap.put("approved", false);
                 hashMap.put("likesNum", comment.getLikesNum());
+                hashMap.put("disLikesNum", comment.getDisLikesNum());
                 return new Result(hashMap, "取消赞成功");
             } else {
+                //若点过踩 取消点踩
+                DisLikes disLikes = dislikesServiceImpl.get(postUser, comment);
+                if (disLikes != null) {
+                    dislikesServiceImpl.delete(disLikes);
+                    //复原
+                    hideComment(comment, -1);
+                }
+
                 Likes likes1 = new Likes();
 
                 likes1.setComment(comment);
@@ -244,6 +249,7 @@ public class ApproveController {
                 }
                 hashMap.put("approved", true);
                 hashMap.put("likesNum", comment.getLikesNum());
+                hashMap.put("disLikesNum", comment.getDisLikesNum());
                 return new Result(hashMap, "点赞成功");
             }
         } else {
@@ -267,12 +273,6 @@ public class ApproveController {
         User postUser = userServiceImpl.getUser(postUserId);
         User receiveUser = comment.getReceiveUser();
 
-        //若点过赞 取消点赞 贡献值复原
-        Likes likes = likesServiceImpl.get(postUser, comment);
-        if (likes != null) {
-            deleteCommentLikes(comment, likes, receiveUser);
-        }
-
         //若点过踩 取消点踩 否则点踩
         DisLikes disLikes = dislikesServiceImpl.get(postUser, comment);
         if (disLikes != null) {
@@ -280,9 +280,16 @@ public class ApproveController {
 
             hideComment(comment, -1);
             hashMap.put("disapproved", false);
+            hashMap.put("likesNum", comment.getLikesNum());
             hashMap.put("disLikesNum", comment.getDisLikesNum());
             return new Result(hashMap, "取消踩成功");
         } else {
+            //若点过赞 取消点赞 贡献值复原
+            Likes likes = likesServiceImpl.get(postUser, comment);
+            if (likes != null) {
+                deleteCommentLikes(comment, likes, receiveUser);
+            }
+
             DisLikes disLikes1 = new DisLikes();
 
             disLikes1.setPostUser(postUser);
@@ -291,6 +298,7 @@ public class ApproveController {
 
             hideComment(comment, 1);
             hashMap.put("disapproved", true);
+            hashMap.put("likesNum", comment.getLikesNum());
             hashMap.put("disLikesNum", comment.getDisLikesNum());
             return new Result(hashMap, "点踩成功");
         }

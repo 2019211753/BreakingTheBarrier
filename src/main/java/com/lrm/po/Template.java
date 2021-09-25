@@ -2,6 +2,7 @@ package com.lrm.po;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lrm.util.DataStructureUtils;
 
 import javax.persistence.*;
@@ -45,12 +46,12 @@ public class Template {
 
     /**
      * 懒加载 只有getContent了才加载
-     * 但是前端序列化的时候默认会getContent，所以直接JsonIgnore吧
+     * 但是前端序列化的时候默认会getContent，所以在json层面还要忽略
      * 内容
      * 前端必填
      */
-    @JsonIgnore
     @Basic(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Lob
     @NotBlank(message = "请输入内容")
     private String content;
