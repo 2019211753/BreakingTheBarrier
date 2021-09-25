@@ -79,7 +79,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public Page<File> findFile(String query, Short pageIndex) {
         if (query == null)
-            return fileRepository.findAll(PageRequest.of(pageIndex, 10));
-        return fileRepository.findByQuery(query, PageRequest.of(pageIndex, 10));
+            return fileRepository.findAll(PageRequest.of(pageIndex, 9));
+        return fileRepository.findByQuery(query, PageRequest.of(pageIndex, 9));
     }
 }

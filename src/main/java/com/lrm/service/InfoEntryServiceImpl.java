@@ -28,7 +28,7 @@ public class InfoEntryServiceImpl implements InfoEntryService {
 
     @Override
     public Page<InfoEntry> getAllUnapproved() {
-        return infoEntryRepository.findUnapproved(PageRequest.of(0, 10));
+        return infoEntryRepository.findUnapproved(PageRequest.of(0, 9));
     }
 
     @Override
