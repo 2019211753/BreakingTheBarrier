@@ -41,7 +41,6 @@ public interface TemplateRepository<T extends Template> extends JpaRepository<T,
             "from #{#entityName} t where t.user.id = ?1 order by year desc ")
     List<String> findGroupYear(Long userId);
 
-
     /**
      * 查询该年份下发布过博客/问题的所有月份
      * 注意sql语句中不能使用%M 因为jpa似乎不能对%M得到的英文的月份进行排序

@@ -1,5 +1,6 @@
 package com.lrm.web;
 
+import com.lrm.enumeration.DonationGrow;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.exception.NoPermissionException;
@@ -58,11 +59,15 @@ public class CommentController
      *
      * @param questionId 评论在哪个问题下 对应的问题Id
      * @param request    用于得到当前userId 处理当前用户点没点过赞的
-     * @return 第一类评论、第二类评论
+     * @return 第一类评论、第二类的非精选评论、第二类评论的精选评论
      */
     @GetMapping("/question/{questionId}/comments")
     public Result getQuestionComments(@PathVariable Long questionId, HttpServletRequest request) {
-        Map<String, Object> hashMap = new HashMap<>(2);
+        Map<String, Object> hashMap = new HashMap<>(4);
+
+        if (questionServiceImpl.getById(questionId) == null) {
+            throw new NotFoundException("未查询到该问题");
+        }
 
         Long userId = TokenInfo.getCustomUserId(request);
 
@@ -74,6 +79,13 @@ public class CommentController
         List<Comment> comments2 = commentServiceImpl.listCommentByQuestionId(questionId, true);
 
         hashMap.put("comments2", dealComment(comments2, userId));
+        hashMap.put("selectedComments", dealComment(commentServiceImpl.listSelectedAnswerByQuestionId(questionId), userId));
+
+        List<Comment> bestComments = commentServiceImpl.listBestComments(questionId);
+        for (Comment comment : bestComments) {
+            insertAttribute(comment, userId);
+        }
+        hashMap.put("bestComments", bestComments);
 
         return new Result(hashMap, "");
     }
@@ -84,6 +96,10 @@ public class CommentController
     @GetMapping("/blog/{blogId}/comments")
     public Result getBlogComments(@PathVariable Long blogId, HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(2);
+
+        if (blogServiceImpl.getById(blogId) == null) {
+            throw new NotFoundException("未查询到该博客");
+        }
 
         Long userId = TokenInfo.getCustomUserId(request);
 
@@ -159,7 +175,6 @@ public class CommentController
      */
     @PostMapping("/question/{questionId}/comment/post")
     public Result postQuestionComment(@PathVariable Long questionId, @RequestBody @Valid Comment comment, BindingResult bindingResult, HttpServletRequest request) {
-        Map<String, Object> hashMap = new HashMap<>(1);
 
         //得到当前用户
         Long userId = TokenInfo.getCustomUserId(request);
@@ -171,10 +186,9 @@ public class CommentController
             throw new NotFoundException("未查询到该问题");
         }
 
-        postComment(comment, bindingResult, postUser, question, questionServiceImpl, hashMap);
+        postComment(comment, bindingResult, postUser, question, questionServiceImpl);
 
-        hashMap.put("comments", dealComment(commentServiceImpl.listCommentByQuestionId(questionId, comment.getAnswer()), userId));
-        return new Result(hashMap, "发布成功");
+        return new Result(null, "发布成功");
     }
 
     /**
@@ -182,8 +196,6 @@ public class CommentController
      */
     @PostMapping("/blog/{blogId}/comment/post")
     public Result postBlogComment(@PathVariable Long blogId, @RequestBody @Valid Comment comment, BindingResult bindingResult, HttpServletRequest request) {
-        Map<String, Object> hashMap = new HashMap<>(1);
-
         //得到当前用户
         Long userId = TokenInfo.getCustomUserId(request);
         User postUser = userServiceImpl.getUser(userId);
@@ -194,14 +206,13 @@ public class CommentController
             throw new NotFoundException("未查询到该博客");
         }
 
-        postComment(comment, bindingResult, postUser, blog, blogServiceImpl, hashMap);
+        postComment(comment, bindingResult, postUser, blog, blogServiceImpl);
 
-        hashMap.put("comments",  dealComment(commentServiceImpl.listCommentByBlogId(blogId, comment.getAnswer()), userId));
 
-        return new Result(hashMap, "发布成功");
+        return new Result(null, "发布成功");
     }
 
-    private <T extends Template> void postComment(Comment comment, BindingResult bindingResult, User postUser, T t, TemplateServiceImpl<T> templateServiceImpl, Map<String, Object> hashMap) {
+    private <T extends Template> void postComment(Comment comment, BindingResult bindingResult, User postUser, T t, TemplateServiceImpl<T> templateServiceImpl) {
 
         if (postUser.getCanSpeak()) {
             //参数校验
@@ -235,7 +246,6 @@ public class CommentController
      */
     @GetMapping("/question/{questionId}/comment/{commentId}/delete")
     public Result deleteQuestionComment(@PathVariable Long questionId, @PathVariable Long commentId, HttpServletRequest request) {
-        Long userId = TokenInfo.getCustomUserId(request);
         Question question = questionServiceImpl.getById(questionId);
         if (question == null) {
             throw new NotFoundException("未查询到该问题");
@@ -243,9 +253,7 @@ public class CommentController
         Comment comment = commentServiceImpl.getComment(commentId);
         deleteComment(comment, question, questionServiceImpl, request);
 
-        Map<String, Object> hashMap = new HashMap<>(1);
-        hashMap.put("comments",  dealComment(commentServiceImpl.listCommentByQuestionId(questionId, comment.getAnswer()), userId));
-        return new Result(hashMap, "删除成功");
+        return new Result(null, "删除成功");
     }
 
     /**
@@ -253,7 +261,6 @@ public class CommentController
      */
     @GetMapping("/blog/{blogId}/comment/{commentId}/delete")
     public Result deleteBlogComment(@PathVariable Long blogId, @PathVariable Long commentId, HttpServletRequest request) {
-        Long userId = TokenInfo.getCustomUserId(request);
         Blog blog = blogServiceImpl.getById(blogId);
         if (blog == null) {
             throw new NotFoundException("未查询到该博客");
@@ -261,9 +268,7 @@ public class CommentController
         Comment comment = commentServiceImpl.getComment(commentId);
         deleteComment(comment, blog, blogServiceImpl, request);
 
-        Map<String, Object> hashMap = new HashMap<>(1);
-        hashMap.put("comments",  dealComment(commentServiceImpl.listCommentByBlogId(blogId, commentServiceImpl.getComment(commentId).getAnswer()), userId));
-        return new Result(hashMap, "删除成功");
+        return new Result(null, "删除成功");
     }
 
     private <T extends Template> void deleteComment(Comment comment, T t, TemplateServiceImpl<T> templateServiceImpl, HttpServletRequest request) {
@@ -286,5 +291,77 @@ public class CommentController
         if (comment != null) {
             throw new FailedOperationException("删除失败");
         }
+    }
+
+    /**
+     * @param questionId 问题Id
+     * @param commentId  评论Id
+     */
+    @GetMapping("/question/{questionId}/comment/{commentId}/select")
+    public Result goodComment(@PathVariable Long questionId, @PathVariable Long commentId, HttpServletRequest request) {
+        Question question = questionServiceImpl.getById(questionId);
+        if (question == null) {
+            throw new NotFoundException("未查询到该问题");
+        }
+
+        Comment comment = commentServiceImpl.getComment(commentId);
+        if (comment == null) {
+            throw new NotFoundException("未查询到该评论");
+        }
+
+        Map<String, Object> hashMap = new HashMap<>(1);
+
+        Long userId = TokenInfo.getCustomUserId(request);
+        //如果当前用户是发布问题的用户或是管理员
+        if (userId.equals(question.getPosterUserId0()) || userServiceImpl.getUser(userId).getAdmin()) {
+            //如果该评论是正式评论
+            if (comment.getAnswer()) {
+                //如果该评论已经被精选
+                if (comment.getSelected()) {
+                    question.setSolvedNum(question.getSolvedNum() - 1);
+                    //如果问题精选评论数为0
+                    if (question.getSolvedNum() == 0) {
+                        question.setSolved(false);
+                    }
+                    questionServiceImpl.save(question);
+
+                    modifySelectedAnswer(comment, question, false, hashMap);
+
+                    return new Result(hashMap, "已取消精选");
+                } else {
+                    question.setSolved(true);
+                    question.setSolvedNum(question.getSolvedNum() + 1);
+                    questionServiceImpl.save(question);
+
+                    modifySelectedAnswer(comment, question, true, hashMap);
+
+                    return new Result(hashMap, "已成功精选");
+                }
+            } else {
+                throw new FailedOperationException("你不能精选灌水评论");
+            }
+        } else {
+            throw new NoPermissionException("你无权操作该评论");
+        }
+    }
+
+    /**
+     * 精选/取消精选
+     *
+     * @param answer    是否是正式评论
+     * @param question  评论对应的问题
+     * @param selected  是否要精选
+     */
+    public void modifySelectedAnswer(Comment answer, Question question, Boolean selected, Map<String, Object> hashMap) {
+        answer.setSelected(selected);
+        commentServiceImpl.saveComment(answer);
+
+        User user = answer.getPostUser();
+        user.setDonation(user.getDonation() + (selected ? 1 : -1) * DonationGrow.COMMENT_SELECTED.getGrow());
+        userServiceImpl.saveUser(user);
+
+        hashMap.put("selected", selected);
+        hashMap.put("solvedNum", question.getSolvedNum());
+        hashMap.put("solved", question.getSolved());
     }
 }

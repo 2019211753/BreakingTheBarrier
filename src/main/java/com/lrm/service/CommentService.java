@@ -25,11 +25,15 @@ public interface CommentService {
 
     Comment getComment(Long commentId);
 
+    List<Comment> listSelectedAnswerByQuestionId(Long questionId);
+
     List<Comment> listAllCommentByQuestionId(Long questionId);
 
     List<Comment> listAllCommentByBlogId(Long blogId);
 
     List<Comment> listComments(Long userId, Boolean looked);
+
+    List<Comment> listBestComments(Long questionId);
 
 
 }

@@ -20,6 +20,7 @@ public enum DonationGrow {
     TEMPLATE_APPROVED(2),
     TEMPLATE_COLLECTED(2),
     COMMENT_APPROVED(4),
+    COMMENT_SELECTED(8),
     FOLLOWED(2);
 
     Integer grow;

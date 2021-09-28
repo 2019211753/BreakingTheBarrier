@@ -64,6 +64,11 @@ public class Comment {
     private Boolean looked;
 
     /**
+     * 被精选的回答；
+     */
+    private Boolean selected;
+
+    /**
      * 点赞数
      */
     private Integer likesNum;
@@ -356,6 +361,14 @@ public class Comment {
 
     public void setParentCommentName(String parentCommentName) {
         this.parentCommentName = parentCommentName;
+    }
+
+    public Boolean getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 
     public List<Comment> getReceiveComments() {

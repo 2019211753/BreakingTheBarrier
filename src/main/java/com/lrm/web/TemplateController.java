@@ -182,22 +182,26 @@ public class TemplateController {
         frontT = templateServiceImpl.getAndConvert(backT.getId(), frontT);
 
         frontT.setApproved(likesServiceImp.get(userServiceImpl.getUser(userId), backT) != null);
-
         frontT.setDisapproved(dislikesServiceImp.get(userServiceImpl.getUser(userId), backT) != null);
+        frontT.setCollected(false);
 
         StringBuilder favoriteIds = new StringBuilder();
         Favorite favorite0;
         Iterator<Favorite> it = favoriteServiceImpl.getFavoritesByUserId(userId).iterator();
         if (it.hasNext()) {
             favorite0 = it.next();
-            favoriteIds.append(favorite0.getId());
-            frontT.setCollected(favorite0.getFavoriteQuestions().contains(backT) || favorite0.getFavoriteBlogs().contains(backT));
+            if (favorite0.getFavoriteQuestions().contains(backT) || favorite0.getFavoriteBlogs().contains(backT)) {
+                favoriteIds.append(favorite0.getId());
+                frontT.setCollected(true);
+            }
         }
 
         while (it.hasNext()) {
             favorite0 = it.next();
-            favoriteIds.append(",").append(favorite0.getId());
-            frontT.setCollected(favorite0.getFavoriteQuestions().contains(backT) || favorite0.getFavoriteBlogs().contains(backT));
+            if (favorite0.getFavoriteQuestions().contains(backT) || favorite0.getFavoriteBlogs().contains(backT)) {
+                favoriteIds.append(",").append(favorite0.getId());
+                frontT.setCollected(true);
+            }
         }
 
         frontT.setFavoriteIds(favoriteIds.toString());
