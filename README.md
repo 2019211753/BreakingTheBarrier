@@ -1552,15 +1552,61 @@ StringBuffer url;
 /**  * 文件上传 * @param uploadFile 用户需要上传的文件 * @param fileTagName 前端传入对应标签名字 */@PostMapping("files/upload")
 ```
 
+#### 文献资料库
+
+##### 返回所有标签
+
+```java
+/**
+ * 返回所有标签
+ * @return 所有文件标签
+ */
+@GetMapping("/getAllTags")
+```
+
+##### 查询关键词相关文件
+
+```java
+/**
+ * 查询关键词相关文件
+ * @param query 用户想要查询的文件关键词
+ * @param pageIndex 前端传入需要的页数
+ * @return 查询结果
+ */
+@GetMapping("/find")
+```
+
+
+
+##### 上传文件
+
+```Java
+/** 
+ * 文件上传
+ * @param uploadFile 用户需要上传的文件
+ * @param fileTagName 前端传入对应标签名字
+ */
+@PostMapping("files/upload")
+```
+
 ##### 下载文件
 
 ```java
-/** * 有待优化，感觉应该用{id}这样，直接get，不用文件名 * @param fileName 文件名 * @param response 响应，下载真正的文件 * @param request请求，获取UserId */@GetMapping("files/download")
+/**
+ * @param fileId 传入文件Id来下载
+ */
+@GetMapping("files/download")
 ```
 
 ##### 查询文件
 
 ```Java
-/** * 查询关键词相关文件 * @param query 用户想要查询的文件关键词 * @return page分页的文件结果 */@GetMapping("/find")
+/**
+ * 查询关键词相关文件
+ * @param query 用户想要查询的文件关键词
+ * @return page分页的文件结果
+ */
+@GetMapping("/find")
 ```
+
 
