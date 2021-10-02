@@ -1,7 +1,3 @@
-[TOC]
-
-
-
 ## 实体类属性
 
 ### 评论类 Comment
@@ -39,6 +35,11 @@ Boolean adminComment;
  * 通知是否已读 true为已读
  */
 Boolean looked;
+
+/**
+ * 是否已被精选
+ */
+Boolean selected;
 
 /**
  * 点赞数
@@ -245,17 +246,22 @@ String tagIds;
 /**
 * 发布者的Id
 */
- Long posterUserId0;
+Long posterUserId0;
 
 /**
  * 浏览次数
  */
- Integer view;
+Integer view;
+
+/**
+ * 精选评论数 
+ */
+Integer solvedNum;
 
 /**
  * 获得点赞数量
  */
- Integer likesNum;
+Integer likesNum;
 
 /**
  * 获得评论数量
@@ -276,6 +282,11 @@ Integer commentsNum;
  * 是否被隐藏 true为被隐藏了
  */
 Boolean isHidden;
+
+/**
+ * 是否已经被解决了 true为被解决了
+ */
+Boolean solved;
 
 /**
  * 占比待定
@@ -976,7 +987,7 @@ StringBuffer url;
 ##### 返回所有通知
 
 ```java
-**
+/**
  * 返回所有通知
  *
  * @return data：{"lookedComments": lookedComments, 
@@ -1178,33 +1189,51 @@ StringBuffer url;
  * @result data: {"followedUsers" : followedUsers, "followingUsers", followingUsers}
  */
 @GetMapping("/customer/followInfo")
-
 ```
 
 ### 常规
 
 #### 评论
 
+##### 精选/取消精选 评论
+
+```java
+/**
+ * @param questionId 问题Id
+ * @param commentId  评论Id
+ * @return data：{selected": selected, "solvedNum": solvedNum, "solved", solved}
+ * selected为该评论是否被精选了，solvedNum为该问题有几个精选评论，solved为该问题是否被解决了
+ */
+@GetMapping("/question/{questionId}/comment/{commentId}/select")
+```
+
 ##### 返回某问题下的所有评论
 
 ```java
 /**
- * 展示博客下的所有评论
+ * 展示问题下的所有评论
  *
  * @param questionId 评论在哪个问题下 对应的问题Id
- * @return data：{"comments1": isAnswerComment, "comments2": notAnswerComment}
+ * @return data：{"comments1": isAnswerComment, "comments2": notAnswerComment, "selectedComments" : selecteds, "bestComments" : bests}
  * 
  * isAnswerComment为正经回答的评论 notAnswerComment是灌水的
+ * selectedComments是精选答案 bestComments是赞数最高的3个答案。
+ * 其中，comments2不包含selectedComments中的任意一个元素，bestComments也是。
+ * 但是comments2包含bestComments中的元素。selectedComments中没有子评论。
  */
 @GetMapping("/question/{questionId}/comments")
-
 ```
 
 ##### 返回某博客下的所有评论
 
 ```java
 /**
- * 展示博客下所有评论 同上
+ * 展示博客下的所有评论
+ *
+ * @param blogId 评论在哪个博客下 对应的博客Id
+ * @return data：{"comments1": isAnswerComment, "comments2": notAnswerComment}
+ *
+ * isAnswerComment为正经回答的评论 notAnswerComment是灌水的
  */
 @GetMapping("/blog/{blogId}/comments")
 ```
@@ -1220,10 +1249,7 @@ StringBuffer url;
  *
  * @param questionId对应的问题Id
  * @param comment 前端封装的Comment对象
- * @return data：{”comments": comments}
- * comments为发布后博客的新评论集合
- *
- * comment为保存了的Comment对象
+ * @return data：{null}
  */
 @PostMapping("/question/{questionId}/comment/post")
 ```
@@ -1250,8 +1276,7 @@ StringBuffer url;
 * @param questionId 对应问题Id
 * @param commentId 被删除的评论对应的Id
 * @param request 获取要执行删除操作的用户id
-* @return data：{"comments": comments}
-* comments为删除后剩余评论
+* @return data：{null}
 */
 @GetMapping("/question/{questionId}/comment/{commentId}/delete)
 ```

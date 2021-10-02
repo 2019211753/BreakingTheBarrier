@@ -7,6 +7,8 @@ import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,6 +108,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setHidden(false);
         comment.setPostUser(postUser);
         comment.setPostUserId0(postUser.getId());
+        comment.setSelected(false);
 
         //如果是有效回答 回答者贡献+ 问题影响力+ 否则仅仅问题影响力+
         if (comment.getAnswer()) {
@@ -132,7 +135,6 @@ public class CommentServiceImpl implements CommentService {
         //评论发出者
         User postUser = comment.getPostUser();
         //回退
-        //TODO： 这个属性还有用么 因为传回前端不是树形的了 是只有两层的数组
         if (parentComment != null) {
             parentComment.setCommentsNum(parentComment.getCommentsNum() - 1);
         }
@@ -155,8 +157,26 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     * 得到问题下分级评论（两级）
+     * 得到问题下的精选评论
      *
+     * @param questionId 问题Id
+     * @return comment集合
+     */
+    @Override
+    public List<Comment> listSelectedAnswerByQuestionId(Long questionId) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "likesNum");
+
+        List<Comment> comments = commentRepository.findSelectedAnswerByQuestionId(questionId, sort);
+
+        //遍历第一级
+        return eachComment(comments);
+    }
+
+    /**
+     * 得到问题下的评论，（两级）的分级评论。为非精选评论。
+     * 即去掉为第一级的精选评论后，剩下的所有评论
+     *
+     * @param questionId 问题Id
      * @param isAnswer 是哪一类评论
      * @return comment集合
      */
@@ -164,11 +184,16 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> listCommentByQuestionId(Long questionId, Boolean isAnswer) {
         Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
 
-        //得到所有第一级评论
-        List<Comment> comments = commentRepository.findByQuestionIdAndAnswer(questionId, isAnswer, sort);
+        return commentRepository.findByQuestionIdAndAnswerAndSelected(questionId, isAnswer, sort, false);
 
-        //遍历第一级
-        return eachComment(comments);
+    }
+
+    @Override
+    public List<Comment> listBestComments(Long questionId) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "likesNum");
+        Pageable pageable = PageRequest.of(0, 3, sort);
+
+        return commentRepository.findTopByQuestionIdAndAnswer(pageable, questionId);
     }
 
     /**

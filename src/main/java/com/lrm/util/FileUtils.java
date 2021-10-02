@@ -130,7 +130,7 @@ public class FileUtils {
         com.lrm.po.File newFile = new com.lrm.po.File(uploadFile.getOriginalFilename());
         //由于docu项目未实现登录功能，所以先忽略User这方面
         newFile.setName(uploadFile.getOriginalFilename());
-        newFile.setSize(String.valueOf(uploadFile.getSize() / 1024) + "KB");
+        newFile.setSize(uploadFile.getSize() / 1024 + "KB");
         return newFile;
     }
 

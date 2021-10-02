@@ -17,6 +17,15 @@ import java.util.Objects;
 @Entity
 @Table(name = "t_question")
 public class Question extends Template {
+    /**
+     * 问题的精选评论数
+     */
+    private Integer solvedNum;
+
+    /**
+     * 问题是否已经被解决
+     */
+    private Boolean solved;
 
     /**
      * 问题拥有的赞
@@ -38,6 +47,22 @@ public class Question extends Template {
     @JsonIgnore
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
+
+    public Boolean getSolved() {
+        return solved;
+    }
+
+    public void setSolved(Boolean solved) {
+        this.solved = solved;
+    }
+
+    public Integer getSolvedNum() {
+        return solvedNum;
+    }
+
+    public void setSolvedNum(Integer solvedNum) {
+        this.solvedNum = solvedNum;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,6 +1,7 @@
 package com.lrm.dao;
 
 import com.lrm.po.Comment;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,15 +16,27 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     /**
-     * 查询问题下的第一级评论
+     * 查询问题下的精选回答
+     *
+     * @param questionId 问题Id
+     * @param sort 排序方式
+     * @return
+     */
+    @Query("select c from #{#entityName} c where c.question.id = ?1 and c.answer = true and c.selected = true")
+    List<Comment> findSelectedAnswerByQuestionId(Long questionId, Sort sort);
+
+
+    /**
+     * 查询问题下的第一级评论 不包含精选评论
      *
      * @param questionId 问题id
      * @param sort       排序顺序
      * @param answer     哪类回答
+     * @param selected   是否被精选
      * @return 评论集合
      */
-    @Query("select c from #{#entityName} c where c.parentComment.id is null and c.question.id = ?1 and c.answer = ?2")
-    List<Comment> findByQuestionIdAndAnswer(Long questionId, Boolean answer, Sort sort);
+    @Query("select c from #{#entityName} c where c.parentComment.id is null and c.question.id = ?1 and c.answer = ?2 and c.selected = ?3")
+    List<Comment> findByQuestionIdAndAnswerAndSelected(Long questionId, Boolean answer, Sort sort, Boolean selected);
 
     //原本是这样的 会报错无法识别Answer 不过当时是用的isAnswer 似乎POJO属性不能是isxxx
     //List<Comment> findByQuestionIdAndParentCommentNullAndAnswer(Long questionId, Sort sort, Boolean answer);
@@ -63,6 +76,12 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      * @return 评论集合
      */
     List<Comment> findByReceiveUserIdAndLooked(Long receiveUserId, Boolean isLooked);
+
+    /**
+     * 查询最高赞数的三个答案
+     */
+    @Query("select c from #{#entityName} c where c.question.id = ?1 and c.answer = true and c.selected = false")
+    List<Comment> findTopByQuestionIdAndAnswer(Pageable pageable, Long questionId);
 
 
 }
