@@ -1,12 +1,15 @@
 package com.lrm.web;
 
+import com.aliyun.oss.OSSClient;
 import com.lrm.dao.FileRepository;
 import com.lrm.dao.FileTagRepository;
 import com.lrm.exception.NotFoundException;
+import com.lrm.po.File;
 import com.lrm.po.FileTag;
 import com.lrm.service.FileService;
 import com.lrm.service.FileServiceImpl;
 import com.lrm.util.FileUtils;
+import com.lrm.util.OSSUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.slf4j.Logger;
@@ -22,10 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Controller
 @RequestMapping("/files")
@@ -37,6 +38,15 @@ public class FileController {
 
     @Value("${file.download-path}")
     private String downloadFilePath;
+
+    @Value("${oss.endpoint}")
+    private String endpoint;
+
+    @Value("${oss.accessKeyId}")
+    private String accessKeyId;
+
+    @Value("${oss.accessKeySecret}")
+    private String accessKeySecret;
 
     @Autowired
     private FileRepository fileRepository;
@@ -96,22 +106,24 @@ public class FileController {
         //打印上传文件信息
         logFileInfo(uploadFile, uploadFilePath);
 
+        Date date = new Date();
+
         //多媒体文件转为po file
-        com.lrm.po.File newFile = FileUtils.convertFile(uploadFile);
+        com.lrm.po.File newFile = FileUtils.convertFile(uploadFile, date);
         String realTagNames = fileTagName.substring(1, fileTagName.length() - 1);
         String[] tagNames = realTagNames.split(",");
         for (int i = 0; i < tagNames.length; i++) {
             tagNames[i] = tagNames[i].substring(1, tagNames[i].length() - 1);
         }
 
-        //判断文件所在目录是否存在，不存在就创建对应的目录
-        File dest = FileUtils.buildDest(uploadFilePath + uploadFile.getOriginalFilename());
-        uploadFile.transferTo(dest);
+        //上传到oss
+        OSSUtils.uploadFile(uploadFile, date, endpoint, accessKeyId, accessKeySecret, "wordverybig");
 
         //获取用户
         Long userId = TokenInfo.getCustomUserId(request);
+
         //调用service 服务，储存到数据库，进行上传相关逻辑的处理
-        fileServiceImpl.saveFile(newFile, tagNames, dest.getAbsolutePath(), userId);
+        fileServiceImpl.saveFile(newFile, tagNames, null, userId);
 
         Map<String, String> hashMap = new HashMap<>(16);
         hashMap.put("contentType", uploadFile.getContentType());
@@ -124,7 +136,6 @@ public class FileController {
     }
 
     /**
-     * 有待优化，感觉应该用{id}这样，直接get，不用文件名
      * @param fileId
      */
     @GetMapping("/download")
@@ -132,38 +143,30 @@ public class FileController {
     public Result fileDownload(@RequestParam("fileId") Long fileId,
                                HttpServletResponse response,
                                HttpServletRequest request) throws IOException {
+        //通过id查询唯一的文件
         Optional<com.lrm.po.File> found = fileRepository.findById(fileId);
+
         if (!found.isPresent()) {
-            throw new NotFoundException("下载文件不存在");
+            throw new NotFoundException("无对应此id的文件");
         }
         String fileName = found.get().getName();
 
-        File file = new File(downloadFilePath + fileName);//如何解决中文问题
-        if (!file.exists()) {
-            throw new NotFoundException("下载文件不存在");
-        }
-
+        //获取用户id
         Long userId = TokenInfo.getCustomUserId(request);
+        //直接在这里判断文件存不存在,如果不存在会抛异常的
+        fileServiceImpl.downloadFile(found.get(), userId);
 
-        fileServiceImpl.downloadFile(fileName, userId);
-
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("name", file.getName());
-
-        response.reset();
-        response.setContentType("application/octet-stream");
+//        response.reset();
+//        response.setContentType("application/octet-stream");
         response.setCharacterEncoding("utf-8");
-        response.setContentLength((int)file.length());
+//        response.setContentLength((int)file.length());
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-        byte[] buff = new byte[1024];
-        OutputStream os = response.getOutputStream();
-        int i = 0;
-        while ((i = bis.read(buff)) != -1) {
-            os.write(buff, 0, i);
-            os.flush();
-        }
+        OSSUtils.downloadFile(response.getOutputStream(), fileName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("name", fileName);
+
         return new Result(hashMap, "下载成功");
     }
 
@@ -172,6 +175,11 @@ public class FileController {
         logger.info("原文件名：" + file.getOriginalFilename());
         logger.info("文件类型" + file.getContentType());
         logger.info("文件地址: " + (uploadFilePath + file.getOriginalFilename()));
+    }
+
+    public String getFilePath(String sourceFileName) {
+        Date dateTime = new Date();
+        return sourceFileName + dateTime.toString();
     }
 
 }

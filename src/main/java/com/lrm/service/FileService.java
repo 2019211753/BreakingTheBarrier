@@ -8,5 +8,5 @@ public interface FileService {
 
     Page<File> findFile(String query, Short pageIndex);
 
-    void downloadFile(String fileName, Long userId);
+    void downloadFile(File file, Long userId);
 }

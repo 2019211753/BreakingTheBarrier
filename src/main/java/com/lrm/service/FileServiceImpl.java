@@ -34,14 +34,14 @@ public class FileServiceImpl implements FileService {
     public File saveFile(File file, String[] tagNames, String path, Long userId) {
         //标签是否存在？
         for (int i = 0; i < tagNames.length; i++) {
-        FileTag found = fileTagRepository.findByName(tagNames[i]);
+            FileTag found = fileTagRepository.findByName(tagNames[i]);
 
-        //如果用户输入的tagName不存在，那么创建一个新的tag
-        if (found == null) {
-            found = new FileTag(tagNames[i]);
-            fileTagRepository.save(found);
-        }
-        file.getFileTags().add(found);
+            //如果用户输入的tagName不存在，那么创建一个新的tag
+            if (found == null) {
+                found = new FileTag(tagNames[i]);
+                fileTagRepository.save(found);
+            }
+            file.getFileTags().add(found);
         }
 
 
@@ -61,11 +61,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public void downloadFile(String fileName, Long userId) {
-        File file = fileRepository.findByName(fileName);
-        if (file == null) {
-            throw new NotFoundException("下载的文件资源不存在");
-        }
+    public void downloadFile(File file, Long userId) {
         User user = userServiceImpl.getUser(userId);
         if (user == null) {
             throw new NotFoundException("当前用户不存在");
