@@ -42,7 +42,8 @@ public class InfoEntryController {
      * @return 带有消息的Result
      */
     @PostMapping("/{entryId}/update")
-    public Result update(@RequestBody InfoEntry infoEntry) {
+    public Result update(@RequestBody InfoEntry infoEntry, @PathVariable("entryId") Long entryId) {
+        infoEntry.setId(entryId);
         infoEntryServiceImpl.update(infoEntry);
         return new Result(null, "已提交，正在审核中");
     }
@@ -69,7 +70,10 @@ public class InfoEntryController {
         return new Result(null, "审核通过");
     }
 
-    //此处的逻辑应该加到index页面中,需要展示的信息百科(如何确定哪些需要展示？）
+    /**
+     * 展示所有审核通过的词条
+     * @return 需要展示的词条
+     */
     @GetMapping("/show")
     public Result showEntries() {
         HashMap<String, Object> hashMap = new HashMap();

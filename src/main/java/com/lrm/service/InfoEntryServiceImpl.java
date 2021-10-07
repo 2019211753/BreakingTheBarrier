@@ -33,7 +33,7 @@ public class InfoEntryServiceImpl implements InfoEntryService {
 
     @Override
     public Page<InfoEntry> getApprovedByTime() {
-        return infoEntryRepository.findTop5ByOrderByLastApprovedTimeDesc(PageRequest.of(0, 5));
+        return infoEntryRepository.findTop5ByisApprovedOrderByLastApprovedTimeDesc(true, PageRequest.of(0, 5));
     }
 
     @Override

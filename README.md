@@ -1546,14 +1546,6 @@ StringBuffer url;
 
 #### 文献资料库
 
-##### 上传文件
-
-```Java
-/**  * 文件上传 * @param uploadFile 用户需要上传的文件 * @param fileTagName 前端传入对应标签名字 */@PostMapping("files/upload")
-```
-
-#### 文献资料库
-
 ##### 返回所有标签
 
 ```java
@@ -1561,7 +1553,7 @@ StringBuffer url;
  * 返回所有标签
  * @return 所有文件标签
  */
-@GetMapping("/getAllTags")
+@GetMapping("files/getAllTags")
 ```
 
 ##### 查询关键词相关文件
@@ -1573,10 +1565,8 @@ StringBuffer url;
  * @param pageIndex 前端传入需要的页数
  * @return 查询结果
  */
-@GetMapping("/find")
+@GetMapping("files/find")
 ```
-
-
 
 ##### 上传文件
 
@@ -1606,7 +1596,51 @@ StringBuffer url;
  * @param query 用户想要查询的文件关键词
  * @return page分页的文件结果
  */
-@GetMapping("/find")
+@GetMapping("files/find")
 ```
 
+#### 信息百科
+
+```java
+/**
+ * 创建词条
+ * @param infoEntry json格式的词条
+ * @return 带有消息的Result
+ */
+@PostMapping("infoEntry/create")
+```
+
+```java
+/**
+ * 更新词条
+ * @param infoEntry json格式的词条
+ * @return 带有消息的Result
+ */
+@PostMapping("/{entryId}/update")
+```
+
+```java
+/**
+ * 展示所有未审核的词条（管理员页面使用）
+ * @return entries
+ */
+ @GetMapping("/unapprovedEntries")
+```
+
+```java
+/**
+ * 审核通过某个词条
+ * @param entryId 词条id
+ * @return msg
+ */
+@PostMapping("/{entryId}/approve")
+```
+
+```java
+/**
+ * 展示所有审核通过的词条
+ * @return 需要展示的词条
+ */
+@GetMapping("/show")
+```
 

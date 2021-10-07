@@ -12,5 +12,5 @@ public interface InfoEntryRepository extends JpaRepository<InfoEntry, Long> {
     @Query("select ie from InfoEntry ie where ie.isApproved = false ")
     Page<InfoEntry> findUnapproved(Pageable pageable);
 
-    Page<InfoEntry> findTop5ByOrderByLastApprovedTimeDesc(Pageable pageable);
+    Page<InfoEntry> findTop5ByisApprovedOrderByLastApprovedTimeDesc(Boolean isApproved, Pageable pageable);
 }

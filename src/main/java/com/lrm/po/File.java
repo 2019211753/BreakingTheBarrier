@@ -1,9 +1,5 @@
 package com.lrm.po;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +13,9 @@ public class File {
 
     //文件名
     private String name;
+
+    //前端展示的名字
+    private String originName;
 
     //文件存放 路径
     private String path;
@@ -109,4 +108,11 @@ public class File {
         this.uploadUser = uploadUser;
     }
 
+    public String getOriginName() {
+        return originName;
+    }
+
+    public void setOriginName(String originName) {
+        this.originName = originName;
+    }
 }
