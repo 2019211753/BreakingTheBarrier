@@ -1,7 +1,6 @@
 package com.lrm.util;
 
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Decoder;
 
 import java.io.*;
 import java.util.Base64;
@@ -193,8 +192,8 @@ public class FileUtils {
     public static InputStream base2InputStream(String base64string) {
         ByteArrayInputStream stream = null;
         try {
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] bytes1 = decoder.decodeBuffer(base64string);
+            Base64.Decoder decoder = Base64.getDecoder();
+            byte[] bytes1 = decoder.decode(base64string);
             stream = new ByteArrayInputStream(bytes1);
         } catch (Exception e) {
             e.printStackTrace();
