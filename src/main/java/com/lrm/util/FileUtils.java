@@ -1,10 +1,11 @@
 package com.lrm.util;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Decoder;
 
 import java.io.*;
 import java.util.Base64;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -15,7 +16,7 @@ import java.util.UUID;
  * @date 2021-07-21
  */
 public class FileUtils {
-
+    private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
     /**
      * @param file 被删除的文件
      */
@@ -126,10 +127,11 @@ public class FileUtils {
      * @param uploadFile
      * @return 数据库中的file
      */
-    public static com.lrm.po.File convertFile(MultipartFile uploadFile) {
+    public static com.lrm.po.File convertFile(MultipartFile uploadFile, Date date) {
         com.lrm.po.File newFile = new com.lrm.po.File(uploadFile.getOriginalFilename());
         //由于docu项目未实现登录功能，所以先忽略User这方面
-        newFile.setName(uploadFile.getOriginalFilename());
+        newFile.setOriginName(uploadFile.getOriginalFilename());
+        newFile.setName(uploadFile.getOriginalFilename() + date.toString());
         newFile.setSize(uploadFile.getSize() / 1024 + "KB");
         return newFile;
     }
@@ -199,6 +201,9 @@ public class FileUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return stream;
+        return null;
     }
+
+
+
 }
