@@ -276,7 +276,7 @@ Integer disLikesNum;
 /**
  * 被收藏数量
  */ 
-Integer commentsNum;
+Integer collectedNum;
 
 /**
  * 是否被隐藏 true为被隐藏了
@@ -435,7 +435,7 @@ Integer disLikesNum;
 /**
  * 被收藏数量
  */ 
-Integer commentsNum;
+Integer collectedNum;
 
 /**
  * 是否被隐藏 true为被隐藏了
