@@ -633,16 +633,6 @@ Integer followedUserNum;
 Integer privacyType;
 
 /**
- * 发布的评论
- */
-List<Comment> postComments = new ArrayList<>();
-
-/**
- * 发布的点赞
- */
-List<Likes> postLikes = new ArrayList<>();
-
-/**
  * 用户所上传的文件
  */
 List<File> uploadedFiles = new ArrayList<>();
@@ -749,6 +739,7 @@ StringBuffer url;
  * @param questionId 被编辑的问题Id
  * @return data：{ "template" : question,
  				"tags", tags}
+ *
  * template为要修改的Question对象，tags是一个树，包含所有标签
  */
 @GetMapping("/admin/question/{questionId}/edit")
@@ -806,8 +797,6 @@ StringBuffer url;
 @PostMapping("/admin/searchBlogs")
 ```
 
-
-
 #### 标签管理
 
 ##### 增加/修改标签
@@ -855,8 +844,9 @@ StringBuffer url;
  * 禁言/解禁
  *
  * @param userId 用户Id
- * 无返回值 但可能抛出异常 所以也要获取返回值看看有没有报错
- * 下面的API没有返回值的同样这样处理
+ * @result data：{"canSpeak" : canSpeak}
+ * 
+ * canSpeak为该用户是否能发言的状态
  */
 @GetMapping("/admin/controlSpeak/{userId}")
 ```
@@ -871,7 +861,9 @@ StringBuffer url;
 /**
  * 按年份归档 时间逆序
  *
- * @return data：{"archiveMap": Map<String, Map<String, Object>>类型的Question集合, "count": 集合中question的数量}
+ * @return data：{"archiveMap": map, "count": count}
+ *
+ * map为Map<String, Map<String, Object>>类型的Question集合， count为集合中question的数量
  */
 @GetMapping("/customer/archivesQuestion")
 ```
@@ -884,6 +876,29 @@ StringBuffer url;
  */
 @GetMapping("/customer/archivesBlog")
 ```
+
+##### 发布的评论归档
+
+```java
+/**
+ * @return data：{"postComments": postComments}
+ *
+ * postComments为该用户发布的评论
+ */
+@GetMapping("customer/archiveComment")
+```
+
+##### 发布的评论归档
+
+```java
+/**
+ * @return data：{"postLikes": postLikes}
+ *
+ * postLikes为该用户点的赞
+ */
+@GetMapping("customer/archiveLike")
+```
+
 
 #### 收藏夹管理
 
@@ -963,9 +978,8 @@ StringBuffer url;
  *
  * @param questionId 问题Id
  * @param favoriteId 收藏夹Id
- * @param request获取当前用户Id
- * @param pageable 为了方便调用方法的 不想再造了
- * @return data：{"collectedNum" : collectedNum, "collected", collected}
+ * @return data：{"collectedNum": collectedNum, "collected": collected}
+ *
  * collectedNum为该问题被收藏多少次了，collected为我现在有没有收藏它
  */
 @GetMapping("/customer/favorite/{favoriteId}/modify/question/{questionId}"）
@@ -994,6 +1008,7 @@ StringBuffer url;
  "unLookedComments": unLookedComments,
  "lookedLikes": lookedLikes,
  "unLookedLikes": unLookedLikes}
+ *
  * 都是List集合 
  */
 @GetMapping("/customer/messages/")
@@ -1055,7 +1070,7 @@ StringBuffer url;
  *
  * @return data：{"user": user, "ACAMEDIES": ACAMEDIES}
  *
- * user包含属性很多..这些数据建议在首页直接展示出来
+ * user包含属性很多，见第一部分的类属性
  * ACAMEDIES为可供选择的院系
  */
  @GetMapping("/customer/personal")
@@ -1141,6 +1156,7 @@ StringBuffer url;
  *
  * @param blogId 被编辑的博客Id
  * @return data：{"template": t, "tags", tags}
+ *
  * t为博客，tags为标签树
  */
 @GetMapping("/customer/blog/{blogId}/edit")
@@ -1154,6 +1170,7 @@ StringBuffer url;
  *
  * @param blog 前端封装的博客
  * @return data：{"blog", blog}
+ * 
  * blog是保存了的博客
  */
 @PostMapping("/customer/blog/post")
@@ -1202,6 +1219,7 @@ StringBuffer url;
  * @param questionId 问题Id
  * @param commentId  评论Id
  * @return data：{selected": selected, "solvedNum": solvedNum, "solved", solved}
+ *
  * selected为该评论是否被精选了，solvedNum为该问题有几个精选评论，solved为该问题是否被解决了
  */
 @GetMapping("/question/{questionId}/comment/{commentId}/select")
@@ -1275,7 +1293,6 @@ StringBuffer url;
 *
 * @param questionId 对应问题Id
 * @param commentId 被删除的评论对应的Id
-* @param request 获取要执行删除操作的用户id
 * @return data：{null}
 */
 @GetMapping("/question/{questionId}/comment/{commentId}/delete)
@@ -1304,6 +1321,7 @@ StringBuffer url;
  *
  * @param questionId 问题Id
  * @return data：{"likesNum": likesNum, "disLikesNum": disLikesNum, "approved": approved}
+ *
  * likesNum为操作后的赞数, disLikesNum为操作后的踩数,approved为我现在点没点赞
  */
 @GetMapping("/question/{questionId}/approve")
@@ -1327,6 +1345,7 @@ StringBuffer url;
  * @param request获取执行踩动作的用户id
  * @param questionId 问题Id
  * @return data：{"likesNum": likesNum, "disLikesNum": disLikesNum, "disapproved": disApproved}
+ *
  * likesNum为操作后的赞数, disLikesNum为操作后的踩数, disapproved为我现在踩没踩 
  */
 @GetMapping("/question/{questionId}/disapprove")
@@ -1375,6 +1394,7 @@ StringBuffer url;
  * 
  * @param followedUserId 被关注的用户Id
  * @return data：{"myFollowingNum": myFollowingNum, "hisFollowedNum": hisFollowedNum, "following" : following}
+ 
  * myFollowingNum是我现在关注了多少人，hisFollowedNum是他现在被多少人关注，following是我现在有没有
  * 关注他
  */
@@ -1504,9 +1524,18 @@ StringBuffer url;
 ```java
 /**
  * @param userId 目标用户Id
- * @return data：{"user": user}
+ * @return data：{"followingUsers": followingUsers,
+ *                "followedUsers": followedUsers,
+ *    
+ *                "questions": questions,
+ *                "blogs": blogs,
+ *                "comments": comments,
+ *                "likes": likes,
+ *                
+ *                "favorites": favorites}
  * 
- * user为用户主页信息
+ * 如果用户的privacyType为111，则全会返回，如果为101，则第二部分不会返回，
+ * 如果为010，则第一部分和第三部分不会返回，以此类推
  */
 @GetMapping("visit/{userId}")
 ```

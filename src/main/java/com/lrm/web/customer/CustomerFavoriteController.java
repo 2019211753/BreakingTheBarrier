@@ -38,8 +38,6 @@ import java.util.Map;
 @RequestMapping("/customer")
 @RestController
 public class CustomerFavoriteController {
-    @Value("${web.upload-path}")
-    private String path;
 
     @Autowired
     private FavoriteServiceImpl favoriteServiceImpl;
@@ -214,7 +212,7 @@ public class CustomerFavoriteController {
             t.setDetails(t.getContent());
             User postUser = t.getUser();
             t.setNickname(postUser.getNickname());
-            t.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
+            t.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
         }
         return pages;
     }

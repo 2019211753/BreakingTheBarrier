@@ -29,8 +29,6 @@ import java.util.Map;
  */
 @RestController
 public class TemplateController {
-    @Value("${web.upload-path}")
-    private String path;
 
     @Autowired
     private QuestionServiceImpl questionServiceImpl;
@@ -82,7 +80,7 @@ public class TemplateController {
             //得到发布问题的人
             User postUser = t.getUser();
             //这里到底要不要用计算力代替空间还要考虑
-            t.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
+            t.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
             t.setNickname(postUser.getNickname());
         }
         hashMap.put("pages", pages);
@@ -128,7 +126,7 @@ public class TemplateController {
             //得到发布问题的人
             User postUser = t0.getUser();
 
-            t0.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
+            t0.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
             t0.setNickname(postUser.getNickname());
         }
 
@@ -205,7 +203,7 @@ public class TemplateController {
         }
 
         frontT.setFavoriteIds(favoriteIds.toString());
-        frontT.setAvatar(FileUtils.convertAvatar(path, backT.getUser().getAvatar()));
+        frontT.setAvatar(FileUtils.convertAvatar(backT.getUser().getAvatar()));
         frontT.setNickname(backT.getUser().getNickname());
 
         hashMap.put("template", frontT);

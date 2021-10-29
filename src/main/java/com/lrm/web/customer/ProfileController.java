@@ -50,7 +50,7 @@ public class ProfileController {
 
         User user = new User();
         BeanUtils.copyProperties(userServiceImpl.getUser(TokenInfo.getCustomUserId(request)), user);
-        user.setAvatar(FileUtils.convertAvatar(path, user.getAvatar()));
+        user.setAvatar(FileUtils.convertAvatar(user.getAvatar()));
 
         //返回当前用户信息和院系选择
         hashMap.put("user", user);
@@ -90,7 +90,7 @@ public class ProfileController {
         user.setAvatar("images/" + userId + "/avatar/" + newName);
         userServiceImpl.saveUser(user);
 
-        hashMap.put("avatar", FileUtils.convertAvatar(path, user.getAvatar()));
+        hashMap.put("avatar", FileUtils.convertAvatar(user.getAvatar()));
         return new Result(hashMap, "上传成功");
     }
 

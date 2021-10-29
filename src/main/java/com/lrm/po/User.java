@@ -54,28 +54,6 @@ public class User {
     private String password;
 
     /**
-     * 是否为管理员 true为管理员
-     */
-    private Boolean admin;
-
-    /**
-     * 能否发言 true可以发言
-     */
-    private Boolean canSpeak;
-
-    /**
-     * 贡献值
-     */
-    private Integer donation;
-
-    /**
-     * 注册时间
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date registerTime;
-
-    /**
      * 用户头像 非必填 可以在前端显示默认值
      */
     private String avatar;
@@ -118,6 +96,21 @@ public class User {
     private String major;
 
     /**
+     * 隐私策略的种类
+     * 1.关注/粉丝(following followed) 2.发布问题/博客/评论/点赞 3.收藏夹（open的收藏夹）
+     * 111 = 7, 全开放; 110 = 6, 不开放收藏夹; 010 = 2 仅开放发布的问题/评论/点赞
+     * 共8种策略
+     */
+    private Integer privacyType;
+
+
+    /**
+     * 用户可用下载次数
+     * 必须默认设为0，否则初始为null，会抛空指针异常
+     */
+    private Integer availableNum = 0;
+
+    /**
      * 关注了几个人
      */
     private Integer followingUserNum;
@@ -128,29 +121,39 @@ public class User {
     private Integer followedUserNum;
 
     /**
-     * 隐私策略的种类
-     * 1.关注/粉丝(following followed) 2.发布问题/评论/点赞 3.收藏夹（open的收藏夹）
-     * 111 = 7, 全开放; 110 = 6, 不开放收藏夹; 010 = 2 仅开放发布的问题/评论/点赞
-     * 共8种策略
+     * 是否为管理员 true为管理员
      */
-    private Integer privacyType;
+    private Boolean admin;
 
     /**
-     * 用户可用下载次数
-     * 必须默认设为0，否则初始为null，会抛空指针异常
+     * 能否发言 true可以发言
      */
-    private Integer availableNum = 0;
+    private Boolean canSpeak;
+
+    /**
+     * 贡献值
+     */
+    private Integer donation;
+
+    /**
+     * 注册时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date registerTime;
 
 
     /**
      * 发布的评论
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "postUser", fetch = FetchType.LAZY)
     private List<Comment> postComments = new ArrayList<>();
 
     /**
      * 发布的点赞
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "postUser", fetch = FetchType.LAZY)
     private List<Likes> postLikes = new ArrayList<>();
 

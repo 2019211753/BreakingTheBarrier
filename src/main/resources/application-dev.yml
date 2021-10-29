@@ -40,6 +40,7 @@ spring:
 web.upload_path: D:\springboot开发\BreakingTheBarrier\src\main\resources\static
 file.upload_path: F://uploadTest//
 file.download_path: F://uploadTest//
+token-salt: 321AIVD#!@~~A134
 
 # 项目运行端口
 server:

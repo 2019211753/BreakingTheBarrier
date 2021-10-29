@@ -32,9 +32,6 @@ import java.util.Map;
 @RestController
 public class CommentController
 {
-    @Value("${web.upload-path}")
-    private String path;
-
     @Autowired
     private CommentServiceImpl commentServiceImpl;
 
@@ -158,7 +155,7 @@ public class CommentController
             comment.setDisapproved(false);
         }
 
-        comment.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
+        comment.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
         comment.setNickname(postUser.getNickname());
     }
 

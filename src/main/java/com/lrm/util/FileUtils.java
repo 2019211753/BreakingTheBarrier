@@ -1,8 +1,11 @@
 package com.lrm.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.Base64;
 import java.util.Date;
@@ -15,7 +18,36 @@ import java.util.UUID;
  * @version 1.0
  * @date 2021-07-21
  */
+@Component
 public class FileUtils {
+    /**
+     * 随机盐
+     */
+    private static String PATH;
+
+    @Value("${web.upload_path}")
+    public String tempPath = "";
+
+    public static String convertAvatar(String avatar) {
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(PATH + File.separator + avatar);
+            return Base64.getEncoder().encodeToString(FileUtils.inputStream2Byte(fileInputStream));
+        } catch (IOException e) {
+            //没找到文件就返回null
+            return null;
+        } finally {
+            //如果fileInputStream不为null就关闭。
+            try {
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
     /**
      * @param file 被删除的文件
@@ -136,24 +168,9 @@ public class FileUtils {
         return newFile;
     }
 
-    public static String convertAvatar(String path, String avatar) {
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(path + File.separator + avatar);
-            return Base64.getEncoder().encodeToString(FileUtils.inputStream2Byte(fileInputStream));
-        } catch (IOException e) {
-            //没找到文件就返回null
-            return null;
-        } finally {
-            //如果fileInputStream不为null就关闭。
-            try {
-                if (fileInputStream != null) {
-                    fileInputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    @PostConstruct
+    public void init() {
+        PATH = tempPath;
     }
 
      /**

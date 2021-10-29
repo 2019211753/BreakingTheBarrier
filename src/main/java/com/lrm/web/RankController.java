@@ -6,7 +6,6 @@ import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import com.lrm.web.customer.CustomerFollowController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,9 +23,6 @@ import java.util.Map;
  */
 @RestController
 public class RankController {
-    @Value("${web.upload-path}")
-    private String path;
-
     @Autowired
     UserServiceImpl userServiceImpl;
 
@@ -43,7 +39,7 @@ public class RankController {
         List<User> users = userServiceImpl.listTopUsers(10);
 
         //真正要返回的数据
-        List<User> newUsers = CustomerFollowController.insertUserAttribute(users, path);
+        List<User> newUsers = CustomerFollowController.insertUserAttribute(users);
         //返回当前自己的排名
         Long myRank = userServiceImpl.getRank(userServiceImpl.getUser(customUserId).getDonation());
         hashMap.put("users", newUsers);

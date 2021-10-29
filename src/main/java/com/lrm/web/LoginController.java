@@ -28,9 +28,6 @@ import java.util.Map;
 @Validated
 @RestController
 public class LoginController {
-    @Value("${web.upload-path}")
-    private String path;
-
     @Autowired
     private UserServiceImpl userServiceImpl;
 
@@ -105,7 +102,7 @@ public class LoginController {
             String token = TokenInfo.postToken(user1);
 
             hashMap.put("token", token);
-            hashMap.put("avatar", FileUtils.convertAvatar(path, user1.getAvatar()));
+            hashMap.put("avatar", FileUtils.convertAvatar(user1.getAvatar()));
             //返回首页
             return new Result(hashMap, "登录成功");
         } else {

@@ -4,7 +4,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -15,13 +18,20 @@ import java.util.Map;
  * @version 1.0
  * @date 2021-07-21
  */
+@Component
 public class JWTUtils {
-
-
     /**
      * 随机盐
      */
-    private static final String TOKEN = "t~1o33k2en!Q@W3e4r";
+    private static String TOKEN;
+
+    @Value("${token-salt}")
+    public String tempToken = "";
+
+    @PostConstruct
+    public void init() {
+        TOKEN = tempToken;
+    }
 
     /**
      * 生成token

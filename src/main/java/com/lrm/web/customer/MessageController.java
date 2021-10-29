@@ -10,17 +10,13 @@ import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 消息通知管理
@@ -32,8 +28,6 @@ import java.util.Map;
 @RequestMapping("/customer/messages")
 @RestController
 public class MessageController {
-    @Value("${web.upload-path}")
-    private String path;
 
     @Autowired
     private CommentServiceImpl commentServiceImpl;
@@ -57,6 +51,7 @@ public class MessageController {
         //已读评论
         List<Comment> lookedComments = commentServiceImpl.listComments(userId, true);
 
+        //自己评论自己会默认已读，需要在已读评论中去除掉
         //使用iterator避免ConcurrentModificationException异常
         Iterator<Comment> iterator = lookedComments.iterator();
         while(iterator.hasNext()) {
@@ -66,18 +61,21 @@ public class MessageController {
                 continue;
             }
             User postUser = comment.getPostUser();
-            comment.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
+            comment.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
             comment.setNickname(postUser.getNickname());
         }
+        //本来是按id排的，实际上就是创建时间，为实现创建时间逆序，直接反序
+        Collections.reverse(lookedComments);
 
         //未读评论
         List<Comment> unLookedComments = commentServiceImpl.listComments(userId, false);
 
         for (Comment comment : unLookedComments) {
             User postUser = comment.getPostUser();
-            comment.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
+            comment.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
             comment.setNickname(postUser.getNickname());
         }
+        Collections.reverse(unLookedComments);
 
         //已读点赞
         List<Likes> lookedLikes = likesServiceImpl.list(userId, true);
@@ -90,18 +88,21 @@ public class MessageController {
                 continue;
             }
             User postUser = likes1.getPostUser();
-            likes1.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
+            likes1.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
             likes1.setNickname(postUser.getNickname());
         }
+        Collections.reverse(lookedLikes);
+
 
         //未读点赞
         List<Likes> unLookedLikes = likesServiceImpl.list(userId, false);
 
         for (Likes likes1 : unLookedLikes) {
             User postUser = likes1.getPostUser();
-            likes1.setAvatar(FileUtils.convertAvatar(path, postUser.getAvatar()));
+            likes1.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
             likes1.setNickname(postUser.getNickname());
         }
+        Collections.reverse(unLookedLikes);
 
         hashMap.put("lookedComments", lookedComments);
         hashMap.put("unLookedComments", unLookedComments);
@@ -117,10 +118,11 @@ public class MessageController {
      * @param commentId 评论id
      */
     @GetMapping("/comment/{commentId}/read")
-    public void readComment(@PathVariable Long commentId) {
+    public Result readComment(@PathVariable Long commentId) {
         Comment comment = commentServiceImpl.getComment(commentId);
         comment.setLooked(true);
         commentServiceImpl.saveComment(comment);
+        return new Result(null, "已读成功");
     }
 
     /**

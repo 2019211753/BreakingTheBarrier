@@ -31,35 +31,34 @@ public class CustomerFollowController {
     @Autowired
     UserServiceImpl userServiceImpl;
 
-    @GetMapping("/followInfo")
-    public Result getFollowInfo(HttpServletRequest request) {
-        Long customUserId = TokenInfo.getCustomUserId(request);
-        Map<String, Object> hashMap = new HashMap<>(2);
-        User customUser = userServiceImpl.getUser(customUserId);
-
-        List<User> followedUsers = insertUserAttribute(customUser.getFollowedUsers(), path);
-        List<User> followingUsers = insertUserAttribute(customUser.getFollowingUsers(), path);
-
-        hashMap.put("followedUsers", followedUsers);
-        hashMap.put("followingUsers", followingUsers);
-
-        return new Result(hashMap, "查询成功");
-    }
-
-
-    public static List<User> insertUserAttribute(List<User> users, String path) {
+    public static List<User> insertUserAttribute(List<User> users) {
         List<User> newUsers = new ArrayList<>(users.size());
         for (User user1 : users) {
             User user2 = new User();
             user2.setId(user1.getId());
             user2.setDonation(user1.getDonation());
             user2.setNickname(user1.getNickname());
-            user2.setAvatar(FileUtils.convertAvatar(path, user1.getAvatar()));
+            user2.setAvatar(FileUtils.convertAvatar(user1.getAvatar()));
             user2.setFollowingUserNum(user1.getFollowingUserNum());
             user2.setFollowedUserNum(user1.getFollowedUserNum());
             newUsers.add(user2);
         }
         return newUsers;
+    }
+
+    @GetMapping("/followInfo")
+    public Result getFollowInfo(HttpServletRequest request) {
+        Long customUserId = TokenInfo.getCustomUserId(request);
+        Map<String, Object> hashMap = new HashMap<>(2);
+        User customUser = userServiceImpl.getUser(customUserId);
+
+        List<User> followedUsers = insertUserAttribute(customUser.getFollowedUsers());
+        List<User> followingUsers = insertUserAttribute(customUser.getFollowingUsers());
+
+        hashMap.put("followedUsers", followedUsers);
+        hashMap.put("followingUsers", followingUsers);
+
+        return new Result(hashMap, "查询成功");
     }
 
 }
