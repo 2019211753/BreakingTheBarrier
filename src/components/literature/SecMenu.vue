@@ -12,7 +12,8 @@
       <a class="item">学院课程</a>
     </slot>
     <slot name="space">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</slot>
-    <search-file></search-file>
+    <slot name="search"></slot>
+<!--    <search-file></search-file>-->
   </div>
 </template>
 

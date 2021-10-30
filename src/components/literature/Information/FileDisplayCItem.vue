@@ -41,7 +41,7 @@
     methods: {
       getFileJPG() {
         this.$nextTick(function() {
-          console.log('--'+this.fileId);
+          // console.log('--'+this.fileId);
           let extension = this.fileName.substring(this.fileName.lastIndexOf(".") + 1)
           // console.log(this.fileName + '---' + extension);
           switch (extension) {
@@ -91,20 +91,24 @@
           },
           responseType:'blob',
         }).then(res => {
-          console.log(res);
-          const data = res.data
-          const url = window.URL.createObjectURL(
-            new Blob([data],
-              {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
-            ))
-          const link = document.createElement('a')
-          link.style.display = 'none'
-          link.href = url
-          console.log(this.fileName);
-          link.setAttribute('download', this.fileName)
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
+          if (res) {
+            // console.log(res);
+            const data = res.data
+            const url = window.URL.createObjectURL(
+              new Blob([data],
+                {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+              ))
+            const link = document.createElement('a')
+            link.style.display = 'none'
+            link.href = url
+            console.log(this.fileName);
+            link.setAttribute('download', this.fileName)
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+          }
+          else
+            alert("下载失败")
         })
       }
     }

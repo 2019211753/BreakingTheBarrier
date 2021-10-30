@@ -16,7 +16,7 @@
               <a href="" onclick="turnmine()"><i class="home icon"></i>组队</a>
             </li>
             <li>
-              <router-link to="/HelloWorld/literature"><i class="file alternate icon"></i>资料</router-link>
+              <router-link to="/helloWorld/literature"><i class="file alternate icon"></i>资料</router-link>
             </li>
             <li><a href="" onclick="turnmine()">信息百科</a></li>
           </ul>

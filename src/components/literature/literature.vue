@@ -18,7 +18,14 @@
   import bottom from "../basic/bottom";
   import axios from 'axios'
   import MenuLink from "./MenuLink";
-  import $ from "jquery";
+
+  axios.defaults.headers["token"] = sessionStorage.getItem("token");
+  axios.defaults.timeout = 5000
+  window.addEventListener("setItem", (e) => {
+    console.log(e);
+    axios.defaults.headers["token"] = e.newValue;
+  });
+
   export default {
     name: "literature",
     data() {

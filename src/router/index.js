@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+const data = () => import('../components/literature/data/data')
+const information = () => import('../components/literature/Information/Information')
+const literature = () => import('../components/literature/literature')
 
 Vue.use(Router)
 
@@ -149,6 +152,22 @@ export default new Router({
           path: '/helloWorld/rank',
           name: 'rank',
           component: () => import("../components/user/rank/rank")
+        },
+
+      ]
+    },
+    {
+      path: '/helloWorld/literature',
+      redirect: '/helloWorld/literature/data',
+      component: literature,
+      children: [
+        {
+          path: '/helloWorld/literature/data',
+          component: data,
+        },
+        {
+          path: '/helloWorld/literature/information',
+          component: information
         }
       ]
     }

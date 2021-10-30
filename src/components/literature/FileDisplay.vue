@@ -28,27 +28,28 @@
     },
     /*初识渲染*/
     /*10.15 注释掉这段，竟然不超时了。。。我不理解 就这样吧*/
+    /*10.30 超时应该是由于查询全部文件*/
 
-    // mounted() {
-    //   axios('files/find',{
-    //     params: {
-    //       query: '',
-    //       pageIndex: 0
-    //     }
-    //   })
-    //     .then(res => {
-    //     console.log(res);
-    //     console.log('重新渲染');
-    //     let page = res.data.data.page
-    //     this.page.totalElements = page.totalElements
-    //     this.page.totalPages = page.totalPages
-    //     this.page.numberOfElements = page.numberOfElements
-    //     this.$emit('handlePage', this.page)
-    //   })
-    //   .catch(err => {
-    //     alert(err)
-    //   })
-    // },
+    mounted() {
+      axios('files/find',{
+        params: {
+          query: '',
+          pageIndex: 0
+        }
+      })
+        .then(res => {
+        console.log(res);
+        console.log('重新渲染');
+        let page = res.data.data.page
+        this.page.totalElements = page.totalElements
+        this.page.totalPages = page.totalPages
+        this.page.numberOfElements = page.numberOfElements
+        this.$emit('handlePage', this.page)
+      })
+      .catch(err => {
+        alert(err)
+      })
+    },
     methods: {
     },
     components: {

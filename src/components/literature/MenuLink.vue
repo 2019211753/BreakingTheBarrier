@@ -11,7 +11,6 @@
 </template>
 
 <script>
-  import $ from 'jquery'
   import MenuLinkItem from "./Information/MenuLinkItem";
   export default {
     name: "MenuSec",

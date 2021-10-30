@@ -27,19 +27,22 @@
         axios({
           url: '/files/find',
           params:{
-            query: this.keyword
+            query: this.keyword,
+            pageIndex: 0
           }
         }).then(res => {
           // console.log("函数被执行");
           console.log(res);
-          console.log(res.data.msg);
-          console.log(res.data.data.page);
+          // console.log(res.data.msg);
+          // console.log(res.data.data.page);
           console.log(res.data.data.page.content);
-          console.log(res.data.data.page.content[0]);
+          let searchFileContent = res.data.data.page.content
+          // console.log(res.data.data.page.content[0]);
+          this.$emit('search',searchFileContent)
         })
         .catch(err => {
           // console.log("拦截函数被执行");
-          console.log(err);
+          alert(err);
         })
       },
     },

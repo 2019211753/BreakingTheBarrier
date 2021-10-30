@@ -84,13 +84,18 @@
         fileName: ''
       }
     },
-    created() {
-      axios('/files/getAllTags').then(res => {
-        for(let i in res.data.data.fileTags) {
-          this.tags.push(res.data.data.fileTags[i].name) //把一个个文件标签塞进数组tags里
-        }
-      })
-    },
+    // created() {
+    //   axios('/files/getAllTags')
+    //     .then(res => {
+    //     console.log(res.data.code);
+    //     if (res.data.code = 200) {
+    //       for (let i in res.data.data.fileTags) {
+    //         this.tags.push(res.data.data.fileTags[i].name) //把一个个文件标签塞进数组tags里
+    //       }
+    //     }
+    //   })
+    //
+    // },
     mounted() {
       $('.button').popup()
     },

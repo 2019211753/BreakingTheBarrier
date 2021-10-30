@@ -16,7 +16,10 @@ module.exports = {
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': ''
-                }
+                },
+              // headers: {
+              //     token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuaWNrbmFtZSI6IjEyMyIsImFkbWluIjoiZmFsc2UiLCJjYW5TcGVhayI6InRydWUiLCJleHAiOjE2MzQyOTY3NjksInVzZXJJZCI6IjIifQ._DddfSm6jToeUA1sgv675fGLitxdSB3_-tmqflYVpMY'
+              // }
             }
         },
 
