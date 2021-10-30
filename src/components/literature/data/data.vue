@@ -16,7 +16,6 @@
               :file-name="item.originName"
               :file-id="item.id"
               :key="index">
-              <!--          mySrc="../../../../static/img/fileCategory/unknown.png">-->
             </file-display-c-item>
           </file-display>
           <!--热门资料-->

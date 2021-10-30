@@ -16,14 +16,14 @@
   export default {
     name: "FileDisplayCItem",
     props: {
-      // imgURL: {
-      //   type: String,
-      //   // default: "../../../../static/img/fileCategory/xlsx.png",
-      //   // default: require(`('@/assets/img/fileCategory/'xlsx.png`))
-      //   default: '~img/fileCategory/unknown.png'
-      // },
-      fileName: String,
-      fileId: Number //下一步把ID分配到下载链接中
+      fileName: {
+        type: String,
+        required: false
+      },
+      fileId: {
+        type: Number,
+        required: false
+      } //下一步把ID分配到下载链接中
     },
     data() {
       return {

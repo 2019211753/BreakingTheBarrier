@@ -11,14 +11,14 @@
         </div>
         </span>
       </sec-menu>
-      <div class="ui container" style="width: fit-content;display: none" id="createDiv">
+      <div class="ui container" style="width: fit-content;display: none;margin: 5px 0 10px 0" id="createDiv">
         <create @create="createEntry"></create>
       </div>
     </div>
     <div style="width: fit-content;margin: -20px auto 25px auto;">
 <!--      <search-file @search="search"></search-file>-->
     </div>
-    <file-display></file-display>
+    <file-display style="margin:0 5px"></file-display>
     <hot-file>
           <h3 slot="titleH3">近期竞赛</h3>
           <div slot="item" class="ui tall stacked segment" id="recentRace">
@@ -29,13 +29,24 @@
           </div>
           <span slot="upFile"></span>
         </hot-file>
-
+    <div class="ui container">
+      <file-display>
+        <file-display-c-item
+          slot="firstRow"
+          v-for="(item, index) in entry.content"
+          :key="index"
+          :file-name="item.title"
+          :file-id="item.id">
+        </file-display-c-item>
+      </file-display>
+    </div>
   </div>
 </template>
 
 <script>
   import SecMenu from "../SecMenu";
   import FileDisplay from "../FileDisplay";
+  import FileDisplayCItem from "./FileDisplayCItem";
   import HotFile from "../HotFile";
   import Headbar from "../../basic/headbar";
   import Bottom from "../../basic/bottom";
@@ -48,6 +59,27 @@
     name: "Information",
     props: {
       path: String
+    },
+    data() {
+      return {
+        entry: {
+          content: [],
+        }
+      }
+    },
+    mounted() {
+      axios('infoEntry/unapprovedEntries',{
+      }).then(res => {
+        let content = res.data.data.entries.content
+        for(let i in content) {
+          this.entry.content.push(content[i])
+        }
+        console.log(content);
+      })
+      .catch(err => {
+        console.log(err);
+        alert(err)
+      })
     },
     computed: {
       isActive() {
@@ -77,6 +109,7 @@
       Headbar,
       SecMenu,
       FileDisplay,
+      FileDisplayCItem,
       HotFile,
       Create,
       Update,
