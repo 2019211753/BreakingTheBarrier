@@ -3,18 +3,19 @@
       <strong>{{content}}</strong>
       <span style="display: none">{{id}}</span>
       <button class="ui button" @click="pass">通过</button>
+      <button class="ui button" @click="update">更新</button>
   </div>
 </template>
 
 <script>
   import axios from "axios";
   import $ from "jquery";
-
   export default {
     name: "ShowUnproved",
     props: {
       content: String,
-      id: Number
+      id: Number,
+
     },
     data() {
       return {
@@ -38,6 +39,9 @@
           console.log(err);
           alert(err)
         })
+      },
+      update() {
+        this.$emit('showUpdateInput')
       }
     }
   }

@@ -32,10 +32,12 @@
 
 <!--展示未审核-->
     <div class="ui container">
+      <h2>未审核词条</h2>
       <ul>
         <li v-for="(item, index) in entry.content"
             :key="index">
           <show-unproved
+            @showUpdateInput="showUpdateInput"
             :content="item.title"
             :id="item.id"
             v-if="!item.approved">
@@ -44,6 +46,9 @@
       </ul>
     </div>
 
+    <div class="ui container">
+      <update-entry :showUpdateFlag="showUpdateFlag"></update-entry>
+    </div>
   </div>
 </template>
 
@@ -60,6 +65,7 @@
   import $ from 'jquery'
   import axios from "axios";
   import ShowUnproved from "./components/ShowUnproved";
+  import UpdateEntry from "./components/UpdateEntry";
   export default {
     name: "Information",
     props: {
@@ -70,7 +76,8 @@
         entry: {
           content: [],
         },
-        flag: 1
+        flag: 1,
+        showUpdateFlag: false
       }
     },
     mounted() {
@@ -109,6 +116,10 @@
           alert(err)
         })
       },
+      showUpdateInput() {
+        // console.log('监听到子组件的‘更新’按钮点击');
+        this.showUpdateFlag = !this.showUpdateFlag
+      }
     },
 
     components: {
@@ -121,7 +132,8 @@
       Create,
       Update,
       SearchFile,
-      ShowUnproved
+      ShowUnproved,
+      UpdateEntry
     }
   }
 </script>

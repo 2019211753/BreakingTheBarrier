@@ -18,14 +18,19 @@
         </a>
       </div>
     </div>
-    <button class="ui button" @click="btnClick">创建</button>
+    <button class="ui button" @click="btnClick"><slot name="subText"><span>创建</span></slot></button>
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
   export default {
     name: "Create",
+    props: {
+      flag: {
+        type: Number,
+        default: 1
+      }
+    },
     data() {
       return {
         res: '',
@@ -34,8 +39,16 @@
       }
     },
     methods: {
+      makeSureUpdate() {
+        this.$emit('makeSureUpdate')
+      },
       btnClick() {
-        this.$emit('create',this.title,this.newContent)
+        if (this.flag) {
+          this.$emit('create', this.title, this.newContent)
+          console.log('Create组件里的btnClick函数被调用');
+        }
+        else
+          this.makeSureUpdate()
       }
     }
   }
