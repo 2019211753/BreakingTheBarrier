@@ -29,17 +29,21 @@
           </div>
           <span slot="upFile"></span>
         </hot-file>
+
+<!--展示未审核-->
     <div class="ui container">
-      <file-display>
-        <file-display-c-item
-          slot="firstRow"
-          v-for="(item, index) in entry.content"
-          :key="index"
-          :file-name="item.title"
-          :file-id="item.id">
-        </file-display-c-item>
-      </file-display>
+      <ul>
+        <li v-for="(item, index) in entry.content"
+            :key="index">
+          <show-unproved
+            :content="item.title"
+            :id="item.id"
+            v-if="!item.approved">
+          </show-unproved>
+        </li>
+      </ul>
     </div>
+
   </div>
 </template>
 
@@ -55,6 +59,7 @@
   import SearchFile from "../components/SearchFile";
   import $ from 'jquery'
   import axios from "axios";
+  import ShowUnproved from "./components/ShowUnproved";
   export default {
     name: "Information",
     props: {
@@ -64,17 +69,19 @@
       return {
         entry: {
           content: [],
-        }
+        },
+        flag: 1
       }
     },
     mounted() {
+      //请求到的entry对象储存到data里
       axios('infoEntry/unapprovedEntries',{
       }).then(res => {
         let content = res.data.data.entries.content
         for(let i in content) {
           this.entry.content.push(content[i])
         }
-        console.log(content);
+        // console.log(content);
       })
       .catch(err => {
         console.log(err);
@@ -97,7 +104,7 @@
           'title': title,
           'newContent': newContent
         }).then(res => {
-          console.log(res);
+          // console.log(res);
         }).catch(err => {
           alert(err)
         })
@@ -113,7 +120,8 @@
       HotFile,
       Create,
       Update,
-      SearchFile
+      SearchFile,
+      ShowUnproved
     }
   }
 </script>
