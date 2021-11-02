@@ -15,7 +15,6 @@
     props: {
       content: String,
       id: Number,
-
     },
     data() {
       return {
@@ -41,7 +40,7 @@
         })
       },
       update() {
-        this.$emit('showUpdateInput')
+        this.$emit('showUpdateInput', this.id)
       }
     }
   }

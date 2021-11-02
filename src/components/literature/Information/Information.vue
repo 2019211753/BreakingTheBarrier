@@ -47,7 +47,7 @@
     </div>
 
     <div class="ui container">
-      <update-entry :showUpdateFlag="showUpdateFlag"></update-entry>
+      <update-entry :showUpdateFlag="showUpdateFlag" :id="entry.id"></update-entry>
     </div>
   </div>
 </template>
@@ -75,9 +75,11 @@
       return {
         entry: {
           content: [],
+          id: ''
         },
         flag: 1,
-        showUpdateFlag: false
+        showUpdateFlag: false,
+
       }
     },
     mounted() {
@@ -116,9 +118,11 @@
           alert(err)
         })
       },
-      showUpdateInput() {
-        // console.log('监听到子组件的‘更新’按钮点击');
+      showUpdateInput(id) {
+        // console.log('监听到子组件（ShowUnproved）的‘更新’按钮点击');
         this.showUpdateFlag = !this.showUpdateFlag
+        console.log(id);
+        this.entry.id = id
       }
     },
 

@@ -40,7 +40,7 @@
     },
     methods: {
       makeSureUpdate() {
-        this.$emit('makeSureUpdate')
+        this.$emit('makeSureUpdate', this.title, this.newContent)
       },
       btnClick() {
         if (this.flag) {
