@@ -18,8 +18,16 @@
     <div style="width: fit-content;margin: -20px auto 25px auto;">
 <!--      <search-file @search="search"></search-file>-->
     </div>
-    <file-display style="margin:0 5px"></file-display>
-    <hot-file>
+    <div class="file-display ui three column divided grid" id="fileDisplay" style="display: inline-block">
+      <div class="row">
+        <div v-for="item in approvedEntry.content"
+              style="margin: 10px 20px;text-align: center">
+          <h2>{{item.title}}</h2>
+          <div>{{item.currentContent}}</div>
+        </div>
+      </div>
+    </div>
+    <hot-file style="position: unset;">
           <h3 slot="titleH3">近期竞赛</h3>
           <div slot="item" class="ui tall stacked segment" id="recentRace">
             <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
@@ -75,7 +83,10 @@
       return {
         entry: {
           content: [],
-          id: ''
+          id: 0
+        },
+        approvedEntry: {
+          content: [],
         },
         flag: 1,
         showUpdateFlag: false,
@@ -94,6 +105,20 @@
       })
       .catch(err => {
         console.log(err);
+        alert(err)
+      })
+
+      //把请求到的approvedEntry存储下来
+      axios('infoEntry/show',{
+        params: {
+        }
+      }).then(res => {
+        let content = res.data.data.entries.content
+        for(let i in content)
+          this.approvedEntry.content.push(content[i])
+        // this.approvedEntry = res.data.data.entries.content
+        console.log(this.approvedEntry.content);
+      }).catch(err => {
         alert(err)
       })
     },
