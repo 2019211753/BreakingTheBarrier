@@ -1,9 +1,14 @@
 <template>
   <div v-if="flag">
-      <strong>{{content}}</strong>
-      <span style="display: none">{{id}}</span>
-      <button class="ui button" @click="pass">通过</button>
-      <button class="ui button" @click="update">更新</button>
+    <h2>{{content.title}}</h2>
+    <h4>当前内容</h4>
+    <span>{{content.currentContent}}</span>
+    <h4>更新内容</h4>
+    <span>{{content.newContent}}</span>
+    <span style="display: none">{{content.id}}</span>
+    <button class="ui button" style="display: block" @click="pass">通过</button>
+<!--    <button class="ui button" @click="update">更新</button>-->
+    <hr>
   </div>
 </template>
 
@@ -13,8 +18,7 @@
   export default {
     name: "ShowUnproved",
     props: {
-      content: String,
-      id: Number,
+      content: Object,
     },
     data() {
       return {

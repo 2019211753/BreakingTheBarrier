@@ -1,8 +1,8 @@
 <template>
   <div v-show="showUpdateFlag">
     <h2>更新词条</h2>
-    <create :flag="0"
-      @makeSureUpdate="makeSureUpdate">
+    <create :flag="0" :inputFlag="0" :entryId="id"
+      >
       <span slot="subText">更新</span>
     </create>
   </div>
@@ -25,23 +25,27 @@
     props: {
       showUpdateFlag: {
         type: Boolean,
-        default: 0
+        default: false
       },
       id: Number
     },
     methods: {
-      makeSureUpdate(title, newContent) {
-        axios.post('infoEntry/' + this.id + '/update',{
-          'title': title,
-          'newContent': newContent,
-        }).then(res => {
-          console.log(res.data);
-          console.log(title+'\n'+newContent);
-          alert(res.data.msg)
-        }).catch(err => {
-          alert(err)
-        })
-      }
+      // makeSureUpdate(title, newContent) {
+      //   if (title && newContent) {
+      //     axios.post('infoEntry/' + this.id + '/update', {
+      //       'title': title,
+      //       'newContent': newContent,
+      //     }).then(res => {
+      //       console.log(res.data);
+      //       console.log(title + '\n' + newContent);
+      //       alert(res.data.msg)
+      //     }).catch(err => {
+      //       alert(err)
+      //     })
+      //   }
+      //   else
+      //     alert('标题或内容不能为空')
+      // }
     },
     components: {
       Create
