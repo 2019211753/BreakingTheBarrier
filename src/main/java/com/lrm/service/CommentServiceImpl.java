@@ -166,10 +166,8 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> listSelectedAnswerByQuestionId(Long questionId) {
         Sort sort = Sort.by(Sort.Direction.ASC, "likesNum");
 
-        List<Comment> comments = commentRepository.findSelectedAnswerByQuestionId(questionId, sort);
+        return commentRepository.findSelectedAnswerByQuestionId(questionId, sort);
 
-        //遍历第一级
-        return eachComment(comments);
     }
 
     /**

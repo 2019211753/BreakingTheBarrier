@@ -73,6 +73,11 @@ public class ArchiveShowController {
         return new Result(hashMap, "");
     }
 
+    /**
+     * 按年份归档 时间逆序
+     *
+     * @return 用户发布的评论
+     */
     @GetMapping("/archiveComment")
     public Result archiveComment(HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(1);
@@ -87,6 +92,11 @@ public class ArchiveShowController {
         return new Result(hashMap, "");
     }
 
+    /**
+     * 按年份归档 时间逆序
+     *
+     * @return 用户发布的点赞
+     */
     @GetMapping("/archiveLike")
     public Result archiveLike(HttpServletRequest request) {
         Map<String, Object> hashMap = new HashMap<>(1);

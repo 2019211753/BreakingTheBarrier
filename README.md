@@ -737,8 +737,7 @@ StringBuffer url;
 ```java
 /**
  * @param questionId 被编辑的问题Id
- * @return data：{ "template" : question,
- 				"tags", tags}
+ * @return data：{ "template" : question, "tags", tags}
  *
  * template为要修改的Question对象，tags是一个树，包含所有标签
  */
@@ -773,7 +772,7 @@ StringBuffer url;
  *
  * @param pageable 分页对象
  * @param queryMap : {"tagIds" : tagIds, "query" : query, "nickname" : "nickname"}
- * @return data：{"pages", pages}
+ * @return data：{"pages": pages}
  *
  * query为关键字 nickname为用户昵称
  */
@@ -888,7 +887,7 @@ StringBuffer url;
 @GetMapping("customer/archiveComment")
 ```
 
-##### 发布的评论归档
+##### 发布的点赞归档
 
 ```java
 /**
