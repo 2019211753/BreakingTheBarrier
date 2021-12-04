@@ -12,7 +12,6 @@ import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -196,7 +195,7 @@ public class CustomerFavoriteController {
         if (favorite == null) {
             throw new NotFoundException("未查询到该收藏夹");
         } else {
-            if (!favorite.getOwner().getId().equals(customerUserId)) {
+            if (!favorite.getOwner().getId().equals(customerUserId) && !favorite.getOpen()) {
                 throw new NoPermissionException("你无权访问该收藏夹");
             }
         }

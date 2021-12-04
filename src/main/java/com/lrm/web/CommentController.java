@@ -11,7 +11,6 @@ import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,15 +69,19 @@ public class CommentController
 
         //分别返回两类评论和对应点赞
         List<Comment> comments1 = commentServiceImpl.listCommentByQuestionId(questionId, false);
-
         hashMap.put("comments1", dealComment(comments1, userId));
 
         List<Comment> comments2 = commentServiceImpl.listCommentByQuestionId(questionId, true);
-
         hashMap.put("comments2", dealComment(comments2, userId));
-        hashMap.put("selectedComments", dealComment(commentServiceImpl.listSelectedAnswerByQuestionId(questionId), userId));
+
+        List<Comment> selectedComments = commentServiceImpl.listSelectedAnswerByQuestionId(questionId);
+        for (Comment comment : selectedComments) {
+            insertAttribute(comment, userId);
+        }
+        hashMap.put("selectedComments", selectedComments);
 
         List<Comment> bestComments = commentServiceImpl.listBestComments(questionId);
+        bestComments.removeAll(selectedComments);
         for (Comment comment : bestComments) {
             insertAttribute(comment, userId);
         }
@@ -134,10 +137,10 @@ public class CommentController
     }
 
     /**
-     * 配合dealComment插入数据
+     * 配合dealComment插入数据 用于处理当前用户是否对该评论点过赞/踩 以及添加评论的头像、昵称
      *
-     * @param comment 被插入的评论对象
-     * @param userId  当前用户对象 用于处理是否点过赞的
+     * @param comment 评论
+     * @param userId  当前用户对象
      */
     void insertAttribute(Comment comment, Long userId) {
         //得到发布问题的人
