@@ -6,6 +6,7 @@ import com.lrm.dao.FileTagRepository;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.File;
 import com.lrm.po.FileTag;
+import com.lrm.service.AysncService;
 import com.lrm.service.FileService;
 import com.lrm.service.FileServiceImpl;
 import com.lrm.util.FileUtils;
@@ -56,6 +57,9 @@ public class FileController {
 
     @Autowired
     private FileServiceImpl fileServiceImpl;
+
+    @Autowired
+    private AysncService aysncService;
 
     @GetMapping
     public String index() {
@@ -156,14 +160,16 @@ public class FileController {
         //直接在这里判断文件存不存在,如果不存在会抛异常的
         fileServiceImpl.downloadFile(found.get(), userId);
 
-//        response.reset();
-//        response.setContentType("application/octet-stream");
+/*
+        response.reset();
+        response.setContentType("application/octet-stream");
+        response.setContentLength((int)file.length());
+*/
         response.setCharacterEncoding("utf-8");
-//        response.setContentLength((int)file.length());
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
-        OSSUtils.downloadFile(response.getOutputStream(), fileName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
-
+//        OSSUtils.downloadFile(response.getOutputStream(), fileName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
+        aysncService.executeAysnc(response, fileName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("name", fileName);
 
