@@ -15,7 +15,7 @@ public class AsyncServiceImpl implements AysncService {
     private static Logger logger = LoggerFactory.getLogger(AsyncServiceImpl.class);
     @Override
     //service层服务异化
-    @Async("asyncFileTaskExecutor")
+    @Async("file_task")
     public void executeAysnc(HttpServletResponse response, String objectName,
                              String endpoint, String accessKeyId,
                              String accessKeySecret, String bucketName) throws IOException {

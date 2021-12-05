@@ -12,11 +12,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
 @EnableAsync
-public class FileTaskPoolConfig {
-    private static Logger logger = LoggerFactory.getLogger(FileTaskPoolConfig.class);
+public class TaskPoolConfig {
+    private static Logger logger = LoggerFactory.getLogger(TaskPoolConfig.class);
 
-    @Bean
-    public Executor asyncFileTaskExecutor() {
+    //使用别名alias，调用的时候需要async("file_task")
+    @Bean("file_task")
+    public Executor taskExecutor() {
         logger.info("start asyncFileTaskExecutor");
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         //配置核心线程数
