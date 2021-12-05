@@ -226,6 +226,20 @@ public class User {
     @ManyToMany(mappedBy = "contributors")
     private List<InfoEntry> infoEntries = new ArrayList<>();
 
+    /**
+     * 领导的小组
+     * 通过new Team().leader.set(thisUser)设置
+     */
+    @OneToMany(mappedBy = "leader")
+    private List<Team> leadingTeams;
+
+    /**
+     * 加入的小组
+     * 通过new Team().members.add(thisUser)添加
+     */
+    @ManyToMany(mappedBy = "members")
+    private List<Team> joinedTeams;
+
 
     public Long getId() {
         return id;
@@ -481,6 +495,22 @@ public class User {
 
     public void setInfoEntries(List<InfoEntry> infoEntries) {
         this.infoEntries = infoEntries;
+    }
+
+    public List<Team> getLeadingTeams() {
+        return leadingTeams;
+    }
+
+    public void setLeadingTeams(List<Team> leadingTeams) {
+        this.leadingTeams = leadingTeams;
+    }
+
+    public List<Team> getJoinedTeams() {
+        return joinedTeams;
+    }
+
+    public void setJoinedTeams(List<Team> joinedTeams) {
+        this.joinedTeams = joinedTeams;
     }
 }
 
