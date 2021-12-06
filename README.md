@@ -1629,14 +1629,29 @@ StringBuffer url;
 
 #### 信息百科
 
+**词条**
+
+```yaml
+InfoEntry:
+	id:
+	title:
+	newContent: 需要填的内容
+	currentContent: 显示的内容
+	lastAprrovedTime: 忘了有用没用了...
+```
+
+**创建词条**
+
 ```java
 /**
  * 创建词条
- * @param infoEntry json格式的词条
+ * @param infoEntry json格式的词条：[title + newContent]
  * @return 带有消息的Result
  */
 @PostMapping("infoEntry/create")
 ```
+
+**更新词条**
 
 ```java
 /**
@@ -1647,6 +1662,8 @@ StringBuffer url;
 @PostMapping("/{entryId}/update")
 ```
 
+##### 展示未审核词条
+
 ```java
 /**
  * 展示所有未审核的词条（管理员页面使用）
@@ -1654,6 +1671,8 @@ StringBuffer url;
  */
  @GetMapping("/unapprovedEntries")
 ```
+
+##### **审核通过某词条**
 
 ```java
 /**
@@ -1663,6 +1682,8 @@ StringBuffer url;
  */
 @PostMapping("/{entryId}/approve")
 ```
+
+##### **展示通过的词条**
 
 ```java
 /**
