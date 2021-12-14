@@ -42,6 +42,13 @@ file.upload_path: F://uploadTest//
 file.download_path: F://uploadTest//
 token-salt: 321AIVD#!@~~A134
 
+oss:
+  endpoint: oss-cn-beijing.aliyuncs.com
+  accessKeyId: LTAI5t962vrgyQ86Cf2VWMEX
+  accessKeySecret: PLaMPLkjDLULIK7GGrCtZdHyNr3YZc
+  bucketName: wordverybig
+  urlPrefix: wordverybig.oss-cn-beijing.aliyuncs.com
+
 # 项目运行端口
 server:
   port: 8080

@@ -8,7 +8,6 @@ import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,8 +39,6 @@ public class LoginController {
      */
     @PostMapping("/register")
     public Result register(@RequestBody @Validated User user, BindingResult bindingResult) {
-        Map<String, Object> hashMap = new HashMap<>(1);
-
         if (bindingResult.hasErrors()) {
             throw new IllegalParameterException(IllegalParameterException.getMessage(bindingResult));
         }
@@ -59,11 +56,8 @@ public class LoginController {
 
             userServiceImpl.saveUser(username, password, nickname);
 
-            //又给它整回去
-            hashMap.put("user", user);
-
             //跳转到登录页面
-            return new Result(hashMap, "注册成功");
+            return new Result(null, "注册成功");
         }
     }
 

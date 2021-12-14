@@ -70,8 +70,6 @@ public class ProfileController {
      */
     @PostMapping("/uploadAvatar")
     public Result uploadAvatar(MultipartFile file, HttpServletRequest req) throws IOException {
-        Map<String, Object> hashMap = new HashMap<>(1);
-
         Long userId = TokenInfo.getCustomUserId(req);
 
         //创建存放文件的文件夹的流程
@@ -90,8 +88,7 @@ public class ProfileController {
         user.setAvatar("images/" + userId + "/avatar/" + newName);
         userServiceImpl.saveUser(user);
 
-        hashMap.put("avatar", FileUtils.convertAvatar(user.getAvatar()));
-        return new Result(hashMap, "上传成功");
+        return new Result(null, "上传成功");
     }
 
 
@@ -168,10 +165,10 @@ public class ProfileController {
         }
 
         if (!"".equals(password) && password != null) {
-            if (StringVerify.isContainChinese(password) && (password.length() > 12 || password.length() < 7)) {
-                user.setPassword("M#D5+" + MD5Utils.code(password));
-            } else {
+            if (StringVerify.isContainChinese(password) || (password.length() > 12 || password.length() < 7)) {
                 errorMessage = new StringBuilder("密码格式错误；");
+            } else {
+                user.setPassword("M#D5+" + MD5Utils.code(password));
             }
         }
 

@@ -28,8 +28,8 @@ public class JWTInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
         Map<String, Object> map = new HashMap<>();
+        String requestURL = request.getRequestURI();
         try {
-            String requestURL = request.getRequestURI();
             logger.info("RequestURL: {} ", requestURL);
             logger.info("GetMethod: {}", handler);
             JWTUtils.verify(token);
@@ -38,24 +38,22 @@ public class JWTInterceptor implements HandlerInterceptor {
         } catch (TokenExpiredException e) {
             logger.error("exception : {}", "拦截器：用户令牌已经过期");
             map.put("msg", "用户令牌已经过期，请重新登陆");
-            map.put("code", "401");
         } catch (SignatureVerificationException e){
             logger.error("exception : {}", "拦截器：签名错误");
             map.put("msg", "签名错误");
-            map.put("code", "401");
         } catch (AlgorithmMismatchException e){
             logger.error("exception : {}", "拦截器：加密算法不匹配");
             map.put("msg", "加密算法不匹配");
-            map.put("code", "401");
         } catch (NullPointerException e) {
             logger.error("exception : {}", "拦截器：令牌为空");
             map.put("msg", "令牌为空");
-            map.put("code", "401");
         } catch (Exception e) {
             logger.error("exception : {}", "拦截器：无效令牌");
             map.put("msg", "无效令牌");
-            map.put("code", "401");
         }
+        map.put("code", "401");
+        map.put("data", null);
+        map.put("url", requestURL);
         //转化为json返回前端
         String json = new ObjectMapper().writeValueAsString(map);
         response.setContentType("application/json;charset=UTF-8");

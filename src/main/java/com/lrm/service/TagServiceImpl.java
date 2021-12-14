@@ -85,7 +85,9 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> listTagTop() {
         List<Tag> tagList = tagRepository.findByParentTagNull();
-        insertChildTags(tagList);
+        for (Tag tag : tagList) {
+            insertChildTags(tag);
+        }
         return tagList;
     }
 
@@ -171,9 +173,12 @@ public class TagServiceImpl implements TagService {
         return tagIdsBuilder.toString();
     }
 
-    public void insertChildTags(List<Tag> tags) {
-        for (Tag tag : tags) {
+    public void insertChildTags(Tag tag) {
+        if (tag.getSonTags().size() != 0) {
             tag.setChildTags(tag.getSonTags());
+            for (Tag sonTag : tag.getChildTags()) {
+                insertChildTags(sonTag);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.lrm.web.customer;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.lrm.exception.NotFoundException;
 import com.lrm.po.Comment;
 import com.lrm.po.Likes;
 import com.lrm.po.User;
@@ -120,6 +121,9 @@ public class MessageController {
     @GetMapping("/comment/{commentId}/read")
     public Result readComment(@PathVariable Long commentId) {
         Comment comment = commentServiceImpl.getComment(commentId);
+        if (comment == null) {
+            throw new NotFoundException("未查询到该评论");
+        }
         comment.setLooked(true);
         commentServiceImpl.saveComment(comment);
         return new Result(null, "已读成功");
@@ -133,6 +137,9 @@ public class MessageController {
     @GetMapping("/likes/{likesId}/read")
     public Result readLikes(@PathVariable Long likesId) {
         Likes likes = likesServiceImpl.get(likesId);
+        if (likes == null) {
+            throw new NotFoundException("未查询到该点赞");
+        }
         likes.setLooked(true);
         likesServiceImpl.save(likes);
         return new Result(null, "已读成功");

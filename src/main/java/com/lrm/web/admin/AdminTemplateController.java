@@ -17,7 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -67,8 +66,6 @@ public class AdminTemplateController {
      */
     @PostMapping("/question/post")
     public Result post(@RequestBody @Valid Question question, BindingResult bindingResult) {
-        Map<String, Object> hashMap = new HashMap<>(1);
-
         //后端检验valid
         if (bindingResult.hasErrors()) {
             throw new IllegalParameterException(IllegalParameterException.getMessage(bindingResult));
@@ -85,8 +82,7 @@ public class AdminTemplateController {
         if (q == null) {
             throw new FailedOperationException("修改失败");
         } else {
-            hashMap.put("question", question);
-            return new Result(hashMap, "修改成功");
+            return new Result(null, "修改成功");
         }
     }
 

@@ -105,6 +105,10 @@ public class VisitController {
             default:
 
         }
+        user.setAvailableNum(null);
+        user.setPrivacyType(null);
+        user.setAdmin(null);
+        user.setCanSpeak(null);
         hashMap.put("user", user);
         return new Result(hashMap, "");
     }

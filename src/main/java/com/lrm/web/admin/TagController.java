@@ -58,15 +58,15 @@ public class TagController {
                 hashMap.put("tag", t);
                 return new Result(hashMap, "新增成功");
             }
-        }
-
-        //如果是修改
-        Tag t = tagServiceImpl.updateTag(tag);
-        if (t == null) {
-            throw new FailedOperationException("修改失败");
         } else {
-            hashMap.put("tag", t);
-            return new Result(hashMap, "修改成功");
+            //如果是修改
+            Tag t = tagServiceImpl.updateTag(tag);
+            if (t == null) {
+                throw new FailedOperationException("修改失败");
+            } else {
+                hashMap.put("tag", t);
+                return new Result(hashMap, "修改成功");
+            }
         }
     }
 

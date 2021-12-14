@@ -55,8 +55,6 @@ public class CustomerTemplateController {
      */
     @PostMapping("/question/post")
     public Result addQuestion(@RequestBody @Valid Question question, BindingResult bindingResult, HttpServletRequest request)  {
-        Map<String, Object> hashMap = new HashMap<>(1);
-
         Long userId = TokenInfo.getCustomUserId(request);
         User user = userServiceImpl.getUser(userId);
 
@@ -69,13 +67,11 @@ public class CustomerTemplateController {
             if (question.getId() == null) {
                 q = questionServiceImpl.save(question, user);
             } else {
-                hashMap.put("question", question);
                 throw new FailedOperationException("该问题已存在");
             }
 
             if (q != null) {
-                hashMap.put("question", question);
-                return new Result(hashMap, "发布成功");
+                return new Result(null, "发布成功");
             } else {
                 throw new FailedOperationException("发布失败");
             }
@@ -94,8 +90,6 @@ public class CustomerTemplateController {
      */
     @PostMapping("/blog/post")
     public Result addOrUpdateBlog(@RequestBody @Valid Blog blog, BindingResult bindingResult, HttpServletRequest request) {
-        Map<String, Object> hashMap = new HashMap<>(1);
-
         Long userId = TokenInfo.getCustomUserId(request);
         User user = userServiceImpl.getUser(userId);
 
@@ -123,8 +117,7 @@ public class CustomerTemplateController {
             if (b == null) {
                 throw new FailedOperationException("发布失败");
             } else {
-                hashMap.put("blog", blog);
-                return new Result(hashMap, "发布成功");
+                return new Result(null, "发布成功");
             }
         } else {
             throw new NoPermissionException("你无权发布博客");
