@@ -35,5 +35,6 @@ public interface CommentService {
 
     List<Comment> listBestComments(Long questionId);
 
+    void listReceivedComments(Comment comment);
 
 }

@@ -5,6 +5,7 @@ import com.lrm.enumeration.DonationGrow;
 import com.lrm.enumeration.ImpactGrow;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
+import com.lrm.vo.Magic;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +35,8 @@ public class CommentServiceImpl implements CommentService {
      * 存放迭代找出的所有子代的集合
      */
     private List<Comment> tempReplys = new ArrayList<>();
+
+    private Integer remains;
 
     /**
      * 保存评论 如果不是通过回复的方式 那么前端传回parentCommentId默认设置为1
@@ -170,6 +173,14 @@ public class CommentServiceImpl implements CommentService {
 
     }
 
+    @Override
+    public List<Comment> listBestComments(Long questionId) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "likesNum");
+        Pageable pageable = PageRequest.of(0, Magic.BEST_COMMENTS_SIZE, sort);
+
+        return commentRepository.findTopByQuestionIdAndAnswer(pageable, questionId);
+    }
+
     /**
      * 得到问题下的评论，（两级）的分级评论。为非精选评论。
      * 即去掉为第一级的精选评论后，剩下的所有评论
@@ -182,16 +193,26 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> listCommentByQuestionId(Long questionId, Boolean isAnswer) {
         Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
 
-        return commentRepository.findByQuestionIdAndAnswerAndSelected(questionId, isAnswer, sort, false);
+        return eachComment(commentRepository.findByQuestionIdAndAnswerAndSelected(questionId, isAnswer, sort, false));
 
     }
 
-    @Override
-    public List<Comment> listBestComments(Long questionId) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "likesNum");
-        Pageable pageable = PageRequest.of(0, 3, sort);
 
-        return commentRepository.findTopByQuestionIdAndAnswer(pageable, questionId);
+    @Override
+    public List<Comment> listCommentByBlogId(Long blogId, Boolean isAnswer) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
+
+        //得到所有第一级评论
+        List<Comment> comments = commentRepository.findByBlogIdAndAnswer(blogId, isAnswer, sort);
+
+        //遍历第一级
+        return eachComment(comments);
+    }
+
+    @Override
+    public void listReceivedComments(Comment comment)
+    {
+        resortReceiveComments(comment, 1000);
     }
 
     /**
@@ -218,48 +239,44 @@ public class CommentServiceImpl implements CommentService {
         //遍历所有第一级评论
         for (Comment comment : comments) {
 
-            //得到回复第一级评论的第二级评论
-            List<Comment> replys1 = comment.getReplyComments();
-
-            //遍历第二级评论
-            for (Comment reply1 : replys1) {
-
-                //循环迭代，找出子代，存放在tempReplys中
-                recursively(reply1);
-            }
-
-            //修改顶级节点的reply集合为迭代处理后的集合
-            comment.setReceiveComments(tempReplys);
-
-            //清除临时存放区
-            tempReplys = new ArrayList<>();
+            resortReceiveComments(comment, Magic.DEFAULT_COMMENT_SIZE);
         }
+    }
+
+    private void resortReceiveComments(Comment comment, Integer max) {
+        //得到回复第一级评论的第二级评论
+        List<Comment> replys1 = comment.getReplyComments();
+
+        remains = max;
+        //遍历第二级评论
+        for (Comment reply1 : replys1) {
+            //循环迭代，找出子代，存放在tempReplys中
+            recursively(reply1);
+        }
+
+        //修改顶级节点的reply集合为迭代处理后的集合
+        comment.setReceiveComments(tempReplys);
+
+        //清除临时存放区
+        tempReplys = new ArrayList<>();
+        remains = Magic.DEFAULT_COMMENT_SIZE;
     }
 
     private void recursively(Comment comment) {
-        //第二级评论添加到临时存放集合
-        tempReplys.add(comment);
+       if (remains > 0) {
+            //第二级评论添加到临时存放集合
+            tempReplys.add(comment);
+            remains--;
+           //如果第二级评论有子评论
+           if (comment.getReplyComments().size() > 0) {
+               List<Comment> replys = comment.getReplyComments();
 
-        //如果第二级评论有子评论
-        if (comment.getReplyComments().size() > 0) {
-            List<Comment> replys = comment.getReplyComments();
-
-            //遍历第三级评论 添加到临时存放集合
-            for (Comment reply : replys) {
-                    recursively(reply);
-            }
-        }
-    }
-
-    @Override
-    public List<Comment> listCommentByBlogId(Long blogId, Boolean isAnswer) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
-
-        //得到所有第一级评论
-        List<Comment> comments = commentRepository.findByBlogIdAndAnswer(blogId, isAnswer, sort);
-
-        //遍历第一级
-        return eachComment(comments);
+               //遍历第三级评论 添加到临时存放集合
+               for (Comment reply : replys) {
+                   recursively(reply);
+               }
+           }
+       }
     }
 
     /**

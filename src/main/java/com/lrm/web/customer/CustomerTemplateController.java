@@ -7,6 +7,7 @@ import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
 import com.lrm.util.TokenInfo;
+import com.lrm.vo.Magic;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -232,7 +233,7 @@ public class CustomerTemplateController {
      * @return 查询所得问题分页
      */
     @PostMapping("/searchQuestions")
-    public Result searchQuestions(@PageableDefault(size = 6, sort = {"newCommentedTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+    public Result searchQuestions(@PageableDefault(size = Magic.SEARCH_PAGE_SIZE, sort = {"newCommentedTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                                   @RequestBody Map<String, String> query, HttpServletRequest request) {
 
         //得到当前用户的昵称
@@ -251,7 +252,7 @@ public class CustomerTemplateController {
      * @return 查询所得博客分页
      */
     @PostMapping("/searchBlogs")
-    public Result searchBlogs(@PageableDefault(size = 6, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+    public Result searchBlogs(@PageableDefault(size = Magic.SEARCH_PAGE_SIZE, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                               @RequestBody Map<String, String> query, HttpServletRequest request) {
 
         //得到当前用户的昵称

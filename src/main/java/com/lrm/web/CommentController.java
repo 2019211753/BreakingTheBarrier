@@ -114,6 +114,22 @@ public class CommentController
         return new Result(hashMap, "");
     }
 
+    @GetMapping("/comment/{commentId}")
+    public Result getMoreComments(@PathVariable Long commentId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(1);
+        Long userId = TokenInfo.getCustomUserId(request);
+
+        Comment comment = commentServiceImpl.getComment(commentId);
+        commentServiceImpl.listReceivedComments(comment);
+        List<Comment> receiveComments = comment.getReceiveComments();
+        for (Comment comment1 : receiveComments) {
+            insertAttribute(comment1, userId);
+        }
+        hashMap.put("receiveComments", receiveComments);
+
+        return new Result(hashMap, "");
+    }
+
     /**
      * @param comments 被处理的comment集合 我更改的只是comment的receiveComment[]属性
      *                 并没有更改他们的父级评论属性 所以仍然可以根据他们的parentComment获取nickname

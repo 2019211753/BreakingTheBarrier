@@ -8,7 +8,6 @@ import com.lrm.util.TokenInfo;
 import com.lrm.vo.Magic;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -55,7 +54,7 @@ public class TemplateController {
      * @return 返回推荐问题、全部问题
      */
     @GetMapping("/listQuestions")
-    public Result listQuestions(@PageableDefault(size = 7, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
+    public Result listQuestions(@PageableDefault(size = Magic.INDEX_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return listTemplates(questionServiceImpl, pageable);
     }
 
@@ -66,7 +65,7 @@ public class TemplateController {
      * @return 返回推荐问题、全部问题
      */
     @GetMapping("/listBlogs")
-    public Result listBlogs(@PageableDefault(size = 7, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
+    public Result listBlogs(@PageableDefault(size = Magic.INDEX_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return listTemplates(blogServiceImpl, pageable);
     }
 
@@ -79,12 +78,11 @@ public class TemplateController {
 
             //得到发布问题的人
             User postUser = t.getUser();
-            //这里到底要不要用计算力代替空间还要考虑
             t.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
             t.setNickname(postUser.getNickname());
         }
         hashMap.put("pages", pages);
-        hashMap.put("impacts", templateServiceImpl.listImpactTop(Magic.RECOMMENDED_QUESTIONS_SIZE));
+        hashMap.put("impacts", templateServiceImpl.listImpactTop(Magic.RECOMMENDED_SIZE));
         return new Result(hashMap, "");
     }
 
@@ -97,7 +95,7 @@ public class TemplateController {
      * @return 查询结果、查询条件
      */
     @PostMapping("/searchQuestions")
-    public Result searchQuestions(@PageableDefault(size = 6, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+    public Result searchQuestions(@PageableDefault(size = Magic.SEARCH_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                               @RequestBody Map<String, String> query) {
 
         return searchTemplates(questionServiceImpl, query.get("query"), pageable);
@@ -111,7 +109,7 @@ public class TemplateController {
      * @return 查询结果、查询条件
      */
     @PostMapping("/searchBlogs")
-    public Result searchBlogs(@PageableDefault(size = 1000, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+    public Result searchBlogs(@PageableDefault(size = Magic.SEARCH_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                               @RequestBody Map<String, String> query) {
 
         return searchTemplates(blogServiceImpl, query.get("query"), pageable);
@@ -207,6 +205,16 @@ public class TemplateController {
         frontT.setNickname(backT.getUser().getNickname());
 
         hashMap.put("template", frontT);
+
+        User receiveUser = frontT.getUser();
+        User postUser = userServiceImpl.getUser(userId);
+        if (receiveUser.getFollowedUsers().contains(postUser) &&
+                postUser.getFollowingUsers().contains(receiveUser)) {
+            hashMap.put("following", true);
+        } else {
+            hashMap.put("following", false);
+        }
+
         return new Result(hashMap, "");
     }
 }

@@ -13,8 +13,13 @@ import java.util.Map;
  * @date 2021-07-21
  */
 public class Magic {
-    public static final int PAGE_SIZE = 10;
-    public static final Integer RECOMMENDED_QUESTIONS_SIZE = 6;
+    public static final int SEARCH_PAGE_SIZE = 1000;
+    public static final int INDEX_PAGE_SIZE = 10;
+    public static final int BEST_COMMENTS_SIZE = 3;
+    public static final int RECOMMENDED_SIZE = 6;
+    public static final int DEFAULT_COMMENT_SIZE = 3;
+    public static final int FAVORITE_CONTENT_SIZE = 7;
+    public static final int RANK_SIZE = 10;
     public static final Integer HIDE_STANDARD1 = 6;
     public static final Integer HIDE_STANDARD2 = 2;
 

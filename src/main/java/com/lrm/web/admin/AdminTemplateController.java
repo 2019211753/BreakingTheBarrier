@@ -7,6 +7,7 @@ import com.lrm.po.Question;
 import com.lrm.service.BlogServiceImpl;
 import com.lrm.service.QuestionServiceImpl;
 import com.lrm.service.TagServiceImpl;
+import com.lrm.vo.Magic;
 import com.lrm.vo.Result;
 import com.lrm.web.customer.CustomerTemplateController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +94,7 @@ public class AdminTemplateController {
      * @return 查询结果
      */
     @PostMapping("/searchQuestions")
-    public Result searchQuestions(@PageableDefault(size = 1000, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+    public Result searchQuestions(@PageableDefault(size = Magic.SEARCH_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                                   @RequestBody Map<String, String> query) {
         return customerTemplateController.searchTemplate(pageable, query, questionServiceImpl);
     }
@@ -105,7 +106,7 @@ public class AdminTemplateController {
      * @return 查询结果
      */
     @PostMapping("/searchBlogs")
-    public Result searchBlogs(@PageableDefault(size = 1000, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
+    public Result searchBlogs(@PageableDefault(size = Magic.SEARCH_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                               @RequestBody Map<String, String> query) {
         return customerTemplateController.searchTemplate(pageable, query, blogServiceImpl);
     }

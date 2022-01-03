@@ -4,12 +4,15 @@ import com.lrm.exception.NotFoundException;
 import com.lrm.po.User;
 import com.lrm.service.FavoriteServiceImpl;
 import com.lrm.service.UserServiceImpl;
+import com.lrm.util.FileUtils;
+import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,79 +40,88 @@ public class VisitController {
      * 共8种策略
      */
     @GetMapping("visit/{userId}")
-    public Result visitUser(@PathVariable Long userId) {
-        Map<String, Object> hashMap = new HashMap<>(7);
+    public Result visitUser(@PathVariable Long userId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(8);
 
-        User user = userServiceImpl.getUser(userId);
-        if (user == null) {
+        User receiveUser = userServiceImpl.getUser(userId);
+        User postUser = userServiceImpl.getUser(TokenInfo.getCustomUserId(request));
+        if (receiveUser == null) {
             throw new NotFoundException("未查询到该用户");
         }
 
-        user.setFavorites(favoriteServiceImpl.getFavorites(true, userId));
+        receiveUser.setFavorites(favoriteServiceImpl.getFavorites(true, userId));
 
-        Integer privacyType = user.getPrivacyType();
+        Integer privacyType = receiveUser.getPrivacyType();
         switch (privacyType) {
             case 1:
                 hashMap.put("favorites", favoriteServiceImpl.getFavorites(true, userId));
 
                 break;
             case 2:
-                hashMap.put("questions", user.getQuestions());
-                hashMap.put("blogs", user.getBlogs());
-                hashMap.put("comments", user.getPostComments());
-                hashMap.put("likes", user.getPostLikes());
+                hashMap.put("questions", receiveUser.getQuestions());
+                hashMap.put("blogs", receiveUser.getBlogs());
+                hashMap.put("comments", receiveUser.getPostComments());
+                hashMap.put("likes", receiveUser.getPostLikes());
 
                 break;
             case 3:
-                hashMap.put("questions", user.getQuestions());
-                hashMap.put("blogs", user.getBlogs());
-                hashMap.put("comments", user.getPostComments());
-                hashMap.put("likes", user.getPostLikes());
+                hashMap.put("questions", receiveUser.getQuestions());
+                hashMap.put("blogs", receiveUser.getBlogs());
+                hashMap.put("comments", receiveUser.getPostComments());
+                hashMap.put("likes", receiveUser.getPostLikes());
 
                 hashMap.put("favorites", favoriteServiceImpl.getFavorites(true, userId));
 
                 break;
             case 4:
-                hashMap.put("followingUsers", user.getFollowingUsers());
-                hashMap.put("followedUsers", user.getFollowedUsers());
+                hashMap.put("followingUsers", receiveUser.getFollowingUsers());
+                hashMap.put("followedUsers", receiveUser.getFollowedUsers());
 
                 break;
             case 5:
-                hashMap.put("followingUsers", user.getFollowingUsers());
-                hashMap.put("followedUsers", user.getFollowedUsers());
+                hashMap.put("followingUsers", receiveUser.getFollowingUsers());
+                hashMap.put("followedUsers", receiveUser.getFollowedUsers());
 
                 hashMap.put("favorites", favoriteServiceImpl.getFavorites(true, userId));
 
                 break;
             case 6:
-                hashMap.put("followingUsers", user.getFollowingUsers());
-                hashMap.put("followedUsers", user.getFollowedUsers());
+                hashMap.put("followingUsers", receiveUser.getFollowingUsers());
+                hashMap.put("followedUsers", receiveUser.getFollowedUsers());
 
-                hashMap.put("questions", user.getQuestions());
-                hashMap.put("blogs", user.getBlogs());
-                hashMap.put("comments", user.getPostComments());
-                hashMap.put("likes", user.getPostLikes());
+                hashMap.put("questions", receiveUser.getQuestions());
+                hashMap.put("blogs", receiveUser.getBlogs());
+                hashMap.put("comments", receiveUser.getPostComments());
+                hashMap.put("likes", receiveUser.getPostLikes());
 
                 break;
             case 7:
-                hashMap.put("followingUsers", user.getFollowingUsers());
-                hashMap.put("followedUsers", user.getFollowedUsers());
+                hashMap.put("followingUsers", receiveUser.getFollowingUsers());
+                hashMap.put("followedUsers", receiveUser.getFollowedUsers());
 
-                hashMap.put("questions", user.getQuestions());
-                hashMap.put("blogs", user.getBlogs());
-                hashMap.put("comments", user.getPostComments());
-                hashMap.put("likes", user.getPostLikes());
+                hashMap.put("questions", receiveUser.getQuestions());
+                hashMap.put("blogs", receiveUser.getBlogs());
+                hashMap.put("comments", receiveUser.getPostComments());
+                hashMap.put("likes", receiveUser.getPostLikes());
 
                 hashMap.put("favorites", favoriteServiceImpl.getFavorites(true, userId));
 
             default:
 
         }
-        user.setAvailableNum(null);
-        user.setPrivacyType(null);
-        user.setAdmin(null);
-        user.setCanSpeak(null);
-        hashMap.put("user", user);
+        receiveUser.setAvailableNum(null);
+        receiveUser.setPrivacyType(null);
+        receiveUser.setAdmin(null);
+        receiveUser.setCanSpeak(null);
+        receiveUser.setAvatar(FileUtils.convertAvatar(receiveUser.getAvatar()));
+        hashMap.put("userInfo", receiveUser);
+
+        if (receiveUser.getFollowedUsers().contains(postUser) &&
+                postUser.getFollowingUsers().contains(receiveUser)) {
+            hashMap.put("following", true);
+        } else {
+            hashMap.put("following", false);
+        }
         return new Result(hashMap, "");
     }
 }

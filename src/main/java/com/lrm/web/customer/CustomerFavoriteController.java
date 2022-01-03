@@ -10,6 +10,7 @@ import com.lrm.po.*;
 import com.lrm.service.*;
 import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
+import com.lrm.vo.Magic;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -186,7 +187,7 @@ public class CustomerFavoriteController {
      */
     @GetMapping("/favorite/{favoriteId}")
     public Result showQuestions(@PathVariable Long favoriteId,
-                                @PageableDefault(size = 7, direction = Sort.Direction.DESC) Pageable pageable,
+                                @PageableDefault(size = Magic.FAVORITE_CONTENT_SIZE, direction = Sort.Direction.DESC) Pageable pageable,
                                 HttpServletRequest request) {
         Long customerUserId = TokenInfo.getCustomUserId(request);
         Map<String, Object> hashMap = new HashMap<>(2);

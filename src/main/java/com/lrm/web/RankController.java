@@ -3,6 +3,7 @@ package com.lrm.web;
 import com.lrm.po.User;
 import com.lrm.service.UserServiceImpl;
 import com.lrm.util.TokenInfo;
+import com.lrm.vo.Magic;
 import com.lrm.vo.Result;
 import com.lrm.web.customer.CustomerFollowController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class RankController {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         //返回十个贡献度最高的用户
-        List<User> users = userServiceImpl.listTopUsers(10);
+        List<User> users = userServiceImpl.listTopUsers(Magic.RANK_SIZE);
 
         //真正要返回的数据
         List<User> newUsers = CustomerFollowController.insertUserAttribute(users);
