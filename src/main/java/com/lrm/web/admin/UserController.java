@@ -33,7 +33,8 @@ public class UserController {
     public Result searchCustomer(@RequestBody Map<String, String> nickname) {
         Map<String, Object> hashMap = new HashMap<>(1);
 
-        hashMap.put("user", userServiceImpl.getUser(nickname.get("nickname")));
+        User user = userServiceImpl.getUser(nickname.get("nickname"));
+        hashMap.put("user", user);
 
         return new Result(hashMap, "搜索完成");
     }

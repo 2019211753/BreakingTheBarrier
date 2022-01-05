@@ -3,7 +3,9 @@ package com.lrm.po;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lrm.annotation.AccountInfoFormat;
+import com.lrm.util.AvatarSerializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -56,6 +58,7 @@ public class User {
     /**
      * 用户头像 非必填 可以在前端显示默认值
      */
+    @JsonSerialize(using = AvatarSerializer.class)
     private String avatar;
 
     /**
