@@ -1,41 +1,42 @@
 <template>
   <div>
     <div class="carousel"><carousel></carousel></div>
+    <br />
     <div class="home">
-      <div class="header">
-        <div class="logo"></div>
-        <div class="nav">
-          <ul>
-            <li>
-              <a href=""><i class="sticky note outline icon"></i>全部</a>
-            </li>
-            <li>
-              <a href=""><i class="trophy icon"></i>问卷</a>
-            </li>
-            <li>
-              <a href="" onclick="turnmine()"><i class="home icon"></i>组队</a>
-            </li>
-            <li>
-              <a href="" onclick="turnmine()"><i class="home icon"></i>资料</a>
-            </li>
-            <li><a href="" onclick="turnmine()">信息百科</a></li>
-          </ul>
+      <div class="ui basic segment">
+        <div class="header">
+          <div class="logo"></div>
+          <div class="nav">
+            <ul>
+              <li>
+                <a href="" @click="turnHome()"
+                  ><i class="sticky note outline icon"></i>全部</a
+                >
+              </li>
+              <li>
+                <a href="" @click="turnDatabase()"
+                  ><i class="server icon"></i>资料库</a
+                >
+              </li>
+              <li>
+                <a href="" @click="turnTeam()"
+                  ><i class="handshake icon"></i>组队</a
+                >
+              </li>
+              <li>
+                <a href="" @click="turnWikipedia()"
+                  ><i class="paw icon"></i>信息百科</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="body">
         <div class="main">
-          <questionnaire></questionnaire>
-          <div class="inside">
-            <div class="team"><team></team></div>
-            <div class="database"><database></database></div>
-            <div class="wikipedia">
-              <wikipedia style="float: left"></wikipedia>
-              <div class="ui icon input">
-                <input type="text" placeholder="搜索..." />
-                <i class="inverted circular search link icon"></i>
-              </div>
-            </div>
-          </div>
+          <database></database><br />
+          <team></team><br />
+          <wikipedia></wikipedia>
         </div>
       </div>
     </div>
@@ -48,9 +49,24 @@ import questionnaire from "./components/questionnaire";
 import team from "./components/team";
 import database from "./components/database";
 import wikipedia from "./components/wikipedia.vue";
+
 export default {
   name: "home",
   components: { carousel, questionnaire, team, database, wikipedia },
+  methods: {
+    turnWikipedia() {
+      this.$router.push("/helloWorld/wikipedia");
+    },
+    turnTeam() {
+      this.$router.push("/helloWorld/team");
+    },
+    turnDatabase() {
+      this.$router.push("/helloWorld/database");
+    },
+    turnHome() {
+      this.$router.push("/helloWorld/home");
+    },
+  },
 };
 </script>
 
@@ -59,7 +75,6 @@ export default {
   /* background-color: rgb(250, 250, 250); */
 }
 .carousel {
-  width: 80%;
   height: 300px;
   margin: auto;
 }
@@ -79,13 +94,13 @@ export default {
   padding: 0 10px;
   line-height: 42px;
   font-size: 16px;
-  color: white;
+  color: black;
   font-weight: 600;
 }
 
 .nav ul a:hover {
-  border-bottom: 2px solid white;
-  color: white;
+  border-bottom: 4px solid orange;
+  /* color: white; */
 }
 
 a {
@@ -94,10 +109,10 @@ a {
 
 .header {
   height: 40px;
-  background-color: rgb(100, 133, 208);
+  /* background-color: rgb(100, 133, 208); */
   width: 50%;
   margin: auto;
-  margin-top: -20px;
+  /* margin-top: -20px; */
 }
 
 .logo {
@@ -111,7 +126,6 @@ li {
 }
 .body {
   height: 800px;
-
   margin-top: -20px;
   z-index: -1;
 }
@@ -119,7 +133,7 @@ li {
 .main {
   width: 80%;
   margin: auto;
-  margin-top: 20px;
+  margin-top: -50px;
   /* background-color: blue; */
 }
 .inside {

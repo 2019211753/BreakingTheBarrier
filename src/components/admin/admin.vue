@@ -1,41 +1,24 @@
 <template>
   <div class="admin">
     <el-container>
-      <el-header style="height: 40px" class="el-header"></el-header>
-      <el-main
-        ><el-container>
-          <el-aside width="640px"
-            ><img src="../../assets/adminBG.jpg" style="width: 100%"
-          /></el-aside>
-          <el-main
-            ><img
-              class="ui centered small circular image"
-              src="../../assets/avatar.jpg"
-            />
-            <h2>东无神话</h2>
-
-            <h4>你好世界</h4>
-          </el-main> </el-container
-        ><br /><br />
-        <div class="adminTag">
-          <h4 class="ui horizontal divider header">
-            <i class="bar chart icon"></i>
-            标签管理
-          </h4>
-          <adminTag style="float: left"></adminTag>
-        </div>
-        <div class="functions">
-          <h4 class="ui horizontal divider header">
-            <i class="bar chart icon"></i>
-            快捷入口
-          </h4>
-          <div class="ui fluid vertical buttons">
-            <button class="ui button" @click="turnToHome()">首页</button>
-            <button class="ui button" @click="turnToBBS()">论坛</button>
-            <button class="ui button" @click="turnToMine()">空间</button>
-          </div>
-          <!-- <div class="functionButtons">
+      <el-aside width="270px">
+        <div class="ui basic segment">
+          <img
+            style="width: 120px"
+            class="ui centered circular image"
+            :src="'data:image/jpg;base64,' + avatar"
+          />
+          <h2>{{ nickname }}</h2>
+          <h5>{{ personalSignature }}</h5>
+          <div class="ui divider"></div>
+          <div class="ui fluid button" @click="turnToTag()">标签管理</div>
+          <div class="ui fluid button" @click="turnToUser()">用户管理</div>
+          <div class="ui fluid button" @click="turnToQuestion()">问题管理</div>
+          <div class="ui fluid button" @click="turnToBlog()">博客管理</div>
+          <div class="ui divider" style="margin-top: 150px"></div>
+          <div style="width: 150px; margin: auto">
             <div class="ui icon buttons">
+              <button class="ui button"><i class="align left icon"></i></button>
               <button class="ui button"><i class="align left icon"></i></button>
               <button class="ui button">
                 <i class="align center icon"></i>
@@ -43,14 +26,9 @@
               <button class="ui button">
                 <i class="align right icon"></i>
               </button>
-              <button class="ui button">
-                <i class="align justify icon"></i>
-              </button>
-              <button class="ui button">
-                <i class="align justify icon"></i>
-              </button>
             </div>
             <div class="ui icon buttons">
+              <button class="ui button"><i class="align left icon"></i></button>
               <button class="ui button"><i class="align left icon"></i></button>
               <button class="ui button">
                 <i class="align center icon"></i>
@@ -58,87 +36,24 @@
               <button class="ui button">
                 <i class="align right icon"></i>
               </button>
-              <button class="ui button">
-                <i class="align justify icon"></i>
-              </button>
-              <button class="ui button">
-                <i class="align justify icon"></i>
-              </button>
             </div>
             <div class="ui icon buttons">
               <button class="ui button"><i class="align left icon"></i></button>
-              <button class="ui button">
-                <i class="align justify icon"></i>
-              </button>
+              <button class="ui button"><i class="align left icon"></i></button>
               <button class="ui button">
                 <i class="align center icon"></i>
               </button>
               <button class="ui button">
                 <i class="align right icon"></i>
               </button>
-              <button class="ui button">
-                <i class="align justify icon"></i>
-              </button>
-            </div>
-            <div class="ui icon buttons">
-              <button class="ui button"><i class="align left icon"></i></button>
-              <button class="ui button">
-                <i class="align center icon"></i>
-              </button>
-              <button class="ui button">
-                <i class="align justify icon"></i>
-              </button>
-              <button class="ui button">
-                <i class="align right icon"></i>
-              </button>
-              <button class="ui button">
-                <i class="align justify icon"></i>
-              </button>
-            </div>
-          </div> -->
-        </div>
-        <br />
-        <div class="adminUser">
-          <h4 class="ui horizontal divider header">
-            <i class="bar chart icon"></i>
-            用户管理
-          </h4>
-          <adminUser></adminUser>
-        </div>
-        <br />
-        <div class="adminArticle">
-          <h4 class="ui horizontal divider header">
-            <i class="bar chart icon"></i>
-            问题管理
-          </h4>
-          <adminArticle></adminArticle>
-        </div>
-        <br />
-        <div class="adminBlog">
-          <h4 class="ui horizontal divider header">
-            <i class="bar chart icon"></i>
-            博客管理
-          </h4>
-          <adminBlog></adminBlog></div
-      ></el-main>
-      <el-footer
-        ><div class="bottom">
-          <br />
-          <div class="message">
-            <img
-              class="ui small right floated image"
-              src="../../assets/wechat.png"
-            />
-            <h3 class="ui header">联系我们</h3>
-            <div class="ui hidden divider">
-              扫描右边二维码提出您的宝贵意见，么么哒
             </div>
           </div>
-        </div></el-footer
-      >
+        </div>
+      </el-aside>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
-    <!--
-    <div class="ui fluid image"><img src="../../assets/bg.jpg" /></div> -->
   </div>
 </template>
 
@@ -148,15 +63,35 @@ import adminTag from "./components/adminTag";
 import adminUser from "./components/adminUser";
 import adminBlog from "./components/adminBlogFunctions/adminBlog";
 import axios from "axios";
-axios.defaults.headers["token"] = sessionStorage.getItem("token");
+
+/* axios.defaults.headers["token"] = sessionStorage.getItem("token");
 window.addEventListener("setItem", (e) => {
   console.log(e);
   axios.defaults.headers["token"] = e.newValue;
-});
+}); */
 export default {
   name: "admin",
+  data() {
+    return {
+      avatar: sessionStorage.getItem("avatar"),
+      nickname: sessionStorage.getItem("nickname"),
+      personalSignature: sessionStorage.getItem("personalSignature"),
+    };
+  },
   components: { adminArticle, adminTag, adminBlog, adminUser },
   methods: {
+    turnToTag() {
+      this.$router.push("/helloWorld/admin/adminTag");
+    },
+    turnToUser() {
+      this.$router.push("/helloWorld/admin/adminUser");
+    },
+    turnToQuestion() {
+      this.$router.push("/helloWorld/admin/adminArticle");
+    },
+    turnToBlog() {
+      this.$router.push("/helloWorld/admin/adminBlog");
+    },
     turnToHome() {
       this.$router.push("/helloWorld/home");
     },
@@ -174,27 +109,39 @@ export default {
 h2 {
   text-align: center;
 }
-h4 {
+
+h5 {
   text-align: center;
+  margin-top: -5px;
+  color: grey;
 }
+
+.button {
+  background-color: white;
+}
+
 .el-header {
   background-color: rgb(100, 133, 208);
 }
+
 .admin {
   width: 80%;
   margin: auto;
   /* background-color: aqua; */
 }
+
 .adminTag {
   width: 65%;
   float: left;
   /* background-color: aqua; */
 }
+
 .functions {
   margin-left: 5%;
   width: 30%;
   float: left;
 }
+
 /* .functionButtons {
   width: 90%;
   margin: auto;
@@ -209,18 +156,21 @@ h4 {
   margin-top: 100px;
   /* background-color: rgb(192, 16, 54); */
 }
+
 .adminArticle {
   width: 100%;
   float: left;
   margin-top: 100px;
   /* background-color: rgb(192, 16, 54); */
 }
+
 .adminBlog {
   width: 100%;
   float: left;
   margin-top: 100px;
   /* background-color: rgb(192, 16, 54); */
 }
+
 .bottom {
   margin-top: 100px;
 }

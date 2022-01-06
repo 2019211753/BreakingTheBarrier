@@ -6,111 +6,223 @@
         placeholder="请输入关键字搜索..."
         v-model="searchContent"
       /><i class="inverted circular search link icon" @click="search()"></i>
+    </div><div style="margin-top: 15px">
+  <el-skeleton :loading="loading" animated :count="3" >
+      <template slot="template"
+        ><div class="ui segment" >
+          <el-skeleton-item variant="text" />
+          <el-skeleton-item variant="text" />
+          <el-skeleton-item variant="text" />
+          <el-skeleton-item variant="text" />
+          <el-skeleton-item variant="text" />
+          <el-skeleton-item variant="text" />
+          <el-skeleton-item variant="text" />
+          <el-skeleton-item variant="text" />
+          <el-skeleton-item variant="text" />
+        </div>
+      </template>
+    </el-skeleton>
     </div>
-    <el-empty
-      :image-size="200"
-      v-if="!contentList.length"
-      description="找不到任何结果"
-    ></el-empty>
-    <el-container v-for="(item, index) in contentList" key="item.id">
-      <el-aside width="250px"
-        ><div class="ui large feed">
-          <br />
-          <div class="event">
-            <div class="label">
-              <img src="../../../../assets/avatar.jpg" />
-            </div>
-            <div class="content">
-              <div class="summary">
-                <a>{{ item.title }}</a>
-              </div>
-              <br />
-              <div class="ui icon buttons">
-                <button class="ui button" @click="viewData()">
-                  <i class="database icon"></i>
-                </button>
-                <button class="ui button" @click="viewArticle(item.id, index)">
-                  <i class="eye icon"></i></button
-                ><button class="ui button">
-                  <i class="edit icon"></i>
-                </button>
-                <button class="ui button" @click="deleteArticle(item.id)">
-                  <i class="trash icon"></i>
-                </button>
-              </div>
-            </div>
-          </div></div
-      ></el-aside>
-      <el-main>
-        <div class="ui tiny statistics" v-if="tag[index].state == '1'">
-          <div class="statistic">
-            <div class="value">{{ item.id }}</div>
-            <div class="label">id</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.nickname }}</div>
-            <div class="label">作者</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.posterUserId0 }}</div>
-            <div class="label">作者id</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.hidden }}</div>
-            <div class="label">隐藏</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.likesNum }}</div>
-            <div class="label">赞</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.disLikesNum }}</div>
-            <div class="label">踩</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.view }}</div>
-            <div class="label">浏览</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.collectedNum }}</div>
-            <div class="label">收藏</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.commentsNum }}</div>
-            <div class="label">评论</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.impact }}</div>
-            <div class="label">影响</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.createTime.split(" ")[0] }}</div>
-            <div class="label">创建时间</div>
-          </div>
-        </div>
-        <div>
-          <div v-if="tag[index].state == '2'">
-            <adminArticleContent></adminArticleContent>
-          </div>
-        </div>
-      </el-main>
-    </el-container>
+    <div class="ui segment" v-for="(item,index) in contentList" :key="index">
+      <el-row :gutter="24"
+      >
+        <el-col :span="4"><h4>id：{{ item.id }}</h4></el-col>
+        <el-col :span="9"><h4>发布者：{{ item.nickname }}</h4></el-col>
+        <el-col :span="5"
+        ><h4>
+          头像：<img
+          class="ui mini right floated circular image"
+          :src="'data:image/jpg;base64,' + item.avatar" alt=""
+        /></h4></el-col
+        >
+        <el-col :span="6"><h4>发布者id：{{ item.posterUserId0 }}</h4></el-col>
+      </el-row
+      >
+      <br/>
+      <el-row :gutter="24">
+        <el-col :span="24">
+          <h4>标题：<a href="">
+            <router-link
+              :to="{
+                  path: '/helloWorld/BBS/articleContent',
+                  query: { articleId: item.id },
+                }"
+            >{{ item.title }}
+            </router-link>
+          </a></h4>
+        </el-col>
+      </el-row>
+      <br/>
+      <el-row :gutter="24"
+      >
+        <el-col :span="24"><h4>描述：{{ item.description }}</h4></el-col>
+      </el-row
+      >
+      <br/>
+      <el-row :gutter="24"
+      >
+        <el-col :span="24"><h4>标签：{{ item.tagIds }}</h4></el-col>
+      </el-row
+      >
+      <br/>
+      <el-row :gutter="24"
+      >
+        <el-col :span="4"><h4>浏览：{{ item.view }}</h4></el-col
+        >
+        <el-col :span="4"><h4>点赞：{{ item.likesNum }}</h4></el-col>
+        <el-col :span="4"><h4>评论：{{ item.commentsNum }}</h4></el-col>
+        <el-col :span="4"><h4>点踩：{{ item.disLikesNum }}</h4></el-col>
+        <el-col :span="4"><h4>收藏：{{ item.collectedNum }}</h4></el-col>
+        <el-col :span="4"><h4>影响：{{ item.impact }}</h4></el-col>
+      </el-row
+      >
+      <br/>
+      <el-row :gutter="24"
+      >
+        <el-col :span="12"><h4>发布时间：{{ item.createTime }}</h4></el-col
+        >
+        <el-col :span="12"><h4>最新评论时间：{{ item.newCommentedTime }}</h4></el-col>
+      </el-row>
+      <br>
+      <el-row :gutter="24">
+      <el-col :span="8"><h4>solvedNum：{{ item.solvedNum }}</h4></el-col>
+      <el-col :span="8"><h4>solved：{{ item.solved }}</h4></el-col>
+      <el-col :span="8"><h4>是否隐藏：{{ item.hidden }}</h4></el-col>
+      </el-row><br>
+      <div class="ui divider"></div>
+      <button class="ui right floated blue icon button" @click="viewArticle(item.id)">
+        <i class="eye icon"></i>
+      </button>
+      <button class="ui right floated blue icon button" @click="editArticle(item.id)">
+        <i class="edit icon"></i>
+      </button>
+      <button
+        class="ui blue icon button"
+        @click="deleteArticle(item.id)"
+      >
+        <i class="trash icon"></i>
+      </button>
+    </div>
+    <div class="ui segment" style="height:350px" v-if="contentList.length==0&&loading==false">
+      <el-empty
+        :image-size="150"
+        description="找不到任何结果"
+      ></el-empty>
+    </div>
+    <div class="ui segment" v-for="item in contentList" :key="item.id">
+      <el-row :gutter="24"
+      >
+        <el-col :span="4"><h4>id：{{ item.id }}</h4></el-col>
+        <el-col :span="8"><h4>发布者：{{ item.nickname }}</h4></el-col>
+        <el-col :span="6"
+        ><h4>
+          发布者头像：<img
+          class="ui mini right floated circular image"
+          :src="'data:image/jpg;base64,' + item.avatar" alt=""
+        /></h4></el-col
+        >
+        <el-col :span="6"><h4>发布者id：{{ item.posterUserId0 }}</h4></el-col>
+      </el-row
+      >
+      <br/>
+      <el-row :gutter="24">
+        <el-col :span="24">
+          <h4>标题：<a href="">
+            <router-link
+              :to="{
+                  path: '/helloWorld/BBS/articleContent',
+                  query: { articleId: item.id },
+                }"
+            >{{ item.title }}
+            </router-link>
+          </a></h4>
+        </el-col>
+      </el-row>
+      <br/>
+      <el-row :gutter="24"
+      >
+        <el-col :span="24"><h4>描述：{{ item.description }}</h4></el-col>
+      </el-row
+      >
+      <br/>
+      <el-row :gutter="24"
+      >
+        <el-col :span="24"><h4>标签：{{ item.tagIds }}</h4></el-col>
+      </el-row
+      >
+      <br/>
+      <el-row :gutter="24"
+      >
+        <el-col :span="4"><h4>浏览：{{ item.view }}</h4></el-col
+        >
+        <el-col :span="4"><h4>点赞：{{ item.likesNum }}</h4></el-col>
+        <el-col :span="4"><h4>评论：{{ item.commentsNum }}</h4></el-col>
+        <el-col :span="4"><h4>点踩：{{ item.disLikesNum }}</h4></el-col>
+        <el-col :span="4"><h4>收藏：{{ item.collectedNum }}</h4></el-col>
+        <el-col :span="4"><h4>影响：{{ item.impact }}</h4></el-col>
+      </el-row
+      >
+      <br/>
+      <el-row :gutter="24"
+      >
+        <el-col :span="12"><h4>发布时间：{{ item.createTime }}</h4></el-col
+        >
+        <el-col :span="12"><h4>最新评论时间：{{ item.newCommentedTime }}</h4></el-col>
+      </el-row>
+      <br>
+      <el-row :gutter="24">
+      <el-col :span="8"><h4>solvedNum：{{ item.solvedNum }}</h4></el-col>
+      <el-col :span="8"><h4>solved：{{ item.solved }}</h4></el-col>
+      <el-col :span="8"><h4>是否隐藏：{{ item.hidden }}</h4></el-col>
+      </el-row><br>
+      <div class="ui divider"></div>
+      <button class="ui right floated blue icon button" @click="viewArticle(item.id)">
+        <i class="eye icon"></i>
+      </button>
+      <button class="ui right floated blue icon button" @click="editArticle(item.id)">
+        <i class="edit icon"></i>
+      </button>
+      <button
+        class="ui blue icon button"
+        @click="deleteArticle(item.id)"
+      >
+        <i class="trash icon"></i>
+      </button>
+    </div>
+    <div class="ui adminArticleContent modal" style="width:600px">
+      <adminArticleContent></adminArticleContent>
+    </div>
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import adminArticleContent from "./components/adminArticleContent.vue";
+
 export default {
   components: { adminArticleContent },
   name: "adminArticle",
   data() {
-    return { searchContent: "", contentList: [], tag: [] };
+    return { loading: true, searchContent: "", contentList: [], tag: [] };
+  },
+  created() {
+    var that = this;
+    axios
+      .get("/listQuestions/?page=0")
+      .then(function (response) {
+        that.loading = false;
+        console.log(response.data);
+        that.contentList = response.data.data.pages.content;
+        that.pageSize = response.data.data.pages.totalPages;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
   methods: {
     search() {
       var that = this;
-      /* this.$router.push("/helloWorld/admin/adminArticle/adminArticleData"); */
       if (that.searchContent) {
         axios
           .post("/admin/searchQuestions", {
@@ -118,10 +230,12 @@ export default {
           })
           .then(function (response) {
             that.contentList = response.data.data.pages.content;
+            console.log(that.contentList);
             for (var i = 0; i < that.contentList.length; i++) {
               var newTag = { id: that.contentList[i].id, state: "1" };
               that.tag.push(newTag);
             }
+            that.loading = false;
           })
           .catch(function (error) {
             console.log(error);
@@ -133,19 +247,10 @@ export default {
         });
       }
     },
-    viewData() {
+    viewArticle(id) {
       var that = this;
-      for (var i = 0; i < that.tag.length; i++) {
-        that.tag[i].state = "1";
-      }
-    },
-    viewArticle(id, index) {
-      var that = this;
-      sessionStorage["articleId"] = id;
-      for (var i = 0; i < that.tag.length; i++) {
-        that.tag[i].state = "1";
-      }
-      that.tag[index].state = "2";
+      sessionStorage.setItem("articleId", id);
+      $(".adminArticleContent.modal").modal("show");
     },
     deleteArticle(id) {
       var that = this;
@@ -155,7 +260,8 @@ export default {
           console.log(response.data);
           for (var i = 0; i < that.contentList.length; i++) {
             if (that.contentList[i].id == id) {
-              that.contentList.pop(that.contentList[i]);
+              that.contentList.splice(i, 1);
+              break;
             }
           }
           that.$message({

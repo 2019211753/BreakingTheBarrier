@@ -1,53 +1,147 @@
 <template>
-  <div>
-    <el-empty
-      :image-size="200"
-      v-if="!contentList.length"
-      description="没有找到相关内容"
-    ></el-empty>
-    <div class="framework" v-for="(item, index) in contentList">
-      <div class="frameworkBody">
-        <div class="ui large feed">
-          <div class="event">
-            <div class="label">
-              <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
-            </div>
-            <div class="content">
-              <div class="summary">
-                <a class="user"> {{ item.nickname }} </a>
-                <div class="date">{{ item.createTime }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <h3 class="title" style="margin-top: -10px">
-          <a href=""
-          ><router-link
-            :to="{
-                path: '/helloWorld/BBS/articleContent',
-                query: { articleId: item.id },
-              }"
-          >{{ item.title }}</router-link
-          ></a
-          >
-        </h3>
-        <div style="width: 100%; height: 130px">
-          <img
-            class="ui left floated image"
-            style="height: 80%"
-            :src="cover[index]"
-          />
-          <div class="ui basic very padded segment">
-            {{ item.description }}
-          </div>
-        </div>
-        <div style="margin-top: -10px">
-          <a class="ui label" v-for="tags in item.tags">
-            {{ tags.name }}
-          </a>
-        </div>
-      </div>
+  <div class="ui basic segment">
+    <!-- <div class="ui segment"></div> -->
+    <div class="ui segment" v-if="loading == false && !contentList.length">
+      <el-empty image-size="200" description="暂无内容"></el-empty>
     </div>
+    <div class="ui segment" v-for="(item, index) in contentList">
+      <el-container>
+        <el-aside width="45px"
+          ><img
+            class="ui medium circular image"
+            style="width: 45px"
+            :src="'data:image/jpg;base64,' + item.avatar"
+            alt=""
+        /></el-aside>
+        <el-main
+          ><!-- <a class="ui red floating circular label">2</a> -->
+          <h4 style="margin-top: -13px">{{ item.nickname }}</h4>
+          <p style="margin-top: -13px; color: grey; font-size: 13px">
+            {{ item.createTime }}
+          </p>
+        </el-main>
+        <div
+          v-if="item.solved == true"
+          class="ui green top right attached label"
+        >
+          已解决
+        </div>
+        <div
+          v-if="item.solved == false"
+          class="ui red top right attached label"
+        >
+          未解决
+        </div>
+      </el-container>
+      <el-row :gutter="24" style="margin-top: -10px">
+        <el-col :span="24"
+          ><h3 style="text-align: center">
+            <a href="">
+              <router-link
+                :to="{
+                  path: '/helloWorld/BBS/articleContent',
+                  query: {
+                    articleId: item.id,
+                    posterUserId0: item.posterUserId0,
+                  },
+                }"
+                >{{ item.title }}
+              </router-link>
+            </a>
+          </h3></el-col
+        >
+      </el-row>
+      <el-row :gutter="24" style="margin-top: 5px">
+        <!-- <el-col :span="8"
+          ><img class="ui rounded fluid image" :src="cover[index]" />
+        </el-col> -->
+        <el-col :span="24"
+          ><h4 style="color: grey; text-align: center">
+            {{ item.description }}
+          </h4>
+        </el-col> </el-row
+      ><el-row :gutter="24" style="margin-top: 5px">
+        <el-col :span="24">
+          <h4 style="color: grey; text-align: center">
+            <a class="ui label" v-for="tags in item.tags">
+              {{ tags.name }}
+            </a>
+          </h4>
+        </el-col>
+      </el-row>
+      <div class="ui divider"></div>
+      <el-row :gutter="24">
+        <el-col :span="6">
+          <div class="ui mini button" style="background-color: white">
+            <i class="thumbs up icon"></i>{{ item.likesNum }}
+          </div></el-col
+        >
+        <el-col :span="6">
+          <div class="ui mini button" style="background-color: white">
+            <i class="comment icon"></i>{{ item.commentsNum }}
+          </div></el-col
+        >
+        <el-col :span="6">
+          <div class="ui mini button" style="background-color: white">
+            <i class="share icon"></i>0
+          </div></el-col
+        >
+        <el-col :span="6">
+          <div class="ui mini button" style="background-color: white">
+            <i class="eye icon"></i>{{ item.view }}
+          </div></el-col
+        >
+      </el-row>
+    </div>
+    <el-skeleton :loading="loading" animated :count="7">
+      <template slot="template"
+        ><div class="ui segment">
+          <el-container>
+            <el-aside width="45px"
+              ><el-skeleton-item
+                variant="circle image"
+                style="width: 45px; height: 45px; margin-top: 15px"
+              />
+            </el-aside>
+            <el-main
+              ><el-skeleton-item variant="text" />
+              <el-skeleton-item variant="text" />
+            </el-main>
+          </el-container>
+          <el-row :gutter="20">
+            <el-col :span="20"><el-skeleton-item variant="text" /></el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8"
+              ><el-skeleton-item variant="image" style="height: 100px" />
+            </el-col>
+            <el-col :span="16"
+              ><el-skeleton-item variant="text" /><el-skeleton-item
+                variant="text" /><el-skeleton-item
+                variant="text" /><el-skeleton-item
+                variant="text" /><el-skeleton-item variant="text"
+            /></el-col> </el-row
+          ><el-row :gutter="20" style="margin-top: 5px">
+            <el-col :span="20"> <el-skeleton-item variant="text" /></el-col>
+          </el-row>
+          <div class="ui divider"></div>
+          <el-row :gutter="20">
+            <el-col :span="5">
+              <el-skeleton-item variant="text" style="width: 40px"
+            /></el-col>
+            <el-col :span="5">
+              <el-skeleton-item variant="text" style="width: 40px"
+            /></el-col>
+            <el-col :span="5">
+              <el-skeleton-item variant="text" style="width: 40px"
+            /></el-col>
+            <el-col :span="5"
+              ><el-skeleton-item variant="text" style="width: 40px"
+            /></el-col>
+          </el-row>
+        </div>
+      </template>
+    </el-skeleton>
     <el-pagination
       class="el-pagination"
       layout="prev, pager, next"
@@ -64,13 +158,14 @@ import axios from "axios";
 export default {
   name: "searchArticleResult",
   data() {
-    return { contentList: [], pageSize: 0,cover:[] };
+    return { loading: true, contentList: [], pageSize: 0, cover: [] };
   },
   created() {
     var that = this;
     axios
       .post("/searchQuestions/", { query: that.$route.query.searchContent })
       .then(function (response) {
+        that.loading = false;
         that.contentList = response.data.data.pages.content;
         for (var i = 0; i < that.contentList.length; i++) {
           var url = require("../../../../../../assets/cover/cover (" +

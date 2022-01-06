@@ -43,7 +43,7 @@ export default {
   width: 80%;
   height: 200px;
   margin: auto;
-  background-color: rgb(204, 200, 207);
+  /* background-color: rgb(204, 200, 207); */
 
   /*  margin-bottom: 0px; */
 }

@@ -5,32 +5,38 @@
         <router-view></router-view>
       </div>
     </div>
-    <br />
     <div class="hot">
-      <hot></hot>
-      <br />
-      <div class="ui fluid input">
-        <input type="text" placeholder="搜索..." v-model="searchContent" />
-        <router-link
-          :to="{
-            path: '/helloWorld/BBS/searchBlogResult',
-            query: { searchContent: this.searchContent },
-          }"
-        >
-          <button class="ui button" v-if="this.searchContent">搜索</button>
-        </router-link>
+      <hotBlog></hotBlog>
+      <div class="ui basic segment">
+        <div class="ui segment">
+          <div class="ui fluid input">
+            <input type="text" placeholder="搜索..." v-model="searchContent" />
+            <router-link
+              :to="{
+                path: '/helloWorld/BBS/searchBlogResult',
+                query: { searchContent: this.searchContent },
+              }"
+            >
+              <button class="ui teal button" v-if="this.searchContent">
+                搜索
+              </button>
+            </router-link>
+          </div>
+          <br />
+          <div class="ui teal fluid button" @click="turnToAddBlog()">
+            发布内容
+          </div>
+        </div>
       </div>
-      <br />
-      <div class="ui fluid button" @click="turnToAddBlog()">发布内容</div>
     </div>
   </div>
 </template>
 
 <script>
-import hot from "./components/hot";
+import hotBlog from "./components/hotBlog";
 export default {
   name: "blog",
-  components: { hot },
+  components: { hotBlog },
   data() {
     return { searchContent: "" };
   },

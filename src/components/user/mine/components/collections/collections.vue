@@ -1,64 +1,111 @@
 <template>
-  <div>
-    <div class="ui basic modal">
+  <div class="ui segment">
+    <el-container v-for="(item, index) in favoriteList" :key="index">
+      <el-aside width="70px"><i class="huge yellow folder icon"></i></el-aside>
+      <el-main
+        ><el-row :gutter="20">
+          <el-col :span="19">
+            <h4>
+              <a class="header"
+                ><router-link
+                  :to="{
+                    path: '/helloWorld/mine/collections/favorite',
+                    query: { favoriteId: item.id },
+                  }"
+                  >{{ item.title }}</router-link
+                ></a
+              ><a
+                v-if="item.open == false"
+                class="ui small blue label"
+                style="margin-left: 20px"
+                >私密</a
+              >
+            </h4></el-col
+          >
+          <el-col :span="5"
+            ><div
+              class="ui mini icon button"
+              style="background-color: white"
+              @click="editFavorite(item.id, item.title, item.open)"
+            >
+              <i class="ui edit icon"></i>
+            </div>
+            <div
+              class="ui mini icon button"
+              style="background-color: white"
+              @click="deleteFavorite(item.id)"
+            >
+              <i class="ui trash icon"></i></div
+          ></el-col>
+        </el-row>
+      </el-main> </el-container
+    ><el-container v-if="loading == false">
+      <el-aside width="70px"><i class="huge yellow folder icon"></i></el-aside>
+      <el-main>
+        <div
+          class="ui teal icon button"
+          style="margin-top: -10px"
+          @click="createFavorites()"
+        >
+          <i class="plus icon"></i>
+        </div>
+      </el-main>
+    </el-container>
+    <div class="ui createFavorite modal" style="width: 400px">
       <div class="ui icon header">
-        <i class="archive icon"></i>
+        <i class="teal archive icon"></i>
         创建收藏夹
         <br />
         <br />
         <div class="ui labeled input">
-          <div class="ui label">名称</div>
+          <div class="ui teal label">名称</div>
           <input type="text" placeholder="" v-model="fileName" />
         </div>
       </div>
       <div class="actions">
-        <div class="ui toggle checkbox">
-          <input type="checkbox" name="public" />
-          <label>是否公开</label>
-        </div>
-        <div class="ui green ok inverted button" @click="sure()">
+        <div :class="privateButton" @click="setPrivate()">私密</div>
+        <div class="ui green ok inverted button" @click="sureCreateFavorites()">
           <i class="checkmark icon"></i>
           确定
         </div>
       </div>
     </div>
-    <br />
-    <div class="ui four stackable cards">
-      <div class="card" v-for="item in favoriteList">
-        <div class="ui slide masked reveal image">
-          <img src="../../../../../assets/bg.jpg" class="visible content" />
-          <div class="hidden content">
-            <br />
-            <br />
-            <div class="first ui icon button" @click="editFavorite(item.id)">
-              <i class="edit icon"></i>
-            </div>
-            <div class="second ui icon button" @click="deleteFavorite(item.id)">
-              <i class="trash icon"></i>
-            </div>
-          </div>
+    <div class="ui editFavorite modal" style="width: 400px">
+      <div class="ui icon header">
+        <i class="archive icon"></i>
+        修改信息
+        <br />
+        <br />
+        <div class="ui labeled input">
+          <div class="ui label">收藏夹名称</div>
+          <input
+            type="text"
+            :placeholder="nowFavoriteName"
+            v-model="fileName"
+          />
         </div>
-        <div class="content">
-          <a class="header"
-            ><router-link
-              :to="{
-                path: '/helloWorld/mine/collections/favorite',
-                query: { favoriteId: item.id },
-              }"
-              >{{ item.title }}</router-link
-            ></a
-          >
-        </div>
-        <!--  <div class="extra content">
-          {{ item.createTime }}
-        </div> -->
       </div>
-      <!-- <div class="image"><img src="../../../../../assets/bg.jpg" /></div> -->
+      <div class="actions">
+        <div
+          :class="nowPrivate == false ? publicButton : privateButton"
+          @click="editPrivate()"
+        >
+          私密
+        </div>
+        <div class="ui green ok inverted button" @click="sureEditFavorites()">
+          <i class="checkmark icon"></i>
+          确定
+        </div>
+      </div>
     </div>
-    <br />
-    <div class="ui button" style="height: 100%" @click="createFavorites()">
-      创建收藏夹
-    </div>
+    <el-skeleton :loading="loading" animated :count="5">
+      <template slot="template"
+        ><el-skeleton-item
+          variant="text"
+          style="height: 50px; margin-top: 15px"
+        />
+      </template>
+    </el-skeleton>
   </div>
 </template>
 
@@ -68,13 +115,25 @@ import axios from "axios";
 export default {
   name: "collections",
   data() {
-    return { favoriteList: [], fileName: "" };
+    return {
+      open: false,
+      isPrivate: false,
+      privateButton: "ui button",
+      loading: true,
+      favoriteList: [],
+      fileName: "",
+      publicButton: "ui blue button", //两个颜色是反过来的
+      nowFavoriteId: "",
+      nowFavoriteName: "",
+      nowPrivate: false,
+    };
   },
   created() {
     var that = this;
     axios
       .get("/customer/favorites")
       .then(function (response) {
+        that.loading = false;
         that.favoriteList = response.data.data.favorites;
         console.log(response.data);
       })
@@ -84,12 +143,36 @@ export default {
   },
   methods: {
     createFavorites() {
-      $(".ui.basic.modal").modal("show");
+      $(".ui.createFavorite.modal").modal("show");
     },
-    sure() {
+    editFavorite(id, name, open) {
+      var that = this;
+      that.nowFavoriteId = id;
+      that.nowFavoriteName = name;
+      that.nowPrivate = open;
+      $(".ui.editFavorite.modal").modal("show");
+    },
+    editPrivate() {
+      var that = this;
+      that.nowPrivate = !that.nowPrivate;
+    },
+    setPrivate() {
+      var that = this;
+      if (that.isPrivate == false) {
+        that.privateButton = "ui blue button";
+        that.isPrivate = true;
+      } else {
+        that.privateButton = "ui button";
+        that.isPrivate = false;
+      }
+    },
+    sureCreateFavorites() {
       var that = this;
       axios
-        .post("/customer/favorite/create", { title: that.fileName, open: true })
+        .post("/customer/favorite/create", {
+          title: that.fileName,
+          open: !that.isPrivate,
+        })
         .then(function (response) {
           console.log(response.data);
           that.favoriteList.push(response.data.data.favorite);
@@ -97,12 +180,41 @@ export default {
             message: response.data.msg,
             type: "success",
           });
+          that.privateButton = "ui button";
+          that.isPrivate = false;
+          that.fileName = "";
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    editeFavorite(id) {},
+    sureEditFavorites() {
+      var that = this;
+      axios
+        .post("/customer/favorite/edit", {
+          title: that.fileName,
+          open: that.nowPrivate,
+          id: that.nowFavoriteId,
+        })
+        .then(function (response) {
+          console.log(response.data);
+          that.$message({
+            message: "修改成功",
+            type: "success",
+          });
+          for (var i = 0; i < that.favoriteList.length; i++) {
+            if (that.favoriteList[i].id == response.data.data.favorite.id) {
+              that.favoriteList[i].open = response.data.data.favorite.open;
+              that.favoriteList[i].title = response.data.data.favorite.title;
+              break;
+            }
+          }
+          that.fileName = "";
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     deleteFavorite(id) {
       var that = this;
       axios
@@ -111,7 +223,7 @@ export default {
           console.log(response.data);
           for (var i = 0; i < that.favoriteList.length; i++) {
             if (that.favoriteList[i].id == id) {
-              that.favoriteList.pop(that.favoriteList[i]);
+              that.favoriteList.splice(i, 1);
               break;
             }
           }

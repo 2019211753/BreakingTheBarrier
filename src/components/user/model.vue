@@ -2,7 +2,8 @@
   <el-container class="el-container">
     <el-header height="40px"><headbar></headbar></el-header>
     <el-main
-      ><div><router-view></router-view></div
+      ><div>
+        <router-view :key="$router.currentRoute.fullPath"></router-view></div
     ></el-main>
     <el-footer><bottom></bottom></el-footer>
   </el-container>
@@ -18,7 +19,9 @@ import bottom from "../basic/bottom";
 axios.defaults.headers["token"] = sessionStorage.getItem("token");
 window.addEventListener("setItem", (e) => {
   console.log(e);
-  axios.defaults.headers["token"] = e.newValue;
+  if (e.key == "token") {
+    axios.defaults.headers["token"] = e.newValue;
+  }
 });
 export default {
   name: "model",
@@ -26,5 +29,8 @@ export default {
 };
 </script>
 
-<style scoped>.el-container{width: 1200px}
+<style scoped>
+.el-container {
+  width: 1200px;
+}
 </style>

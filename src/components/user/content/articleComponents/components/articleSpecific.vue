@@ -1,127 +1,253 @@
 <template>
   <div>
-    <div class="ui large feed">
-      <div class="event">
-        <div class="label">
-          <img :src="'data:image/jpg;base64,' + template.avatar" alt="">
+    <el-skeleton :loading="questionLoading" animated style="margin-top: 14px">
+      <template slot="template"
+        ><div>
+          <div class="ui segment">
+            <div class="ui large feed">
+              <div class="event">
+                <div class="label">
+                  <el-skeleton-item variant="circle image" />
+                </div>
+                <div class="content">
+                  <div class="summary"></div>
+                </div>
+              </div>
+            </div>
+            <h3 class="title"><el-skeleton-item variant="text" /></h3>
+            <div class="ui divider"></div>
+            <el-skeleton-item
+              variant="image"
+              style="width: 80%; height: 400px; margin: auto"
+            /><br />
+            <el-skeleton-item variant="text" /><el-skeleton-item
+              variant="text"
+            />
+            <el-skeleton-item variant="text" />
+            <el-row>
+              <el-col :span="20"
+                ><div class="grid-content bg-purple-dark"></div
+              ></el-col>
+            </el-row>
+          </div>
         </div>
-        <div class="content">
-          <div class="summary">
-            <a class="user"> {{ template.nickname }} </a>
-            <div class="date">{{ template.createTime }}</div>
+      </template>
+    </el-skeleton>
+    <div class="ui segment" v-if="questionLoading == false">
+      <div class="ui large feed">
+        <div class="event">
+          <div class="label">
+            <img :src="'data:image/jpg;base64,' + template.avatar" alt="" />
+          </div>
+          <div class="content">
+            <div class="summary">
+              <a class="user"
+                ><router-link
+                  v-if="nowUser == posterUserId0"
+                  to="/helloWorld/mine/contents/questionFiles"
+                  >{{ template.nickname }} </router-link
+                ><router-link
+                  v-else
+                  :to="{
+                    path: '/helloWorld/visitor/questions',
+                    query: { userId0: posterUserId0 },
+                  }"
+                  >{{ template.nickname }}
+                </router-link>
+              </a>
+              <div
+                v-if="template.solved == true"
+                class="ui green top right attached label"
+              >
+                已解决
+              </div>
+              <div
+                v-if="template.solved == false"
+                class="ui red top right attached label"
+              >
+                未解决
+              </div>
+              <div class="date">{{ template.createTime }}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <h3 class="title">{{ template.title }}</h3>
-    <br />
-    <div v-html="articleContent">{{ articleContent }}</div>
-    <br />
-    <div class="buttons">
+      <h3 class="title">{{ template.title }}</h3>
+      <div class="ui divider"></div>
+      <div v-html="articleContent">{{ articleContent }}</div>
+      <br /><el-row>
+        <el-col :span="7"><div style="height: 1px"></div></el-col>
+        <el-col :span="12">
+          <div
+            @click="likeArticle(template.id)"
+            :class="approved == true ? articleLikeIsActive : button"
+          >
+            <i class="heart icon"></i>
+            {{ articleLikeNumber }}
+          </div>
+          <div
+            class="ui button"
+            :class="collected == true ? articleCollectIsActive : button"
+            @click="collected == false ? openCollections() : collectArticle()"
+          >
+            <i class="star icon"></i>
+            {{ articleCollectNumber }}
+          </div>
+          <div class="ui icon blue button" @click="replyArticle()">
+            <i class="comment icon"></i>
+          </div>
+        </el-col>
+        <el-col :span="5"><div class="grid-content bg-purple"></div></el-col>
+      </el-row>
+
+      <div class="ui divider"></div>
+      <div class="ui mini labeled button" style="margin-left: 3%"></div>
       <div
-        @click="likeArticle(template.id)"
-        :class="approved == true ? articleLikeIsActive : button"
-      >
-        <i class="heart icon"></i>
-        {{ articleLikeNumber }}
-      </div>
-      <div
-        class="ui button"
-        :class="collected == true ? articleCollectIsActive : button"
-        @click="openCollections(collected)"
-      >
-        <i class="star icon"></i>
-        {{ articleCollectNumber }}
-      </div>
-      <div
-        class="ui button"
-        :class="disapproved == true ? articleDislikeIsActive : button"
+        class="ui mini labeled button"
+        style="margin-left: 54%"
         @click="dislikeArticle(template.id)"
       >
-        <i class="thumbs down icon"></i>
-        {{ articleDislikeNumber }}
+        <i class="thumbs down icon"></i>踩
       </div>
-      <div class="ui blue icon button" v-if="template.nickname == nowUser">
-        <i class="trash icon" @click="deleteArticle(template.id)"></i>
+      <div class="ui mini labeled button" style="margin-left: 3%">
+        <i class="share icon"></i>转发
+      </div>
+      <div class="ui mini labeled button" style="margin-left: 3%">
+        <i class="red exclamation triangle icon"></i>举报
+      </div>
+      <div
+        class="ui mini labeled button"
+        @click="deleteArticle(template.id)"
+        v-if="posterUserId0 == nowUser"
+        style="margin-left: 3%"
+      >
+        <i class="trash icon"></i>删除
       </div>
     </div>
-    <!-- <div class="ui divider"></div>
-    <p style="float: left">转发</p>
-    <p>举报</p> -->
-    <!-- --------------------------- -->
     <br />
     <div>
-      <!-- <div class="ui divider"></div> -->
-      <div>
-        <div class="ui comments">
-          <h3 class="ui dividing header">全部评论</h3>
-          <el-empty
-            :image-size="100"
-            v-if="commentList.length == 0"
-            description="暂无评论"
-          ></el-empty>
-          <div
-            :class="item.parentCommentId0 == -1 ? parent : child"
-            v-for="item in commentList"
-          >
-            <a class="avatar">
-              <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
-            </a>
-            <div class="content">
-              <a class="author">{{ item.nickname }}</a>
-              <div class="metadata">
-                <span class="date">{{ item.createTime }}</span>
-              </div>
-              <div class="text" v-html="item.content"></div>
-              <div class="actions">
-                <a
-                  class="reply"
-                  @click="likeComment(item.id)"
-                  v-model="likeNumber"
-                  >赞( {{ item.likesNum }})</a
-                ><a class="reply" @click="dislikeComment(item.id)"
-                  >踩({{ item.disLikesNum }})</a
-                ><a class="reply" @click="replyComment(item.id)">回复</a
-                ><a
-                  class="reply"
-                  @click="deleteComment(item.id)"
-                  v-if="item.nickname == nowUser"
-                  >删除</a
+      <div class="ui segment">
+        <div>
+          <div class="ui comments">
+            <h3>全部评论</h3>
+            <el-empty
+              :image-size="100"
+              v-if="commentList.length == 0 && commentLoading == false"
+              description="暂无评论"
+            ></el-empty>
+            <el-skeleton :loading="commentLoading" animated :count="5">
+              <template slot="template"
+                ><div class="ui large feed">
+                  <div class="event">
+                    <div class="label">
+                      <el-skeleton-item variant="circle image" />
+                    </div>
+                    <div class="content">
+                      <div class="summary">
+                        <el-skeleton-item variant="text" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </el-skeleton>
+            <div
+              :class="item.parentCommentId0 == -1 ? parent : child"
+              v-for="item in commentList"
+            >
+              <a class="avatar">
+                <img :src="'data:image/jpg;base64,' + item.avatar" alt="" />
+              </a>
+              <div class="content">
+                <a class="author"
+                  ><router-link
+                    :to="{
+                      path: '/helloWorld/visitor',
+                      query: { userId0: item.postUserId0 },
+                    }"
+                    >{{ item.nickname }}
+                  </router-link></a
                 >
+                <div class="metadata">
+                  <span class="date">{{ item.createTime }}</span>
+                </div>
+                <div class="text" v-html="item.content"></div>
+                <div class="actions">
+                  <a
+                    class="reply"
+                    @click="likeComment(item.id)"
+                    v-model="likeNumber"
+                    >赞( {{ item.likesNum }})</a
+                  ><a class="reply" @click="dislikeComment(item.id)"
+                    >踩({{ item.disLikesNum }})</a
+                  ><a class="reply" @click="replyComment(item.id)">回复</a
+                  ><a
+                    class="reply"
+                    @click="deleteComment(item.id)"
+                    v-if="item.postUserId0 == nowUser"
+                    >删除</a
+                  >
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- -------------------------- -->
-    <br />
-    <div>
-      <h3>添加评论</h3>
-      <!--  <div class="ui divider"></div> -->
-      <div id="websiteEditorElem"></div>
-      <br />
-      <div class="ui right floated button" @click="sure()">确定</div>
-    </div>
-    <br />
-    <div class="ui basic modal">
-      <div class="ui four stackable cards">
-        <div class="card" v-for="item in favoriteList">
-          <div class="image"><img src="../../../../../assets/bg.jpg" /></div>
-          <a v-if="item.id == favoriteId" class="ui red right corner label">
-            <i class="save icon"></i>
-          </a>
-          <div class="content">
-            <a class="header" @click="getFavoriteId(item.id)">
-              {{ item.title }}</a
-            >
+      <div class="ui collect modal" style="width: 400px">
+        <el-skeleton :loading="collectLoading" animated :count="1">
+          <template slot="template"
+            ><el-skeleton-item
+              variant="text"
+              style="height: 50px; margin-top: 15px"
+            />
+          </template>
+        </el-skeleton>
+        <div class="ui basic segment">
+          <el-container v-for="(item, index) in favoriteList" :key="index">
+            <el-aside width="70px"
+              ><i class="huge yellow folder icon"></i
+            ></el-aside>
+            <el-main
+              ><el-row :gutter="24">
+                <el-col :span="21">
+                  <div
+                    class="ui button"
+                    style="margin-top: -30px; background-color: white"
+                    @click="getFavoriteId(item.id)"
+                  >
+                    <h4>{{ item.title }}</h4>
+                  </div>
+                  <a
+                    v-if="item.open == false"
+                    class="ui small blue label"
+                    style="margin-left: 10px"
+                    >私密</a
+                  >
+                </el-col>
+                <el-col :span="3"
+                  ><i
+                    :class="item.id == favoriteId ? selected : unselected"
+                    style="margin-top: 2px"
+                  ></i>
+                </el-col>
+              </el-row>
+            </el-main>
+          </el-container>
+        </div>
+        <div class="actions">
+          <div class="ui green ok inverted button" @click="collectArticle()">
+            <i class="checkmark icon"></i>
+            确定
           </div>
         </div>
       </div>
-      <div class="actions">
-        <div class="ui green ok inverted button" @click="collectArticle()">
-          <i class="checkmark icon"></i>
-          确定
+      <div class="ui edit modal" style="width: 400px">
+        <div id="websiteEditorElem"></div>
+        <div class="actions">
+          <div class="ui green ok inverted button" @click="sure()">
+            <i class="checkmark icon"></i>
+            确定
+          </div>
         </div>
       </div>
     </div>
@@ -130,12 +256,15 @@
 
 <script>
 import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 import E from "wangeditor";
+
 export default {
   name: "articleSpecific",
   data() {
     return {
+      questionLoading: true,
+      commentLoading: true,
+      collectLoading: true,
       template: "",
       approved: "",
       disapproved: "",
@@ -148,7 +277,7 @@ export default {
       articleLikeIsActive: "ui red button",
       articleDislikeIsActive: "ui blue button",
       articleCollectIsActive: "ui yellow button",
-      nowUser: "",
+
       favoriteList: [],
       favoriteId: sessionStorage["favoriteId"],
       /* ---------------------------------- */
@@ -157,33 +286,32 @@ export default {
       commentList: "",
       parent: "comment",
       child: "child comment",
+      parentId: "-1",
       /* ----------------------------- */
       content: "",
+      selected: "ui green check circle icon",
+      unselected: "ui check circle icon",
+      nowUser: sessionStorage.getItem("id"),
+      posterUserId0: this.$route.query.posterUserId0,
     };
   },
   created() {
     var that = this;
     axios
-      .get("/customer/personal")
-      .then(function (response) {
-        console.log(response.data.data.user);
-        that.nowUser = response.data.data.user.nickname;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    axios
       .get("/question/" + this.$route.query.articleId)
       .then(function (response) {
+        that.questionLoading = false;
         that.template = response.data.data.template;
-        (that.approved = that.template.approved),
-          (that.disapproved = that.template.disapproved),
-          (that.collected = that.template.collected),
-          (that.articleContent = that.template.details);
+        that.approved = that.template.approved;
+        that.disapproved = that.template.disapproved;
+        that.collected = that.template.collected;
+        that.articleContent = that.template.details;
         that.articleLikeNumber = that.template.likesNum;
         that.articleCollectNumber = that.template.collectedNum;
         that.articleDislikeNumber = that.template.disLikesNum;
         sessionStorage["articleId"] = that.template.id;
+        /* sessionStorage["posterUserId0"] = that.template.posterUserId0; */
+
         console.log(that.template);
       })
       .catch(function (error) {
@@ -193,6 +321,7 @@ export default {
     axios
       .get("/question/" + this.$route.query.articleId + "/comments")
       .then(function (response) {
+        that.commentLoading = false;
         console.log(that.flatten(response.data.data.comments2));
         that.commentList = that.flatten(response.data.data.comments2);
       })
@@ -253,20 +382,21 @@ export default {
           console.log(error);
         });
     },
-    openCollections(collected) {
+    openCollections() {
       var that = this;
+      /* if (collected == false) { */
+      $(".ui.collect.modal").modal("show");
       axios
         .get("/customer/favorites")
         .then(function (response) {
+          that.collectLoading = false;
           that.favoriteList = response.data.data.favorites;
           console.log(response.data);
         })
         .catch(function (error) {
           console.log(error);
         });
-      if (collected == false) {
-        $(".ui.basic.modal").modal("show");
-      }
+      /*  } */
     },
     getFavoriteId(id) {
       var that = this;
@@ -396,7 +526,15 @@ export default {
           console.log(error);
         });
     },
+    replyArticle() {
+      $(".ui.edit.modal").modal("show");
+    },
     replyComment(id) {
+      var that = this;
+      that.parentId = id;
+      $(".ui.edit.modal").modal("show");
+    },
+    /*   replyComment(id) {
       var that = this;
       if (that.phoneEditor.txt.html()) {
         axios
@@ -426,7 +564,7 @@ export default {
           type: "warning",
         });
       }
-    },
+    }, */
     deleteComment(id) {
       var that = this;
       axios
@@ -461,12 +599,13 @@ export default {
             {
               content: that.phoneEditor.txt.html(),
               answer: true,
-              parentCommentId0: "-1",
+              parentCommentId0: this.parentId,
             }
           )
           .then(function (response) {
             console.log(response.data);
             that.commentList = that.flatten(response.data.data.comments);
+            that.parentId = "-1";
             that.$message({
               message: "评论成功",
               type: "success",
@@ -490,10 +629,13 @@ export default {
 h3:nth-child(2) {
   text-align: center;
 }
+
 .buttons {
   width: 400px;
   margin: 0 20%;
-} /* --------------------------- */
+}
+
+/* --------------------------- */
 .child.comment {
   margin-left: 50px;
 }

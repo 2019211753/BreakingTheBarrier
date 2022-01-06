@@ -1,10 +1,10 @@
 <template>
   <div class="body">
     <div class="main">
-      <div class="specific"><br /><articleSpecific></articleSpecific><br /></div>
+      <div class="specific"><articleSpecific></articleSpecific></div>
     </div>
     <div class="side">
-      <div class="writer"><br /><articleWriter></articleWriter><br /></div>
+      <div class="writer"><articleWriter></articleWriter></div>
     </div>
   </div>
 </template>

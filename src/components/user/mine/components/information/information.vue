@@ -1,61 +1,146 @@
 <template>
   <div>
-    <div class="leftSide">
-      <el-input class="el-input" placeholder="" v-model="nickname">
-        <template slot="prepend">修改昵称</template>
-      </el-input>
-      <el-input class="el-input" placeholder="" v-model="passWord">
-        <template slot="prepend">修改密码</template>
-      </el-input>
-      <el-input class="el-input" placeholder="" v-model="surePassWord">
-        <template slot="prepend">确认密码</template>
-      </el-input>
-      <el-input class="el-input" placeholder="" v-model="personalSignature">
-        <template slot="prepend">个性签名</template>
-      </el-input>
-      <el-select class="el-select" v-model="value" placeholder="请选择学院">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+    <div class="ui segment">
+      <h3>基本资料</h3>
+      <div class="ui divider"></div>
+      <br />
+      <el-row :gutter="20">
+        <el-col :span="4"
+          ><h4 style="margin-left: 10px; margin-top: 10px">用户昵称</h4></el-col
         >
-        </el-option> </el-select
-      ><el-select class="el-select" v-model="value" placeholder="请选择专业">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+        <el-col :span="8">
+          <div class="ui fluid input">
+            <input type="text" :placeholder="nickname0" v-model="nickname" />
+          </div>
+        </el-col>
+        <el-col :span="3"
+          ><h4 style="margin-left: 15px; margin-top: 10px">性别</h4></el-col
         >
-        </el-option>
-      </el-select>
-      <div class="ui right floated button" @click="sure()">确定</div>
-    </div>
-    <!-- "http://39.105.212.210/customer/uploadAvatar"
-          :headers="headers" :on-preview="handlePictureCardPreview"
-          :on-remove="handleRemove"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"-->
-    <div class="rightSide">
-      <br /><br /><br /><br /><br />
-      <div class="framework">
-        <el-upload
-          class="avatar-uploader"
-          action=""
-          :http-request="handleTestSuccess"
-          :show-file-list="false"
+        <el-col :span="8">
+          <div class="ui fluid selection dropdown" style="width: 175px">
+            <input type="hidden" name="gender" />
+            <i class="dropdown icon"></i>
+            <div class="default text" v-if="sex0">
+              <div v-if="sex0 == 'true'">男</div>
+              <div v-if="sex0 == 'false'">女</div>
+            </div>
+            <div class="default text" v-else>无</div>
+            <div class="menu">
+              <div class="item" @click="boy()">男</div>
+              <div class="item" @click="girl()">女</div>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <br /><el-row :gutter="24">
+        <el-col :span="4"
+          ><h4 style="margin-left: 10px; margin-top: 10px">修改密码</h4></el-col
         >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-
-        <!-- <img
-          class="ui centered small circular image"
-          src="../../../../../assets/avatar.jpg"
-        /> -->
-        <br />
-        <div class="ui disabled fluid button">上传头像</div>
+        <el-col :span="8">
+          <div class="ui fluid input">
+            <input type="text" placeholder="长度为7至11" v-model="passWord" />
+          </div>
+        </el-col>
+        <el-col :span="4"><h4 style="margin-top: 10px">确认密码</h4></el-col>
+        <el-col :span="8">
+          <div class="ui fluid input" style="margin-left: -26px; width: 173px">
+            <input
+              type="text"
+              placeholder="再次输入确认"
+              v-model="surePassWord"
+            />
+          </div>
+        </el-col>
+      </el-row>
+      <br />
+      <el-row :gutter="24">
+        <el-col :span="4"
+          ><h4 style="margin-left: 10px; margin-top: 10px">邮箱</h4></el-col
+        >
+        <el-col :span="8">
+          <div class="ui fluid input">
+            <input type="text" :placeholder="email0" v-model="email" />
+          </div>
+        </el-col>
+        <el-col :span="3"
+          ><h4 style="margin-left: 15px; margin-top: 10px">QQ</h4></el-col
+        >
+        <el-col :span="8">
+          <div class="ui fluid input">
+            <input
+              type="text"
+              style="margin-left: -3px"
+              :placeholder="QQ0"
+              v-model="QQ"
+            />
+          </div>
+        </el-col>
+      </el-row>
+      <br />
+      <el-row :gutter="20">
+        <el-col :span="4"
+          ><h4 style="margin-left: 10px; margin-top: 10px">学院</h4></el-col
+        >
+        <el-col :span="8">
+          <div class="ui fluid selection dropdown" style="width: 175px">
+            <input type="hidden" name="gender" />
+            <i class="dropdown icon"></i>
+            <div class="default text" v-if="academy0">
+              {{ academy0 }}
+            </div>
+            <div class="default text" v-else>无</div>
+            <div class="menu">
+              <div
+                v-for="(item, index) in academyList"
+                class="item"
+                @click="selectAcademy(index)"
+              >
+                {{ index }}
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="3"
+          ><h4 style="margin-left: 15px; margin-top: 10px">专业</h4></el-col
+        >
+        <el-col :span="8">
+          <div class="ui fluid selection dropdown" style="width: 175px">
+            <input type="hidden" name="gender" />
+            <i class="dropdown icon"></i>
+            <div class="default text" v-if="major0">
+              {{ major0 }}
+            </div>
+            <div class="default text" v-else>无</div>
+            <div class="menu">
+              <div
+                class="item"
+                v-for="(item, index) in majorList"
+                @click="selectMajor(item)"
+              >
+                {{ item }}
+              </div>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <br />
+      <el-row :gutter="24">
+        <el-col :span="4"
+          ><h4 style="margin-left: 10px; margin-top: 10px">签名</h4></el-col
+        >
+        <el-col :span="19">
+          <div class="ui fluid input">
+            <input
+              type="text"
+              :placeholder="personalSignature0"
+              v-model="personalSignature"
+            />
+          </div>
+        </el-col>
+      </el-row>
+      <br />
+      <div style="margin-left: 83%" class="ui green button" @click="sure()">
+        确定
       </div>
     </div>
   </div>
@@ -63,6 +148,9 @@
 
 <script>
 import axios from "axios";
+import eventBus from "../../../../eventBus";
+import $ from "jquery";
+
 /* var token = sessionStorage.getItem("token");
 window.addEventListener("setItem", (e) => {
   console.log(e);
@@ -80,99 +168,85 @@ export default {
   }, */
   data() {
     return {
-      imageUrl: "",
+      nickname0: sessionStorage.getItem("nickname"),
+      personalSignature0:
+        sessionStorage.getItem("personalSignature") == "null"
+          ? "无"
+          : sessionStorage.getItem("personalSignature"),
+      sex0:
+        sessionStorage.getItem("sex") == "null"
+          ? "无"
+          : sessionStorage.getItem("sex"),
+      email0:
+        sessionStorage.getItem("email") == "null"
+          ? "无"
+          : sessionStorage.getItem("email"),
+      QQ0:
+        sessionStorage.getItem("QQ") == "null"
+          ? "无"
+          : sessionStorage.getItem("QQ"),
+      academy0:
+        sessionStorage.getItem("academy") == "null"
+          ? "无"
+          : sessionStorage.getItem("academy"),
+      major0:
+        sessionStorage.getItem("major") == "null"
+          ? "无"
+          : sessionStorage.getItem("major"),
       nickname: "",
+      personalSignature: "",
+      sex: "",
+      email: "",
+      QQ: "",
+      academy: "",
+      major: "",
+      academyList: "",
+      majorList: "",
+      imageUrl: "",
       passWord: "",
       surePassWord: "",
-      personalSignature: "",
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
       value: "",
     };
   },
+  created() {
+    eventBus.$on("pushMsg", (headbarMsg) => {
+      this.academyList = headbarMsg;
+      console.log(this.academyList);
+    });
+    $(function () {
+      $(".ui.dropdown").dropdown();
+    });
+  },
   methods: {
-    /* handleRemove(file, fileList) {
-      console.log("____________________");
-      console.log(file, fileList);
-    },
-    handlePictureCardPreview(file) {
-      console.log("____________________");
-      console.log("file.url");
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
-    }, */
-    /* uploadAvatar() {
+    boy() {
       var that = this;
-      axios
-        .post("/customer/uploadAvatar")
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }, */
-    handleTestSuccess(file) {
-      if (file.file.type.indexOf("image") == -1) {
-        this.$message.error("请上传图片类型的文件");
-        this.$refs.upload_img.uploadFiles =
-          this.$refs.upload_img.uploadFiles.filter((item) => {
-            return file.file.name != item.name;
-          });
-        return;
+      that.sex = true;
+    },
+    girl() {
+      var that = this;
+      that.sex = false;
+    },
+    selectAcademy(selected) {
+      var that = this;
+      that.academy = selected;
+      for (var item in that.academyList) {
+        if (selected == item) {
+          that.majorList = that.academyList[item];
+          console.log(that.academyList[item]);
+          break;
+        }
       }
-      const formData = new FormData();
-      formData.append("file", file.file);
-      axios
-        .post("/customer/uploadAvatar", formData)
-        .then((res) => {
-          if (res.status === 200) {
-            console.log(res.data);
-
-            this.$message.success("上传头像成功!");
-          }
-        })
-        .catch((err) => {
-          this.$refs.upload_img.uploadFiles =
-            this.$refs.upload_img.uploadFiles.filter((item) => {
-              return file.file.name != item.name;
-            });
-          this.$message.error("上传失败!");
-        });
+    },
+    selectMajor(selected) {
+      var that = this;
+      that.major = selected;
+    },
+    logOut() {
+      sessionStorage.clear();
+      history.pushState(null, null, document.URL);
+      window.addEventListener("popstate", function () {
+        history.pushState(null, null, document.URL);
+      });
     },
     sure() {
       var that = this;
@@ -180,12 +254,64 @@ export default {
         axios
           .post("/customer/modifyAll", {
             nickname: that.nickname,
-            passWord: that.passWord,
             personalSignature: that.personalSignature,
+            sex: that.sex,
+            email: that.email,
+            qqId: that.QQ,
+            academy: that.academy,
+            major: that.major,
+            password: that.passWord,
+            wechatId: "",
           })
           .then(function (response) {
+            if (response.data.code == 200) {
+              if (that.passWord && that.surePassWord) {
+                that.$message({
+                  message: "修改信息成功，请重新登录",
+                  type: "success",
+                });
+                that.logOut();
+              } else {
+                that.$message({
+                  message: "修改信息成功",
+                  type: "success",
+                });
+                that.resetSetItem("token", response.data.data.token);
+                /* sessionStorage["avatar"] = response.data.data.user.avatar; */
+                if (that.nickname) {
+                  that.resetSetItem("nickname", that.nickname);
+                  /* sessionStorage["nickname"] = that.nickname; */
+                }
+                if (that.academy) {
+                  sessionStorage["academy"] = that.academy;
+                }
+                if (that.email) {
+                  sessionStorage["email"] = that.email;
+                }
+                if (that.major) {
+                  sessionStorage["major"] = that.major;
+                }
+                if (that.sex) {
+                  sessionStorage["sex"] = that.sex;
+                }
+                if (that.QQ) {
+                  sessionStorage["QQ"] = that.QQ;
+                }
+                if (that.personalSignature) {
+                  that.resetSetItem(
+                    "personalSignature",
+                    that.personalSignature
+                  );
+                  /* sessionStorage["personalSignature"] = that.personalSignature; */
+                }
+              }
+            } else {
+              that.$message({
+                message: response.data.msg,
+                type: "warning",
+              });
+            }
             console.log(response.data);
-            that.resetSetItem("token", response.data.data.token);
           })
           .catch(function (error) {
             console.log(error);
@@ -205,49 +331,18 @@ export default {
   /* background-color: aqua; */
   float: left;
 }
+
 .rightSide {
   width: 40%;
   height: 416px;
   /* background-color: rgb(113, 26, 170); */
   float: left;
 }
+
 .framework {
   width: 80%;
   height: 220px;
   margin: auto;
   /* background-color: aqua; */
-}
-.el-input {
-  margin-top: 20px;
-}
-.el-select {
-  margin-top: 20px;
-  width: 100%;
-}
-.ui.right.floated.button {
-  margin-top: 20px;
-}
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
 }
 </style>

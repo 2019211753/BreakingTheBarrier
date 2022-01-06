@@ -4,136 +4,130 @@
       <input type="text" placeholder="搜索..." v-model="searchContent" />
       <i class="inverted circular search link icon" @click="search()"></i>
     </div>
-    <el-container v-if="nowUser">
-      <el-aside width="200px"
-        ><div class="ui large feed">
-          <br />
-          <div class="event">
-            <div class="label">
-              <img src="../../../assets/avatar.jpg" />
-            </div>
-            <div class="content" style="margin-top: 3px">
-              <div class="summary">
-                <a>{{ nowUser.nickname }}</a>
-              </div>
-              <div class="date" style="margin-top: 0px">
-                {{ nowUser.personalSignature }}
-              </div>
-              <br />
-              <!-- <div >
-                <button class="ui circular facebook icon button">
-                  <i class="facebook icon"></i>
-                </button>
-                <button class="ui circular twitter icon button">
-                  <i class="twitter icon"></i>
-                </button>
-                <button class="ui circular linkedin icon button">
-                  <i class="linkedin icon"></i>
-                </button>
-                <button class="ui circular google plus icon button">
-                  <i class="google plus icon"></i>
-                </button>
-              </div> -->
-              <!--  <div class="ui icon buttons">
-                <button class="ui button">
-                  <i class="align left icon"></i>
-                </button>
-                <button class="ui button">
-                  <i class="align center icon"></i>
-                </button>
-                <button class="ui button">
-                  <i class="align right icon"></i>
-                </button>
-                <button class="ui button">
-                  <i class="align justify icon"></i>
-                </button>
-              </div> -->
-            </div>
-          </div>
-        </div></el-aside
-      >
-      <el-main
+    <div class="ui segment" v-if="loading == true" style="height: 590px"></div>
+    <div
+      class="ui segment"
+      style="height: 350px"
+      v-if="!nowUser && loading == false"
+    >
+      <el-empty :image-size="150" description="找不到任何结果"></el-empty>
+    </div>
+    <div class="ui segment" v-if="nowUser">
+      <el-row :gutter="24">
+        <el-col :span="4"
+          ><h4>id：{{ nowUser.id }}</h4></el-col
+        ><!-- <el-col :span="10"><h4>用户名：{{ nowUser.nickname }}</h4></el-col> -->
+        <el-col :span="10"
+          ><h4>昵称：{{ nowUser.nickname }}</h4></el-col
         >
-        <div class="ui tiny statistics">
-          <div class="statistic">
-            <div class="value">{{ nowUser.id }}</div>
-            <div class="label">id</div>
-          </div>
-          <div class="statistic" v-if="nowUser.sex">
-            <div class="value">{{ nowUser.sex }}</div>
-            <div class="label">性别</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ nowUser.canSpeak }}</div>
-            <div class="label">状态</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ nowUser.donation }}</div>
-            <div class="label">贡献度</div>
-          </div>
-
-          <div class="statistic" v-if="nowUser.academy">
-            <div class="value">{{ nowUser.academy }}</div>
-            <div class="label">学院</div>
-          </div>
-          <div class="statistic" v-if="nowUser.major">
-            <div class="value">{{ nowUser.major }}</div>
-            <div class="label">专业</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ nowUser.followingUserNum }}</div>
-            <div class="label">关注</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ nowUser.followedUserNum }}</div>
-            <div class="label">粉丝</div>
-          </div>
-          <div class="statistic" v-if="nowUser.QQ">
-            <div class="value">{{ nowUser.QQ }}</div>
-            <div class="label">QQ</div>
-          </div>
-          <div class="statistic" v-if="nowUser.wechatId">
-            <div class="value">{{ nowUser.wechatId }}</div>
-            <div class="label">微信</div>
-          </div>
-          <div class="statistic" v-if="nowUser.email">
-            <div class="value">{{ nowUser.email }}</div>
-            <div class="label">邮箱</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ nowUserRegisterTime }}</div>
-            <div class="label">注册时间</div>
-          </div>
-        </div></el-main
+        <el-col :span="10"
+          ><h4>注册时间：{{ nowUser.registerTime }}</h4></el-col
+        >
+      </el-row>
+      <br />
+      <el-row :gutter="24">
+        <el-col :span="5"
+          ><h4>
+            头像：<img
+              class="ui mini right floated circular image"
+              :src="'data:image/jpg;base64,' + nowUser.avatar"
+              alt=""
+            /></h4
+        ></el-col>
+        <el-col :span="5"
+          ><h4>管理员：{{ nowUser.admin }}</h4></el-col
+        >
+        <el-col :span="6"
+          ><h4>是否能发言：{{ nowUser.canSpeak }}</h4></el-col
+        >
+        <el-col :span="6"
+          ><h4>贡献值：{{ nowUser.donation }}</h4></el-col
+        >
+      </el-row>
+      <br />
+      <el-row :gutter="24">
+        <el-col :span="24"
+          ><h4>个性签名：{{ nowUser.personalSignature }}</h4></el-col
+        >
+      </el-row>
+      <br />
+      <el-row :gutter="24">
+        <el-col :span="10"
+          ><h4>学院：{{ nowUser.academy }}</h4></el-col
+        >
+        <el-col :span="10"
+          ><h4>专业：{{ nowUser.major }}</h4></el-col
+        >
+        <el-col :span="4"
+          ><h4>性别：{{ nowUser.sex }}</h4></el-col
+        >
+      </el-row>
+      <br />
+      <el-row :gutter="24">
+        <el-col :span="8"
+          ><h4>QQ：{{ nowUser.qqId }}</h4></el-col
+        >
+        <el-col :span="8"
+          ><h4>微信：{{ nowUser.wechatId }}</h4></el-col
+        >
+        <el-col :span="8"
+          ><h4>邮箱：{{ nowUser.email }}</h4></el-col
+        >
+      </el-row>
+      <br />
+      <el-row :gutter="24">
+        <el-col :span="6"
+          ><h4>粉丝：{{ nowUser.followedUserNum }}</h4></el-col
+        >
+        <el-col :span="6"
+          ><h4>关注：{{ nowUser.followingUserNum }}</h4></el-col
+        >
+        <el-col :span="6"
+          ><h4>privacyType：{{ nowUser.privacyType }}</h4></el-col
+        >
+        <el-col :span="6"
+          ><h4>availableNum：{{ nowUser.availableNum }}</h4></el-col
+        >
+      </el-row>
+      <br />
+      <el-row :gutter="24">
+        <el-col :span="12"
+          ><h4>joinedTeams：{{ nowUser.joinedTeams }}</h4></el-col
+        >
+        <el-col :span="12"
+          ><h4>leadingTeams：{{ nowUser.leadingTeams }}</h4></el-col
+        >
+      </el-row>
+      <div class="ui divider"></div>
+      <button
+        :class="nowUser.canSpeak == true ? Y : N"
+        @click="userCanSpeak(nowUser.id)"
       >
-      <el-aside width="100px">
-        <div class="ui large feed">
-          <br />
-          <div class="event">
-            <button
-              class="ui circular icon button"
-              @click="userCanSpeak(nowUser.id)"
-            >
-              <i class="microphone slash icon"></i>
-            </button>
-            <button
-              class="ui disabled circular blue icon button"
-              @click="deleteUser(nowUser.id)"
-            >
-              <i class="trash icon"></i>
-            </button>
-          </div></div
-      ></el-aside>
-    </el-container>
+        <i class="microphone slash icon"></i>
+      </button>
+      <button
+        class="ui disabled blue icon button"
+        @click="deleteUser(nowUser.id)"
+      >
+        <i class="trash icon"></i>
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
   name: "adminUser",
   data() {
-    return { searchContent: "", nowUser: "", nowUserRegisterTime: "" };
+    return {
+      loading: true,
+      searchContent: "",
+      nowUser: "",
+      Y: "ui right floated icon button",
+      N: "ui blue right floated icon button",
+    };
   },
   methods: {
     search() {
@@ -144,8 +138,7 @@ export default {
           .then(function (response) {
             console.log(response.data);
             that.nowUser = response.data.data.user;
-            that.nowUserRegisterTime =
-              response.data.data.user.registerTime.split("T")[0];
+            that.loading = false;
           })
           .catch(function (error) {
             console.log(error);
@@ -163,6 +156,7 @@ export default {
         .get("/admin/controlSpeak/" + id)
         .then(function (response) {
           console.log(response.data);
+          that.nowUser.canSpeak = response.data.data.canSpeak;
         })
         .catch(function (error) {
           console.log(error);
@@ -184,4 +178,7 @@ export default {
 </script>
 
 <style scoped>
+/* h4 {
+  color: grey;
+} */
 </style>

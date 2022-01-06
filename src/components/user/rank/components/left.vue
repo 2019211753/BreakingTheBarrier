@@ -12,21 +12,89 @@
     </div>
   </div> -->
   <div>
-    <el-container
-      v-for="item in userList"
-      key="item.id"
-      style="margin-top: 20px"
-    >
-      <el-aside width="500px">
-        <div class="ui small five statistics">
-          <div class="statistic">
-            <div class="value">
-              <img :src="'data:image/jpg;base64,' + item.avatar" alt="" class="ui circular inline image">
-            </div>
-            <div class="label">
-              <a href="">{{ item.nickname }}</a>
-            </div>
+    <el-skeleton :loading="loading" animated :count="10">
+      <template slot="template">
+        <el-container style="margin-top: 20px">
+          <div class="ui segment" style="width: 100%">
+            <el-row :gutter="24">
+              <el-col :span="3"
+                ><el-skeleton-item variant="text" style="margin-top: 10px"
+              /></el-col>
+              <el-col :span="16">
+                <div class="ui large feed">
+                  <div class="event">
+                    <div class="label">
+                      <el-skeleton-item variant="circle image" />
+                    </div>
+                    <div class="content">
+                      <div class="summary">
+                        <el-skeleton-item variant="text" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="5"
+                ><el-skeleton-item variant="text" style="margin-top: 10px"
+              /></el-col>
+            </el-row>
           </div>
+        </el-container>
+      </template>
+    </el-skeleton>
+    <el-container
+      v-for="(item, index) in userList"
+      key="index"
+      style="margin-top: 20px"
+      ><div class="ui segment" style="width: 100%">
+        <el-row :gutter="24">
+          <el-col :span="3"
+            ><h1>{{ index + 1 }}</h1></el-col
+          >
+          <el-col :span="16">
+            <div class="ui large feed">
+              <div class="event">
+                <div class="label">
+                  <img :src="'data:image/jpg;base64,' + item.avatar" />
+                </div>
+                <div class="content">
+                  <div class="summary">
+                    <a class="user"
+                      ><font style="vertical-align: inherit"
+                        ><font style="vertical-align: inherit">
+                          {{ item.nickname }}
+                        </font></font
+                      ></a
+                    >
+                    <!-- <div class="date">
+                      <font style="vertical-align: inherit"
+                        ><font style="vertical-align: inherit">
+                          1小时前
+                        </font></font
+                      >
+                    </div> -->
+                  </div>
+                  <!-- <div class="meta">
+                    <a class="like">
+                      <i class="like icon"></i
+                      ><font style="vertical-align: inherit"
+                        ><font style="vertical-align: inherit">
+                          4个赞
+                        </font></font
+                      ></a
+                    >
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="5"
+            ><h1>{{ item.donation }}</h1></el-col
+          >
+        </el-row>
+      </div>
+      <!-- <el-aside width="500px">
+        <div class="ui small five statistics">
           <div class="statistic">
             <div class="value">5</div>
             <div class="label">内容</div>
@@ -44,10 +112,8 @@
             <div class="label">关注</div>
           </div>
         </div>
-      </el-aside
-      >
-      <el-main
-      >
+      </el-aside>
+      <el-main>
         <button
           style="margin-top: -10px"
           class="ui circular red icon button"
@@ -55,7 +121,7 @@
         >
           <i class="heart icon"></i>
         </button>
-      </el-main>
+      </el-main> -->
     </el-container>
   </div>
 </template>
@@ -66,13 +132,14 @@ import axios from "axios";
 export default {
   name: "left",
   data() {
-    return {userList: []};
+    return { loading: true, userList: [] };
   },
   created() {
     var that = this;
     axios
       .get("/rank")
       .then(function (response) {
+        that.loading = false;
         console.log(response.data);
         that.userList = response.data.data.users;
       })

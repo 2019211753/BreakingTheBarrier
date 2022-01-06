@@ -1,15 +1,15 @@
 <template>
   <div>
     <div class="ui fluid labeled input">
-      <div class="ui label">标题</div>
+      <div class="ui teal label">标题</div>
       <input type="text" placeholder="" v-model="title" />
     </div>
     <div class="ui fluid labeled input">
-      <div class="ui label">概述</div>
+      <div class="ui teal label">概述</div>
       <input type="text" placeholder="" v-model="description" />
     </div>
     <div id="websiteEditorElem"></div>
-    <div class="ui right floated button" @click="sure()">确定</div>
+    <div class="ui green right floated button" @click="sure()">确定</div>
   </div>
 </template>
 
@@ -60,15 +60,22 @@ export default {
             })
             .then(function (response) {
               console.log(response);
+              if (response.data.code == 403) {
+                that.$message({
+                  message: response.data.msg,
+                  type: "warning",
+                });
+              } else {
+                that.$message({
+                  message: "发布成功",
+                  type: "success",
+                });
+                that.$router.push("/helloWorld/BBS/questions");
+              }
             })
             .catch(function (error) {
               console.log(error);
             });
-          that.$message({
-            message: "发布成功",
-            type: "success",
-          });
-          this.$router.push("/helloWorld/BBS/questions");
         }
       } else {
         this.$message({

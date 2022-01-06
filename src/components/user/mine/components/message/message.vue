@@ -1,189 +1,73 @@
 <template>
   <div>
-    <div class="ui large feed">
-      <h3 class="ui dividing header">未读消息</h3>
-      <div
-        class="event"
-        v-if="unLookedComments"
-        v-for="item in unLookedComments"
-      >
-        <div class="label">
-          <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
-        </div>
-        <div class="content">
-          <div class="summary">
-            <a class="user"> {{ item.nickname }} </a> 评论了你：
-            <a href=""
-              ><router-link
-                :to="{
-                  path: '/BBS/content',
-                  query: { articleId: item.questionId0 },
-                }"
-              >
-                {{ item.content }}</router-link
-              ></a
-            >.
-            <div class="date">{{ item.createTime }}</div>
-          </div>
-        </div>
-        <div class="ui icon button" @click="readComment(item.id)">
-          <i class="red circle icon"></i>
-        </div>
-      </div>
-      <div class="event" v-if="unLookedLikes" v-for="item in unLookedLikes">
-        <div class="label">
-          <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
-        </div>
-        <div class="content">
-          <div class="summary">
-            <a class="user"> {{ item.nickname }} </a> 点赞了你的：
-            <a href=""
-              ><router-link
-                :to="{
-                  path: '/BBS/content',
-                  query: { articleId: item.questionId0 },
-                }"
-              >
-                文章</router-link
-              ></a
-            >.
-            <div class="date">{{ item.createTime }}</div>
-          </div>
-        </div>
-        <div class="ui icon button" @click="readLike(item.id)">
-          <i class="red circle icon"></i>
-        </div>
-      </div>
-      <div
-        class="ui right floated button"
-        v-if="unLookedLikes.length || unLookedComments.length"
-        @click="readAll()"
-      >
-        一键已读
-      </div>
-      <el-empty :image-size="100" v-else description="暂无消息"></el-empty>
-      <br />
-      <h3 class="ui dividing header">历史消息</h3>
-      <el-empty
-        :image-size="100"
-        v-if="!lookedLikes.length && !lookedComments.length"
-        description="暂无消息"
-      ></el-empty>
-      <div class="event" v-if="lookedComments" v-for="item in lookedComments">
-        <div class="label">
-          <img :src="'data:image/jpg;base64,' + item.avatar" alt="">
-        </div>
-        <div class="content">
-          <div class="summary">
-            <a class="user"> {{ item.nickname }} </a> 评论了你：
-            <a href=""
-              ><router-link
-                :to="{
-                  path: '/BBS/content',
-                  query: { articleId: item.questionId0 },
-                }"
-              >
-                {{ item.content }}</router-link
-              ></a
-            >文章.
-            <div class="date">{{ item.createTime }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="event" v-if="lookedLikes" v-for="item in lookedLikes">
-        <div class="label">
-          <img src="../../../../../assets/avatar.jpg" />
-        </div>
-        <div class="content">
-          <div class="summary">
-            <a class="user"> {{ item.nickname }} </a> 点赞了你的：
-            <a href=""
-              ><router-link
-                :to="{
-                  path: '/BBS/content',
-                  query: { articleId: item.questionId0 },
-                }"
-              >
-                a</router-link
-              ></a
-            >.
-            <div class="date">{{ item.createTime }}</div>
-          </div>
-        </div>
-      </div>
+    <div class="ui segment">
+      <el-row>
+        <el-col :span="24"
+          ><div class="header">
+            <div class="nav">
+              <ul>
+                <li>
+                  <a href="">
+                    <router-link to="/helloWorld/mine/message/read">
+                      <i class="archive icon"></i> 已读
+                    </router-link>
+                  </a>
+                </li>
+                <li>
+                  <a href="">
+                    <router-link to="/helloWorld/mine/message/unread">
+                      <i class="archive icon"></i> 未读
+                    </router-link>
+                  </a>
+                </li>
+                <li>
+                  <a @click="readAll()">
+                    <i class="archive icon"></i> 全部标记为已读
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div></el-col
+        >
+      </el-row>
     </div>
+    <div><router-view></router-view></div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 /* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+import axios from "axios";
 export default {
   name: "message",
-  data() {
-    return {
-      lookedComments: [],
-      lookedLikes: [],
-      unLookedComments: [],
-      unLookedLikes: [],
-    };
-  },
-  created() {
-    var that = this;
-    axios
-      .get("/customer/messages/")
-      .then(function (response) {
-        that.lookedComments = response.data.data.lookedComments;
-        that.lookedLikes = response.data.data.lookedLikes;
-        that.unLookedComments = response.data.data.unLookedComments;
-        that.unLookedLikes = response.data.data.unLookedLikes;
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  },
   methods: {
-    readLike(id) {
-      var that = this;
-      axios
-        .get("/customer/messages/likes/" + id + "/read")
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    readComment(id) {
-      var that = this;
-      axios
-        .get("/customer/messages/comment/" + id + "/read")
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
     readAll() {
-      var that = this;
-      axios
-        .get("/customer/messages/readAllLikes")
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      axios
-        .get("/customer/messages/readAllComments")
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      var p1 = new Promise((resolve, reject) => {
+        axios
+          .get("/customer/messages/readAllComments")
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+
+      var p2 = new Promise((resolve, reject) => {
+        axios
+          .get("/customer/messages/readAllLikes")
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+
+      // 调用Promise.all().then(res=>{})
+      Promise.all([p1, p2]).then((res) => {
+        console.log(res);
+      });
     },
   },
 };
@@ -195,5 +79,40 @@ export default {
 }
 .ui.icon.button {
   background-color: white;
+}
+
+.nav ul li {
+  float: left;
+  margin: -20px 15px;
+}
+
+.nav ul li a {
+  display: block;
+  height: 42px;
+  padding: 0 1px;
+  line-height: 42px;
+  font-size: 16px;
+  color: black;
+  font-weight: 600;
+}
+
+.nav ul a:hover {
+  border-bottom: 4px solid orange;
+  /*   color: black; */
+}
+
+a {
+  text-decoration: none;
+}
+
+.header {
+  width: 100%;
+  height: 30px;
+  /* background-color: rgb(100, 133, 208); */
+  float: left;
+}
+
+li {
+  list-style: none;
 }
 </style>

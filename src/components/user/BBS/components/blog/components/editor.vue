@@ -1,47 +1,30 @@
 <template>
   <div>
     <div class="ui fluid labeled input">
-      <div class="ui label">标题</div>
+      <div class="ui teal label">标题</div>
       <input type="text" placeholder="" v-model="title" />
     </div>
     <div class="ui fluid labeled input">
-      <div class="ui label">概述</div>
+      <div class="ui teal label">概述</div>
       <input type="text" placeholder="" v-model="description" />
     </div>
     <div id="websiteEditorElem"></div>
-    <el-switch
-      class="el-switch"
-      v-model="origin"
-      active-color="#13ce66"
-      inactive-color="grey"
-      active-text="原创"
+    <div class="ui fluid labeled input" v-if="original == false">
+      <div class="ui teal label">转载声明</div>
+      <input type="text" placeholder="" v-model="statement" />
+    </div>
+    <div :class="original == true ? Y : N" @click="setOriginal()">转载</div>
+    <div :class="open == true ? Y : N" @click="setOpen()">私密</div>
+    <div :class="commentAllowed == true ? Y : N" @click="setCommentAllowed()">
+      不允许评论
+    </div>
+    <div
+      :class="appreciationAllowed == true ? Y : N"
+      @click="setAppreciationAllowed()"
     >
-    </el-switch>
-    <el-switch
-      class="el-switch"
-      v-model="open"
-      active-color="#13ce66"
-      inactive-color="grey"
-      active-text="公开"
-    >
-    </el-switch
-    ><el-switch
-      class="el-switch"
-      v-model="commentAllowed"
-      active-color="#13ce66"
-      inactive-color="grey"
-      active-text="允许评论"
-    >
-    </el-switch
-    ><el-switch
-      class="el-switch"
-      v-model="appreciation"
-      active-color="#13ce66"
-      inactive-color="grey"
-      active-text="接受赞赏"
-    >
-    </el-switch>
-    <div class="ui right floated button" @click="sure()">确定</div>
+      不接受赞赏
+    </div>
+    <div class="ui green right floated button" @click="sure()">确定</div>
   </div>
 </template>
 
@@ -55,10 +38,13 @@ export default {
     return {
       title: "",
       description: "",
-      origin: true,
-      appreciation: true,
+      statement: "",
+      original: true,
+      appreciationAllowed: true,
       open: true,
       commentAllowed: true,
+      N: "ui icon blue button",
+      Y: "ui icon button",
     };
   },
   /* props: ["chooseTagIdList"], */
@@ -83,9 +69,26 @@ export default {
     getOrigin(name) {
       alert(name);
     },
+    setOriginal() {
+      var that = this;
+      that.original = !that.original;
+    },
+    setOpen() {
+      var that = this;
+      that.open = !that.open;
+    },
+    setCommentAllowed() {
+      var that = this;
+      that.commentAllowed = !that.commentAllowed;
+    },
+    setAppreciationAllowed() {
+      var that = this;
+      that.appreciationAllowed = !that.appreciationAllowed;
+    },
     sure() {
       var that = this;
       /*      alert(that.chooseTagIdList); */
+      /* if(that.original==false){} */
       if (that.title && that.description && that.phoneEditor.txt.html()) {
         if (!sessionStorage.getItem("chooseTagIdList")) {
           this.$message({
@@ -99,22 +102,30 @@ export default {
               description: that.description,
               content: that.phoneEditor.txt.html(),
               tagIds: sessionStorage.getItem("chooseTagIdList"),
-              origin: that.origin,
-              appreciation: that.appreciation,
+              origin: that.original,
+              appreciation: that.appreciationAllowed,
               open: that.open,
               commentAllowed: that.commentAllowed,
+              transferStatement: that.statement,
             })
             .then(function (response) {
               console.log(response);
+              if (response.data.code == 403) {
+                that.$message({
+                  message: response.data.msg,
+                  type: "warning",
+                });
+              } else {
+                that.$message({
+                  message: "发布成功",
+                  type: "success",
+                });
+                that.$router.push("/helloWorld/BBS/blogs");
+              }
             })
             .catch(function (error) {
               console.log(error);
             });
-          that.$message({
-            message: "发布成功",
-            type: "success",
-          });
-          this.$router.push("/helloWorld/BBS/blogs");
         }
       } else {
         this.$message({

@@ -3,7 +3,7 @@
     <div class="background"></div>
     <div class="a">
       <div class="b">
-        <img :src="imgSrc" height="100%" alt="" />
+        <img :src="imgSrc" height="100%" alt=""/>
       </div>
       <div class="c">
         <div class="d">
@@ -30,6 +30,7 @@
 
 <script>
 import axios from "axios";
+
 export default {
   name: "adminLogIn",
   data() {
@@ -68,7 +69,7 @@ export default {
         .then(function (response) {
           console.log(response.data.data.user);
           if (response.data.data.user.admin == true) {
-            that.$router.push("/helloWorld/admin");
+            that.$router.push("/helloWorld/admin/adminTag");
             that.$message({
               message: "登陆成功",
               type: "success",
@@ -102,6 +103,7 @@ export default {
   display: flex;
   justify-content: center;
 }
+
 .a {
   margin: auto;
   position: relative;

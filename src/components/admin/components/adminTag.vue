@@ -1,49 +1,91 @@
 <template>
-  <div class="custom-tree-container">
-    <div class="block">
-      <el-tree
-        :data="tagList"
-        :props="defaultProps"
-        show-checkbox
-        node-key="id"
-        default-expand-all
-        :expand-on-click-node="false"
-        :render-content="renderContent"
-      >
-      </el-tree>
+  <div class="ui basic segment">
+    <createTags></createTags>
+    <!-- <div class="custom-tree-container">
+      <div class="block">
+        <el-tree
+          :data="tagList"
+          :props="defaultProps"
+          show-checkbox
+          node-key="id"
+          default-expand-all
+          :expand-on-click-node="false"
+          :render-content="renderContent"
+        >
+        </el-tree>
+      </div>
+    </div> -->
+    <div class="ui modal" style="width: 400px">
+      <div class="ui icon header">
+        <i class="tags icon"></i>
+        修改标签
+        <br />
+        <br />
+        <div class="ui labeled input">
+          <div class="ui label">新名称</div>
+          <input type="text" placeholder="" v-model="fileName" />
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui green ok inverted button" @click="sure()">
+          <i class="checkmark icon"></i>
+          确定
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
-let id = 1000;
+/* let id = 1000; */
 import axios from "axios";
+import createTags from "./createTags";
+
 export default {
   name: "adminTag",
+  components: { createTags },
+  data() {
+    return {
+      tagList: [],
+      newTagId: "",
+      fileName: "",
+      /* defaultProps: {
+        children: "sonTags",
+        label: "name",
+      }, */
+    };
+  },
   created() {
     var that = this;
     axios
       .get("/tags/")
       .then(function (response) {
         console.log(response.data);
+        /* that.getAllNodeId(that.tagList, response.data.data.tags); */
         that.tagList = response.data.data.tags;
+        sessionStorage.setItem("tagList", JSON.stringify(that.tagList));
+
+        console.log(that.tagList);
       })
       .catch(function (error) {
         console.log(error);
       });
   },
-  data() {
-    return {
-      tagList: [],
-      newTagId: "",
-      defaultProps: {
-        children: "sonTags",
-        label: "name",
-      },
-    };
-  },
 
   methods: {
-    append(data) {
+    getAllNodeId(expandedKeys, moduleDataList) {
+      for (let i = 0; i < moduleDataList.length; i++) {
+        // console.log('i in getAllNodeId: ', i)
+        expandedKeys.push(moduleDataList[i]);
+        if (moduleDataList[i].childTags) {
+          expandedKeys = this.getAllNodeId(
+            expandedKeys,
+            moduleDataList[i].childTags
+          );
+        }
+      }
+      return expandedKeys;
+    },
+    /*  append(data) {
       axios
         .post("/admin/tags/input", {
           name: "testtest1",
@@ -93,18 +135,18 @@ export default {
           </span>
         </span>
       );
-    },
+    }, */
   },
 };
 </script>
 
 <style>
-.custom-tree-node {
+/* .custom-tree-node {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 14px;
   padding-right: 8px;
-}
+} */
 </style>

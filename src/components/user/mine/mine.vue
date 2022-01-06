@@ -1,107 +1,91 @@
 <template>
   <div class="body">
     <div class="main">
-      <div class="personalCard">
-        <div>
-          <br/>
-          <div class="avatar">
-            <img :src="'data:image/jpg;base64,' + userData.avatar" alt="" class="ui small circular image">
-          </div>
-          <div class="information">
-            <h2>{{ userData.nickname }}</h2>
-            <p>{{ userData.personalSignature }}</p>
-            <div class="data">
-              <div class="ui four mini statistics">
-                <div class="statistic">
-                  <div class="value">0</div>
-                  <div class="label">内容</div>
+      <div class="ui segment">
+        <!-- <el-skeleton :loading="loading" animated v-if="loading == true">
+          <template slot="template">
+            <el-row :gutter="24">
+              <el-col :span="6">
+                <el-skeleton-item
+                  style="
+                    width: 130px;
+                    height: 130px;
+                    margin-left: 20px;
+                    margin-top: 10px;
+                  "
+                  variant="circle image"
+                /> </el-col
+              ><el-col :span="1" style="height: 1px"> </el-col>
+              <el-col :span="17">
+                <el-skeleton-item
+                  style="height: 30px; margin-top: 20px"
+                  variant="text"
+                />
+                <el-skeleton-item variant="text" style="margin-top: 5px" />
+                <el-skeleton-item
+                  style="height: 20px; margin-top: 5px"
+                  variant="text"
+                />
+                <el-skeleton-item style="height: 20px" variant="text" />
+              </el-col>
+            </el-row>
+          </template>
+        </el-skeleton> -->
+        <el-row :gutter="20">
+          <el-col :span="6"
+            ><div class="avatar" style="margin-left: 20px; margin-top: 10px">
+              <div class="ui inverted dimmer">
+                <div class="content">
+                  <el-upload
+                    class="avatar-uploader"
+                    action=""
+                    :http-request="handleTestSuccess"
+                    :show-file-list="false"
+                  >
+                    <div class="ui blue small icon button">
+                      <i class="ui edit icon"></i>
+                    </div>
+                  </el-upload>
                 </div>
-                <div class="statistic">
-                  <div class="value">{{ userData.donation }}</div>
-                  <div class="label">贡献度</div>
+              </div>
+              <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" /> -->
+              <img
+                :src="'data:image/jpg;base64,' + avatar"
+                alt=""
+                class="ui small circular image"
+              />
+            </div>
+          </el-col>
+          <el-col :span="14">
+            <div class="information" style="margin-top: -5px">
+              <h2>{{ nickname }}</h2>
+              <p style="color: grey" v-if="personalSignature">
+                {{ personalSignature }}
+              </p>
+              <p style="color: grey" v-else>暂无签名</p>
+              <div class="data">
+                <div class="ui four mini statistics">
+                  <div class="statistic">
+                    <div class="value">3</div>
+                    <div class="label" style="margin-top: 3px">内容</div>
+                  </div>
+                  <div class="statistic">
+                    <div class="value">{{ donation }}</div>
+                    <div class="label" style="margin-top: 3px">贡献度</div>
+                  </div>
+                  <div class="statistic">
+                    <div class="value">{{ followedUserNum }}</div>
+                    <div class="label" style="margin-top: 3px">粉丝</div>
+                  </div>
+                  <div class="statistic">
+                    <div class="value">{{ followingUserNum }}</div>
+                    <div class="label" style="margin-top: 3px">关注</div>
+                  </div>
                 </div>
-                <div class="statistic">
-                  <div class="value">{{ userData.followedUserNum }}</div>
-                  <div class="label">粉丝</div>
-                </div>
-                <div class="statistic">
-                  <div class="value">{{ userData.followingUserNum }}</div>
-                  <div class="label">关注</div>
-                </div>
-                <!--  <div class="statistic">
-                  <div class="value">{{ userData.registerTime }}</div>
-                  <div class="label">在网时间</div>
-                </div> -->
               </div>
             </div>
-          </div>
-          <div class="header">
-            <div class="nav">
-              <ul>
-                <li>
-                  <a href=""
-                  >
-                    <router-link to="/helloWorld/mine/questionFiles">
-                      <i class="sticky note outline icon"></i>问题
-                    </router-link
-                    >
-                  </a
-                  >
-                </li>
-                <li>
-                  <a href=""
-                  >
-                    <router-link to="/helloWorld/mine/blogFiles">
-                      <i class="home icon"></i>博客
-                    </router-link
-                    >
-                  </a
-                  >
-                </li>
-                <li>
-                  <a href=""
-                  >
-                    <router-link to="/helloWorld/mine/friends/following">
-                      <i class="home icon"></i>朋友
-                    </router-link
-                    >
-                  </a
-                  >
-                </li>
-                <li>
-                  <a href=""
-                  >
-                    <router-link to="/helloWorld/mine/message">
-                      <i class="home icon"></i>通知
-                    </router-link
-                    >
-                  </a
-                  >
-                </li>
-                <li>
-                  <a href=""
-                  >
-                    <router-link to="/helloWorld/mine/information">
-                      <i class="home icon"></i>资料
-                    </router-link
-                    >
-                  </a
-                  >
-                </li>
-                <li>
-                  <a href=""
-                  >
-                    <router-link to="/helloWorld/mine/collections">
-                      <i class="home icon"></i>收藏
-                    </router-link
-                    >
-                  </a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+          </el-col>
+        </el-row>
       </div>
       <div>
         <router-view></router-view>
@@ -116,24 +100,115 @@
 <script>
 import recommend from "./components/recommend";
 import axios from "axios";
-
+import $ from "jquery";
+/* import jwtDecode from "jwt-decode"; */
 export default {
-  components: {recommend},
+  components: { recommend },
   name: "mine",
+  computed: {
+    headers() {
+      return {
+        Authorization: sessionStorage.getItem("token"), // 直接从本地获取token就行
+      };
+    },
+  },
   data() {
-    return {userData: ""};
+    return {
+      loading: true,
+      avatar: sessionStorage.getItem("avatar"),
+      nickname: sessionStorage.getItem("nickname"),
+      personalSignature: sessionStorage.getItem("personalSignature"),
+      donation: sessionStorage.getItem("donation"),
+      followedUserNum: sessionStorage.getItem("followedUserNum"),
+      followingUserNum: sessionStorage.getItem("followingUserNum"),
+      /* imageUrl: "", */
+    };
   },
   created() {
     var that = this;
-    axios
-      .get("/customer/personal")
-      .then(function (response) {
-        console.log(response.data.data.user);
-        that.userData = response.data.data.user;
-             })
-      .catch(function (error) {
-        console.log(error);
+    $(function () {
+      $(".avatar").dimmer({
+        on: "hover",
       });
+    });
+    window.addEventListener("setItem", (e) => {
+      if (e.key == "nickname") {
+        console.log(e.newValue);
+        that.nickname = e.newValue;
+      }
+    });
+    window.addEventListener("setItem", (e) => {
+      if (e.key == "personalSignature") {
+        console.log(e.newValue);
+        that.personalSignature = e.newValue;
+      }
+    });
+    /* window.addEventListener("setItem", (e) => {
+      that.nickname = e.newValue;
+    }); */
+    /* window.addEventListener("setItem", (e) => {
+      that.personalSignature = e.newValue;
+    }); */
+  },
+  methods: {
+    /* handleRemove(file, fileList) {
+      console.log("____________________");
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      console.log("____________________");
+      console.log("file.url");
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    }, */
+    /* beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 0.0977;
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 100kb!");
+      }
+      return isJPG && isLt2M;
+    }, */
+
+    handleTestSuccess(file) {
+      if (file.file.type.indexOf("image") == -1) {
+        this.$message.error("请上传图片类型的文件");
+        this.$refs.upload_img.uploadFiles =
+          this.$refs.upload_img.uploadFiles.filter((item) => {
+            return file.file.name != item.name;
+          });
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", file.file);
+      axios
+        .post("/customer/uploadAvatar", formData)
+        .then((res) => {
+          if (res.status === 200) {
+            var that = this;
+            console.log(res.data);
+            that.resetSetItem("avatar", res.data.data.avatar);
+            that.$message.success("上传头像成功!");
+            that.avatar = res.data.data.avatar;
+            /* var decode = jwtDecode(res.data.data);
+            console.log(decode);
+            that.nickname = decode.nickname; */
+          }
+        })
+        .catch((err) => {
+          /* this.$refs.upload_img.uploadFiles =
+            this.$refs.upload_img.uploadFiles.filter((item) => {
+              return file.file.name != item.name;
+            });
+          this.$message.error("上传失败!"); */
+        });
+    },
   },
 };
 </script>
@@ -163,15 +238,9 @@ export default {
   /* background-color: bisque; */
 }
 
-.personalCard {
-  width: 100%;
-  height: 220px;
-  /* background-color: red; */
-}
-
 .avatar {
-  width: 150px;
-  height: 150px;
+  width: 95%;
+  /* height: 150px; */
   /* background-color: rgb(82, 168, 168); */
   float: left;
 }
@@ -195,41 +264,5 @@ p {
 
 .data {
   width: 50%;
-}
-
-.nav ul li {
-  float: left;
-  margin: -15px 15px;
-}
-
-.nav ul li a {
-  display: block;
-  height: 42px;
-  padding: 0 1px;
-  line-height: 42px;
-  font-size: 16px;
-  color: white;
-  font-weight: 600;
-}
-
-.nav ul a:hover {
-  border-bottom: 2px solid white;
-  color: white;
-}
-
-a {
-  text-decoration: none;
-}
-
-.header {
-  width: 100%;
-  height: 40px;
-  background-color: rgb(100, 133, 208);
-  float: left;
-  margin-top: 10px;
-}
-
-li {
-  list-style: none;
 }
 </style>

@@ -8,14 +8,21 @@
             <a href=""
               ><router-link to="/helloWorld/BBS/questions"
                 ><i class="home icon"></i>问答</router-link
-              >></a
+              ></a
             >
           </li>
           <li>
             <a href=""
               ><router-link to="/helloWorld/BBS/blogs"
                 ><i class="home icon"></i>博客</router-link
-              >></a
+              ></a
+            >
+          </li>
+          <li>
+            <a href=""
+              ><router-link to="/helloWorld/BBS/rank"
+                ><i class="home icon"></i>排行榜</router-link
+              ></a
             >
           </li>
         </ul>
@@ -48,13 +55,13 @@ export default {
   padding: 0 10px;
   line-height: 42px;
   font-size: 16px;
-  color: white;
+  color: black;
   font-weight: 600;
 }
 
 .nav ul a:hover {
-  border-bottom: 2px solid white;
-  color: white;
+  border-bottom: 4px solid orange;
+  /* color: white; */
 }
 
 a {
@@ -63,8 +70,8 @@ a {
 
 .header {
   height: 40px;
-  background-color: rgb(100, 133, 208);
-  width: 30%;
+  /*  background-color: rgb(100, 133, 208); */
+  width: 40%;
   margin: auto;
   margin-top: 20px;
 }
