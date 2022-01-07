@@ -5,9 +5,9 @@ import com.lrm.enumeration.StatusCode;
 /**
  * 访问未被授权资源时抛出的异常类
  *
- * @author 山水夜止
- * @version 1.0
- * @date 2021-07-21
+ * @author 山水夜止, Youngless
+ * @version 1.1
+ * @date 2022/1/7
  */
 public class NoPermissionException extends CommonException {
     protected String errorMsg;
@@ -15,9 +15,11 @@ public class NoPermissionException extends CommonException {
     final StatusCode code = StatusCode.NO_PERMISSION;
 
     public NoPermissionException() {
+        super();
     }
 
     public NoPermissionException(String errorMsg) {
+        super(errorMsg);
         this.errorMsg = errorMsg;
     }
 

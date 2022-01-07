@@ -5,9 +5,9 @@ import com.lrm.enumeration.StatusCode;
 /**
  * 普通的操作失败抛出的异常
  *
- * @author 山水夜止
- * @version 1.0
- * @date 2021-05-26
+ * @author 山水夜止, Youngless
+ * @version 1.1
+ * @date 2022/1/7
  */
 public class FailedOperationException extends CommonException {
     protected String errorMsg;
@@ -15,10 +15,11 @@ public class FailedOperationException extends CommonException {
     final StatusCode code = StatusCode.FAILED_OPERATION;
 
     public FailedOperationException() {
-
+        super();
     }
 
     public FailedOperationException(String errorMsg) {
+        super(errorMsg);
         this.errorMsg = errorMsg;
     }
 

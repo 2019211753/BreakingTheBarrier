@@ -5,9 +5,9 @@ import com.lrm.enumeration.StatusCode;
 /**
  * 访问不存在的资源时抛出的异常类
  *
- * @author 山水夜止
- * @version 1.0
- * @date 2021-07-21
+ * @author 山水夜止, Youngless
+ * @version 1.1
+ * @date 2022/1/7
  */
 public class NotFoundException extends CommonException {
     protected String errorMsg;
@@ -15,9 +15,11 @@ public class NotFoundException extends CommonException {
     final StatusCode code = StatusCode.NOT_FOUND;
 
     public NotFoundException() {
+        super();
     }
 
     public NotFoundException(String errorMsg) {
+        super(errorMsg);
         this.errorMsg = errorMsg;
     }
 

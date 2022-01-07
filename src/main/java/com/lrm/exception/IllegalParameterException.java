@@ -10,9 +10,9 @@ import java.util.List;
 /**
  * 参数类型异常
  *
- * @author 山水夜止
- * @version 1.0
- * @date 2021-07-29
+ * @author 山水夜止, Youngless
+ * @version 1.1
+ * @date 2022/1/7
  */
 public class IllegalParameterException extends CommonException {
     protected String errorMsg;
@@ -20,9 +20,11 @@ public class IllegalParameterException extends CommonException {
     final StatusCode code = StatusCode.ILLEGAL_PARAMETER;
 
     public IllegalParameterException() {
+        super();
     }
 
     public IllegalParameterException(String errorMsg) {
+        super(errorMsg);
         this.errorMsg = errorMsg;
     }
 

@@ -5,18 +5,20 @@ import com.lrm.enumeration.StatusCode;
 /**
  * 多个异常的公有类
  *
- * @author 山水夜止
- * @version 1.0
- * @date 2021-07-29
+ * @author 山水夜止, Youngless
+ * @version 1.1
+ * @date 2022/1/7
  */
 public class CommonException extends RuntimeException {
     StatusCode code;
     String errorMsg;
 
     public CommonException() {
+        super();
     }
 
     public CommonException(String errorMsg) {
+        super(errorMsg);
         this.errorMsg = errorMsg;
     }
 
