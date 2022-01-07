@@ -57,12 +57,6 @@ public class Favorite {
     private int size;
 
     /**
-     * 收藏夹的上限容量
-     */
-    public static final int MAXSIZE = 25;
-
-
-    /**
      * 收藏夹的主人
      */
     @JsonIgnore
@@ -130,11 +124,6 @@ public class Favorite {
     public void setOpen(Boolean open) {
         this.open = open;
     }
-
-    public static int getMAXSIZE() {
-        return MAXSIZE;
-    }
-
 
     public User getOwner() {
         return owner;

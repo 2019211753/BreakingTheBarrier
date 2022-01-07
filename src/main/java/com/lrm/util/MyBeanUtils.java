@@ -43,7 +43,7 @@ public class MyBeanUtils {
      * @param dest 目标对象
      * @param <T> 泛型类型
      */
-    public static <T> void populate(Class<T> cls, T source, T dest) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    public static <T> void populate(Class<T> cls, T source, T dest) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         //先用类反射对新new的对象设置属性值(必须遵守Java设置规范) 即通过setter方法设置
         //遍历出所有该类声明的属性
         //getDeclaredFields()返回Class中所有的字段，包括私有字段

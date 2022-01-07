@@ -1,6 +1,5 @@
 package com.lrm.web.customer;
 
-import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.User;
 import com.lrm.service.UserServiceImpl;
 import com.lrm.util.FileUtils;
@@ -70,12 +69,11 @@ public class ProfileController {
      */
     @PostMapping("/uploadAvatar")
     public Result uploadAvatar(MultipartFile file, HttpServletRequest req) throws IOException {
+        Map<String, Object> hashMap = new HashMap<>(1);
         Long userId = TokenInfo.getCustomUserId(req);
 
-        //创建存放文件的文件夹的流程
-
         //头像文件夹的绝对路径
-        String realPath = path + "/images/" + userId + "/avatar";
+        String realPath = path + "/" + userId + "/avatar";
 
         //所上传的文件原名
         String oldName = file.getOriginalFilename();
@@ -85,10 +83,12 @@ public class ProfileController {
         String newName = FileUtils.upload(file, realPath, oldName);
 
         User user = userServiceImpl.getUser(userId);
-        user.setAvatar("images/" + userId + "/avatar/" + newName);
+        user.setAvatar(userId + "/avatar/" + newName);
         userServiceImpl.saveUser(user);
 
-        return new Result(null, "上传成功");
+        String base64Avatar = FileUtils.convertAvatar(user.getAvatar());
+        hashMap.put("avatar", base64Avatar);
+        return new Result(hashMap, "上传成功");
     }
 
 
@@ -102,7 +102,7 @@ public class ProfileController {
      * @return 新token
      */
     @PostMapping("/modifyAll")
-    public Result modifyUserInformation(HttpServletRequest request, @RequestBody User user1) throws IOException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public Result modifyUserInformation(HttpServletRequest request, @RequestBody User user1) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         StringBuilder errorMessage = null;
@@ -121,8 +121,6 @@ public class ProfileController {
         String major = user1.getMajor();
         Integer privacyType = user1.getPrivacyType();
 
-        User user0 = userServiceImpl.getUser(user1.getNickname());
-
         User user = new User();
         user.setId(customerUserId);
 
@@ -139,7 +137,9 @@ public class ProfileController {
             user.setWechatId(wechatId);
         }
 
-        user.setSex(sex);
+        if (sex != null) {
+            user.setSex(sex);
+        }
 
         if (!"".equals(personalSignature) && personalSignature != null) {
             user.setPersonalSignature(personalSignature);
@@ -172,25 +172,27 @@ public class ProfileController {
             }
         }
 
-        User newUser = null;
-        if (!(user0 != null && user0.getId().equals(customerUserId))) {
-            user.setNickname(nickname);
-            newUser = userServiceImpl.updateUser(user);
-        } else {
-            newUser = userServiceImpl.updateUser(user);
-
-            if (errorMessage == null) {
-                errorMessage = new StringBuilder("昵称已被占用；");
+        if (!"".equals(nickname) && nickname != null) {
+            User user0 = userServiceImpl.getUser(user1.getNickname());
+            //如果有昵称是这个的用户并且这个用户不是当前用户
+            if ((user0 != null && !user0.getId().equals(customerUserId))) {
+                if (errorMessage == null) {
+                    errorMessage = new StringBuilder("昵称已被占用；");
+                } else {
+                    errorMessage.append("昵称已被占用；");
+                }
             } else {
-                errorMessage.append("昵称已被占用；");
+                user.setNickname(nickname);
             }
         }
 
-        if (errorMessage != null) {
-            throw new IllegalParameterException(errorMessage.append("其他信息修改成功；").toString());
-        }
-
+        User newUser = userServiceImpl.updateUser(user);
         hashMap.put("token", TokenInfo.postToken(newUser));
+
+        if (errorMessage != null) {
+            errorMessage.append("其他信息修改成功；");
+            return new Result(hashMap, errorMessage.toString());
+        }
 
         return new Result(hashMap, "修改成功");
     }
