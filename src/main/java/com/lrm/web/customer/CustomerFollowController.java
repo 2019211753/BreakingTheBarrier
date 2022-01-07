@@ -38,7 +38,7 @@ public class CustomerFollowController {
             user2.setId(user1.getId());
             user2.setDonation(user1.getDonation());
             user2.setNickname(user1.getNickname());
-            user2.setAvatar(FileUtils.convertAvatar(user1.getAvatar()));
+            user2.setAvatar(user1.getAvatar());
             user2.setFollowingUserNum(user1.getFollowingUserNum());
             user2.setFollowedUserNum(user1.getFollowedUserNum());
             newUsers.add(user2);

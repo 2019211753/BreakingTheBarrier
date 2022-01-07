@@ -50,7 +50,7 @@ public class ProfileController {
 
         User user = new User();
         BeanUtils.copyProperties(userServiceImpl.getUser(TokenInfo.getCustomUserId(request)), user);
-        user.setAvatar(FileUtils.convertAvatar(user.getAvatar()));
+        user.setAvatar(user.getAvatar());
 
         //返回当前用户信息和院系选择
         hashMap.put("user", user);

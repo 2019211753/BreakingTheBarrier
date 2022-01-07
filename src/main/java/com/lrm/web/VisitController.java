@@ -113,7 +113,6 @@ public class VisitController {
         receiveUser.setPrivacyType(null);
         receiveUser.setAdmin(null);
         receiveUser.setCanSpeak(null);
-        receiveUser.setAvatar(FileUtils.convertAvatar(receiveUser.getAvatar()));
         hashMap.put("userInfo", receiveUser);
 
         if (receiveUser.getFollowedUsers().contains(postUser) &&
