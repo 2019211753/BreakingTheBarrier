@@ -14,7 +14,7 @@
                 >
               </li>
               <li>
-                <a href="" @click="turnDatabase()"
+                <a href="javascript:;" @click="turnDatabase()"
                   ><i class="server icon"></i>资料库</a
                 >
               </li>
@@ -24,7 +24,7 @@
                 >
               </li>
               <li>
-                <a href="" @click="turnWikipedia()"
+                <a href="javascript:;" @click="turnWikipedia()"
                   ><i class="paw icon"></i>信息百科</a
                 >
               </li>
@@ -55,13 +55,13 @@ export default {
   components: { carousel, questionnaire, team, database, wikipedia },
   methods: {
     turnWikipedia() {
-      this.$router.push("/helloWorld/wikipedia");
+      this.$router.push("/helloWorld/information");
     },
     turnTeam() {
       this.$router.push("/helloWorld/team");
     },
     turnDatabase() {
-      this.$router.push("/helloWorld/database");
+      this.$router.push("/helloWorld/literature/data");
     },
     turnHome() {
       this.$router.push("/helloWorld/home");

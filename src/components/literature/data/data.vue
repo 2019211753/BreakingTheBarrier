@@ -28,7 +28,7 @@
           @current-change="handleCurrentChange"
           layout="total, prev, pager, next">
         </el-pagination>
-        <button class="ui button" @click="downFile">按钮</button>
+<!--        <button class="ui button" @click="downFile">按钮</button>-->
       </div>
 </template>
 
