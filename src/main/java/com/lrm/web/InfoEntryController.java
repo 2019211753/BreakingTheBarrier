@@ -1,8 +1,10 @@
 package com.lrm.web;
 
+import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.InfoEntry;
 import com.lrm.service.InfoEntryServiceImpl;
+import com.lrm.util.LockHolder;
 import com.lrm.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +14,19 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
 @RequestMapping("/infoEntry")
 public class InfoEntryController {
     private final static Logger logger = LoggerFactory.getLogger(InfoEntryController.class);
-
+    private final static ReentrantLock lock = new ReentrantLock();
+    private final static Condition condition = lock.newCondition();
+    /** 用来判断不同线程是否修改的是相同的对象，如果相同则对线程上锁执行， */
+    private volatile static long volatileId;
+    private final static AtomicLong atomicLong = new AtomicLong();
     @Autowired
     private InfoEntryServiceImpl infoEntryServiceImpl;
 
@@ -28,6 +37,8 @@ public class InfoEntryController {
      */
     @PostMapping("/create")
     public Result create(@RequestBody @Valid InfoEntry infoEntry, BindingResult bindingResult) {
+        Condition condition = lock.newCondition();
+
         if (bindingResult.hasErrors()) {
             throw new IllegalParameterException(IllegalParameterException.getMessage(bindingResult));
         }
@@ -44,7 +55,21 @@ public class InfoEntryController {
     @PostMapping("/{entryId}/update")
     public Result update(@RequestBody InfoEntry infoEntry, @PathVariable("entryId") Long entryId) {
         infoEntry.setId(entryId);
-        infoEntryServiceImpl.update(infoEntry);
+        if (volatileId == entryId) {// 处理多用户修改同一id的词条时
+            lock.lock();
+//            LockHolder.setLocalLock(lock);
+            try {
+                infoEntryServiceImpl.update(infoEntry);
+            } catch (FailedOperationException failedOperationException) {
+                throw new FailedOperationException("词条被锁定");
+            } finally{
+                lock.unlock();
+//                LockHolder.clear();
+            }
+        } else {//无冲突
+            volatileId = entryId;
+            infoEntryServiceImpl.update(infoEntry);
+        }
         return new Result(null, "已提交，正在审核中");
     }
 
@@ -76,7 +101,7 @@ public class InfoEntryController {
      */
     @GetMapping("/show")
     public Result showEntries() {
-        HashMap<String, Object> hashMap = new HashMap();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("entries", infoEntryServiceImpl.getApprovedByTime());
         return new Result(hashMap, "需要展示的词条");
     }

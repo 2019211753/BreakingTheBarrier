@@ -1,8 +1,10 @@
 package com.lrm.service;
 
 import com.lrm.dao.InfoEntryRepository;
+import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.InfoEntry;
+import com.lrm.util.LockHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,9 @@ public class InfoEntryServiceImpl implements InfoEntryService {
             throw new NotFoundException("此词条不存在");
         }
         InfoEntry infoEntry = found.get();
+        if (infoEntry.isLocked()) {
+            throw new FailedOperationException("词条被锁住");
+        }
         infoEntry.setNewContent(newEntry.getNewContent());
         infoEntry.setApproved(false);//更新后有待审核
         infoEntry.setLocked(true);//暂时锁住
