@@ -19,9 +19,9 @@ public class AsyncServiceImpl implements AysncService {
     public void executeAysnc(HttpServletResponse response, String objectName,
                              String endpoint, String accessKeyId,
                              String accessKeySecret, String bucketName) throws IOException {
-        logger.info("Aysnc task start");
+        logger.info("执行下载任务的线程：" + Thread.currentThread());
         OSSUtils.downloadFile(response.getOutputStream(), objectName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
-        logger.info("Aysnc task finished");
+        logger.info("下载任务：" + Thread.currentThread() + "执行完毕");
     }
 
 }
