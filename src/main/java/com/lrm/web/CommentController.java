@@ -143,7 +143,6 @@ public class CommentController
                 List<Comment> receiveComments = comment.getReceiveComments();
                 if (receiveComments.size() != 0) {
                     for (Comment receiveComment : receiveComments) {
-                        receiveComment.setParentCommentName(receiveComment.getParentComment().getPostUser().getNickname());
                         insertAttribute(receiveComment, userId);
                     }
                 }
@@ -159,6 +158,12 @@ public class CommentController
      * @param userId  当前用户对象
      */
     void insertAttribute(Comment comment, Long userId) {
+        Comment parentComment = comment.getParentComment();
+        if (parentComment != null)
+        {
+            //父级评论发布者
+            comment.setParentCommentName(parentComment.getPostUser().getNickname());
+        }
         //得到发布问题的人
         User postUser = comment.getPostUser();
 

@@ -124,7 +124,7 @@ public class CustomerFavoriteController {
      * @return 新收藏夹
      */
     @PostMapping("/favorite/edit")
-    public Result editFavorite(Favorite favorite0, HttpServletRequest request) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public Result editFavorite(@RequestBody Favorite favorite0, HttpServletRequest request) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         Map<String, Object> hashMap = new HashMap<>(1);
 
         Long customUserId = TokenInfo.getCustomUserId(request);
@@ -133,7 +133,7 @@ public class CustomerFavoriteController {
 
         //如果收藏夹不存在 抛出404异常
         if (favoriteId == null) {
-            throw new NotFoundException("未查询到该收藏夹");
+            throw new NotFoundException("请填入收藏夹Id");
         }
         //查询到数据库中的对应该Id的收藏夹
         Favorite favorite = favoriteServiceImpl.getFavoriteById(favoriteId);
@@ -187,7 +187,7 @@ public class CustomerFavoriteController {
      */
     @GetMapping("/favorite/{favoriteId}")
     public Result showQuestions(@PathVariable Long favoriteId,
-                                @PageableDefault(size = Magic.FAVORITE_CONTENT_SIZE, direction = Sort.Direction.DESC) Pageable pageable,
+                                @PageableDefault(size = Magic.FAVORITE_CONTENT_PAGE_SIZE, direction = Sort.Direction.DESC) Pageable pageable,
                                 HttpServletRequest request) {
         Long customerUserId = TokenInfo.getCustomUserId(request);
         Map<String, Object> hashMap = new HashMap<>(2);
@@ -271,7 +271,7 @@ public class CustomerFavoriteController {
         User owner = t.getUser();
         if (!favorite.getFavoriteQuestions().contains(t) && !favorite.getFavoriteBlogs().contains(t)) {
 
-            if (favorite.getSize() == Favorite.getMAXSIZE()) {
+            if (favorite.getSize() == Magic.MAX_FAVORITE_CONTENT_SIZE) {
                 throw new FailedOperationException("收藏夹已满");
             }
 

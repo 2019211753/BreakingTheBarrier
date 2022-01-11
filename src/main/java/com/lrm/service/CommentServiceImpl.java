@@ -61,7 +61,11 @@ public class CommentServiceImpl implements CommentService {
             }
 
             //父问题评论数增加
-            parentComment.setCommentsNum(parentComment.getCommentsNum() + 1);
+            while (parentComment != null)
+            {
+                parentComment.setCommentsNum(parentComment.getCommentsNum() + 1);
+                parentComment = parentComment.getParentComment();
+            }
 
             //初始化
             comment.setParentComment(parentComment);
@@ -239,7 +243,7 @@ public class CommentServiceImpl implements CommentService {
         //遍历所有第一级评论
         for (Comment comment : comments) {
 
-            resortReceiveComments(comment, Magic.DEFAULT_COMMENT_SIZE);
+            resortReceiveComments(comment, Magic.DEFAULT_COMMENT_PAGE_SIZE);
         }
     }
 
@@ -259,7 +263,7 @@ public class CommentServiceImpl implements CommentService {
 
         //清除临时存放区
         tempReplys = new ArrayList<>();
-        remains = Magic.DEFAULT_COMMENT_SIZE;
+        remains = Magic.DEFAULT_COMMENT_PAGE_SIZE;
     }
 
     private void recursively(Comment comment) {
