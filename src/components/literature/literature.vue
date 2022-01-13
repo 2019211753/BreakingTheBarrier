@@ -1,6 +1,8 @@
 <template>
   <el-container>
-    <el-header height="40px"><headbar></headbar></el-header>
+    <el-header height="40px">
+<!--      <headbar></headbar>-->
+    </el-header>
     <el-main>
         <div>
           <menu-link></menu-link>
@@ -10,7 +12,7 @@
           </router-view>
         </div>
     </el-main>
-    <el-footer><bottom></bottom></el-footer>
+    <el-footer><!--<bottom></bottom>--></el-footer>
   </el-container>
 </template>
 <script>

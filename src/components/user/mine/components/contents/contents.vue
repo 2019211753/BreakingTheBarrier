@@ -27,13 +27,6 @@
                     </router-link>
                   </a>
                 </li>
-                <li>
-                  <a>
-                    <router-link to="/helloWorld/mine/contents/likeFiles">
-                      <i class="archive icon"></i> 点赞
-                    </router-link>
-                  </a>
-                </li>
               </ul>
             </div>
           </div></el-col

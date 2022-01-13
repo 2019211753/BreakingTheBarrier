@@ -4,6 +4,10 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
+const data = () => import('../components/literature/data/data')
+const information = () => import('../components/literature/Information/Information')
+const literature = () => import('../components/literature/literature')
+
 export default new Router({
         mode: "history",
         routes: [{
@@ -249,8 +253,22 @@ export default new Router({
                         name: 'wikipedia',
                         component: () =>
                             import ("../components/user/wikipedia/wikipedia")
-                    }
-
+                    },
+                  {
+                    path: '/helloWorld/literature',
+                    redirect: '/helloWorld/literature/data',
+                    component: literature,
+                    children: [
+                      {
+                        path: '/helloWorld/literature/data',
+                        component: data,
+                      },
+                      {
+                        path: '/helloWorld/literature/information',
+                        component: information
+                      }
+                    ]
+                  }
                 ]
             }
         ]

@@ -8,11 +8,11 @@
         <el-aside width="45px"
           ><img
             class="ui circular image"
-            :src="'data:image/jpg;base64,' + $store.state.others.avatar"
+            :src="'data:image/jpg;base64,' + posterUserAvatar"
         /></el-aside>
 
         <el-main>
-          <h4 style="margin-top: -13px">{{ $store.state.others.nickname }}</h4>
+          <h4 style="margin-top: -13px">{{ posterUser }}</h4>
           <p style="margin-top: -13px; color: grey; font-size: 13px">
             {{ item.createTime }}
           </p>
@@ -106,11 +106,10 @@ export default {
   data() {
     return {
       loading: true,
-      /* cover: [], */
+      cover: [],
       contentList: [],
-      /*   posterUser: sessionStorage.getItem("posterUser"),
+      posterUser: sessionStorage.getItem("posterUser"),
       posterUserAvatar: sessionStorage.getItem("posterUserAvatar"),
-   */
     };
   },
   created() {
