@@ -24,12 +24,6 @@ export default new Router({
                     import ("../components/register")
             },
             {
-                path: '/helloWorld/admin/logIn',
-                name: 'adminLogIn',
-                component: () =>
-                    import ("../components/admin/adminLogIn")
-            },
-            {
                 path: '/helloWorld/model',
                 name: 'model',
                 component: () =>
@@ -163,6 +157,11 @@ export default new Router({
                                     name: 'commentFiles',
                                     component: () =>
                                         import ("../components/user/mine/components/contents/commentFiles")
+                                }, {
+                                    path: '/helloWorld/mine/contents/likeFiles',
+                                    name: 'likeFiles',
+                                    component: () =>
+                                        import ("../components/user/mine/components/contents/likeFiles")
                                 }]
                             },
                             {

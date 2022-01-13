@@ -4,7 +4,6 @@
       <div class="ui button" style="background-color: white">
         <router-link to="/helloWorld/mine/information"> 个人资料 </router-link>
       </div>
-      <div class="ui button" style="background-color: white">浏览历史</div>
       <div class="ui button" style="background-color: white">
         <router-link to="/helloWorld/mine/message/read"> 我的消息 </router-link>
       </div>
@@ -21,11 +20,20 @@
           粉丝列表
         </router-link>
       </div>
-      <div class="ui button" style="background-color: white">我的点赞</div>
       <div class="ui button" style="background-color: white">
         <router-link to="/helloWorld/mine/contents/questionFiles">
           我的内容
         </router-link>
+      </div>
+      <div
+        class="ui button"
+        v-if="$store.state.me.admin == true"
+        style="background-color: white"
+      >
+        <router-link to="/helloWorld/admin/adminTag"> 后台管理 </router-link>
+      </div>
+      <div class="ui disabled button" style="background-color: white">
+        浏览历史
       </div>
     </div>
   </div>

@@ -82,15 +82,15 @@
           ><img
             class="ui medium circular image"
             style="width: 40px"
-            :src="'data:image/jpg;base64,' + avatar"
+            :src="'data:image/jpg;base64,' + $store.state.me.avatar"
         /></el-aside>
         <el-main>
-          <h4 style="margin-top: -20px">{{ nickname }}</h4>
+          <h4 style="margin-top: -20px">{{ $store.state.me.nickname }}</h4>
           <p
             style="margin-top: -10px; color: grey; font-size: 13px"
-            v-if="personalSignature"
+            v-if="$store.state.me.personalSignature"
           >
-            {{ personalSignature }}
+            {{ $store.state.me.personalSignature }}
           </p>
           <p style="margin-top: -10px; color: grey; font-size: 13px" v-else>
             暂无签名

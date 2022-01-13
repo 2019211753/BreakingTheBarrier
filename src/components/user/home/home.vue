@@ -9,23 +9,31 @@
           <div class="nav">
             <ul>
               <li>
-                <a href="" @click="turnHome()"
-                  ><i class="sticky note outline icon"></i>全部</a
+                <a>
+                  <router-link to="/helloWorld/home">
+                    <i class="sticky note outline icon"></i>全部
+                  </router-link></a
                 >
               </li>
               <li>
-                <a href="" @click="turnDatabase()"
-                  ><i class="server icon"></i>资料库</a
+                <a href=""
+                  ><router-link to="/helloWorld/database">
+                    <i class="server icon"></i>资料库
+                  </router-link></a
                 >
               </li>
               <li>
-                <a href="" @click="turnTeam()"
-                  ><i class="handshake icon"></i>组队</a
+                <a href=""
+                  ><router-link to="/helloWorld/team">
+                    <i class="handshake icon"></i>组队
+                  </router-link></a
                 >
               </li>
               <li>
-                <a href="" @click="turnWikipedia()"
-                  ><i class="paw icon"></i>信息百科</a
+                <a href=""
+                  ><router-link to="/helloWorld/wikipedia">
+                    <i class="paw icon"></i>信息百科
+                  </router-link></a
                 >
               </li>
             </ul>
@@ -53,20 +61,6 @@ import wikipedia from "./components/wikipedia.vue";
 export default {
   name: "home",
   components: { carousel, questionnaire, team, database, wikipedia },
-  methods: {
-    turnWikipedia() {
-      this.$router.push("/helloWorld/wikipedia");
-    },
-    turnTeam() {
-      this.$router.push("/helloWorld/team");
-    },
-    turnDatabase() {
-      this.$router.push("/helloWorld/database");
-    },
-    turnHome() {
-      this.$router.push("/helloWorld/home");
-    },
-  },
 };
 </script>
 

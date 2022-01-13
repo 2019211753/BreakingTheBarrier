@@ -52,7 +52,8 @@ export default {
                 type: "success",
               });
               /* sessionStorage["token"] = response.data.data.token; */
-              that.resetSetItem("token", response.data.data.token);
+             /* that.$store.commit("getToken", response.data.data.token); */
+             that.resetSetItem("token", response.data.data.token); 
               that.$router.push("/helloWorld/home");
               history.pushState(null, null, document.URL);
               window.addEventListener("popstate", function () {

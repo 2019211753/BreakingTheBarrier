@@ -1,7 +1,7 @@
 <template>
   <div class="ui basic segment">
     <div class="ui basic segment">
-      <h3 style="float: left; margin-top: 2px">资料库</h3>
+      <h3 style="margin-top: 50px">资料库</h3>
       <button
         class="ui mini right labeled icon button"
         style="margin-left: 720px; background-color: white"
@@ -14,7 +14,7 @@
     <el-row :gutter="24">
       <el-col :span="4">
         <div class="ui basic segment" style="height: 120px">
-          <i class="ui massive orange book icon"></i>
+          <img class="ui rounded image" src="../../../../assets/P.png" alt="" />
         </div>
       </el-col>
       <el-col :span="5">

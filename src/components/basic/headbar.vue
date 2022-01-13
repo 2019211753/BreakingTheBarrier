@@ -18,13 +18,6 @@
               </router-link>
             </a>
           </li>
-          <!-- <li>
-            <a href="">
-              <router-link to="/helloWorld/rank">
-                <i class="trophy icon"></i>排行榜
-              </router-link>
-            </a>
-          </li> -->
           <li style="margin-left: 500px">
             <a href="">
               <router-link to="/helloWorld/mine/contents/questionFiles">
@@ -35,7 +28,7 @@
                 </el-skeleton>
                 <img
                   v-else
-                  :src="'data:image/jpg;base64,' + imgSrc"
+                  :src="'data:image/jpg;base64,' + $store.state.me.avatar"
                   alt=""
                   class="ui avatar image"
                 />
@@ -55,12 +48,12 @@
 
 <script>
 import axios from "axios";
-import eventBus from "../eventBus";
+/* import eventBus from "../eventBus"; */
 /* import jwtDecode from "jwt-decode"; */
 export default {
   name: "headbar",
   data() {
-    return { loading: true, imgSrc: "" };
+    return { loading: true };
   },
   methods: {
     logOut() {
@@ -76,38 +69,26 @@ export default {
     axios
       .get("/customer/personal")
       .then(function (response) {
-        console.log(response.data.data.ACADEMIES);
-        that.imgSrc = response.data.data.user.avatar;
+        console.log(response.data);
         that.loading = false;
-        sessionStorage["id"] = response.data.data.user.id;
-        sessionStorage["avatar"] = response.data.data.user.avatar;
-        sessionStorage["nickname"] = response.data.data.user.nickname;
-        sessionStorage["academy"] = response.data.data.user.academy;
-        sessionStorage["email"] = response.data.data.user.email;
-        sessionStorage["major"] = response.data.data.user.major;
-        sessionStorage["sex"] = response.data.data.user.sex;
-        sessionStorage["QQ"] = response.data.data.user.qqId;
-        sessionStorage["personalSignature"] =
-          response.data.data.user.personalSignature;
-        /* sessionStorage["avatar"] = response.data.data.user.avatar; */
-        sessionStorage["donation"] = response.data.data.user.donation;
-        sessionStorage["followedUserNum"] =
-          response.data.data.user.followedUserNum;
-        sessionStorage["followingUserNum"] =
-          response.data.data.user.followingUserNum;
-        eventBus.$emit("pushMsg", response.data.data.ACADEMIES);
+        var resUser1 = response.data.data.user;
+        var resUser2 = response.data.data;
+        that.$store.commit("getMyAvatar", response.data.data.user.avatar);
+        that.$store.commit("getMyFile1", resUser1);
+        that.$store.commit("getMyFile2", resUser2);
+        /* eventBus.$emit("pushMsg", ); */
       })
       .catch(function (error) {
         console.log(error);
       });
-    window.addEventListener("setItem", (e) => {
+    /* window.addEventListener("setItem", (e) => {
       if (e.key == "avatar") {
         console.log(e.newValue);
         that.imgSrc = e.newValue;
       }
-      /* var decode = jwtDecode(e.newValue);
-      console.log(decode); */
-    });
+    var decode = jwtDecode(e.newValue);
+      console.log(decode);
+    }); */
   },
 };
 </script>

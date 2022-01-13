@@ -3,12 +3,11 @@
     <div class="ui segment">
       <img
         class="ui centered medium circular image"
-        src="../assets/hello.jpg"
+        src="../assets/logo.jpg"
         alt=""
       />
       <div class="ui teal fluid button" @click="turnToLogIn()">登录</div>
       <div class="ui teal fluid button" @click="turnToRegister()">注册</div>
-      <div class="ui teal fluid button" @click="turnToAdmin()">管理员</div>
     </div>
   </div>
 </template>
@@ -22,9 +21,6 @@ export default {
     },
     turnToRegister() {
       this.$router.push("/helloWorld/register");
-    },
-    turnToAdmin() {
-      this.$router.push("/helloWorld/admin/logIn");
     },
   },
 };

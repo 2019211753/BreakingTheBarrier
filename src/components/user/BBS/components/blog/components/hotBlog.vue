@@ -36,7 +36,10 @@
                   <router-link
                     :to="{
                       path: '/helloWorld/BBS/blogContent',
-                      query: { blogId: item.id },
+                      query: {
+                        blogId: item.id,
+                        posterUserId0: item.posterUserId0,
+                      },
                     }"
                     >{{ item.title }}</router-link
                   >
