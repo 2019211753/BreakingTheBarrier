@@ -28,7 +28,7 @@
                     class="ui avatar image"
                   />
                   <div class="content">
-                    <a href="#" class="header">{{ item.nickname }}</a>
+                    <a class="header">{{ item.nickname }}</a>
                   </div>
                 </div>
               </div>
