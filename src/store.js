@@ -82,13 +82,14 @@ export default new Vuex.Store({
             state.me.id = data.user.id;
             state.me.canSpeak = data.user.canSpeak;
             state.me.admin = data.user.admin;
-            state.me.academies = data.academies;
+            state.me.academies = data.ACADEMIES;
             state.me.donation = data.user.donation;
             state.me.followedUserNum = data.user.followedUserNum;
             state.me.followingUserNum = data.user.followingUserNum
         },
         getOthersFile(state, data) {
             state.others.nickname = data.nickname;
+            console.log(state.others.nickname)
             state.others.avatar = data.avatar;
             state.others.personalSignature = data.personalSignature;
             state.others.contentsNum = data.blogs.length + data.comments.length + data.questions.length;

@@ -13,11 +13,6 @@
             class="e"
             placeholder="设置用户名"
             v-model="userName"
-          /><input
-            type="text"
-            class="e"
-            placeholder="设置昵称"
-            v-model="nickName"
           />
           <input
             type="password"
@@ -30,8 +25,19 @@
             class="e"
             placeholder="确认密码"
             v-model="surePassWord"
+          /><input
+            type="text"
+            class="e"
+            placeholder="设置昵称"
+            v-model="nickName"
           />
-          <button class="g" @click="sure()">确定</button>
+          <button
+            class="ui big teal button"
+            style="margin-left: 18%; margin-top: 25px; width: 150px"
+            @click="sure()"
+          >
+            确定
+          </button>
         </div>
       </div>
     </div>

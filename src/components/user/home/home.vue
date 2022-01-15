@@ -9,24 +9,39 @@
           <div class="nav">
             <ul>
               <li>
-                <a href="" @click="turnHome()"
-                  ><i class="sticky note outline icon"></i>全部</a
-                >
+                <a href="">
+                  <router-link to="/helloWorld/home">
+                    <i class="sticky note outline icon"></i>首页
+                  </router-link>
+                </a>
               </li>
               <li>
-                <a href="javascript:;" @click="turnDatabase()"
-                  ><i class="server icon"></i>资料库</a
-                >
+                <a href="">
+                  <router-link to="/helloWorld/BBS/questions">
+                    <i class="home icon"></i>论坛
+                  </router-link>
+                </a>
               </li>
               <li>
-                <a href="" @click="turnTeam()"
-                  ><i class="handshake icon"></i>组队</a
-                >
+                <a href="">
+                  <router-link to="/helloWorld/literature/data">
+                    <i class="server icon"></i>资料库
+                  </router-link>
+                </a>
               </li>
               <li>
-                <a href="javascript:;" @click="turnWikipedia()"
-                  ><i class="paw icon"></i>信息百科</a
-                >
+                <a href="">
+                  <router-link to="/helloWorld/team">
+                    <i class="handshake icon"></i>组队
+                  </router-link>
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  <router-link to="/helloWorld/information">
+                    <i class="paw icon"></i>信息百科
+                  </router-link>
+                </a>
               </li>
             </ul>
           </div>
@@ -53,20 +68,6 @@ import wikipedia from "./components/wikipedia.vue";
 export default {
   name: "home",
   components: { carousel, questionnaire, team, database, wikipedia },
-  methods: {
-    turnWikipedia() {
-      this.$router.push("/helloWorld/information");
-    },
-    turnTeam() {
-      this.$router.push("/helloWorld/team");
-    },
-    turnDatabase() {
-      this.$router.push("/helloWorld/literature/data");
-    },
-    turnHome() {
-      this.$router.push("/helloWorld/home");
-    },
-  },
 };
 </script>
 
@@ -110,7 +111,7 @@ a {
 .header {
   height: 40px;
   /* background-color: rgb(100, 133, 208); */
-  width: 50%;
+  width: 70%;
   margin: auto;
   /* margin-top: -20px; */
 }
@@ -136,33 +137,5 @@ li {
   margin-top: -50px;
   /* background-color: blue; */
 }
-.inside {
-  width: 100%;
-  margin: auto;
-  margin-top: 20px;
-}
-.team {
-  width: 60%;
-  /* height: 800px; */
-  /* background-color: blue; */
-  float: left;
-}
-.database {
-  width: 38%;
-  height: 320px;
-  margin-left: 2%;
-  float: left;
-  background-color: aquamarine;
-}
-.wikipedia {
-  width: 100%;
-  /*   background-color: blueviolet; */
-  float: left;
-  margin-top: 40px;
-}
-.input {
-  width: 38%;
-  margin-left: 2%;
-  height: 40px;
-}
+
 </style>

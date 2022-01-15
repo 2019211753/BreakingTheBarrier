@@ -192,6 +192,8 @@ export default {
     };
   },
   created() {
+    this.academyList = this.$store.state.me.academies;
+    console.log(this.academyList);
     /* eventBus.$on("pushMsg", (headbarMsg) => {
       this.academyList = headbarMsg;
       console.log(this.academyList);

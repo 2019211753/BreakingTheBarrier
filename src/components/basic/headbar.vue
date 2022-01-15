@@ -18,7 +18,28 @@
               </router-link>
             </a>
           </li>
-          <li style="margin-left: 500px">
+          <li>
+            <a href="">
+              <router-link to="/helloWorld/literature/data">
+                <i class="server icon"></i>资料库
+              </router-link>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <router-link to="/helloWorld/team">
+                <i class="handshake icon"></i>组队
+              </router-link>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <router-link to="/helloWorld/information">
+                <i class="paw icon"></i>信息百科
+              </router-link>
+            </a>
+          </li>
+          <li style="margin-left: 180px">
             <a href="">
               <router-link to="/helloWorld/mine/contents/questionFiles">
                 <el-skeleton :loading="loading" animated v-if="loading == true">

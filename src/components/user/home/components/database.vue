@@ -1,15 +1,19 @@
 <template>
   <div class="ui basic segment">
     <div class="ui basic segment">
-      <h3 style="margin-top: 50px">资料库</h3>
-      <button
-        class="ui mini right labeled icon button"
-        style="margin-left: 720px; background-color: white"
-        @click="more()"
-      >
-        <i class="angle double right icon" style="background-color: white"></i>
-        更多
-      </button>
+      <h3 style="margin-top: 10px">
+        资料库<button
+          class="ui mini right labeled icon button"
+          style="margin-left: 720px; background-color: white"
+          @click="more()"
+        >
+          <i
+            class="angle double right icon"
+            style="background-color: white"
+          ></i>
+          更多
+        </button>
+      </h3>
     </div>
     <el-row :gutter="24">
       <el-col :span="4">

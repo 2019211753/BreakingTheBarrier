@@ -20,7 +20,13 @@
             placeholder="密码"
             v-model="passWord"
           />
-          <button class="g" @click="sure()">确定</button>
+          <button
+            class="ui big teal button"
+            style="margin-left: 18%; margin-top: 25px; width: 150px"
+            @click="sure()"
+          >
+            确定
+          </button>
         </div>
       </div>
     </div>
@@ -52,8 +58,8 @@ export default {
                 type: "success",
               });
               /* sessionStorage["token"] = response.data.data.token; */
-             /* that.$store.commit("getToken", response.data.data.token); */
-             that.resetSetItem("token", response.data.data.token); 
+              /* that.$store.commit("getToken", response.data.data.token); */
+              that.resetSetItem("token", response.data.data.token);
               that.$router.push("/helloWorld/home");
               history.pushState(null, null, document.URL);
               window.addEventListener("popstate", function () {

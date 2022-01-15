@@ -35,7 +35,7 @@
           <el-col :span="6">
             <div class="avatar" style="margin-left: 20px; margin-top: 10px">
               <img
-                :src="'data:image/jpg;base64,' + posterUserAvatar"
+                :src="'data:image/jpg;base64,' + $store.state.others.avatar"
                 alt=""
                 class="ui small circular image"
               />
@@ -43,26 +43,31 @@
           </el-col>
           <el-col :span="14">
             <div class="information" style="margin-top: -5px">
-              <h2>{{ posterUser }}</h2>
-              <p style="color: grey" v-if="posterUserPersonalSignature">
-                {{ posterUserPersonalSignature }}
+              <h2>{{ $store.state.others.nickname }}</h2>
+              <p
+                style="color: grey"
+                v-if="$store.state.others.personalSignature"
+              >
+                {{ $store.state.others.personalSignature }}
               </p>
               <p style="color: grey" v-else>暂无签名</p>
               <div class="data">
                 <div class="ui three mini statistics">
                   <div class="statistic">
-                    <div class="value">{{ posterUserContentsNum }}</div>
+                    <div class="value">
+                      {{ $store.state.others.contentsNum }}
+                    </div>
                     <div class="label">内容</div>
                   </div>
                   <div class="statistic">
                     <div class="value">
-                      {{ posterUserFollowedUserNum }}
+                      {{ $store.state.others.followedUserNum }}
                     </div>
                     <div class="label">粉丝</div>
                   </div>
                   <div class="statistic">
                     <div class="value">
-                      {{ posterUserFollowingUserNum }}
+                      {{ $store.state.others.followingUserNum }}
                     </div>
                     <div class="label">关注</div>
                   </div>
@@ -131,7 +136,7 @@
       </div>
     </div>
     <div class="side">
-     <recommend></recommend>
+      <recommend></recommend>
     </div>
   </div>
 </template>
@@ -142,7 +147,7 @@ import recommend from "./components/recommend";
 
 export default {
   name: "visitor",
-  components: {recommend},
+  components: { recommend },
   data() {
     return {
       loading: true,
