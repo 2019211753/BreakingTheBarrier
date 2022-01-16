@@ -649,7 +649,7 @@ Long id;
 /**
 * 标签名称 前端必填
 */
-@NotBlank(message = "请输入标签名称")
+@NotBlank(archive = "请输入标签名称")
 String name;
 /**
 * 标签下的文件 
@@ -1010,7 +1010,7 @@ StringBuffer url;
  *
  * 都是List集合 
  */
-@GetMapping("/customer/messages/")
+@GetMapping("/customer/archives/")
 ```
 
 ##### 已读某评论
@@ -1022,7 +1022,7 @@ StringBuffer url;
  * @param commentId 评论id
  * @return data：{null}
  */
-@GetMapping("/customer/messages/comment/{commentId}/read")
+@GetMapping("/customer/archives/comment/{commentId}/read")
 ```
 
 ##### 已读某点赞
@@ -1034,7 +1034,7 @@ StringBuffer url;
  * @param likesId 点赞id
  * @return data：{null}
  */
-@GetMapping("/customer/messages/likes/{likesId}/read")
+@GetMapping("/customer/archives/likes/{likesId}/read")
 ```
 
 ##### 已读所有未读的评论
@@ -1045,7 +1045,7 @@ StringBuffer url;
  *
  * @return data：{null}
  */
-@GetMapping("/customer/messages/readAllComments")
+@GetMapping("/customer/archives/readAllComments")
 ```
 
 ##### 已读所有未读的点赞
@@ -1056,7 +1056,7 @@ StringBuffer url;
  *
  * @return data：{null}
  */
-@GetMapping("/customer/messages/readAllLikes")
+@GetMapping("/customer/archives/readAllLikes")
 ```
 
 #### 个人信息管理

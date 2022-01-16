@@ -1,23 +1,26 @@
 package com.lrm.util;
 
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
-import com.aliyun.oss.model.BucketInfo;
-import com.aliyun.oss.model.OSSObject;
+import com.aliyun.oss.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.Date;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.aliyun.oss.internal.OSSConstants.URL_ENCODING;
 
 public class OSSUtils {
     private static Logger logger = LoggerFactory.getLogger(OSSUtils.class);
 
-    public static void uploadFile(MultipartFile multipartFile, Date date,
+    public static void uploadFile(MultipartFile multipartFile,
                                   String endpoint, String accessKeyId,
-                                  String accessKeySecret, String bucketName) {
+                                  String accessKeySecret, String bucketName,
+                                  String catalog, String fileName) {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         try {
@@ -38,9 +41,9 @@ public class OSSUtils {
             System.out.println("\t用户标志：" + info.getBucket().getOwner());
 
             // 上传文件
-            if (multipartFile.getSize() != 0 && !multipartFile.getName().equals("")) {
+            if (multipartFile.getSize() != 0 && !"".equals(multipartFile.getName())) {
                 InputStream multiInputStream = multipartFile.getInputStream();
-                ossClient.putObject(bucketName, multipartFile.getOriginalFilename() + date.toString(), multiInputStream);
+                ossClient.putObject(bucketName, catalog + fileName, multiInputStream);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,5 +79,45 @@ public class OSSUtils {
         }
     }
 
+    public static void deleteFile(String endpoint, String accessKeyId,
+                                  String accessKeySecret, String bucketName,
+                                  String catalog) {
+        //创建OSSClient实例。
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+
+        //删除目录及目录下的所有文件。
+        String nextMarker = null;
+        ObjectListing objectListing;
+        do {
+            ListObjectsRequest listObjectsRequest = new ListObjectsRequest(bucketName)
+                    .withPrefix(catalog)
+                    .withMarker(nextMarker);
+
+            objectListing = ossClient.listObjects(listObjectsRequest);
+            if (objectListing.getObjectSummaries().size() > 0) {
+                List<String> keys = new ArrayList<>();
+                for (OSSObjectSummary s : objectListing.getObjectSummaries()) {
+                    System.out.println("key name: " + s.getKey());
+                    keys.add(s.getKey());
+                }
+                DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName).withKeys(keys).withEncodingType(URL_ENCODING);
+                DeleteObjectsResult deleteObjectsResult = ossClient.deleteObjects(deleteObjectsRequest);
+                List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
+                try {
+                    for(String obj : deletedObjects) {
+                        String deleteObj =  URLDecoder.decode(obj, "UTF-8");
+                        System.out.println(deleteObj);
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            nextMarker = objectListing.getNextMarker();
+        } while (objectListing.isTruncated());
+
+        //关闭OSSClient。
+        ossClient.shutdown();
+    }
 
 }

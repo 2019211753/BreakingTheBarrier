@@ -7,7 +7,6 @@ import com.lrm.exception.NoPermissionException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
-import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -179,7 +178,7 @@ public class CommentController
             comment.setDisapproved(false);
         }
 
-        comment.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
+        comment.setAvatar(postUser.getAvatar());
         comment.setNickname(postUser.getNickname());
     }
 

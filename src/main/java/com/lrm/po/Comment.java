@@ -2,6 +2,8 @@ package com.lrm.po;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lrm.util.ContentSerializerUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -42,6 +44,7 @@ public class Comment {
      */
     @Lob
     @NotBlank(message = "请输入评论内容")
+    @JsonSerialize(using = ContentSerializerUtils.class)
     private String content;
 
     /**

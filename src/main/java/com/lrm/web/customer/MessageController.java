@@ -4,11 +4,10 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.Comment;
 import com.lrm.po.Likes;
-import com.lrm.po.User;
 import com.lrm.service.CommentServiceImpl;
 import com.lrm.service.LikesServiceImpl;
-import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
+import com.lrm.vo.Archive;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 消息通知管理
@@ -51,64 +53,32 @@ public class MessageController {
 
         //已读评论
         List<Comment> lookedComments = commentServiceImpl.listComments(userId, true);
-
         //自己评论自己会默认已读，需要在已读评论中去除掉
-        //使用iterator避免ConcurrentModificationException异常
-        Iterator<Comment> iterator = lookedComments.iterator();
-        while(iterator.hasNext()) {
-            Comment comment = iterator.next();
-            if (comment.getPostUser() == comment.getReceiveUser()) {
-                iterator.remove();
-                continue;
-            }
-            User postUser = comment.getPostUser();
-            comment.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
-            comment.setNickname(postUser.getNickname());
-        }
+        lookedComments.removeIf(comment -> comment.getPostUser() == comment.getReceiveUser());
         //本来是按id排的，实际上就是创建时间，为实现创建时间逆序，直接反序
         Collections.reverse(lookedComments);
+        List<Archive> lookedCommentArchives = Archive.getCommentMessages(lookedComments);
 
         //未读评论
         List<Comment> unLookedComments = commentServiceImpl.listComments(userId, false);
-
-        for (Comment comment : unLookedComments) {
-            User postUser = comment.getPostUser();
-            comment.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
-            comment.setNickname(postUser.getNickname());
-        }
         Collections.reverse(unLookedComments);
+        List<Archive> unLookedCommentArchives = Archive.getCommentMessages(unLookedComments);
 
         //已读点赞
         List<Likes> lookedLikes = likesServiceImpl.list(userId, true);
-
-        Iterator<Likes> iterator1 = lookedLikes.iterator();
-        while(iterator1.hasNext()) {
-            Likes likes1 = iterator1.next();
-            if (likes1.getPostUser() == likes1.getReceiveUser()) {
-                iterator1.remove();
-                continue;
-            }
-            User postUser = likes1.getPostUser();
-            likes1.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
-            likes1.setNickname(postUser.getNickname());
-        }
+        lookedLikes.removeIf(likes1 -> likes1.getPostUser() == likes1.getReceiveUser());
         Collections.reverse(lookedLikes);
-
+        List<Archive> lookedLikesArchives = Archive.getLikesMessages(lookedLikes);
 
         //未读点赞
         List<Likes> unLookedLikes = likesServiceImpl.list(userId, false);
-
-        for (Likes likes1 : unLookedLikes) {
-            User postUser = likes1.getPostUser();
-            likes1.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
-            likes1.setNickname(postUser.getNickname());
-        }
         Collections.reverse(unLookedLikes);
+        List<Archive> unLookedLikesArchives = Archive.getLikesMessages(unLookedLikes);
 
-        hashMap.put("lookedComments", lookedComments);
-        hashMap.put("unLookedComments", unLookedComments);
-        hashMap.put("lookedLikes", lookedLikes);
-        hashMap.put("unLookedLikes", unLookedLikes);
+        hashMap.put("lookedComments", lookedCommentArchives);
+        hashMap.put("unLookedComments", unLookedCommentArchives);
+        hashMap.put("lookedLikes", lookedLikesArchives);
+        hashMap.put("unLookedLikes", unLookedLikesArchives);
 
         return new Result(hashMap, "");
     }

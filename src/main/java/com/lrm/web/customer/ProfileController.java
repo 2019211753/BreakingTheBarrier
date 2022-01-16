@@ -1,11 +1,9 @@
 package com.lrm.web.customer;
 
+import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.User;
 import com.lrm.service.UserServiceImpl;
-import com.lrm.util.FileUtils;
-import com.lrm.util.MD5Utils;
-import com.lrm.util.StringVerify;
-import com.lrm.util.TokenInfo;
+import com.lrm.util.*;
 import com.lrm.vo.Magic;
 import com.lrm.vo.Result;
 import org.springframework.beans.BeanUtils;
@@ -30,8 +28,20 @@ import java.util.Map;
 @RequestMapping("/customer")
 @RestController
 public class ProfileController {
-    @Value("${web.upload-path}")
-    private String path;
+    @Value("${oss.endpoint_avatar}")
+    private String endpoint;
+
+    @Value("${oss.accessKeyId_avatar}")
+    private String accessKeyId;
+
+    @Value("${oss.accessKeySecret_avatar}")
+    private String accessKeySecret;
+
+    @Value("${oss.bucketName_avatar}")
+    private String bucketName;
+
+    @Value("${oss.urlPrefix_avatar}")
+    private String urlPrefix;
 
     @Autowired
     private UserServiceImpl userServiceImpl;
@@ -61,36 +71,54 @@ public class ProfileController {
     //下面两个资料修改最好分开
 
     /**
-     * 上传头像到本地 获取path返回
+     * 上传头像到oss 获取url返回
      *
      * @param req  获取当前用户id
      * @param file 被上传的文件
-     * @return avatar 文件在服务器端的路径
+     * @return avatar 头像的url
      */
     @PostMapping("/uploadAvatar")
     public Result uploadAvatar(MultipartFile file, HttpServletRequest req) throws IOException {
         Map<String, Object> hashMap = new HashMap<>(1);
         Long userId = TokenInfo.getCustomUserId(req);
 
-        //头像文件夹的绝对路径
-        String realPath = path + "/" + userId + "/avatar";
+        //限制图片大小
+        long size = file.getSize();
+        if (size / 1024 > Magic.MAX_UPLOAD_AVATAR_SIZE_BYTES) {
+            throw new IllegalParameterException("图片大小为：" + size + "KB，超过了" + Magic.MAX_UPLOAD_AVATAR_SIZE_BYTES + "KB");
+        }
 
-        //所上传的文件原名
-        String oldName = file.getOriginalFilename();
+        if (file.getOriginalFilename() == null) {
+            throw new IllegalParameterException("请为文件命名");
+        }
 
-        //保存文件到文件夹中 获得新文件名
-        FileUtils.rebuildFolder(realPath);
-        String newName = FileUtils.upload(file, realPath, oldName);
+        String suffix = FileTypeUtils.getFileType(file);
+        if (!"PNG".equalsIgnoreCase(suffix) &&
+            !"JPG".equalsIgnoreCase(suffix) &&
+            !"JPEG".equalsIgnoreCase(suffix) &&
+            !"BMP".equalsIgnoreCase(suffix) &&
+            !"GIF".equalsIgnoreCase(suffix)) {
 
+            throw new IllegalArgumentException("请上传类型合法的图片");
+        }
+
+        String catalog = userId + "/avatar/";
+        //先删了，一个用户只需要一个头像
+        OSSUtils.deleteFile(endpoint, accessKeyId, accessKeySecret, bucketName, catalog);
+        //再创建目录
+        String fileName = FileUtils.getFileName(file.getOriginalFilename());
+        OSSUtils.uploadFile(file, endpoint, accessKeyId, accessKeySecret, bucketName,
+                catalog, fileName);
+
+        String avatarURL = "https://" + urlPrefix + "/" + catalog + fileName;
         User user = userServiceImpl.getUser(userId);
-        user.setAvatar(userId + "/avatar/" + newName);
+        user.setAvatar(avatarURL);
         userServiceImpl.saveUser(user);
 
-        String base64Avatar = FileUtils.convertAvatar(user.getAvatar());
-        hashMap.put("avatar", base64Avatar);
+        hashMap.put("avatar", avatarURL);
+
         return new Result(hashMap, "上传成功");
     }
-
 
     /**
      * 修改发送过来的信息

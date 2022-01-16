@@ -50,7 +50,6 @@ public class CommentServiceImpl implements CommentService {
         //得到前端封装返回的对象的parentId
         Long parentCommentId = comment.getParentCommentId0();
 
-
         boolean samePerson = false;
 
         if (parentCommentId != -1) {
@@ -135,18 +134,21 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public <T extends Template> void deleteComment(Long commentId, T t, TemplateServiceImpl<T> templateServiceImpl) {
 
-        //复原
         Comment comment = getComment(commentId);
         //父评论
         Comment parentComment = comment.getParentComment();
         //评论发出者
         User postUser = comment.getPostUser();
-        //回退
-        if (parentComment != null) {
-            parentComment.setCommentsNum(parentComment.getCommentsNum() - 1);
+
+        //所有父问题评论数减少
+        while (parentComment != null)
+        {
+            //注意这块减的数量！
+            parentComment.setCommentsNum(parentComment.getCommentsNum() - 1 - comment.getCommentsNum());
+            parentComment = parentComment.getParentComment();
         }
 
-        t.setCommentsNum(t.getCommentsNum() - 1);
+        t.setCommentsNum(t.getCommentsNum() - 1 - comment.getCommentsNum());
 
         if (comment.getAnswer()) {
             postUser.setDonation(postUser.getDonation() - DonationGrow.POST_EFFECTIVE_COMMENT.getGrow());

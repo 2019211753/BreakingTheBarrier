@@ -3,6 +3,8 @@ package com.lrm.po;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lrm.util.ContentSerializerUtils;
 import com.lrm.util.DataStructureUtils;
 
 import javax.persistence.*;
@@ -54,6 +56,7 @@ public class Template {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Lob
     @NotBlank(message = "请输入内容")
+    @JsonSerialize(using = ContentSerializerUtils.class)
     private String content;
 
     /**

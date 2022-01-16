@@ -8,7 +8,6 @@ import com.lrm.exception.NoPermissionException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
-import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Magic;
 import com.lrm.vo.Result;
@@ -212,7 +211,7 @@ public class CustomerFavoriteController {
             t.setDetails(t.getContent());
             User postUser = t.getUser();
             t.setNickname(postUser.getNickname());
-            t.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
+            t.setAvatar(postUser.getAvatar());
         }
         return pages;
     }

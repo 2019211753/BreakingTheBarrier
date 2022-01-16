@@ -1,13 +1,10 @@
 package com.lrm.web;
 
-import com.aliyun.oss.OSSClient;
 import com.lrm.dao.FileRepository;
 import com.lrm.dao.FileTagRepository;
 import com.lrm.exception.NotFoundException;
-import com.lrm.po.File;
 import com.lrm.po.FileTag;
 import com.lrm.service.AysncService;
-import com.lrm.service.FileService;
 import com.lrm.service.FileServiceImpl;
 import com.lrm.util.FileUtils;
 import com.lrm.util.OSSUtils;
@@ -18,15 +15,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.math.BigDecimal;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -110,10 +105,10 @@ public class FileController {
         //打印上传文件信息
         logFileInfo(uploadFile, uploadFilePath);
 
-        Date date = new Date();
-
+        //因为每次调用getFileName的时候返回的结果都不一样 所以在每个方法中只能使用第一次调用的结果 在最上方声明
+        String fileName = FileUtils.getFileName(uploadFile.getOriginalFilename());
         //多媒体文件转为po file
-        com.lrm.po.File newFile = FileUtils.convertFile(uploadFile, date);
+        com.lrm.po.File newFile = FileUtils.convertFile(uploadFile, fileName);
         String realTagNames = fileTagName.substring(1, fileTagName.length() - 1);
         String[] tagNames = realTagNames.split(",");
         for (int i = 0; i < tagNames.length; i++) {
@@ -121,7 +116,7 @@ public class FileController {
         }
 
         //上传到oss
-        OSSUtils.uploadFile(uploadFile, date, endpoint, accessKeyId, accessKeySecret, "wordverybig");
+        OSSUtils.uploadFile(uploadFile, endpoint, accessKeyId, accessKeySecret, "wordverybig", "", fileName);
 
         //获取用户
         Long userId = TokenInfo.getCustomUserId(request);

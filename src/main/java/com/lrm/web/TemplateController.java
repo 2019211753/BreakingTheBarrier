@@ -1,23 +1,26 @@
 package com.lrm.web;
 
+import com.lrm.exception.IllegalParameterException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
+import com.lrm.util.FileTypeUtils;
 import com.lrm.util.FileUtils;
+import com.lrm.util.OSSUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Magic;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 乱七八糟的
@@ -46,6 +49,21 @@ public class TemplateController {
 
     @Autowired
     private BlogServiceImpl blogServiceImpl;
+
+    @Value("${oss.endpoint_content}")
+    private String endpoint;
+
+    @Value("${oss.accessKeyId_content}")
+    private String accessKeyId;
+
+    @Value("${oss.accessKeySecret_content}")
+    private String accessKeySecret;
+
+    @Value("${oss.bucketName_content}")
+    private String bucketName;
+
+    @Value("${oss.urlPrefix_content}")
+    private String urlPrefix;
 
     /**
      * 返回主页问题
@@ -78,7 +96,7 @@ public class TemplateController {
 
             //得到发布问题的人
             User postUser = t.getUser();
-            t.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
+            t.setAvatar(postUser.getAvatar());
             t.setNickname(postUser.getNickname());
         }
         hashMap.put("pages", pages);
@@ -124,7 +142,7 @@ public class TemplateController {
             //得到发布问题的人
             User postUser = t0.getUser();
 
-            t0.setAvatar(FileUtils.convertAvatar(postUser.getAvatar()));
+            t0.setAvatar(postUser.getAvatar());
             t0.setNickname(postUser.getNickname());
         }
 
@@ -201,7 +219,7 @@ public class TemplateController {
         }
 
         frontT.setFavoriteIds(favoriteIds.toString());
-        frontT.setAvatar(FileUtils.convertAvatar(backT.getUser().getAvatar()));
+        frontT.setAvatar(backT.getUser().getAvatar());
         frontT.setNickname(backT.getUser().getNickname());
 
         hashMap.put("template", frontT);
@@ -217,4 +235,64 @@ public class TemplateController {
 
         return new Result(hashMap, "");
     }
+
+    /**
+     * 上传文件到oss 获取url返回
+     *
+     * @param req  获取当前用户id
+     * @param files 被上传的文件
+     * @return fileUrl 文件的url
+     */
+    @PostMapping("/uploadPictures")
+    public Result uploadPictures(@RequestBody  MultipartFile[] files, HttpServletRequest req) {
+        Map<String, Object> hashMap = new HashMap<>(1);
+        Long userId = TokenInfo.getCustomUserId(req);
+
+        List<String> urls = new ArrayList<>(files.length);
+        int num = 0;
+        for (MultipartFile file : files) {
+            num += 1;
+            if (file.getOriginalFilename() == null) {
+                throw new IllegalParameterException("请为文件命名");
+            }
+
+            //限制文件大小
+            long size = file.getSize();
+            String suffix = FileTypeUtils.getFileType(file);
+            //如果是图片
+            if ("PNG".equalsIgnoreCase(suffix) ||
+                "JPG".equalsIgnoreCase(suffix) ||
+                "JPEG".equalsIgnoreCase(suffix) ||
+                "BMP".equalsIgnoreCase(suffix) ||
+                "GIF".equalsIgnoreCase(suffix)) {
+
+                if (size / 1024 > Magic.MAX_UPLOAD_PICTURE_SIZE_BYTES) {
+                    throw new IllegalParameterException("第" + num + "个文件大小为：" + size / 1024 + "KB，超过了" + Magic.MAX_UPLOAD_PICTURE_SIZE_BYTES + "KB");
+                }
+            //如果是文件
+            } else if ("doc".equalsIgnoreCase(suffix) ||
+                       "pdf".equalsIgnoreCase(suffix) ||
+                       "docx".equalsIgnoreCase(suffix) ||
+                        //txt没有魔数
+                       "txt".equalsIgnoreCase(FileUtils.getSuffix(file.getOriginalFilename()))
+            ) {
+                if (size / 1048576 > Magic.MAX_UPLOAD_DOCUMENT_SIZE_MBYTES) {
+                    throw new IllegalParameterException("第" + num + "个文件大小为：" + size / 1048576 + "MB，超过了" + Magic.MAX_UPLOAD_DOCUMENT_SIZE_MBYTES + "MB");
+                }
+            }
+
+            String catalog = userId + "/content/";
+            //再创建目录
+            String fileName = FileUtils.getFileName(file.getOriginalFilename());
+            OSSUtils.uploadFile(file, endpoint, accessKeyId, accessKeySecret, bucketName,
+                    catalog, fileName);
+
+            String fileUrl = "https://" + urlPrefix + "/" + catalog + fileName;
+            urls.add(fileUrl);
+        }
+
+        hashMap.put("fileUrls", urls);
+        return new Result(hashMap, "上传成功");
+    }
+
 }

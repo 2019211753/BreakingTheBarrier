@@ -20,9 +20,12 @@ public class Magic {
     public static final int DEFAULT_COMMENT_PAGE_SIZE = 3;
     public static final int FAVORITE_CONTENT_PAGE_SIZE = 7;
     public static final int RANK_SIZE = 10;
+    public static final int MAX_FAVORITE_CONTENT_SIZE = 25;
     public static final int HIDE_STANDARD1 = 6;
     public static final int HIDE_STANDARD2 = 2;
-    public static final int MAX_FAVORITE_CONTENT_SIZE = 25;
+    public static final long MAX_UPLOAD_AVATAR_SIZE_BYTES = 100;
+    public static final long MAX_UPLOAD_PICTURE_SIZE_BYTES = 300;
+    public static final long MAX_UPLOAD_DOCUMENT_SIZE_MBYTES = 5;
     public static final Map<String, List<String>> ACADEMIES = createMap();
 
     public static Map<String, List<String>> createMap() {

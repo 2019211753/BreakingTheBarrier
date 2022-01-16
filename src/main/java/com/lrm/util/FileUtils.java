@@ -1,4 +1,5 @@
 package com.lrm.util;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.Base64;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -20,6 +20,8 @@ import java.util.UUID;
  */
 @Component
 public class FileUtils {
+    private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
+
     /**
      * 随机盐
      */
@@ -48,7 +50,6 @@ public class FileUtils {
         }
     }
 
-    private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
     /**
      * @param file 被删除的文件
      */
@@ -159,11 +160,11 @@ public class FileUtils {
      * @param uploadFile
      * @return 数据库中的file
      */
-    public static com.lrm.po.File convertFile(MultipartFile uploadFile, Date date) {
-        com.lrm.po.File newFile = new com.lrm.po.File(uploadFile.getOriginalFilename());
+    public static com.lrm.po.File convertFile(MultipartFile uploadFile, String fileName) {
+        com.lrm.po.File newFile = new com.lrm.po.File(fileName);
         //由于docu项目未实现登录功能，所以先忽略User这方面
         newFile.setOriginName(uploadFile.getOriginalFilename());
-        newFile.setName(uploadFile.getOriginalFilename() + date.toString());
+        newFile.setName(FileUtils.getFileName(uploadFile.getOriginalFilename()));
         newFile.setSize(uploadFile.getSize() / 1024 + "KB");
         return newFile;
     }
@@ -220,7 +221,5 @@ public class FileUtils {
         }
         return null;
     }
-
-
 
 }

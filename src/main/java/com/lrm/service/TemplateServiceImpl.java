@@ -6,7 +6,6 @@ import com.lrm.enumeration.ImpactGrow;
 import com.lrm.po.Template;
 import com.lrm.po.User;
 import com.lrm.util.DataStructureUtils;
-import com.lrm.util.MarkdownUtils;
 import com.lrm.util.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -207,7 +206,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         repository.save(backT);
         BeanUtils.copyProperties(backT, frontT);
         String content = backT.getContent();
-        frontT.setDetails(MarkdownUtils.markdownToHtmlExtensions(content));
+        frontT.setDetails(content);
         return frontT;
     }
 

@@ -53,8 +53,9 @@ public class UserServiceImpl implements UserService
         user.setUsername(username);
         user.setPassword("M#D5+" + MD5Utils.code(password));
         user.setNickname(nickname);
-        //默认头像
+        //默认值
         user.setAvatar("default.jpg");
+        user.setPersonalSignature("这个人什么也没说...");
         user.setDonation(0);
         user.setCanSpeak(true);
         user.setAdmin(false);
@@ -62,6 +63,8 @@ public class UserServiceImpl implements UserService
         user.setFollowedUserNum(0);
         user.setFollowingUserNum(0);
         user.setPrivacyType(7);
+
+        //生成一个默认收藏夹
         Favorite favorite = new Favorite();
         favorite.setOpen(true);
         favorite.setOwner(user);
