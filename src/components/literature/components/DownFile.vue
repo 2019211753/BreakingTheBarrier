@@ -13,7 +13,7 @@
         axios.get('files/download',{
           responseType:'blob',
           params: {
-            fileId: '10',
+            fileId: '',
           }
         }).then(msg => {
           if (msg) {

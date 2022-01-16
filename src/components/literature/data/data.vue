@@ -77,7 +77,7 @@
       },
       handleCurrentChange(val) {
         this.page.currentPage = val
-        console.log(this.page.currentPage);
+        // console.log(this.page.currentPage);
         {
           axios('files/find',{
             params: {
@@ -94,31 +94,31 @@
           })
         }
       },
-      downFile() {
-        axios.get('files/download',{
-          params: {
-            fileId: '15',
-          },
-          headers:{
-            // 'Content-Type': 'application/json; charset=UTF-8',
-          },
-          responseType:'blob',
-        }).then(res => {
-          console.log(res);
-          const data = res.data
-          const url = window.URL.createObjectURL(
-            new Blob([data],
-              {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
-              ))
-          const link = document.createElement('a')
-          link.style.display = 'none'
-          link.href = url
-          link.setAttribute('download', fileName)
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-        })
-      },
+      // downFile() {
+      //   axios.get('files/download',{
+      //     params: {
+      //       fileId: '',
+      //     },
+      //     headers:{
+      //       // 'Content-Type': 'application/json; charset=UTF-8',
+      //     },
+      //     responseType:'blob',
+      //   }).then(res => {
+      //     console.log(res);
+      //     const data = res.data
+      //     const url = window.URL.createObjectURL(
+      //       new Blob([data],
+      //         {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+      //         ))
+      //     const link = document.createElement('a')
+      //     link.style.display = 'none'
+      //     link.href = url
+      //     link.setAttribute('download', fileName)
+      //     document.body.appendChild(link)
+      //     link.click()
+      //     document.body.removeChild(link)
+      //   })
+      // },
       searchF(keyword) {
         axios({
           url: '/files/find',

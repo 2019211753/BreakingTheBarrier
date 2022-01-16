@@ -55,7 +55,7 @@ export default {
   components: { carousel, questionnaire, team, database, wikipedia },
   methods: {
     turnWikipedia() {
-      this.$router.push("/helloWorld/information");
+      this.$router.push("/helloWorld/literature/information");
     },
     turnTeam() {
       this.$router.push("/helloWorld/team");

@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align: center;margin: 20px 0">
+  <div style="text-align: center;margin: 20px 0;min-width: 200px">
     <a href="javascript:;">
       <h2 @click="itemClick">{{contentItem.title}}</h2>
       <span>{{contentItem.currentContent}}</span>

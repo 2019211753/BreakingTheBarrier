@@ -81,7 +81,7 @@
         });
       },
       downFile() {
-        console.log(this.fileName);
+        // console.log(this.fileName);
         axios.get('files/download',{
           params: {
             fileId: this.fileId,
@@ -98,14 +98,14 @@
               new Blob([data],
                 {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
               ))
-            const link = document.createElement('a')
-            link.style.display = 'none'
-            link.href = url
-            console.log(this.fileName);
-            link.setAttribute('download', this.fileName)
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
+            const link1 = document.createElement('a')
+            link1.style.display = 'none'
+            link1.href = url
+            // console.log(this.fileName);
+            link1.setAttribute('download', this.fileName)
+            document.body.appendChild(link1)
+            link1.click()
+            document.body.removeChild(link1)
           }
           else
             alert("下载失败")

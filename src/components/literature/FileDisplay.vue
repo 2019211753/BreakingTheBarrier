@@ -38,8 +38,8 @@
         }
       })
         .then(res => {
-        console.log(res);
-        console.log('重新渲染');
+        // console.log(res);
+        // console.log('重新渲染');
         let page = res.data.data.page
         this.page.totalElements = page.totalElements
         this.page.totalPages = page.totalPages
