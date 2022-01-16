@@ -37,7 +37,7 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src=" template.avatar" alt="" />
+            <img :src="template.avatar" alt="" />
           </div>
           <div class="content">
             <div class="summary">
@@ -80,7 +80,7 @@
         <el-col :span="12">
           <div
             @click="likeArticle(template.id)"
-            :class="approved == true ? articleLikeIsActive : button"
+            :class="articleApproved == true ? articleLikeIsActive : button"
           >
             <i class="heart icon"></i>
             {{ articleLikeNumber }}
@@ -99,7 +99,6 @@
         </el-col>
         <el-col :span="5"><div class="grid-content bg-purple"></div></el-col>
       </el-row>
-
       <div class="ui divider"></div>
       <div class="ui mini labeled button" style="margin-left: 3%"></div>
       <div
@@ -107,7 +106,12 @@
         style="margin-left: 54%"
         @click="dislikeArticle(template.id)"
       >
-        <i class="thumbs down icon"></i>踩
+        <i
+          :class="
+            articleDisapproved == true ? articleDislikeIsActive : articleDislike
+          "
+        ></i
+        >踩
       </div>
       <div class="ui mini labeled button" style="margin-left: 3%">
         <i class="share icon"></i>转发
@@ -156,7 +160,7 @@
               v-for="item in commentList"
             >
               <a class="avatar">
-                <img :src=" item.avatar" alt="" />
+                <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author"
@@ -188,6 +192,15 @@
                     >删除</a
                   >
                 </div>
+              </div>
+              <div
+                style="background-color: white"
+                class="ui mini icon fluid button"
+                v-if="item.commentsNum > 3"
+                @click="getMoreComments(item.id)"
+              >
+                <i class="ui angle double down icon"></i>
+                展开更多
               </div>
             </div>
           </div>
@@ -266,16 +279,16 @@ export default {
       commentLoading: true,
       collectLoading: true,
       template: "",
-      approved: "",
-      disapproved: "",
+      articleApproved: "",
+      articleDisapproved: "",
       collected: "",
       articleContent: "",
       articleLikeNumber: "",
-      articleDislikeNumber: "",
       articleCollectNumber: "",
       button: "ui button",
       articleLikeIsActive: "ui red button",
-      articleDislikeIsActive: "ui blue button",
+      articleDislike: "thumbs down icon",
+      articleDislikeIsActive: "thumbs down blue icon",
       articleCollectIsActive: "ui yellow button",
       favoriteList: [],
       favoriteId: sessionStorage["favoriteId"],
@@ -290,45 +303,50 @@ export default {
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
-
       posterUserId0: this.$route.query.posterUserId0,
     };
   },
   created() {
     var that = this;
-    axios
-      .get("/question/" + this.$route.query.articleId)
-      .then(function (response) {
-        that.questionLoading = false;
-        that.template = response.data.data.template;
-        that.approved = that.template.approved;
-        that.disapproved = that.template.disapproved;
-        that.collected = that.template.collected;
-        that.articleContent = that.template.details;
-        that.articleLikeNumber = that.template.likesNum;
-        that.articleCollectNumber = that.template.collectedNum;
-        that.articleDislikeNumber = that.template.disLikesNum;
-        that.$store.commit("getArticleId", that.template.id);
+    var p1 = new Promise((resolve, reject) => {
+      axios
+        .get("/question/" + this.$route.query.articleId)
+        .then(function (response) {
+          that.questionLoading = false;
+          that.template = response.data.data.template;
+          that.articleApproved = that.template.approved;
+          that.articleDisapproved = that.template.disapproved;
+          that.collected = that.template.collected;
+          that.articleContent = that.template.details;
+          that.articleLikeNumber = that.template.likesNum;
+          that.articleCollectNumber = that.template.collectedNum;
+          that.articleDislikeNumber = that.template.disLikesNum;
+          that.$store.commit("getArticleId", that.template.id);
+          /* sessionStorage["posterUserId0"] = that.template.posterUserId0; */
+          console.log(that.template);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    });
 
-        /* sessionStorage["posterUserId0"] = that.template.posterUserId0; */
-
-        console.log(that.template);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    /* ------------------------- */
-    axios
-      .get("/question/" + this.$route.query.articleId + "/comments")
-      .then(function (response) {
-        that.commentLoading = false;
-        console.log(that.flatten(response.data.data.comments2));
-        that.commentList = that.flatten(response.data.data.comments2);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    var that = this;
+    var p2 = new Promise((resolve, reject) => {
+      axios
+        .get("/question/" + this.$route.query.articleId + "/comments")
+        .then(function (response) {
+          that.commentLoading = false;
+          console.log(response.data);
+          console.log(that.flatten(response.data.data.comments2));
+          that.commentList = that.flatten(response.data.data.comments2);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    });
+     
+    Promise.all([p1, p2]).then((res) => {
+      console.log(res);
+    });
   },
   mounted() {
     // wangeditor
@@ -354,8 +372,11 @@ export default {
         .get("/question/" + id + "/approve")
         .then(function (response) {
           console.log(response.data);
-          that.approved = response.data.data.approved;
-          that.articleLikeNumber = response.data.data.likesNum;
+          that.getArticleLikesAndDislikes(
+            response.data.data.approved,
+            response.data.data.disapproved,
+            response.data.data.likesNum
+          );
           that.$message({
             message: response.data.msg,
             type: "success",
@@ -371,8 +392,11 @@ export default {
         .get("/question/" + id + "/disapprove")
         .then(function (response) {
           console.log(response.data);
-          that.disapproved = response.data.data.disapproved;
-          that.articleDislikeNumber = response.data.data.disLikesNum;
+          that.getArticleLikesAndDislikes(
+            response.data.data.approved,
+            response.data.data.disapproved,
+            response.data.data.likesNum
+          );
           that.$message({
             message: response.data.msg,
             type: "success",
@@ -381,6 +405,12 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+    },
+    getArticleLikesAndDislikes(approved, disapproved, likesNum) {
+      var that = this;
+      that.articleApproved = approved;
+      that.articleLikeNumber = likesNum;
+      that.articleDisapproved = disapproved;
     },
     openCollections() {
       var that = this;
@@ -496,12 +526,28 @@ export default {
         []
       );
     },
+    getMoreComments(id) {
+      var that = this;
+      axios
+        .get("/comment/" + id)
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     likeComment(id) {
       var that = this;
       axios
         .get("/comment/" + id + "/approve")
         .then(function (response) {
           console.log(response.data);
+          that.getCommentLikesAndDislikes(
+            id,
+            response.data.data.likesNum,
+            response.data.data.disLikesNum
+          );
           that.$message({
             message: "点赞成功",
             type: "success",
@@ -517,6 +563,11 @@ export default {
         .get("/comment/" + id + "/disapprove")
         .then(function (response) {
           console.log(response.data);
+          that.getCommentLikesAndDislikes(
+            id,
+            response.data.data.likesNum,
+            response.data.data.disLikesNum
+          );
           that.$message({
             message: "点踩成功",
             type: "success",
@@ -525,6 +576,16 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+    },
+    getCommentLikesAndDislikes(commentId, likesNum, dislikesNum) {
+      var that = this;
+      for (var i in that.commentList) {
+        if (that.commentList[i].id == commentId) {
+          that.commentList[i].likesNum = likesNum;
+          that.commentList[i].disLikesNum = dislikesNum;
+          break;
+        }
+      }
     },
     replyArticle() {
       $(".ui.edit.modal").modal("show");
@@ -570,14 +631,21 @@ export default {
       axios
         .get(
           "/question/" +
-            sessionStorage.getItem("articleId") +
+            this.$route.query.articleId +
             "/comment/" +
             id +
             "/delete"
         )
         .then(function (response) {
           console.log(response.data);
-          that.commentList = that.flatten(response.data.data.comments);
+          for (var i in that.commentList) {
+            if (
+              that.commentList[i].id == id ||
+              id == that.commentList[i].parentCommentId0
+            ) {
+              that.commentList.splice(i, 1);
+            }
+          }
           that.$message({
             message: "删除成功",
             type: "success",
@@ -590,31 +658,53 @@ export default {
     /* ------------------------------------------ */
     sure() {
       var that = this;
-      if (that.phoneEditor.txt.html()) {
-        axios
-          .post("/question/" + that.$store.state.articleId + "/comment/post", {
-            content: that.phoneEditor.txt.html(),
-            answer: true,
-            parentCommentId0: this.parentId,
-          })
-          .then(function (response) {
-            console.log(response.data);
-            that.commentList = that.flatten(response.data.data.comments);
-            that.parentId = "-1";
-            that.$message({
-              message: "评论成功",
-              type: "success",
+      var p1 = new Promise((resolve, reject) => {
+        if (that.phoneEditor.txt.html()) {
+          axios
+            .post(
+              "/question/" + that.$store.state.articleId + "/comment/post",
+              {
+                content: that.phoneEditor.txt.html(),
+                answer: true,
+                parentCommentId0: that.parentId,
+              }
+            )
+            .then(function (response) {
+              console.log(response.data);
+              that.parentId = "-1";
+              that.$message({
+                message: "评论成功",
+                type: "success",
+              });
+            })
+            .catch(function (error) {
+              console.log(error);
             });
+        } else {
+          this.$message({
+            message: "请填写评论内容",
+            type: "warning",
+          });
+        }
+      });
+
+      var p2 = new Promise((resolve, reject) => {
+        axios
+          .get("/question/" + that.$store.state.articleId + "/comments")
+          .then(function (response) {
+            console.log(that.flatten(response.data.data.comments2));
+            that.commentList = that.flatten(response.data.data.comments2);
           })
           .catch(function (error) {
             console.log(error);
           });
-      } else {
-        this.$message({
-          message: "请填写评论内容",
-          type: "warning",
-        });
-      }
+      });
+
+      Promise.all([p1, p2]).then((res) => {
+        console.log(res);
+      });
+
+      /* setTimeout(function () {}, 500); */
     },
   },
 };
