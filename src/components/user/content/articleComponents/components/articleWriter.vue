@@ -54,7 +54,7 @@
       <div class="ui divider"></div>
       <div class="ui three mini statistics">
         <div class="statistic">
-          <div class="value">{{  $store.state.others.contentsNum }}</div>
+          <div class="value">{{  $store.state.others.questionsNum }}</div>
           <div class="label">内容</div>
         </div>
         <div class="statistic">

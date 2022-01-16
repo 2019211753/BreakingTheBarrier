@@ -39,6 +39,7 @@
                   <el-upload
                     class="avatar-uploader"
                     action=""
+                    :before-upload="beforeAvatarUpload"
                     :http-request="handleTestSuccess"
                     :show-file-list="false"
                   >
@@ -50,7 +51,7 @@
               </div>
               <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" /> -->
               <img
-                :src="  $store.state.me.avatar"
+                :src="$store.state.me.avatar"
                 alt=""
                 class="ui small circular image"
               />
@@ -102,6 +103,8 @@
 </template>
 
 <script>
+import imageConversion from "image-conversion";
+import { compress, compressAccurately } from "image-conversion";
 import recommend from "./components/recommend";
 import axios from "axios";
 import $ from "jquery";
@@ -128,7 +131,7 @@ export default {
         on: "hover",
       });
     });
-   /*  window.addEventListener("setItem", (e) => {
+    /*  window.addEventListener("setItem", (e) => {
       if (e.key == "nickname") {
         console.log(e.newValue);
         that.nickname = e.newValue;
@@ -161,17 +164,35 @@ export default {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     }, */
-    /* beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 0.0977;
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+    //把图片文件作为参数传递到方法中
+    beforeAvatarUpload(file) {
+      console.log(file);
+      const isJpgOrPng =
+        file.type === "image/jpeg" || file.type === "image/png";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJpgOrPng) {
+        this.$message.error("上传头像图片只能是 JPG 或 PNG 格式!");
+        return false;
       }
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 100kb!");
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+        return false;
       }
-      return isJPG && isLt2M;
-    }, */
+      return new Promise((resolve) => {
+        // 压缩到100KB,这里的100就是要压缩的大小,可自定义
+        imageConversion.compressAccurately(file, 10).then((res) => {
+          resolve(res);
+          console.log(resolve(res));
+        });
+        //compressAccurately有多个参数时传入对象
+        //imageConversion.compressAccurately(file, {
+        // size: 1024, //图片大小压缩到1024kb
+        // width:1280 //宽度压缩到1280
+        //}).then(res => {
+        //resolve(res)
+        //})
+      });
+    },
 
     handleTestSuccess(file) {
       if (file.file.type.indexOf("image") == -1) {

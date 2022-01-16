@@ -155,6 +155,100 @@
                 </div>
               </template>
             </el-skeleton>
+            <div class="comment" v-for="item in bestComments">
+              <a class="avatar">
+                <img :src="item.avatar" alt="" />
+              </a>
+              <div class="content">
+                <a class="author"
+                  ><router-link
+                    :to="{
+                      path: '/helloWorld/visitor',
+                      query: { userId0: item.postUserId0 },
+                    }"
+                    >{{ item.nickname }}
+                  </router-link></a
+                >
+                <div class="metadata">
+                  <span class="date">{{ item.createTime }}</span
+                  ><a class="ui mini blue label">优选评论</a>
+                </div>
+                <div class="text" v-html="item.content"></div>
+                <div class="actions">
+                  <a
+                    class="reply"
+                    @click="likeComment(item.id)"
+                    v-model="likeNumber"
+                    >赞( {{ item.likesNum }})</a
+                  ><a class="reply" @click="dislikeComment(item.id)"
+                    >踩({{ item.disLikesNum }})</a
+                  >
+                  <a
+                    class="reply"
+                    @click="deleteComment(item.id)"
+                    v-if="item.postUserId0 == $store.state.me.id"
+                    >删除</a
+                  >
+                </div>
+              </div>
+              <div
+                style="background-color: white"
+                class="ui mini icon fluid button"
+                v-if="item.commentsNum > 3"
+                @click="getMoreComments(item.id)"
+              >
+                <i class="ui angle double down icon"></i>
+                展开更多
+              </div>
+            </div>
+            <div class="ui divider"></div>
+            <div class="comment" v-for="item in selectedComments">
+              <a class="avatar">
+                <img :src="item.avatar" alt="" />
+              </a>
+              <div class="content">
+                <a class="author"
+                  ><router-link
+                    :to="{
+                      path: '/helloWorld/visitor',
+                      query: { userId0: item.postUserId0 },
+                    }"
+                    >{{ item.nickname }}
+                  </router-link></a
+                >
+                <div class="metadata">
+                  <span class="date">{{ item.createTime }}</span
+                  ><a class="ui mini teal label">精选评论</a>
+                </div>
+                <div class="text" v-html="item.content"></div>
+                <div class="actions">
+                  <a
+                    class="reply"
+                    @click="likeComment(item.id)"
+                    v-model="likeNumber"
+                    >赞( {{ item.likesNum }})</a
+                  ><a class="reply" @click="dislikeComment(item.id)"
+                    >踩({{ item.disLikesNum }})</a
+                  ><a class="reply" @click="replyComment(item.id)">回复</a
+                  ><a
+                    class="reply"
+                    @click="deleteComment(item.id)"
+                    v-if="item.postUserId0 == $store.state.me.id"
+                    >删除</a
+                  >
+                </div>
+              </div>
+              <div
+                style="background-color: white"
+                class="ui mini icon fluid button"
+                v-if="item.commentsNum > 3"
+                @click="getMoreComments(item.id)"
+              >
+                <i class="ui angle double down icon"></i>
+                展开更多
+              </div>
+            </div>
+            <div class="ui divider"></div>
             <div
               :class="item.parentCommentId0 == -1 ? parent : child"
               v-for="item in commentList"
@@ -296,6 +390,8 @@ export default {
       likeNumber: "",
       dislikeNumber: "",
       commentList: "",
+      bestComments: "",
+      selectedComments: "",
       parent: "comment",
       child: "child comment",
       parentId: "-1",
@@ -337,13 +433,15 @@ export default {
           that.commentLoading = false;
           console.log(response.data);
           console.log(that.flatten(response.data.data.comments2));
+          that.bestComments = response.data.data.bestComments;
+          that.selectedComments = response.data.data.selectedComments;
           that.commentList = that.flatten(response.data.data.comments2);
         })
         .catch(function (error) {
           console.log(error);
         });
     });
-     
+
     Promise.all([p1, p2]).then((res) => {
       console.log(res);
     });

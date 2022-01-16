@@ -29,7 +29,9 @@ export default new Vuex.Store({
             nickname: "",
             avatar: "",
             personalSignature: "",
-            contentsNum: "",
+            questionsNum: "",
+            blogsNum: "",
+            commentsNum: "",
             followingUserNum: "",
             followedUserNum: "",
         }
@@ -92,7 +94,9 @@ export default new Vuex.Store({
             console.log(state.others.nickname)
             state.others.avatar = data.avatar;
             state.others.personalSignature = data.personalSignature;
-            state.others.contentsNum = Number(data.blogs.length) + Number(data.comments.length) + Number(data.questions.length);
+            state.questionsNum = data.questions.length;
+            state.blogsNum = data.blogs.length;
+            state.commentsNum = data.comments.length;
             state.others.followingUserNum = data.followingUserNum;
             state.others.followedUserNum = data.followedUserNum
         }
