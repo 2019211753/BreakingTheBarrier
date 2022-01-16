@@ -3,7 +3,7 @@
     <slot name="titleH3"><h3>热门资料</h3></slot>
     <div>
       <slot name="item">
-        <a href="http://google.com" class="">
+        <a href="javascript:;" class="">
           <div class="">
             <b style="vertical-align: top">问答系统_核心技术_发展趋势_王树西.pdf
             </b>
@@ -15,7 +15,7 @@
     <div class="ui divider"></div> <!--分隔线-->
     <div>
       <slot name="item">
-        <a href="http://google.com" class="" src="../../assets/img/fileCategory/pdf.png">
+        <a href="javascript:;" class="" src="../../assets/img/fileCategory/pdf.png">
           <div class="">
             <b style="vertical-align: top">网络问卷调查的数据质量控制研究_余富强.pdf
             </b>
@@ -27,7 +27,7 @@
     <div class="ui divider"></div> <!--分隔线-->
     <div>
       <slot name="item">
-        <a href="http://google.com" class="" src="../../assets/img/fileCategory/pdf.png">
+        <a href="javascript:;" class="" src="../../assets/img/fileCategory/pdf.png">
           <div class="">
             <b style="vertical-align: top">网络问卷调查的数据质量控制研究_余富强.pdf
             </b>

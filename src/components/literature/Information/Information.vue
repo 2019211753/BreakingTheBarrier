@@ -18,18 +18,39 @@
     <div style="width: fit-content;margin: -20px auto 25px auto;">
     </div>
 
-    <entry-display :content="approvedEntry.content"></entry-display>
+    <div class="ui container" style="display: inline-block">
+      <entry-display
+        id=""
+        class="column"
+        :content="approvedEntry.content">
 
-    <hot-file style="position: unset;">
+      </entry-display>
+
+      <hot-file class="column">
           <h3 slot="titleH3">近期竞赛</h3>
           <div slot="item" class="ui tall stacked segment" id="recentRace">
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-              ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor
-              sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi
-              vitae est. Mauris placerat eleifend leo.</p>
+            <p>ACM国际大学生程序设计竞赛世界总决赛</p>
           </div>
           <span slot="upFile"></span>
         </hot-file>
+    </div>
+<!--&lt;!&ndash;测试侧边栏&ndash;&gt;-->
+<!--    <div class="ui right sidebar inverted vertical menu">-->
+<!--      <h3>近期竞赛</h3>-->
+<!--      <a class="item">-->
+<!--        <p>ACM国际大学生程序设计竞赛世界总决赛</p>-->
+<!--      </a>-->
+<!--      <a class="item">-->
+<!--        <p>全国大学生电子设计竞赛</p>-->
+<!--      </a>-->
+<!--      <a class="item">-->
+<!--        <p>全国大学生数学竞赛总决赛</p>-->
+<!--      </a>-->
+<!--    </div>-->
+<!--    <div class="pusher">-->
+<!--      &lt;!&ndash; Site content !&ndash;&gt;-->
+<!--    </div>-->
+<!--    <button @click="btnClick" class="ui button">按钮</button>-->
 
 <!--展示未审核-->
     <div class="ui container">
@@ -140,6 +161,10 @@
         this.showUpdateFlag = !this.showUpdateFlag
         console.log(id);
         this.entry.id = id
+      },
+      btnClick() {
+        $('.ui.sidebar')
+          .sidebar('toggle');
       }
     },
 
@@ -171,5 +196,8 @@
   }
   #recentRace {
     max-width: 254px;
+  }
+  #x {
+    width: 800px;
   }
 </style>

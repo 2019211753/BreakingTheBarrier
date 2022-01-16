@@ -17,7 +17,7 @@
             isActiveRoute = true
           else
             isActiveRoute = false
-        console.log(isActiveRoute);
+        // console.log(isActiveRoute);
         if(isActiveRoute)
           return 'item active'
         else
