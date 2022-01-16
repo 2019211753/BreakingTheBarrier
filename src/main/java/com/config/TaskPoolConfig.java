@@ -1,5 +1,6 @@
 package com.config;
 
+import com.lrm.util.VisibleThreadPoolTaskExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,7 @@ public class TaskPoolConfig {
     @Bean("file_task")
     public Executor taskExecutor() {
         logger.info("start asyncFileTaskExecutor");
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        ThreadPoolTaskExecutor executor = new VisibleThreadPoolTaskExecutor();
         //配置核心线程数
         executor.setCorePoolSize(5);
         //配置最大线程数

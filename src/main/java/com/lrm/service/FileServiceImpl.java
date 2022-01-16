@@ -8,6 +8,7 @@ import com.lrm.exception.NotFoundException;
 import com.lrm.po.File;
 import com.lrm.po.FileTag;
 import com.lrm.po.User;
+import com.lrm.util.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +32,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public File saveFile(File file, String[] tagNames, String path, Long userId) {
+    public File saveFile(File file, String[] tagNames, String path) {
         //标签是否存在？
         for (int i = 0; i < tagNames.length; i++) {
             FileTag found = fileTagRepository.findByName(tagNames[i]);
@@ -49,25 +50,26 @@ public class FileServiceImpl implements FileService {
         file.setPath(path);
 
         //奖励5次下载次数
-        User uploadUser = userServiceImpl.getUser(userId);
-        if (uploadUser == null) {
+        //利用threadLocal传入userservice层
+        User uploader = UserHolder.getLocalUser();
+        if (uploader == null) {
             throw new NotFoundException("当前用户不存在");
         }
-        uploadUser.setAvailableNum(uploadUser.getAvailableNum() + 5);
-        file.setUploadUser(uploadUser);
+        uploader.setAvailableNum(uploader.getAvailableNum() + 5);
+        file.setUploadUser(uploader);
         return fileRepository.save(file);
     }
 
 
     @Override
     @Transactional
-    public void downloadFile(File file, Long userId) {
-        User user = userServiceImpl.getUser(userId);
-        if (user == null) {
+    public void downloadFile(File file) {
+        User downloader = UserHolder.getLocalUser();
+        if (downloader == null) {
             throw new NotFoundException("当前用户不存在");
         }
         //可用下载次数
-        user.setAvailableNum(user.getAvailableNum() - 1);
+        downloader.setAvailableNum(downloader.getAvailableNum() - 1);
         file.setDownloadCount(file.getDownloadCount() + 1);
     }
 

@@ -2,13 +2,16 @@ package com.lrm.web;
 
 import com.lrm.dao.FileRepository;
 import com.lrm.dao.FileTagRepository;
+import com.lrm.dao.UserRepository;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.FileTag;
+import com.lrm.po.User;
 import com.lrm.service.AysncService;
 import com.lrm.service.FileServiceImpl;
 import com.lrm.util.FileUtils;
 import com.lrm.util.OSSUtils;
 import com.lrm.util.TokenInfo;
+import com.lrm.util.UserHolder;
 import com.lrm.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +46,10 @@ public class FileController {
 
     @Value("${oss.accessKeySecret}")
     private String accessKeySecret;
+
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private FileRepository fileRepository;
@@ -118,11 +125,8 @@ public class FileController {
         //上传到oss
         OSSUtils.uploadFile(uploadFile, endpoint, accessKeyId, accessKeySecret, "wordverybig", "", fileName);
 
-        //获取用户
-        Long userId = TokenInfo.getCustomUserId(request);
-
         //调用service 服务，储存到数据库，进行上传相关逻辑的处理
-        fileServiceImpl.saveFile(newFile, tagNames, null, userId);
+        fileServiceImpl.saveFile(newFile, tagNames, null);
 
         Map<String, String> hashMap = new HashMap<>(16);
         hashMap.put("contentType", uploadFile.getContentType());
@@ -150,11 +154,8 @@ public class FileController {
         }
         String fileName = found.get().getName();
 
-        //获取用户id
-        Long userId = TokenInfo.getCustomUserId(request);
         //直接在这里判断文件存不存在,如果不存在会抛异常的
-        fileServiceImpl.downloadFile(found.get(), userId);
-
+        fileServiceImpl.downloadFile(found.get());
 /*
         response.reset();
         response.setContentType("application/octet-stream");
