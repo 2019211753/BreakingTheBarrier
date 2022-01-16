@@ -23,25 +23,25 @@
     <div class="ui segment" v-else>
       <img
         class="ui tiny centered circular image"
-        :src="'data:image/jpg;base64,' + avatar"
+        :src=" $store.state.others.avatar"
       />
       <h3 style="text-align: center">
         <a href=""
           ><router-link
-            v-if="nowUser == posterUserId0"
+            v-if="$store.state.me.id == posterUserId0"
             to="/helloWorld/mine/contents/questionFiles"
-            >{{ nickname }} </router-link
+            >{{ $store.state.others.nickname }} </router-link
           ><router-link
             v-else
             :to="{
               path: '/helloWorld/visitor/questions',
               query: { userId0: posterUserId0 },
             }"
-            >{{ nickname }}
+            >{{ $store.state.others.nickname }}
           </router-link></a
         >
       </h3>
-      <p style="color: grey">{{ personalSignature }}</p>
+      <p style="color: grey">{{ $store.state.others.personalSignature }}</p>
       <div class="button">
         <div
           class="ui button"
@@ -54,15 +54,15 @@
       <div class="ui divider"></div>
       <div class="ui three mini statistics">
         <div class="statistic">
-          <div class="value">{{ contentsNum }}</div>
+          <div class="value">{{  $store.state.others.contentsNum }}</div>
           <div class="label">内容</div>
         </div>
         <div class="statistic">
-          <div class="value">{{ followedNum }}</div>
+          <div class="value">{{  $store.state.others.followedNum }}</div>
           <div class="label">粉丝</div>
         </div>
         <div class="statistic">
-          <div class="value">{{ followingNum }}</div>
+          <div class="value">{{  $store.state.others.followingNum }}</div>
           <div class="label">关注</div>
         </div>
       </div>
@@ -78,7 +78,7 @@
           :key="index"
         >
           <div class="label">
-            <img :src="'data:image/jpg;base64,' + avatar" />
+            <img :src=" $store.state.others.avatar" />
           </div>
           <div class="content">
             <div class="summary">
@@ -98,7 +98,6 @@
           </div>
         </div>
       </div>
-
       <el-skeleton :loading="loading" animated :count="5">
         <template slot="template"
           ><div class="ui large feed">
@@ -147,17 +146,18 @@ export default {
       .then(function (response) {
         console.log(response.data);
         that.loading = false;
-        that.avatar = response.data.data.userInfo.avatar;
+        /* that.avatar = response.data.data.userInfo.avatar;
         that.nickname = response.data.data.userInfo.nickname;
         that.personalSignature = response.data.data.userInfo.personalSignature;
         that.contentsNum =
           response.data.data.blogs.length + response.data.data.questions.length;
         that.followedNum = response.data.data.userInfo.followedUserNum;
-        that.followingNum = response.data.data.userInfo.followingUserNum;
+        that.followingNum = response.data.data.userInfo.followingUserNum; */
         that.questions = response.data.data.questions;
         that.following = response.data.data.following;
-        /* --------------------------------------- */
-        sessionStorage["posterUser"] = response.data.data.userInfo.nickname;
+        var information = response.data.data.userInfo;
+        that.$store.commit("getOthersFile", information);
+        /* sessionStorage["posterUser"] = response.data.data.userInfo.nickname;
         sessionStorage["posterUserAvatar"] = response.data.data.userInfo.avatar;
         sessionStorage["posterUserPersonalSignature"] =
           response.data.data.userInfo.personalSignature;
@@ -168,7 +168,7 @@ export default {
         sessionStorage["posterUserFollowingUserNum"] =
           response.data.data.userInfo.followingUserNum;
         sessionStorage["posterUserFollowedUserNum"] =
-          response.data.data.userInfo.followedUserNum;
+          response.data.data.userInfo.followedUserNum; */
       })
       .catch(function (error) {
         console.log(error);

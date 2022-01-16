@@ -23,7 +23,7 @@
             </router-link>
           </div>
           <br />
-          <div class="ui teal fluid button" @click="turnToAddBlog()">
+          <div class="ui teal fluid button"  @click="turnToAddBlog()">
             发布内容
           </div>
         </div>

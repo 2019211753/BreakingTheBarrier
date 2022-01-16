@@ -1,24 +1,22 @@
 <template>
   <div class="ui segment">
-    <el-empty
-      :image-size="200"
-      v-if="!list.length && loading == false"
-      description="暂无关注者"
-    ></el-empty>
-    <div class="ui large feed">
-      <div class="event" v-for="item in list">
+    <div class="ui feed">
+      <div class="event">
         <div class="label">
-          <img :src=" item.avatar" alt="" />
+          <img
+            :src=" $store.state.me.avatar"
+            alt=""
+          />
         </div>
         <div class="content">
           <div class="summary">
-            <a>{{ item.nickname }}</a>
-            <div class="date">{{ item.personalSignature }}</div>
+            您已添加<a>Jenny Hess</a>至您的 <a>同事</a> 分组.
+            <div class="date">3 天前</div>
           </div>
         </div>
       </div>
     </div>
-    <el-skeleton :loading="loading" v-if="loading == true" animated :count="5">
+    <el-skeleton :loading="loading" animated :count="5">
       <template slot="template"
         ><div class="ui large feed">
           <div class="event">
@@ -32,26 +30,32 @@
             </div>
           </div>
         </div>
-      </template>
-    </el-skeleton>
+      </template> </el-skeleton
+    ><el-empty
+      :image-size="100"
+      v-if="!contentList.length && loading == false"
+      description="还没有赞过任何内容"
+    ></el-empty>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 export default {
-  name: "following",
+  name: "likeFiles",
   data() {
-    return { loading: true, list: [] };
+    return {
+      loading: true,
+      contentList: [],
+    };
   },
   created() {
     var that = this;
     axios
-      .get("/visit/" + this.$route.query.userId0)
+      .get("/customer/archiveLike")
       .then(function (response) {
         console.log(response.data);
-        /* that.loading = false; */
-        that.list = response.data.data.followingUsers;
+        that.contentList = response.data.data.postLikes;
         that.loading = false;
       })
       .catch(function (error) {

@@ -59,7 +59,7 @@
           ><img
             class="ui medium circular image"
             style="width: 45px"
-            :src="'data:image/jpg;base64,' + item.avatar"
+            :src=" item.avatar"
         /></el-aside>
 
         <el-main>
@@ -127,7 +127,7 @@
           ><img
             class="ui medium circular image"
             style="width: 45px"
-            :src="'data:image/jpg;base64,' + item.avatar"
+            :src=" item.avatar"
         /></el-aside>
 
         <el-main>

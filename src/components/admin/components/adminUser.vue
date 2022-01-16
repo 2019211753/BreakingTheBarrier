@@ -64,13 +64,13 @@
       </el-row>
       <br />
       <el-row :gutter="24">
-        <el-col :span="8"
+        <el-col :span="7"
           ><h4>QQ：{{ nowUser.qqId }}</h4></el-col
         >
-        <el-col :span="8"
+        <el-col :span="7"
           ><h4>微信：{{ nowUser.wechatId }}</h4></el-col
         >
-        <el-col :span="8"
+        <el-col :span="10"
           ><h4>邮箱：{{ nowUser.email }}</h4></el-col
         >
       </el-row>

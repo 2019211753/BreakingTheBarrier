@@ -4,7 +4,7 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="'data:image/jpg;base64,' + template.avatar" alt=""/>
+            <img :src="  template.avatar" alt=""/>
           </div>
           <div class="content">
             <div class="summary">

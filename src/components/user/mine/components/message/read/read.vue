@@ -8,7 +8,7 @@
       ></el-empty>
       <div class="event" v-if="lookedComments" v-for="item in lookedComments">
         <div class="label">
-          <img :src="'data:image/jpg;base64,' + item.avatar" alt="" />
+          <img :src=" item.avatar" alt="" />
         </div>
         <div class="content">
           <div class="summary">
@@ -38,7 +38,7 @@
       </div>
       <div class="event" v-if="lookedLikes" v-for="item in lookedLikes">
         <div class="label">
-          <img :src="'data:image/jpg;base64,' + item.avatar" alt="" />
+          <img :src="  item.avatar" alt="" />
         </div>
         <div class="content">
           <div class="summary">

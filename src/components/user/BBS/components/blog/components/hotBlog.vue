@@ -28,7 +28,7 @@
           <div class="ui large feed">
             <div class="event" v-for="item in impactList">
               <div class="label">
-                <img :src="'data:image/jpg;base64,' + item.avatar" alt="" />
+                <img :src="  item.avatar" alt="" />
               </div>
               <div class="content">
                 <!-- <div class="date">{{ item.createTime }}</div> -->
@@ -36,7 +36,10 @@
                   <router-link
                     :to="{
                       path: '/helloWorld/BBS/blogContent',
-                      query: { blogId: item.id },
+                      query: {
+                        blogId: item.id,
+                        posterUserId0: item.posterUserId0,
+                      },
                     }"
                     >{{ item.title }}</router-link
                   >

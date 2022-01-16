@@ -24,7 +24,7 @@
     >
       不接受赞赏
     </div>
-    <div class="ui green right floated button" @click="sure()">确定</div>
+    <div class="ui teal right floated button" @click="sure()">确定</div>
   </div>
 </template>
 
@@ -61,6 +61,8 @@ export default {
     // 隐藏网络图片
     //this.phoneEditor.customConfig.showLinkImg = false;
     // 创建一个富文本编辑器
+    // 配置alt选项
+
     this.phoneEditor.create();
     // 富文本内容
     this.phoneEditor.txt.html();
@@ -89,49 +91,101 @@ export default {
       var that = this;
       /*      alert(that.chooseTagIdList); */
       /* if(that.original==false){} */
-      if (that.title && that.description && that.phoneEditor.txt.html()) {
-        if (!sessionStorage.getItem("chooseTagIdList")) {
+      if (that.original == false) {
+        if (
+          that.title &&
+          that.statement &&
+          that.description &&
+          that.phoneEditor.txt.html()
+        ) {
+          if (!sessionStorage.getItem("chooseTagIdList")) {
+            this.$message({
+              message: "请选择标签",
+              type: "warning",
+            });
+          } else {
+            axios
+              .post("/customer/blog/post", {
+                title: that.title,
+                description: that.description,
+                content: that.phoneEditor.txt.html(),
+                tagIds: sessionStorage.getItem("chooseTagIdList"),
+                origin: that.original,
+                appreciation: that.appreciationAllowed,
+                open: that.open,
+                commentAllowed: that.commentAllowed,
+                transferStatement: that.statement,
+              })
+              .then(function (response) {
+                console.log(response);
+                if (response.data.code == 403) {
+                  that.$message({
+                    message: response.data.msg,
+                    type: "warning",
+                  });
+                } else {
+                  that.$message({
+                    message: "发布成功",
+                    type: "success",
+                  });
+                  that.$router.push("/helloWorld/BBS/blogs");
+                }
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }
+        } else {
           this.$message({
-            message: "请选择标签",
+            message: "请填写所有内容",
             type: "warning",
           });
-        } else {
-          axios
-            .post("/customer/blog/post", {
-              title: that.title,
-              description: that.description,
-              content: that.phoneEditor.txt.html(),
-              tagIds: sessionStorage.getItem("chooseTagIdList"),
-              origin: that.original,
-              appreciation: that.appreciationAllowed,
-              open: that.open,
-              commentAllowed: that.commentAllowed,
-              transferStatement: that.statement,
-            })
-            .then(function (response) {
-              console.log(response);
-              if (response.data.code == 403) {
-                that.$message({
-                  message: response.data.msg,
-                  type: "warning",
-                });
-              } else {
-                that.$message({
-                  message: "发布成功",
-                  type: "success",
-                });
-                that.$router.push("/helloWorld/BBS/blogs");
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
         }
       } else {
-        this.$message({
-          message: "请填写所有内容",
-          type: "warning",
-        });
+        if (that.title && that.description && that.phoneEditor.txt.html()) {
+          if (!sessionStorage.getItem("chooseTagIdList")) {
+            this.$message({
+              message: "请选择标签",
+              type: "warning",
+            });
+          } else {
+            axios
+              .post("/customer/blog/post", {
+                title: that.title,
+                description: that.description,
+                content: that.phoneEditor.txt.html(),
+                tagIds: sessionStorage.getItem("chooseTagIdList"),
+                origin: that.original,
+                appreciation: that.appreciationAllowed,
+                open: that.open,
+                commentAllowed: that.commentAllowed,
+                transferStatement: that.statement,
+              })
+              .then(function (response) {
+                console.log(response);
+                if (response.data.code == 403) {
+                  that.$message({
+                    message: response.data.msg,
+                    type: "warning",
+                  });
+                } else {
+                  that.$message({
+                    message: "发布成功",
+                    type: "success",
+                  });
+                  that.$router.push("/helloWorld/BBS/blogs");
+                }
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }
+        } else {
+          this.$message({
+            message: "请填写所有内容",
+            type: "warning",
+          });
+        }
       }
     },
   },

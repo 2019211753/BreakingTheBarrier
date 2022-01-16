@@ -4,13 +4,17 @@
       <h3>基本资料</h3>
       <div class="ui divider"></div>
       <br />
-      <el-row :gutter="20">
+      <el-row :gutter="24">
         <el-col :span="4"
           ><h4 style="margin-left: 10px; margin-top: 10px">用户昵称</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid input">
-            <input type="text" :placeholder="nickname0" v-model="nickname" />
+            <input
+              type="text"
+              :placeholder="$store.state.me.nickname"
+              v-model="nickname"
+            />
           </div>
         </el-col>
         <el-col :span="3"
@@ -20,9 +24,9 @@
           <div class="ui fluid selection dropdown" style="width: 175px">
             <input type="hidden" name="gender" />
             <i class="dropdown icon"></i>
-            <div class="default text" v-if="sex0">
-              <div v-if="sex0 == 'true'">男</div>
-              <div v-if="sex0 == 'false'">女</div>
+            <div class="default text" v-if="$store.state.me.sex">
+              <div v-if="$store.state.me.sex == 'true'">男</div>
+              <div v-if="$store.state.me.sex == 'false'">女</div>
             </div>
             <div class="default text" v-else>无</div>
             <div class="menu">
@@ -59,7 +63,11 @@
         >
         <el-col :span="8">
           <div class="ui fluid input">
-            <input type="text" :placeholder="email0" v-model="email" />
+            <input
+              type="text"
+              :placeholder="$store.state.me.email"
+              v-model="email"
+            />
           </div>
         </el-col>
         <el-col :span="3"
@@ -70,7 +78,7 @@
             <input
               type="text"
               style="margin-left: -3px"
-              :placeholder="QQ0"
+              :placeholder="$store.state.me.qqId"
               v-model="QQ"
             />
           </div>
@@ -85,8 +93,8 @@
           <div class="ui fluid selection dropdown" style="width: 175px">
             <input type="hidden" name="gender" />
             <i class="dropdown icon"></i>
-            <div class="default text" v-if="academy0">
-              {{ academy0 }}
+            <div class="default text" v-if="$store.state.me.academy">
+              {{ $store.state.me.academy }}
             </div>
             <div class="default text" v-else>无</div>
             <div class="menu">
@@ -107,8 +115,8 @@
           <div class="ui fluid selection dropdown" style="width: 175px">
             <input type="hidden" name="gender" />
             <i class="dropdown icon"></i>
-            <div class="default text" v-if="major0">
-              {{ major0 }}
+            <div class="default text" v-if="$store.state.me.major">
+              {{ $store.state.me.major }}
             </div>
             <div class="default text" v-else>无</div>
             <div class="menu">
@@ -132,14 +140,14 @@
           <div class="ui fluid input">
             <input
               type="text"
-              :placeholder="personalSignature0"
+              :placeholder="$store.state.me.personalSignature"
               v-model="personalSignature"
             />
           </div>
         </el-col>
       </el-row>
       <br />
-      <div style="margin-left: 83%" class="ui green button" @click="sure()">
+      <div style="margin-left: 83%" class="ui teal button" @click="sure()">
         确定
       </div>
     </div>
@@ -148,7 +156,7 @@
 
 <script>
 import axios from "axios";
-import eventBus from "../../../../eventBus";
+/* import eventBus from "../../../../eventBus"; */
 import $ from "jquery";
 
 /* var token = sessionStorage.getItem("token");
@@ -168,31 +176,6 @@ export default {
   }, */
   data() {
     return {
-      nickname0: sessionStorage.getItem("nickname"),
-      personalSignature0:
-        sessionStorage.getItem("personalSignature") == "null"
-          ? "无"
-          : sessionStorage.getItem("personalSignature"),
-      sex0:
-        sessionStorage.getItem("sex") == "null"
-          ? "无"
-          : sessionStorage.getItem("sex"),
-      email0:
-        sessionStorage.getItem("email") == "null"
-          ? "无"
-          : sessionStorage.getItem("email"),
-      QQ0:
-        sessionStorage.getItem("QQ") == "null"
-          ? "无"
-          : sessionStorage.getItem("QQ"),
-      academy0:
-        sessionStorage.getItem("academy") == "null"
-          ? "无"
-          : sessionStorage.getItem("academy"),
-      major0:
-        sessionStorage.getItem("major") == "null"
-          ? "无"
-          : sessionStorage.getItem("major"),
       nickname: "",
       personalSignature: "",
       sex: "",
@@ -209,10 +192,12 @@ export default {
     };
   },
   created() {
-    eventBus.$on("pushMsg", (headbarMsg) => {
+    this.academyList = this.$store.state.me.academies;
+    console.log(this.academyList);
+    /* eventBus.$on("pushMsg", (headbarMsg) => {
       this.academyList = headbarMsg;
       console.log(this.academyList);
-    });
+    }); */
     $(function () {
       $(".ui.dropdown").dropdown();
     });
@@ -251,18 +236,19 @@ export default {
     sure() {
       var that = this;
       if (that.passWord === that.surePassWord) {
+        var information = {
+          nickname: that.nickname,
+          personalSignature: that.personalSignature,
+          sex: that.sex,
+          email: that.email,
+          qqId: that.QQ,
+          academy: that.academy,
+          major: that.major,
+          password: that.passWord,
+          wechatId: "",
+        };
         axios
-          .post("/customer/modifyAll", {
-            nickname: that.nickname,
-            personalSignature: that.personalSignature,
-            sex: that.sex,
-            email: that.email,
-            qqId: that.QQ,
-            academy: that.academy,
-            major: that.major,
-            password: that.passWord,
-            wechatId: "",
-          })
+          .post("/customer/modifyAll", information)
           .then(function (response) {
             if (response.data.code == 200) {
               if (that.passWord && that.surePassWord) {
@@ -279,30 +265,28 @@ export default {
                 that.resetSetItem("token", response.data.data.token);
                 /* sessionStorage["avatar"] = response.data.data.user.avatar; */
                 if (that.nickname) {
-                  that.resetSetItem("nickname", that.nickname);
-                  /* sessionStorage["nickname"] = that.nickname; */
+                  that.$store.commit("getMyNickname", that.nickname);
                 }
                 if (that.academy) {
-                  sessionStorage["academy"] = that.academy;
+                  that.$store.commit("getMyAcademy", that.academy);
                 }
                 if (that.email) {
-                  sessionStorage["email"] = that.email;
+                  that.$store.commit("getMyEmail", that.email);
                 }
                 if (that.major) {
-                  sessionStorage["major"] = that.major;
+                  that.$store.commit("getMyMajor", that.major);
                 }
                 if (that.sex) {
-                  sessionStorage["sex"] = that.sex;
+                  that.$store.commit("getMySex", that.sex);
                 }
                 if (that.QQ) {
-                  sessionStorage["QQ"] = that.QQ;
+                  that.$store.commit("getMyQQ", that.QQ);
                 }
                 if (that.personalSignature) {
-                  that.resetSetItem(
-                    "personalSignature",
+                  that.$store.commit(
+                    "getMyPersonalSignature",
                     that.personalSignature
                   );
-                  /* sessionStorage["personalSignature"] = that.personalSignature; */
                 }
               }
             } else {
@@ -327,15 +311,12 @@ export default {
 <style scoped>
 .leftSide {
   width: 60%;
-  /* height: 200px; */
-  /* background-color: aqua; */
   float: left;
 }
 
 .rightSide {
   width: 40%;
   height: 416px;
-  /* background-color: rgb(113, 26, 170); */
   float: left;
 }
 
@@ -343,6 +324,5 @@ export default {
   width: 80%;
   height: 220px;
   margin: auto;
-  /* background-color: aqua; */
 }
 </style>

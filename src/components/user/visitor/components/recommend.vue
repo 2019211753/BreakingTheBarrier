@@ -4,7 +4,7 @@
     <div class="ui large feed">
       <div class="event">
         <div class="label">
-          <img src="../../../../assets/logo.png" />
+          <img src="../../../../assets/logo.jpg" />
         </div>
         <div class="content">
           <div class="summary">

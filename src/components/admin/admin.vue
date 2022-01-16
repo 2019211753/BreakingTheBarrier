@@ -6,10 +6,10 @@
           <img
             style="width: 120px"
             class="ui centered circular image"
-            :src="'data:image/jpg;base64,' + avatar"
+            :src="  $store.state.me.avatar"
           />
-          <h2>{{ nickname }}</h2>
-          <h5>{{ personalSignature }}</h5>
+          <h2>{{ $store.state.me.nickname }}</h2>
+          <h5>{{ $store.state.me.personalSignature }}</h5>
           <div class="ui divider"></div>
           <div class="ui fluid button" @click="turnToTag()">标签管理</div>
           <div class="ui fluid button" @click="turnToUser()">用户管理</div>
@@ -71,13 +71,7 @@ window.addEventListener("setItem", (e) => {
 }); */
 export default {
   name: "admin",
-  data() {
-    return {
-      avatar: sessionStorage.getItem("avatar"),
-      nickname: sessionStorage.getItem("nickname"),
-      personalSignature: sessionStorage.getItem("personalSignature"),
-    };
-  },
+
   components: { adminArticle, adminTag, adminBlog, adminUser },
   methods: {
     turnToTag() {

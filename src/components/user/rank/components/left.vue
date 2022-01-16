@@ -44,7 +44,7 @@
     </el-skeleton>
     <el-container
       v-for="(item, index) in userList"
-      key="index"
+      :key="index"
       style="margin-top: 20px"
       ><div class="ui segment" style="width: 100%">
         <el-row :gutter="24">
@@ -55,7 +55,7 @@
             <div class="ui large feed">
               <div class="event">
                 <div class="label">
-                  <img :src="'data:image/jpg;base64,' + item.avatar" />
+                  <img :src="  item.avatar" />
                 </div>
                 <div class="content">
                   <div class="summary">

@@ -10,6 +10,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@wangeditor/editor": "^0.13.6",
+    "@wangeditor/editor-for-vue": "^5.1.8-6",
     "axios": "^0.21.4",
     "element-ui": "^2.15.5",
     "jwt-decode": "^3.1.2",
@@ -17,6 +19,7 @@
     "vue": "^2.5.2",
     "vue-elementui-skeleton": "^1.0.2",
     "vue-router": "^3.0.1",
+    "vuex": "^3.6.2",
     "wangeditor": "^4.7.8"
   },
   "devDependencies": {

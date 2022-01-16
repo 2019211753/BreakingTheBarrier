@@ -1,6 +1,6 @@
 <template>
   <div class="ui basic segment">
-    <createTags></createTags>
+    <createTags :msg="tagList"></createTags>
     <!-- <div class="custom-tree-container">
       <div class="block">
         <el-tree
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="actions">
-        <div class="ui green ok inverted button" @click="sure()">
+        <div class="ui teal ok inverted button" @click="sure()">
           <i class="checkmark icon"></i>
           确定
         </div>
@@ -55,87 +55,47 @@ export default {
     };
   },
   created() {
-    var that = this;
+    this.tagList = [
+      {
+        id: 1,
+        parentTagId0: -1,
+        name: "test_1",
+        childTags: [
+          {
+            id: 3,
+            parentTagId0: 1,
+            name: "test_3",
+            childTags: [],
+          },
+        ],
+      },
+      {
+        id: 2,
+        parentTagId0: -1,
+        name: "test_2",
+        childTags: [],
+      },
+      {
+        id: 4,
+        parentTagId0: -1,
+        name: "testtest1",
+        childTags: [],
+      },
+    ];
+    /* var that = this;
     axios
       .get("/tags/")
       .then(function (response) {
         console.log(response.data);
-        /* that.getAllNodeId(that.tagList, response.data.data.tags); */
+
         that.tagList = response.data.data.tags;
-        sessionStorage.setItem("tagList", JSON.stringify(that.tagList));
+
 
         console.log(that.tagList);
       })
       .catch(function (error) {
         console.log(error);
-      });
-  },
-
-  methods: {
-    getAllNodeId(expandedKeys, moduleDataList) {
-      for (let i = 0; i < moduleDataList.length; i++) {
-        // console.log('i in getAllNodeId: ', i)
-        expandedKeys.push(moduleDataList[i]);
-        if (moduleDataList[i].childTags) {
-          expandedKeys = this.getAllNodeId(
-            expandedKeys,
-            moduleDataList[i].childTags
-          );
-        }
-      }
-      return expandedKeys;
-    },
-    /*  append(data) {
-      axios
-        .post("/admin/tags/input", {
-          name: "testtest1",
-          parentTagId0: -1,
-        })
-        .then(function (response) {
-          console.log(response);
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      const newChild = { id: id++, name: "testtest1", sonTags: [] };
-      if (!data.sonTags) {
-        this.$set(data, "sonTags", []);
-      }
-      data.sonTags.push(newChild);
-    },
-
-    remove(node, data) {
-      const parent = node.parent;
-      const sonTags = parent.data.sonTags || parent.data;
-      const index = sonTags.findIndex((d) => d.id === data.id);
-      sonTags.splice(index, 1);
-    },
-
-    renderContent(h, { node, data, store }) {
-      return (
-        <span class="custom-tree-node">
-          <span>{node.label}</span>
-          <span>
-            <el-button
-              style="margin-left:5px"
-              size="mini"
-              type="text"
-              on-click={() => this.append(data)}
-            >
-              Append
-            </el-button>
-            <el-button
-              size="mini"
-              type="text"
-              on-click={() => this.remove(node, data)}
-            >
-              Delete
-            </el-button>
-          </span>
-        </span>
-      );
-    }, */
+      }); */
   },
 };
 </script>

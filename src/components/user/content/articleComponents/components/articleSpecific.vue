@@ -37,13 +37,13 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="'data:image/jpg;base64,' + template.avatar" alt="" />
+            <img :src=" template.avatar" alt="" />
           </div>
           <div class="content">
             <div class="summary">
               <a class="user"
                 ><router-link
-                  v-if="nowUser == posterUserId0"
+                  v-if="$store.state.me.id == posterUserId0"
                   to="/helloWorld/mine/contents/questionFiles"
                   >{{ template.nickname }} </router-link
                 ><router-link
@@ -118,7 +118,7 @@
       <div
         class="ui mini labeled button"
         @click="deleteArticle(template.id)"
-        v-if="posterUserId0 == nowUser"
+        v-if="posterUserId0 == $store.state.me.id"
         style="margin-left: 3%"
       >
         <i class="trash icon"></i>删除
@@ -156,7 +156,7 @@
               v-for="item in commentList"
             >
               <a class="avatar">
-                <img :src="'data:image/jpg;base64,' + item.avatar" alt="" />
+                <img :src=" item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author"
@@ -184,7 +184,7 @@
                   ><a
                     class="reply"
                     @click="deleteComment(item.id)"
-                    v-if="item.postUserId0 == nowUser"
+                    v-if="item.postUserId0 == $store.state.me.id"
                     >删除</a
                   >
                 </div>
@@ -235,7 +235,7 @@
           </el-container>
         </div>
         <div class="actions">
-          <div class="ui green ok inverted button" @click="collectArticle()">
+          <div class="ui teal ok inverted button" @click="collectArticle()">
             <i class="checkmark icon"></i>
             确定
           </div>
@@ -244,7 +244,7 @@
       <div class="ui edit modal" style="width: 400px">
         <div id="websiteEditorElem"></div>
         <div class="actions">
-          <div class="ui green ok inverted button" @click="sure()">
+          <div class="ui teal ok inverted button" @click="sure()">
             <i class="checkmark icon"></i>
             确定
           </div>
@@ -277,7 +277,6 @@ export default {
       articleLikeIsActive: "ui red button",
       articleDislikeIsActive: "ui blue button",
       articleCollectIsActive: "ui yellow button",
-
       favoriteList: [],
       favoriteId: sessionStorage["favoriteId"],
       /* ---------------------------------- */
@@ -291,7 +290,7 @@ export default {
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
-      nowUser: sessionStorage.getItem("id"),
+
       posterUserId0: this.$route.query.posterUserId0,
     };
   },
@@ -309,7 +308,8 @@ export default {
         that.articleLikeNumber = that.template.likesNum;
         that.articleCollectNumber = that.template.collectedNum;
         that.articleDislikeNumber = that.template.disLikesNum;
-        sessionStorage["articleId"] = that.template.id;
+        that.$store.commit("getArticleId", that.template.id);
+
         /* sessionStorage["posterUserId0"] = that.template.posterUserId0; */
 
         console.log(that.template);
@@ -592,16 +592,11 @@ export default {
       var that = this;
       if (that.phoneEditor.txt.html()) {
         axios
-          .post(
-            "/question/" +
-              sessionStorage.getItem("articleId") +
-              "/comment/post",
-            {
-              content: that.phoneEditor.txt.html(),
-              answer: true,
-              parentCommentId0: this.parentId,
-            }
-          )
+          .post("/question/" + that.$store.state.articleId + "/comment/post", {
+            content: that.phoneEditor.txt.html(),
+            answer: true,
+            parentCommentId0: this.parentId,
+          })
           .then(function (response) {
             console.log(response.data);
             that.commentList = that.flatten(response.data.data.comments);

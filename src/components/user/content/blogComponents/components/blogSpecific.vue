@@ -37,13 +37,13 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="'data:image/jpg;base64,' + template.avatar" alt="" />
+            <img :src=" template.avatar" alt="" />
           </div>
           <div class="content">
             <div class="summary">
               <a class="user">
                 <router-link
-                  v-if="nowUser == posterUserId0"
+                  v-if="$store.state.me.id == posterUserId0"
                   to="/helloWorld/mine/contents/questionFiles"
                   >{{ template.nickname }} </router-link
                 ><router-link
@@ -71,12 +71,13 @@
       <h3 class="title" style="margin-top: -20px">{{ template.title }}</h3>
       <div class="ui divider"></div>
       <div v-html="articleContent">{{ articleContent }}</div>
-      <div
+      <br />
+      <p
+        style="color: grey"
         v-if="template.origin == false && template.transferStatement"
-        class="ui blue message"
       >
-        {{ template.transferStatement }}
-      </div>
+        转载声明： {{ template.transferStatement }}
+      </p>
       <br /><el-row>
         <el-col :span="7"><div style="height: 1px"></div></el-col>
         <el-col :span="12">
@@ -120,7 +121,7 @@
       <div
         class="ui mini labeled button"
         @click="deleteArticle(template.id)"
-        v-if="posterUserId0 == nowUser"
+        v-if="posterUserId0 == $store.state.me.id"
         style="margin-left: 3%"
       >
         <i class="trash icon"></i>删除
@@ -168,7 +169,7 @@
               v-for="item in commentList"
             >
               <a class="avatar">
-                <img :src="'data:image/jpg;base64,' + item.avatar" alt="" />
+                <img :src="  item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author">{{ item.nickname }}</a>
@@ -188,7 +189,7 @@
                   ><a
                     class="reply"
                     @click="deleteComment(item.id)"
-                    v-if="item.postUserId0 == nowUser"
+                    v-if="item.postUserId0 == $store.state.me.id"
                     >删除</a
                   >
                 </div>
@@ -245,7 +246,7 @@
           </el-container>
         </div>
         <div class="actions">
-          <div class="ui green ok inverted button" @click="collectArticle()">
+          <div class="ui teal ok inverted button" @click="collectArticle()">
             <i class="checkmark icon"></i>
             确定
           </div>
@@ -254,7 +255,7 @@
       <div class="ui edit modal" style="width: 400px">
         <div id="websiteEditorElem"></div>
         <div class="actions">
-          <div class="ui green ok inverted button" @click="sure()">
+          <div class="ui teal ok inverted button" @click="sure()">
             <i class="checkmark icon"></i>
             确定
           </div>
@@ -301,7 +302,7 @@ export default {
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
-      nowUser: sessionStorage.getItem("id"),
+
       posterUserId0: this.$route.query.posterUserId0,
     };
   },
@@ -319,7 +320,8 @@ export default {
         that.articleLikeNumber = that.template.likesNum;
         that.articleCollectNumber = that.template.collectedNum;
         that.articleDislikeNumber = that.template.disLikesNum;
-        sessionStorage["blogId"] = that.template.id;
+        that.$store.commit("getBlogId", that.template.id);
+
         /* sessionStorage["posterUserId0"] = that.template.posterUserId0; */
       })
       .catch(function (error) {
@@ -570,7 +572,7 @@ export default {
       if (that.phoneEditor.txt.html()) {
         axios
           .post(
-            "/blog/" + sessionStorage.getItem("articleId") + "/comment/post",
+            "/blog/" + sessionStorage.getItem("blogId") + "/comment/post",
             {
               content: that.phoneEditor.txt.html(),
               answer: true,

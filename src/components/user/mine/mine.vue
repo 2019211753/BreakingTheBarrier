@@ -50,7 +50,7 @@
               </div>
               <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" /> -->
               <img
-                :src="'data:image/jpg;base64,' + avatar"
+                :src="  $store.state.me.avatar"
                 alt=""
                 class="ui small circular image"
               />
@@ -58,9 +58,9 @@
           </el-col>
           <el-col :span="14">
             <div class="information" style="margin-top: -5px">
-              <h2>{{ nickname }}</h2>
-              <p style="color: grey" v-if="personalSignature">
-                {{ personalSignature }}
+              <h2>{{ $store.state.me.nickname }}</h2>
+              <p style="color: grey" v-if="$store.state.me.personalSignature">
+                {{ $store.state.me.personalSignature }}
               </p>
               <p style="color: grey" v-else>暂无签名</p>
               <div class="data">
@@ -70,15 +70,19 @@
                     <div class="label" style="margin-top: 3px">内容</div>
                   </div>
                   <div class="statistic">
-                    <div class="value">{{ donation }}</div>
+                    <div class="value">{{ $store.state.me.donation }}</div>
                     <div class="label" style="margin-top: 3px">贡献度</div>
                   </div>
                   <div class="statistic">
-                    <div class="value">{{ followedUserNum }}</div>
+                    <div class="value">
+                      {{ $store.state.me.followedUserNum }}
+                    </div>
                     <div class="label" style="margin-top: 3px">粉丝</div>
                   </div>
                   <div class="statistic">
-                    <div class="value">{{ followingUserNum }}</div>
+                    <div class="value">
+                      {{ $store.state.me.followingUserNum }}
+                    </div>
                     <div class="label" style="margin-top: 3px">关注</div>
                   </div>
                 </div>
@@ -115,13 +119,6 @@ export default {
   data() {
     return {
       loading: true,
-      avatar: sessionStorage.getItem("avatar"),
-      nickname: sessionStorage.getItem("nickname"),
-      personalSignature: sessionStorage.getItem("personalSignature"),
-      donation: sessionStorage.getItem("donation"),
-      followedUserNum: sessionStorage.getItem("followedUserNum"),
-      followingUserNum: sessionStorage.getItem("followingUserNum"),
-      /* imageUrl: "", */
     };
   },
   created() {
@@ -131,7 +128,7 @@ export default {
         on: "hover",
       });
     });
-    window.addEventListener("setItem", (e) => {
+   /*  window.addEventListener("setItem", (e) => {
       if (e.key == "nickname") {
         console.log(e.newValue);
         that.nickname = e.newValue;
@@ -142,7 +139,7 @@ export default {
         console.log(e.newValue);
         that.personalSignature = e.newValue;
       }
-    });
+    }); */
     /* window.addEventListener("setItem", (e) => {
       that.nickname = e.newValue;
     }); */
@@ -195,7 +192,8 @@ export default {
             console.log(res.data);
             that.resetSetItem("avatar", res.data.data.avatar);
             that.$message.success("上传头像成功!");
-            that.avatar = res.data.data.avatar;
+            that.$store.commit("getMyAvatar", res.data.data.avatar);
+
             /* var decode = jwtDecode(res.data.data);
             console.log(decode);
             that.nickname = decode.nickname; */

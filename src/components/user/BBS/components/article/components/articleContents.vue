@@ -1,10 +1,94 @@
 <template>
   <div class="ui basic segment">
+    <div class="ui segment" v-for="(item, index) in contentList">
+      <div class="ui middle aligned grid">
+        <div class="ten wide column">
+          <h3 class="ui header">
+            <a href="">
+              <router-link
+                :to="{
+                  path: '/helloWorld/BBS/articleContent',
+                  query: {
+                    articleId: item.id,
+                    posterUserId0: item.posterUserId0,
+                  },
+                }"
+                >{{ item.title }}
+              </router-link>
+            </a>
+          </h3>
+          <p class="m-text">{{ item.description }}</p>
+          <div class="ui grid">
+            <div class="eleven wide column">
+              <div class="ui mini horizontal link list">
+                <div class="item">
+                  <img :src="item.avatar" alt="" class="ui avatar image" />
+                  <div class="content">
+                    <a class="header">{{ item.nickname }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sixteen wide column" style="margin-top: -20px">
+              <div class="ui mini horizontal link list">
+                <div class="item">
+                  <i class="calendar icon"></i>
+                  <span style="margin-left: 2px">{{ item.createTime }}</span>
+                </div>
+                <div class="item">
+                  <i class="thumbs up icon"></i>
+                  <span style="margin-left: 2px">{{ item.likesNum }}</span>
+                </div>
+                <div class="item">
+                  <i class="comment icon"></i>
+                  <span style="margin-left: 2px">{{ item.commentsNum }}</span>
+                </div>
+                <div class="item">
+                  <i class="eye icon"></i>
+                  <span style="margin-left: 2px">{{ item.view }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="sixteen wide column" style="margin-top: -20px">
+              <div class="ui mini horizontal link list">
+                <div class="item">
+                  <a
+                    href="/types/2"
+                    class="ui teal basic label"
+                    v-for="tags in item.tags"
+                    >{{ tags.name }}</a
+                  >
+                  <a href="/types/2" class="ui red basic label">未解决</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui grid">
+            <!-- <div class="right aligned five wide column">
+              <a
+                href="/types/2"
+                class="ui teal basic label m-padded-tb-tiny m-text-thin"
+                >JavaSE</a
+              >
+            </div> -->
+          </div>
+        </div>
+        <div class="six wide column">
+          <a href="/blog/120" target="_blank">
+            <img
+              src="https://picsum.photos/800/450/?random=108"
+              alt=""
+              class="ui rounded image"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
     <!-- <div class="ui segment"></div> -->
     <div class="ui segment" v-if="loading == false && !contentList.length">
       <el-empty image-size="200" description="暂无内容"></el-empty>
     </div>
-    <div class="ui segment" v-for="(item, index) in contentList">
+    <!-- <div class="ui segment" v-for="(item, index) in contentList">
       <el-container>
         <el-aside width="45px"
           ><img
@@ -14,7 +98,7 @@
             alt=""
         /></el-aside>
         <el-main
-          ><!-- <a class="ui red floating circular label">2</a> -->
+          > 
           <h4 style="margin-top: -13px">{{ item.nickname }}</h4>
           <p style="margin-top: -13px; color: grey; font-size: 13px">
             {{ item.createTime }}
@@ -52,9 +136,7 @@
         >
       </el-row>
       <el-row :gutter="24" style="margin-top: 5px">
-        <!-- <el-col :span="8"
-          ><img class="ui rounded fluid image" :src="cover[index]" />
-        </el-col> -->
+         
         <el-col :span="24"
           ><h4 style="color: grey; text-align: center">
             {{ item.description }}
@@ -92,7 +174,7 @@
           </div></el-col
         >
       </el-row>
-    </div>
+    </div> -->
     <el-skeleton :loading="loading" animated :count="7">
       <template slot="template"
         ><div class="ui segment">
