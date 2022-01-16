@@ -15,17 +15,17 @@ import java.util.Map;
 public class Magic {
     public static final int SEARCH_PAGE_SIZE = 1000;
     public static final int INDEX_PAGE_SIZE = 10;
+    public static final int CHILD_COMMENTS_PAGE_SIZE = 3;
+    public static final int FAVORITE_CONTENT_PAGE_SIZE = 7;
     public static final int BEST_COMMENTS_SIZE = 3;
     public static final int RECOMMENDED_SIZE = 6;
-    public static final int DEFAULT_COMMENT_PAGE_SIZE = 3;
-    public static final int FAVORITE_CONTENT_PAGE_SIZE = 7;
     public static final int RANK_SIZE = 10;
     public static final int MAX_FAVORITE_CONTENT_SIZE = 25;
-    public static final int HIDE_STANDARD1 = 6;
-    public static final int HIDE_STANDARD2 = 2;
     public static final long MAX_UPLOAD_AVATAR_SIZE_BYTES = 100;
     public static final long MAX_UPLOAD_PICTURE_SIZE_BYTES = 300;
     public static final long MAX_UPLOAD_DOCUMENT_SIZE_MBYTES = 5;
+    public static final int HIDE_STANDARD1 = 6;
+    public static final int HIDE_STANDARD2 = 2;
     public static final Map<String, List<String>> ACADEMIES = createMap();
 
     public static Map<String, List<String>> createMap() {

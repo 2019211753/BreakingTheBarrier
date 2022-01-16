@@ -4,7 +4,6 @@ import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.User;
 import com.lrm.service.UserServiceImpl;
-import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,13 +93,9 @@ public class LoginController {
         if(user1 != null)
         {
             String token = TokenInfo.postToken(user1);
-
             hashMap.put("token", token);
-            hashMap.put("avatar", FileUtils.convertAvatar(user1.getAvatar()));
-            //返回首页
             return new Result(hashMap, "登录成功");
         } else {
-            //返回登录页面
             throw new FailedOperationException("账号或密码错误");
         }
     }

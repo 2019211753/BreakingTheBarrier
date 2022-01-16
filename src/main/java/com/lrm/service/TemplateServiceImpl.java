@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Join;
@@ -98,6 +99,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         return repository.save(oldT);
     }
 
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public T getById(Long id) {
         TemplateRepository<T> repository = getTemplateRepository();
 
@@ -161,7 +163,7 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         String nickname = queryMap.get("nickname");
         String tagIds = queryMap.get("tagIds");
 
-        return repository.findAll((root, cq, cb) -> {
+        Page<T> pages = repository.findAll((root, cq, cb) -> {
             //或查询
             List<Predicate> listOr = new ArrayList<>();
             //""是空字节，而不是null 下面这种写法 而不是Question.getTitle().equals("")是防止它是null 从而造成空指针异常
@@ -193,6 +195,41 @@ public abstract class TemplateServiceImpl<T extends Template>  {
             cq.where(predicateOr, predicateAnd);
             return null;
         }, pageable);
+
+        //TODO: 待测试
+        //不合法的数据：如需要查询的tagIds为1,2,3 但上面会把 11,2,31也查询出来
+        //特殊数据 1 会出现21 12 就查询每个id 如果包含1就合法
+label:  for (T t : pages.getContent())
+        {
+            //需要查询的tagIds的第一个和最后一个,出现的位置
+            int firstCom = tagIds.indexOf(",");
+            int lastCom = tagIds.lastIndexOf(",");
+
+            //如果没有, 对查询结果的tagIds进行遍历 如果没有要查询的id 则为不合法的数据 移除 如果有 保留
+            if (firstCom == lastCom && firstCom == -1) {
+                String[] ids = tagIds.split(",");
+                for (String id : ids) {
+                    if (tagIds.equals(id)) {
+                        continue label;
+                    }
+                }
+                pages.getContent().remove(t);
+            } else {
+                String firstTagId = tagIds.substring(0, firstCom);
+                String lastTagId = tagIds.substring(lastCom + 1);
+                int firstCom_ = t.getTagIds().indexOf(",");
+                String firstTagId_ = t.getTagIds().substring(0, firstCom_);
+                int lastCom_ = t.getTagIds().lastIndexOf(",");
+                String lastTagId_ = t.getTagIds().substring(lastCom_ + 1);
+
+                //如果第一个标签和最后一个标签与被查询的标签对不上号 删去
+                if (!firstTagId.equals(firstTagId_) || !lastTagId.equals(lastTagId_)) {
+                    pages.getContent().remove(t);
+                }
+            }
+        }
+
+        return pages;
     }
 
     public T getAndConvert(Long id, T frontT) {

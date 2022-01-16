@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService
         user.setPassword("M#D5+" + MD5Utils.code(password));
         user.setNickname(nickname);
         //默认值
-        user.setAvatar("default.jpg");
+        user.setAvatar("https://test-oss-weswallows.oss-cn-beijing.aliyuncs.com/default.jpg");
         user.setPersonalSignature("这个人什么也没说...");
         user.setDonation(0);
         user.setCanSpeak(true);

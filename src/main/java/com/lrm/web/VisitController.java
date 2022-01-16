@@ -4,8 +4,8 @@ import com.lrm.exception.NotFoundException;
 import com.lrm.po.User;
 import com.lrm.service.FavoriteServiceImpl;
 import com.lrm.service.UserServiceImpl;
-import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
+import com.lrm.vo.Archive;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,15 +60,15 @@ public class VisitController {
             case 2:
                 hashMap.put("questions", receiveUser.getQuestions());
                 hashMap.put("blogs", receiveUser.getBlogs());
-                hashMap.put("comments", receiveUser.getPostComments());
-                hashMap.put("likes", receiveUser.getPostLikes());
+                hashMap.put("comments", Archive.getCommentMessages(receiveUser.getPostComments()));
+                hashMap.put("likes", Archive.getLikesMessages(receiveUser.getPostLikes()));
 
                 break;
             case 3:
                 hashMap.put("questions", receiveUser.getQuestions());
                 hashMap.put("blogs", receiveUser.getBlogs());
-                hashMap.put("comments", receiveUser.getPostComments());
-                hashMap.put("likes", receiveUser.getPostLikes());
+                hashMap.put("comments", Archive.getCommentMessages(receiveUser.getPostComments()));
+                hashMap.put("likes", Archive.getLikesMessages(receiveUser.getPostLikes()));
 
                 hashMap.put("favorites", favoriteServiceImpl.getFavorites(true, userId));
 
@@ -91,9 +91,8 @@ public class VisitController {
 
                 hashMap.put("questions", receiveUser.getQuestions());
                 hashMap.put("blogs", receiveUser.getBlogs());
-                hashMap.put("comments", receiveUser.getPostComments());
-                hashMap.put("likes", receiveUser.getPostLikes());
-
+                hashMap.put("comments", Archive.getCommentMessages(receiveUser.getPostComments()));
+                hashMap.put("likes", Archive.getLikesMessages(receiveUser.getPostLikes()));
                 break;
             case 7:
                 hashMap.put("followingUsers", receiveUser.getFollowingUsers());
@@ -101,8 +100,8 @@ public class VisitController {
 
                 hashMap.put("questions", receiveUser.getQuestions());
                 hashMap.put("blogs", receiveUser.getBlogs());
-                hashMap.put("comments", receiveUser.getPostComments());
-                hashMap.put("likes", receiveUser.getPostLikes());
+                hashMap.put("comments", Archive.getCommentMessages(receiveUser.getPostComments()));
+                hashMap.put("likes", Archive.getLikesMessages(receiveUser.getPostLikes()));
 
                 hashMap.put("favorites", favoriteServiceImpl.getFavorites(true, userId));
 

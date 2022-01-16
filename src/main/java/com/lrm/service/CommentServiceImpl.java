@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -59,11 +60,12 @@ public class CommentServiceImpl implements CommentService {
                 throw new NotFoundException("该父评论不存在");
             }
 
+            Comment reComment = parentComment;
             //父问题评论数增加
-            while (parentComment != null)
+            while (reComment != null)
             {
-                parentComment.setCommentsNum(parentComment.getCommentsNum() + 1);
-                parentComment = parentComment.getParentComment();
+                reComment.setCommentsNum(reComment.getCommentsNum() + 1);
+                reComment = reComment.getParentComment();
             }
 
             //初始化
@@ -179,6 +181,12 @@ public class CommentServiceImpl implements CommentService {
 
     }
 
+    /**
+     * 查询n个赞数最高的评论
+     *
+     * @param questionId 问题Id
+     * @return comment集合
+     */
     @Override
     public List<Comment> listBestComments(Long questionId) {
         Sort sort = Sort.by(Sort.Direction.DESC, "likesNum");
@@ -195,16 +203,19 @@ public class CommentServiceImpl implements CommentService {
      * @param isAnswer 是哪一类评论
      * @return comment集合
      */
+
     @Override
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public List<Comment> listCommentByQuestionId(Long questionId, Boolean isAnswer) {
         Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
 
-        return eachComment(commentRepository.findByQuestionIdAndAnswerAndSelected(questionId, isAnswer, sort, false));
+        return eachComment(commentRepository.findByQuestionIdAndAnswerAndSelected(questionId, isAnswer, sort, true));
 
     }
 
 
     @Override
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public List<Comment> listCommentByBlogId(Long blogId, Boolean isAnswer) {
         Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
 
@@ -244,8 +255,7 @@ public class CommentServiceImpl implements CommentService {
     private void combineChildren(List<Comment> comments) {
         //遍历所有第一级评论
         for (Comment comment : comments) {
-
-            resortReceiveComments(comment, Magic.DEFAULT_COMMENT_PAGE_SIZE);
+            resortReceiveComments(comment, Magic.CHILD_COMMENTS_PAGE_SIZE);
         }
     }
 
@@ -265,7 +275,7 @@ public class CommentServiceImpl implements CommentService {
 
         //清除临时存放区
         tempReplys = new ArrayList<>();
-        remains = Magic.DEFAULT_COMMENT_PAGE_SIZE;
+        remains = Magic.CHILD_COMMENTS_PAGE_SIZE;
     }
 
     private void recursively(Comment comment) {
