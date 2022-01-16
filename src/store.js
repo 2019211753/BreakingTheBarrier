@@ -92,7 +92,7 @@ export default new Vuex.Store({
             console.log(state.others.nickname)
             state.others.avatar = data.avatar;
             state.others.personalSignature = data.personalSignature;
-            state.others.contentsNum = data.blogs.length + data.comments.length + data.questions.length;
+            state.others.contentsNum = Number(data.blogs.length) + Number(data.comments.length) + Number(data.questions.length);
             state.others.followingUserNum = data.followingUserNum;
             state.others.followedUserNum = data.followedUserNum
         }

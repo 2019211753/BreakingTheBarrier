@@ -22,11 +22,7 @@
             <div class="eleven wide column">
               <div class="ui mini horizontal link list">
                 <div class="item">
-                  <img
-                    src="https://iknow-pic.cdn.bcebos.com/42a98226cffc1e17a845764c5a90f603728de9d1"
-                    alt=""
-                    class="ui avatar image"
-                  />
+                  <img :src="item.avatar" alt="" class="ui avatar image" />
                   <div class="content">
                     <a class="header">{{ item.nickname }}</a>
                   </div>

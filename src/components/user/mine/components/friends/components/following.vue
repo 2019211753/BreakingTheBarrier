@@ -8,7 +8,7 @@
       ></el-empty>
       <div class="event" v-for="item in list">
         <div class="label">
-          <img :src="'data:image/jpg;base64,' + item.avatar" alt="" />
+          <img :src="  item.avatar" alt="" />
         </div>
         <div class="content">
           <div class="summary">

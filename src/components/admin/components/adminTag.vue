@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="actions">
-        <div class="ui green ok inverted button" @click="sure()">
+        <div class="ui teal ok inverted button" @click="sure()">
           <i class="checkmark icon"></i>
           确定
         </div>
@@ -87,9 +87,9 @@ export default {
       .get("/tags/")
       .then(function (response) {
         console.log(response.data);
-      
+
         that.tagList = response.data.data.tags;
-       
+
 
         console.log(that.tagList);
       })

@@ -49,7 +49,7 @@
                 </el-skeleton>
                 <img
                   v-else
-                  :src="'data:image/jpg;base64,' + $store.state.me.avatar"
+                  :src="$store.state.me.avatar"
                   alt=""
                   class="ui avatar image"
                 />

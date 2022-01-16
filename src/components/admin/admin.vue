@@ -6,7 +6,7 @@
           <img
             style="width: 120px"
             class="ui centered circular image"
-            :src="'data:image/jpg;base64,' + $store.state.me.avatar"
+            :src="  $store.state.me.avatar"
           />
           <h2>{{ $store.state.me.nickname }}</h2>
           <h5>{{ $store.state.me.personalSignature }}</h5>

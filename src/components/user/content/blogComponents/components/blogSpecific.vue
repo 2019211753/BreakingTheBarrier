@@ -37,7 +37,7 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="'data:image/jpg;base64,' + template.avatar" alt="" />
+            <img :src=" template.avatar" alt="" />
           </div>
           <div class="content">
             <div class="summary">
@@ -169,7 +169,7 @@
               v-for="item in commentList"
             >
               <a class="avatar">
-                <img :src="'data:image/jpg;base64,' + item.avatar" alt="" />
+                <img :src="  item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author">{{ item.nickname }}</a>
@@ -246,7 +246,7 @@
           </el-container>
         </div>
         <div class="actions">
-          <div class="ui green ok inverted button" @click="collectArticle()">
+          <div class="ui teal ok inverted button" @click="collectArticle()">
             <i class="checkmark icon"></i>
             确定
           </div>
@@ -255,7 +255,7 @@
       <div class="ui edit modal" style="width: 400px">
         <div id="websiteEditorElem"></div>
         <div class="actions">
-          <div class="ui green ok inverted button" @click="sure()">
+          <div class="ui teal ok inverted button" @click="sure()">
             <i class="checkmark icon"></i>
             确定
           </div>
@@ -321,7 +321,7 @@ export default {
         that.articleCollectNumber = that.template.collectedNum;
         that.articleDislikeNumber = that.template.disLikesNum;
         that.$store.commit("getBlogId", that.template.id);
-        
+
         /* sessionStorage["posterUserId0"] = that.template.posterUserId0; */
       })
       .catch(function (error) {

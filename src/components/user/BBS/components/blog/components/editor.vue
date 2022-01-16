@@ -24,7 +24,7 @@
     >
       不接受赞赏
     </div>
-    <div class="ui green right floated button" @click="sure()">确定</div>
+    <div class="ui teal right floated button" @click="sure()">确定</div>
   </div>
 </template>
 

@@ -147,7 +147,7 @@
         </el-col>
       </el-row>
       <br />
-      <div style="margin-left: 83%" class="ui green button" @click="sure()">
+      <div style="margin-left: 83%" class="ui teal button" @click="sure()">
         确定
       </div>
     </div>

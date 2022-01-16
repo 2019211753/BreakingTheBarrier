@@ -23,7 +23,7 @@
     <div class="ui segment" v-else>
       <img
         class="ui tiny centered circular image"
-        :src="'data:image/jpg;base64,' + $store.state.others.avatar"
+        :src=" $store.state.others.avatar"
       />
       <h3 style="text-align: center">
         <a href=""
@@ -78,7 +78,7 @@
           :key="index"
         >
           <div class="label">
-            <img :src="'data:image/jpg;base64,' +  $store.state.others.avatar" />
+            <img :src=" $store.state.others.avatar" />
           </div>
           <div class="content">
             <div class="summary">

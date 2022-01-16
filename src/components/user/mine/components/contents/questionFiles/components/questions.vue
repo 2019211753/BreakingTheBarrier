@@ -82,7 +82,7 @@
           ><img
             class="ui medium circular image"
             style="width: 40px"
-            :src="'data:image/jpg;base64,' + $store.state.me.avatar"
+            :src=" $store.state.me.avatar"
         /></el-aside>
         <el-main>
           <h4 style="margin-top: -20px">{{ $store.state.me.nickname }}</h4>

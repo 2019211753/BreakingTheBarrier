@@ -8,7 +8,7 @@
         <el-aside width="45px"
           ><img
             class="ui medium circular image"
-            :src="'data:image/jpg;base64,' + $store.state.others.avatar"
+            :src=" $store.state.others.avatar"
         /></el-aside>
 
         <el-main>

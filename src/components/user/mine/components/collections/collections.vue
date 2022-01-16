@@ -64,7 +64,7 @@
       </div>
       <div class="actions">
         <div :class="privateButton" @click="setPrivate()">私密</div>
-        <div class="ui green ok inverted button" @click="sureCreateFavorites()">
+        <div class="ui teal ok inverted button" @click="sureCreateFavorites()">
           <i class="checkmark icon"></i>
           确定
         </div>
@@ -92,7 +92,7 @@
         >
           私密
         </div>
-        <div class="ui green ok inverted button" @click="sureEditFavorites()">
+        <div class="ui teal ok inverted button" @click="sureEditFavorites()">
           <i class="checkmark icon"></i>
           确定
         </div>

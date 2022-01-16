@@ -50,7 +50,7 @@
               </div>
               <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" /> -->
               <img
-                :src="'data:image/jpg;base64,' + $store.state.me.avatar"
+                :src="  $store.state.me.avatar"
                 alt=""
                 class="ui small circular image"
               />

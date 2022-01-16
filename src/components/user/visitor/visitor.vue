@@ -35,7 +35,7 @@
           <el-col :span="6">
             <div class="avatar" style="margin-left: 20px; margin-top: 10px">
               <img
-                :src="'data:image/jpg;base64,' + $store.state.others.avatar"
+                :src="  $store.state.others.avatar"
                 alt=""
                 class="ui small circular image"
               />

@@ -12,7 +12,7 @@
               更多
             </button>
           </h3>
-          <div class="ui green basic segment">
+          <div class="ui teal basic segment">
             <h5 style="text-align: center">纸短情长啊，诉不完当时年少</h5>
           </div>
           <img

@@ -32,7 +32,7 @@
         ><h4>
           头像：<img
           class="ui mini right floated circular image"
-          :src="'data:image/jpg;base64,' + item.avatar" alt=""
+          :src="  item.avatar" alt=""
         /></h4></el-col
         >
         <el-col :span="6"><h4>发布者id：{{ item.posterUserId0 }}</h4></el-col>
@@ -118,7 +118,7 @@
         ><h4>
           发布者头像：<img
           class="ui mini right floated circular image"
-          :src="'data:image/jpg;base64,' + item.avatar" alt=""
+          :src="  item.avatar" alt=""
         /></h4></el-col
         >
         <el-col :span="6"><h4>发布者id：{{ item.posterUserId0 }}</h4></el-col>
