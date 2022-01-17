@@ -301,6 +301,11 @@
                   ><a class="reply" @click="replyComment(item.id)">回复</a
                   ><a
                     class="reply"
+                    v-if="posterUserId0 == $store.state.me.id"
+                    @click="setSelectedComment(item.id)"
+                    >设为精选评论</a
+                  ><a
+                    class="reply"
                     @click="deleteComment(item.id)"
                     v-if="item.postUserId0 == $store.state.me.id"
                     >删除</a
@@ -406,7 +411,6 @@ export default {
       articleCollectIsActive: "ui yellow button",
       favoriteList: [],
       favoriteId: sessionStorage["favoriteId"],
-      /* ---------------------------------- */
       likeNumber: "",
       dislikeNumber: "",
       commentList: "",
@@ -415,7 +419,6 @@ export default {
       parent: "comment",
       child: "child comment",
       parentId: "-1",
-      /* ----------------------------- */
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
@@ -516,6 +519,9 @@ export default {
       that.articleApproved = approved;
       that.articleLikeNumber = likesNum;
       that.articleDisapproved = disapproved;
+    },
+    replyArticle() {
+      $(".ui.edit.modal").modal("show");
     },
     openCollections() {
       var that = this;
@@ -657,6 +663,16 @@ export default {
           console.log(error);
         });
     },
+    getCommentLikesAndDislikes(commentId, likesNum, dislikesNum) {
+      var that = this;
+      for (var i in that.commentList) {
+        if (that.commentList[i].id == commentId) {
+          that.commentList[i].likesNum = likesNum;
+          that.commentList[i].disLikesNum = dislikesNum;
+          break;
+        }
+      }
+    },
     likeComment(id) {
       var that = this;
       axios
@@ -697,23 +713,33 @@ export default {
           console.log(error);
         });
     },
-    getCommentLikesAndDislikes(commentId, likesNum, dislikesNum) {
-      var that = this;
-      for (var i in that.commentList) {
-        if (that.commentList[i].id == commentId) {
-          that.commentList[i].likesNum = likesNum;
-          that.commentList[i].disLikesNum = dislikesNum;
-          break;
-        }
-      }
-    },
-    replyArticle() {
-      $(".ui.edit.modal").modal("show");
-    },
     replyComment(id) {
       var that = this;
       that.parentId = id;
       $(".ui.edit.modal").modal("show");
+    },
+    setSelectedComment(id) {
+      var that = this;
+      axios
+        .get(
+          "/question/" +
+            that.$store.state.articleId +
+            "/comment/" +
+            id +
+            "/select"
+        )
+        .then(function (response) {
+          console.log(response.data);
+          that.template.solved = response.data.data.solved;
+          that.getAllComments();
+          that.$message({
+            message: response.data.msg,
+            type: "success",
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     deleteComment(id) {
       var that = this;

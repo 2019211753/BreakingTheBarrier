@@ -1,17 +1,14 @@
 <template>
   <div class="ui segment">
     <div class="ui feed">
-      <div class="event">
+      <div class="event" v-for="item in contentList">
         <div class="label">
-          <img
-            :src=" $store.state.me.avatar"
-            alt=""
-          />
+          <img :src="$store.state.me.avatar" alt="" />
         </div>
         <div class="content">
           <div class="summary">
-            您已添加<a>Jenny Hess</a>至您的 <a>同事</a> 分组.
-            <div class="date">3 天前</div>
+            赞了{{ item.parentType }}：<a>{{ item.parentContent }}</a>
+            <div class="date">{{ item.createTime }}</div>
           </div>
         </div>
       </div>

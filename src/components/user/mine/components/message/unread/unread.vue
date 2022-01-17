@@ -14,28 +14,32 @@
         v-for="item in unLookedComments"
       >
         <div class="label">
-          <img :src=" item.avatar" alt="" />
+          <img :src="item.avatar" alt="" />
         </div>
         <div class="content">
           <div class="summary">
-            <a class="user"> {{ item.nickname }} </a> 评论了你：
+            <a class="user"> {{ item.nickname }} </a>
+            在 <a class="user"> {{ item.parentContent }} </a> 中评论了你：
             <a href=""
               ><router-link
-                v-if="item.blogId"
+                v-if="item.parentType == '问题'"
                 :to="{
-                  path: '/helloWorld/BBS/blogContent',
-                  query: { blogId: item.blogId0 },
+                  path: '/helloWorld/BBS/articleContent',
+                  query: {
+                    articleId: item.parentId,
+                    posterUserId0: item.posterUserId0,
+                  },
                 }"
               >
-                {{item.content}}</router-link
+                {{ item.content }}</router-link
               ><router-link
                 v-else
                 :to="{
-                  path: '/helloWorld/BBS/articleContent',
-                  query: { articleId: item.questionId0 },
+                  path: '/helloWorld/BBS/blogContent',
+                  query: { blogId: item.parentId },
                 }"
               >
-                 {{item.content}}</router-link
+                {{ item.content }}</router-link
               ></a
             >
             <div class="date">{{ item.createTime }}</div>
@@ -44,7 +48,7 @@
       </div>
       <div class="event" v-if="unLookedLikes" v-for="item in unLookedLikes">
         <div class="label">
-          <img :src=" item.avatar" alt="" />
+          <img :src="item.avatar" alt="" />
         </div>
         <div class="content">
           <div class="summary">
