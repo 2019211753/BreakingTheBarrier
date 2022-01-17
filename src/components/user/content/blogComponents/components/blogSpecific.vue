@@ -37,7 +37,7 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src=" template.avatar" alt="" />
+            <img :src="template.avatar" alt="" />
           </div>
           <div class="content">
             <div class="summary">
@@ -169,7 +169,7 @@
               v-for="item in commentList"
             >
               <a class="avatar">
-                <img :src="  item.avatar" alt="" />
+                <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author">{{ item.nickname }}</a>
@@ -213,13 +213,8 @@
             <el-aside width="70px"
               ><i class="huge yellow folder icon"></i
             ></el-aside>
-            <el-main
-              ><!-- <a
-                v-if="item.id == favoriteId"
-                class="ui red right corner label"
-              >
-                <i class="save icon"></i> </a
-              > --><el-row :gutter="24">
+            <el-main>
+              <el-row :gutter="24">
                 <el-col :span="21">
                   <div
                     class="ui button"
@@ -571,14 +566,11 @@ export default {
       var that = this;
       if (that.phoneEditor.txt.html()) {
         axios
-          .post(
-            "/blog/" + sessionStorage.getItem("blogId") + "/comment/post",
-            {
-              content: that.phoneEditor.txt.html(),
-              answer: true,
-              parentCommentId0: this.parentId,
-            }
-          )
+          .post("/blog/" + sessionStorage.getItem("blogId") + "/comment/post", {
+            content: that.phoneEditor.txt.html(),
+            answer: true,
+            parentCommentId0: this.parentId,
+          })
           .then(function (response) {
             console.log(response.data);
             that.commentList = that.flatten(response.data.data.comments);

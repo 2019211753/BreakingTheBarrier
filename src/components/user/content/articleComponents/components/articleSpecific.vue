@@ -136,7 +136,12 @@
             <h3>全部评论</h3>
             <el-empty
               :image-size="100"
-              v-if="commentList.length == 0 && commentLoading == false"
+              v-if="
+                commentList.length == 0 &&
+                bestComments.length == 0 &&
+                selectedComments.length == 0 &&
+                commentLoading == false
+              "
               description="暂无评论"
             ></el-empty>
             <el-skeleton :loading="commentLoading" animated :count="5">
@@ -155,53 +160,6 @@
                 </div>
               </template>
             </el-skeleton>
-            <div class="comment" v-for="item in bestComments">
-              <a class="avatar">
-                <img :src="item.avatar" alt="" />
-              </a>
-              <div class="content">
-                <a class="author"
-                  ><router-link
-                    :to="{
-                      path: '/helloWorld/visitor',
-                      query: { userId0: item.postUserId0 },
-                    }"
-                    >{{ item.nickname }}
-                  </router-link></a
-                >
-                <div class="metadata">
-                  <span class="date">{{ item.createTime }}</span
-                  ><a class="ui mini blue label">优选评论</a>
-                </div>
-                <div class="text" v-html="item.content"></div>
-                <div class="actions">
-                  <a
-                    class="reply"
-                    @click="likeComment(item.id)"
-                    v-model="likeNumber"
-                    >赞( {{ item.likesNum }})</a
-                  ><a class="reply" @click="dislikeComment(item.id)"
-                    >踩({{ item.disLikesNum }})</a
-                  >
-                  <a
-                    class="reply"
-                    @click="deleteComment(item.id)"
-                    v-if="item.postUserId0 == $store.state.me.id"
-                    >删除</a
-                  >
-                </div>
-              </div>
-              <div
-                style="background-color: white"
-                class="ui mini icon fluid button"
-                v-if="item.commentsNum > 3"
-                @click="getMoreComments(item.id)"
-              >
-                <i class="ui angle double down icon"></i>
-                展开更多
-              </div>
-            </div>
-            <div class="ui divider"></div>
             <div class="comment" v-for="item in selectedComments">
               <a class="avatar">
                 <img :src="item.avatar" alt="" />
@@ -215,13 +173,18 @@
                     }"
                     >{{ item.nickname }}
                   </router-link></a
+                ><a
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId0 == posterUserId0"
+                  >发布者</a
                 >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini teal label">精选评论</a>
                 </div>
                 <div class="text" v-html="item.content"></div>
-                <div class="actions">
+                <!-- <div class="actions">
                   <a
                     class="reply"
                     @click="likeComment(item.id)"
@@ -236,7 +199,7 @@
                     v-if="item.postUserId0 == $store.state.me.id"
                     >删除</a
                   >
-                </div>
+                </div> -->
               </div>
               <div
                 style="background-color: white"
@@ -248,7 +211,59 @@
                 展开更多
               </div>
             </div>
-            <div class="ui divider"></div>
+            <div class="ui divider" v-if="!selectedComments.length == 0"></div>
+            <div class="comment" v-for="item in bestComments">
+              <a class="avatar">
+                <img :src="item.avatar" alt="" />
+              </a>
+              <div class="content">
+                <a class="author"
+                  ><router-link
+                    :to="{
+                      path: '/helloWorld/visitor',
+                      query: { userId0: item.postUserId0 },
+                    }"
+                    >{{ item.nickname }}
+                  </router-link></a
+                ><a
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId0 == posterUserId0"
+                  >发布者</a
+                >
+                <div class="metadata">
+                  <span class="date">{{ item.createTime }}</span
+                  ><a class="ui mini red label">优质评论</a>
+                </div>
+                <div class="text" v-html="item.content"></div>
+                <!-- <div class="actions">
+                  <a
+                    class="reply"
+                    @click="likeComment(item.id)"
+                    v-model="likeNumber"
+                    >赞( {{ item.likesNum }})</a
+                  ><a class="reply" @click="dislikeComment(item.id)"
+                    >踩({{ item.disLikesNum }})</a
+                  >
+                  <a
+                    class="reply"
+                    @click="deleteComment(item.id)"
+                    v-if="item.postUserId0 == $store.state.me.id"
+                    >删除</a
+                  >
+                </div> -->
+              </div>
+              <div
+                style="background-color: white"
+                class="ui mini icon fluid button"
+                v-if="item.commentsNum > 3"
+                @click="getMoreComments(item.id)"
+              >
+                <i class="ui angle double down icon"></i>
+                展开更多
+              </div>
+            </div>
+            <div class="ui divider" v-if="!bestComments.length == 0"></div>
             <div
               :class="item.parentCommentId0 == -1 ? parent : child"
               v-for="item in commentList"
@@ -265,6 +280,11 @@
                     }"
                     >{{ item.nickname }}
                   </router-link></a
+                ><a
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId0 == posterUserId0"
+                  >发布者</a
                 >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span>
@@ -418,7 +438,6 @@ export default {
           that.articleCollectNumber = that.template.collectedNum;
           that.articleDislikeNumber = that.template.disLikesNum;
           that.$store.commit("getArticleId", that.template.id);
-          /* sessionStorage["posterUserId0"] = that.template.posterUserId0; */
           console.log(that.template);
         })
         .catch(function (error) {
@@ -427,19 +446,7 @@ export default {
     });
 
     var p2 = new Promise((resolve, reject) => {
-      axios
-        .get("/question/" + this.$route.query.articleId + "/comments")
-        .then(function (response) {
-          that.commentLoading = false;
-          console.log(response.data);
-          console.log(that.flatten(response.data.data.comments2));
-          that.bestComments = response.data.data.bestComments;
-          that.selectedComments = response.data.data.selectedComments;
-          that.commentList = that.flatten(response.data.data.comments2);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      that.getAllComments();
     });
 
     Promise.all([p1, p2]).then((res) => {
@@ -569,7 +576,6 @@ export default {
           console.log(error);
         });
     },
-    /* ---------------------------------- */
     flatten(data) {
       return data.reduce(
         (
@@ -623,6 +629,22 @@ export default {
           ),
         []
       );
+    },
+    getAllComments() {
+      var that = this;
+      axios
+        .get("/question/" + this.$route.query.articleId + "/comments")
+        .then(function (response) {
+          that.commentLoading = false;
+          console.log(response.data);
+          console.log(that.flatten(response.data.data.comments2));
+          that.commentList = that.flatten(response.data.data.comments2);
+          that.bestComments = response.data.data.bestComments;
+          that.selectedComments = response.data.data.selectedComments;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     getMoreComments(id) {
       var that = this;
@@ -693,40 +715,38 @@ export default {
       that.parentId = id;
       $(".ui.edit.modal").modal("show");
     },
-    /*   replyComment(id) {
+    deleteComment(id) {
       var that = this;
-      if (that.phoneEditor.txt.html()) {
+      var p1 = new Promise((resolve, reject) => {
         axios
-          .post(
+          .get(
             "/question/" +
-              sessionStorage.getItem("articleId") +
-              "/comment/post",
-            {
-              content: that.phoneEditor.txt.html(),
-              answer: true,
-              parentCommentId0: id,
-            }
+              this.$route.query.articleId +
+              "/comment/" +
+              id +
+              "/delete"
           )
           .then(function (response) {
-            that.commentList = that.flatten(response.data.data.comments);
+            console.log(response.data);
+            setTimeout(that.getAllComments(), 100);
             that.$message({
-              message: "回复成功",
+              message: "删除成功",
               type: "success",
             });
           })
           .catch(function (error) {
             console.log(error);
           });
-      } else {
-        this.$message({
-          message: "请填写评论内容",
-          type: "warning",
-        });
-      }
-    }, */
-    deleteComment(id) {
-      var that = this;
-      axios
+      });
+
+      var p2 = new Promise((resolve, reject) => {
+        that.getAllComments();
+      });
+
+      Promise.all([p1, p2]).then((res) => {
+        console.log(res);
+      });
+      /*   axios
         .get(
           "/question/" +
             this.$route.query.articleId +
@@ -736,14 +756,7 @@ export default {
         )
         .then(function (response) {
           console.log(response.data);
-          for (var i in that.commentList) {
-            if (
-              that.commentList[i].id == id ||
-              id == that.commentList[i].parentCommentId0
-            ) {
-              that.commentList.splice(i, 1);
-            }
-          }
+          setTimeout(that.getAllComments(), 100);
           that.$message({
             message: "删除成功",
             type: "success",
@@ -751,9 +764,8 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
-        });
+        }); */
     },
-    /* ------------------------------------------ */
     sure() {
       var that = this;
       var p1 = new Promise((resolve, reject) => {
@@ -818,7 +830,6 @@ h3:nth-child(2) {
   margin: 0 20%;
 }
 
-/* --------------------------- */
 .child.comment {
   margin-left: 50px;
 }

@@ -52,13 +52,13 @@
             <div class="sixteen wide column" style="margin-top: -20px">
               <div class="ui mini horizontal link list">
                 <div class="item">
-                  <a
-                    href="/types/2"
-                    class="ui teal basic label"
-                    v-for="tags in item.tags"
-                    >{{ tags.name }}</a
+                  <a class="ui teal basic label" v-for="tags in item.tags">{{
+                    tags.name
+                  }}</a>
+                  <a class="ui teal basic label" v-if="item.solved == true"
+                    >已解决</a
                   >
-                  <a href="/types/2" class="ui red basic label">未解决</a>
+                  <a class="ui red basic label" v-else>未解决</a>
                 </div>
               </div>
             </div>

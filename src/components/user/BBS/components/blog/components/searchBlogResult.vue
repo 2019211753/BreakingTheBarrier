@@ -53,13 +53,13 @@
             <div class="sixteen wide column" style="margin-top: -20px">
               <div class="ui mini horizontal link list">
                 <div class="item">
-                  <a
-                    href="/types/2"
-                    class="ui teal basic label"
-                    v-for="tags in item.tags"
-                    >{{ tags.name }}</a
+                  <a class="ui teal basic label" v-for="tags in item.tags">{{
+                    tags.name
+                  }}</a>
+                  <a class="ui teal basic label" v-if="item.origin == true"
+                    >原创</a
                   >
-                  <a href="/types/2" class="ui red basic label">未解决</a>
+                  <a class="ui blue basic label" v-else>转载</a>
                 </div>
               </div>
             </div>

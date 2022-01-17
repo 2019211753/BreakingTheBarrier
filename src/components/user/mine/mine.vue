@@ -214,10 +214,6 @@ export default {
             that.resetSetItem("avatar", res.data.data.avatar);
             that.$message.success("上传头像成功!");
             that.$store.commit("getMyAvatar", res.data.data.avatar);
-
-            /* var decode = jwtDecode(res.data.data);
-            console.log(decode);
-            that.nickname = decode.nickname; */
           }
         })
         .catch((err) => {
