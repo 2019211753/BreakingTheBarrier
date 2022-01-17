@@ -153,8 +153,7 @@ export default {
         that.followingNum = response.data.data.userInfo.followingUserNum; */
         that.blogs = response.data.data.blogs;
         that.following = response.data.data.following;
-        var information = response.data.data;
-        that.$store.commit("getOthersFile", information);
+        that.$store.commit("getOthersFile", response.data.data);
       })
       .catch(function (error) {
         console.log(error);

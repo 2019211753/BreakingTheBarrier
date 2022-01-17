@@ -141,6 +141,7 @@ export default {
   },
   created() {
     var that = this;
+
     axios
       .get("/visit/" + this.$route.query.posterUserId0)
       .then(function (response) {
@@ -155,8 +156,8 @@ export default {
         that.followingNum = response.data.data.userInfo.followingUserNum; */
         that.questions = response.data.data.questions;
         that.following = response.data.data.following;
-        var information = response.data.data;
-        that.$store.commit("getOthersFile", information);
+        that.$store.commit("getOthersFile", response.data.data);
+
         /* sessionStorage["posterUser"] = response.data.data.userInfo.nickname;
         sessionStorage["posterUserAvatar"] = response.data.data.userInfo.avatar;
         sessionStorage["posterUserPersonalSignature"] =
