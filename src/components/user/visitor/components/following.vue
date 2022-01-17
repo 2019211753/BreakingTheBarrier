@@ -99,10 +99,11 @@ export default {
         .get("/visit/" + id)
         .then(function (response) {
           console.log(response.data);
-          that.$store.commit("getOthersFile", response.data.data);
+
           if (id == that.$store.state.me.id) {
             that.$router.push("/helloWorld/mine/contents/questionFiles");
           } else {
+            that.$store.commit("getOthersFile", response.data.data);
             that.$router.push({
               path: "/helloWorld/visitor/questions",
               query: { userId0: id },

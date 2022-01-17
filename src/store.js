@@ -96,9 +96,9 @@ export default new Vuex.Store({
             state.others.nickname = data.userInfo.nickname;
             state.others.avatar = data.userInfo.avatar;
             state.others.personalSignature = data.userInfo.personalSignature;
-            state.questionsNum = data.questions.length;
-            state.blogsNum = data.blogs.length;
-            state.commentsNum = data.comments.length;
+            state.others.questionsNum = data.questions.length;
+            state.others.blogsNum = data.blogs.length;
+            state.others.commentsNum = data.comments.length;
             state.others.followingUserNum = data.userInfo.followingUserNum;
             state.others.followedUserNum = data.userInfo.followedUserNum
         },

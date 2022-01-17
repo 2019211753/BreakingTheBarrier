@@ -31,7 +31,7 @@
             </el-row>
           </template>
         </el-skeleton> -->
-        <el-row :gutter="20">
+        <el-row :gutter="24">
           <el-col :span="6">
             <div class="avatar" style="margin-left: 20px; margin-top: 10px">
               <img
@@ -41,7 +41,7 @@
               />
             </div>
           </el-col>
-          <el-col :span="14">
+          <el-col :span="18">
             <div class="information" style="margin-top: -5px">
               <h2>{{ $store.state.others.nickname }}</h2>
               <p
@@ -55,7 +55,11 @@
                 <div class="ui three mini statistics">
                   <div class="statistic">
                     <div class="value">
-                      {{ $store.state.others.contentsNum }}
+                      {{
+                        $store.state.others.blogsNum +
+                        $store.state.others.commentsNum +
+                        $store.state.others.questionsNum
+                      }}
                     </div>
                     <div class="label">内容</div>
                   </div>

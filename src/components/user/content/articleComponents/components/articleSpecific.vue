@@ -429,7 +429,7 @@ export default {
     var that = this;
     var p1 = new Promise((resolve, reject) => {
       axios
-        .get("/question/" + this.$route.query.articleId)
+        .get("/question/" + that.$route.query.articleId)
         .then(function (response) {
           that.questionLoading = false;
           that.template = response.data.data.template;
