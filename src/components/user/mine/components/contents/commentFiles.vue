@@ -7,10 +7,9 @@
         </div>
         <div class="content">
           <div class="summary">
-            在 <a>{{ item.parentContent }}</a> 中添加了评论：<a>{{
-              item.content
-            }}</a>
-            <div class="date">3 天前</div>
+            在 <a>{{ item.parentContent }}</a> 中添加了评论：
+            <a>{{ getInnerText(item.content) }}</a>
+            <div class="date">{{ item.createTime }}</div>
           </div>
         </div>
       </div>
@@ -58,6 +57,14 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+  },
+  methods: {
+    getInnerText(content) {
+      var oDiv = document.createElement("div");
+      oDiv.innerHTML = content;
+      console.log(oDiv.innerHTML);
+      return oDiv.innerText;
+    },
   },
 };
 </script>

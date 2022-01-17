@@ -7,7 +7,8 @@
         </div>
         <div class="content">
           <div class="summary">
-            赞了{{ item.parentType }}：<a>{{ item.parentContent }}</a>
+            赞了{{ item.parentType }}：
+            <a>{{ getInnerText(item.parentContent) }}</a>
             <div class="date">{{ item.createTime }}</div>
           </div>
         </div>
@@ -58,6 +59,14 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+  },
+  methods: {
+    getInnerText(content) {
+      var oDiv = document.createElement("div");
+      oDiv.innerHTML = content;
+      console.log(oDiv.innerHTML);
+      return oDiv.innerText;
+    },
   },
 };
 </script>

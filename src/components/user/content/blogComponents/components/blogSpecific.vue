@@ -127,22 +127,14 @@
         <i class="trash icon"></i>删除
       </div>
     </div>
-    <!-- <div class="ui segment">
-      <br />
-      <div id="websiteEditorElem"></div>
-      <br />
-      <div class="ui button" style="margin-left: 85%" @click="sure()">确定</div>
-    </div> -->
+
     <br />
     <div>
       <div class="ui segment">
-        <!-- <div class="ui divider"></div> -->
         <div>
           <div class="ui comments">
             <h3>全部评论</h3>
-            <!-- <div class="ui mini labeled button">
-              <i class="pause icon"></i>举报
-            </div> -->
+
             <el-empty
               :image-size="100"
               v-if="commentList.length == 0 && commentLoading == false"
@@ -198,7 +190,7 @@
           </div>
         </div>
       </div>
-      <!-- -------------------------- -->
+
       <div class="ui collect modal" style="width: 400px">
         <el-skeleton :loading="collectLoading" animated :count="1">
           <template slot="template"
