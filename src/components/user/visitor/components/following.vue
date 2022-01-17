@@ -14,6 +14,14 @@
           <div class="summary">
             <a @click="turnToOthers(item.id)"> {{ item.nickname }} </a>
             <div class="date">{{ item.personalSignature }}</div>
+            <div class="buttons">
+              <button class="ui disabled mini blue icon button">
+                <i class="envelope icon"></i>
+              </button>
+              <button class="ui mini icon button" @click="follow(item.id)">
+                <i class="heart icon"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -59,6 +67,32 @@ export default {
       });
   },
   methods: {
+    follow(id) {
+      var that = this;
+      axios
+        .get("/follow/" + id)
+        .then(function (response) {
+          console.log(response.data);
+          if (response.data.code == 406) {
+            that.$message({
+              message: response.data.msg,
+              type: "warning",
+            });
+          } else {
+            that.$store.commit(
+              "getMyFollowingNum",
+              response.data.data.myFollowingNum
+            );
+            that.$message({
+              message: response.data.msg,
+              type: "success",
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     turnToOthers(id) {
       var that = this;
       axios
@@ -84,4 +118,7 @@ export default {
 </script>
 
 <style scoped>
+.buttons {
+  float: right;
+}
 </style>
