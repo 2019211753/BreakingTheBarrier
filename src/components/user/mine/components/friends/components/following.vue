@@ -55,7 +55,7 @@
     </el-skeleton>
   </div>
 </template>
-</template>
+ 
 
 <script>
 import axios from "axios";
@@ -87,7 +87,7 @@ export default {
           console.log(response.data);
           for (var i = 0; i < that.list.length; i++) {
             if (that.list[i].id == id) {
-              that.list.splice(that.list[i],1);
+              that.list.splice(that.list[i], 1);
               break;
             }
           }
