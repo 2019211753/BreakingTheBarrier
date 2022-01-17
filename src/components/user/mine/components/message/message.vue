@@ -20,7 +20,7 @@
                     </router-link>
                   </a>
                 </li>
-                <li v-if="$store.state.readFlag == false">
+                <li v-if="$store.state.readFlag == true">
                   <a href="" @click="readAll()">
                     <i class="archive icon"></i> 全部标记为已读
                   </a>
@@ -46,11 +46,11 @@ export default {
   methods: {
     turnRead() {
       var that = this;
-      this.$store.commit("turnRead");
+      this.$store.commit("turnUnread");
     },
     turnUnread() {
       var that = this;
-      this.$store.commit("turnUnread");
+      this.$store.commit("turnRead");
     },
     readAll() {
       var p1 = new Promise((resolve, reject) => {

@@ -141,35 +141,14 @@ export default {
   },
   created() {
     var that = this;
-
     axios
       .get("/visit/" + this.$route.query.posterUserId0)
       .then(function (response) {
         console.log(response.data);
         that.loading = false;
-        /* that.avatar = response.data.data.userInfo.avatar;
-        that.nickname = response.data.data.userInfo.nickname;
-        that.personalSignature = response.data.data.userInfo.personalSignature;
-        that.contentsNum =
-          response.data.data.blogs.length + response.data.data.questions.length;
-        that.followedNum = response.data.data.userInfo.followedUserNum;
-        that.followingNum = response.data.data.userInfo.followingUserNum; */
         that.questions = response.data.data.questions;
         that.following = response.data.data.following;
         that.$store.commit("getOthersFile", response.data.data);
-
-        /* sessionStorage["posterUser"] = response.data.data.userInfo.nickname;
-        sessionStorage["posterUserAvatar"] = response.data.data.userInfo.avatar;
-        sessionStorage["posterUserPersonalSignature"] =
-          response.data.data.userInfo.personalSignature;
-        sessionStorage["posterUserContentsNum"] =
-          response.data.data.blogs.length +
-          response.data.data.comments.length +
-          response.data.data.questions.length;
-        sessionStorage["posterUserFollowingUserNum"] =
-          response.data.data.userInfo.followingUserNum;
-        sessionStorage["posterUserFollowedUserNum"] =
-          response.data.data.userInfo.followedUserNum; */
       })
       .catch(function (error) {
         console.log(error);

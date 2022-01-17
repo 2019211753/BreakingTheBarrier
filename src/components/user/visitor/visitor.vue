@@ -35,7 +35,7 @@
           <el-col :span="6">
             <div class="avatar" style="margin-left: 20px; margin-top: 10px">
               <img
-                :src="  $store.state.others.avatar"
+                :src="$store.state.others.avatar"
                 alt=""
                 class="ui small circular image"
               />
@@ -142,7 +142,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import recommend from "./components/recommend";
 
 export default {
@@ -150,22 +149,16 @@ export default {
   components: { recommend },
   data() {
     return {
-      loading: true,
+      /*   loading: true, */
       userId0: this.$route.query.userId0,
-      posterUser: sessionStorage.getItem("posterUser"),
-      posterUserAvatar: sessionStorage.getItem("posterUserAvatar"),
-      posterUserPersonalSignature: sessionStorage.getItem(
-        "posterUserPersonalSignature"
-      ),
-      posterUserFollowingUserNum: sessionStorage.getItem(
-        "posterUserFollowingUserNum"
-      ),
-      posterUserFollowedUserNum: sessionStorage.getItem(
-        "posterUserFollowedUserNum"
-      ),
-      posterUserContentsNum: sessionStorage.getItem("posterUserContentsNum"),
     };
   },
+  /*   created() {
+    var that = this;
+    setTimeout(() => {
+      that.loading = false;
+    }, 1000);
+  }, */
 };
 </script>
 

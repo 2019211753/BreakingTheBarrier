@@ -8,11 +8,11 @@
     <div class="ui large feed">
       <div class="event" v-for="item in list">
         <div class="label">
-          <img :src=" item.avatar" alt="" />
+          <img :src="item.avatar" alt="" />
         </div>
         <div class="content">
           <div class="summary">
-            <a>{{ item.nickname }}</a>
+            <a @click="turnToOthers(item.id)"> {{ item.nickname }} </a>
             <div class="date">{{ item.personalSignature }}</div>
           </div>
         </div>
@@ -57,6 +57,28 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+  },
+  methods: {
+    turnToOthers(id) {
+      var that = this;
+      axios
+        .get("/visit/" + id)
+        .then(function (response) {
+          console.log(response.data);
+          that.$store.commit("getOthersFile", response.data.data);
+          if (id == that.$store.state.me.id) {
+            that.$router.push("/helloWorld/mine/contents/questionFiles");
+          } else {
+            that.$router.push({
+              path: "/helloWorld/visitor/questions",
+              query: { userId0: id },
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
 };
 </script>

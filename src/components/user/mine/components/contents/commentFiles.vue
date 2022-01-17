@@ -7,7 +7,7 @@
         </div>
         <div class="content">
           <div class="summary">
-            在 <a>{{ item.parentContent }}</a> 中添加了评论：
+            在 <a>{{ getInnerText(item.parentContent) }}</a> 中添加了评论：
             <a>{{ getInnerText(item.content) }}</a>
             <div class="date">{{ item.createTime }}</div>
           </div>

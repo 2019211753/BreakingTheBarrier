@@ -12,15 +12,7 @@
         </div>
         <div class="content">
           <div class="summary">
-            <a
-              ><router-link
-                :to="{
-                  path: '/helloWorld/visitor',
-                  query: { userId0: item.id },
-                }"
-                >{{ item.nickname }}
-              </router-link></a
-            >
+            <a @click="turnToOthers(item.id)">{{ item.nickname }} </a>
             <div class="date">{{ item.personalSignature }}</div>
             <div class="buttons">
               <button class="ui disabled mini blue icon button">
@@ -81,6 +73,30 @@ export default {
         .get("/follow/" + id)
         .then(function (response) {
           console.log(response.data);
+          that.$store.commit(
+            "getMyFollowingNum",
+            response.data.data.myFollowingNum
+          );
+          that.$message({
+            message: response.data.msg,
+            type: "success",
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    turnToOthers(id) {
+      var that = this;
+      axios
+        .get("/visit/" + id)
+        .then(function (response) {
+          console.log(response.data);
+          that.$store.commit("getOthersFile", response.data.data);
+          that.$router.push({
+            path: "/helloWorld/visitor/questions",
+            query: { userId0: id },
+          });
         })
         .catch(function (error) {
           console.log(error);

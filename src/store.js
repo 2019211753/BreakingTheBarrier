@@ -104,7 +104,7 @@ export default new Vuex.Store({
         },
         turnRead(state) {
             state.readFlag = true;
-        },
+        }, //效果相反了，我也不知道为啥
         turnUnread(state) {
             state.readFlag = false;
         },
