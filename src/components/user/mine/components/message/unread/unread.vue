@@ -20,7 +20,7 @@
           <div class="summary">
             <a class="user"> {{ item.nickname }} </a>
             在 <a class="user"> {{ item.parentContent }} </a> 中评论了你：
-            <a href=""
+            <a href="" @click="readComment(item.id)"
               ><router-link
                 v-if="item.parentType == '问题'"
                 :to="{
@@ -31,7 +31,7 @@
                   },
                 }"
               >
-                {{ item.content }}</router-link
+                {{ getInnerText(item.content) }}</router-link
               ><router-link
                 v-else
                 :to="{
@@ -39,7 +39,7 @@
                   query: { blogId: item.parentId },
                 }"
               >
-                {{ item.content }}</router-link
+                {{ getInnerText(item.content) }}</router-link
               ></a
             >
             <div class="date">{{ item.createTime }}</div>
@@ -52,16 +52,20 @@
         </div>
         <div class="content">
           <div class="summary">
-            <a class="user"> {{ item.nickname }} </a> 点赞了你的
-            <a href=""
+            <a class="user"> {{ item.nickname }} </a> 点赞了你的{{
+              item.parentType
+            }}：
+            <a href="" @click="readLike(item.id)"
               ><router-link
-                v-if="item.blogId"
+                v-if="
+                  item.parentType == '博客' || item.parentType == '博客的评论'
+                "
                 :to="{
                   path: '/helloWorld/BBS/blogContent',
                   query: { blogId: item.blogId0 },
                 }"
               >
-                内容</router-link
+                {{ getInnerText(item.parentContent) }}</router-link
               ><router-link
                 v-else
                 :to="{
@@ -69,7 +73,7 @@
                   query: { articleId: item.questionId0 },
                 }"
               >
-                内容</router-link
+                {{ getInnerText(item.parentContent) }}</router-link
               ></a
             >
             <div class="date">{{ item.createTime }}</div>
@@ -118,7 +122,13 @@ export default {
       });
   },
   methods: {
-    /* readLike(id) {
+    getInnerText(content) {
+      var oDiv = document.createElement("div");
+      oDiv.innerHTML = content;
+      console.log(oDiv.innerHTML);
+      return oDiv.innerText;
+    },
+    readLike(id) {
       var that = this;
       axios
         .get("/customer/messages/likes/" + id + "/read")
@@ -128,30 +138,11 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-    }, */
+    },
     readComment(id) {
       var that = this;
       axios
         .get("/customer/messages/comment/" + id + "/read")
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    readAll() {
-      var that = this;
-      axios
-        .get("/customer/messages/readAllLikes")
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      axios
-        .get("/customer/messages/readAllComments")
         .then(function (response) {
           console.log(response.data);
         })

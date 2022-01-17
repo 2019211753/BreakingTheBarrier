@@ -8,11 +8,12 @@
       ></el-empty>
       <div class="event" v-if="lookedComments" v-for="item in lookedComments">
         <div class="label">
-          <img :src=" item.avatar" alt="" />
+          <img :src="item.avatar" alt="" />
         </div>
         <div class="content">
           <div class="summary">
-            <a class="user"> {{ item.nickname }} </a> 评论了你：
+            <a class="user"> {{ item.nickname }} </a> 在
+            <a class="user"> {{ item.parentContent }} </a> 中评论了你：
             <a href=""
               ><router-link
                 v-if="item.blogId"
@@ -21,7 +22,7 @@
                   query: { blogId: item.blogId0 },
                 }"
               >
-                {{ item.content }}</router-link
+                {{ getInnerText(item.content) }}</router-link
               ><router-link
                 v-else
                 :to="{
@@ -29,7 +30,7 @@
                   query: { articleId: item.questionId0 },
                 }"
               >
-                {{ item.content }}</router-link
+                {{ getInnerText(item.content) }}</router-link
               ></a
             >
             <div class="date">{{ item.createTime }}</div>
@@ -38,11 +39,13 @@
       </div>
       <div class="event" v-if="lookedLikes" v-for="item in lookedLikes">
         <div class="label">
-          <img :src="  item.avatar" alt="" />
+          <img :src="item.avatar" alt="" />
         </div>
         <div class="content">
           <div class="summary">
-            <a class="user"> {{ item.nickname }} </a> 点赞了你的
+            <a class="user"> {{ item.nickname }} </a> 点赞了你的{{
+              item.parentType
+            }}：
             <a href=""
               ><router-link
                 v-if="item.blogId"
@@ -51,7 +54,7 @@
                   query: { blogId: item.blogId0 },
                 }"
               >
-                内容</router-link
+                {{ getInnerText(item.parentContent) }}</router-link
               ><router-link
                 v-else
                 :to="{
@@ -59,7 +62,7 @@
                   query: { articleId: item.questionId0 },
                 }"
               >
-                内容</router-link
+                {{ getInnerText(item.parentContent) }}</router-link
               ></a
             >
             <div class="date">{{ item.createTime }}</div>
@@ -105,6 +108,14 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
+  },
+  methods: {
+    getInnerText(content) {
+      var oDiv = document.createElement("div");
+      oDiv.innerHTML = content;
+      console.log(oDiv.innerHTML);
+      return oDiv.innerText;
+    },
   },
 };
 </script>

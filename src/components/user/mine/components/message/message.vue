@@ -7,21 +7,21 @@
             <div class="nav">
               <ul>
                 <li>
-                  <a href="">
-                    <router-link to="/helloWorld/mine/message/read">
-                      <i class="archive icon"></i> 已读
-                    </router-link>
-                  </a>
-                </li>
-                <li>
-                  <a href="">
+                  <a href="" @click="turnUnread()">
                     <router-link to="/helloWorld/mine/message/unread">
                       <i class="archive icon"></i> 未读
                     </router-link>
                   </a>
                 </li>
                 <li>
-                  <a @click="readAll()">
+                  <a href="" @click="turnRead()">
+                    <router-link to="/helloWorld/mine/message/read">
+                      <i class="archive icon"></i> 已读
+                    </router-link>
+                  </a>
+                </li>
+                <li v-if="$store.state.readFlag == false">
+                  <a href="" @click="readAll()">
                     <i class="archive icon"></i> 全部标记为已读
                   </a>
                 </li>
@@ -40,7 +40,18 @@
 import axios from "axios";
 export default {
   name: "message",
+  data() {
+    return { flag: true };
+  },
   methods: {
+    turnRead() {
+      var that = this;
+      this.$store.commit("turnRead");
+    },
+    turnUnread() {
+      var that = this;
+      this.$store.commit("turnUnread");
+    },
     readAll() {
       var p1 = new Promise((resolve, reject) => {
         axios

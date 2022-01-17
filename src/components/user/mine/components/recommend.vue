@@ -5,7 +5,9 @@
         <router-link to="/helloWorld/mine/information"> 个人资料 </router-link>
       </div>
       <div class="ui button" style="background-color: white">
-        <router-link to="/helloWorld/mine/message/read"> 我的消息 </router-link>
+        <router-link to="/helloWorld/mine/message/unread">
+          我的消息
+        </router-link>
       </div>
       <div class="ui button" style="background-color: white">
         <router-link to="/helloWorld/mine/collections"> 我的收藏 </router-link>

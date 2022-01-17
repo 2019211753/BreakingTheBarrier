@@ -34,7 +34,8 @@ export default new Vuex.Store({
             commentsNum: "",
             followingUserNum: "",
             followedUserNum: "",
-        }
+        },
+        readFlag: true
     },
     mutations: {
         getArticleId(state, articleId) {
@@ -99,7 +100,13 @@ export default new Vuex.Store({
             state.commentsNum = data.comments.length;
             state.others.followingUserNum = data.followingUserNum;
             state.others.followedUserNum = data.followedUserNum
-        }
+        },
+        turnRead(state) {
+            state.readFlag = true;
+        },
+        turnUnread(state) {
+            state.readFlag = false;
+        },
     },
     actions: {}
 })
