@@ -32,11 +32,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      * @param questionId 问题id
      * @param sort       排序顺序
      * @param answer     哪类回答
-     * @param selected   是否被精选
      * @return 评论集合
      */
-    @Query("select c from #{#entityName} c where c.parentComment.id is null and c.question.id = ?1 and c.answer = ?2 and c.selected = ?3")
-    List<Comment> findByQuestionIdAndAnswerAndSelected(Long questionId, Boolean answer, Sort sort, Boolean selected);
+    @Query("select c from #{#entityName} c where c.parentComment.id is null and c.question.id = ?1 and c.answer = ?2")
+    List<Comment> findByQuestionIdAndAnswer(Long questionId, Boolean answer, Sort sort);
 
     //原本是这样的 会报错无法识别Answer 不过当时是用的isAnswer 似乎POJO属性不能是isxxx
     //List<Comment> findByQuestionIdAndParentCommentNullAndAnswer(Long questionId, Sort sort, Boolean answer);
@@ -78,7 +77,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByReceiveUserIdAndLooked(Long receiveUserId, Boolean isLooked);
 
     /**
-     * 查询最高赞数的三个答案
+     * 查询最高赞数的n个答案
      */
     @Query("select c from #{#entityName} c where c.question.id = ?1 and c.answer = true and c.selected = false")
     List<Comment> findTopByQuestionIdAndAnswer(Pageable pageable, Long questionId);

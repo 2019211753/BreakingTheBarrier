@@ -137,6 +137,10 @@ public class User {
 
     /**
      * 注册时间
+     *
+     * yml中数据库url后配置的时区：serverTimezone=Asia/Shanghai令时间在存入时以正确的东8区存储
+     * 但是在返回给前端的时候如果直接使用 @JsonFormat(pattern="yyyy-MM-dd")就会出现会相差8个小时的问题
+     * 所以我们在格式化的时候要指定时区（timezone）。这里我们在yml中的jackson下面配置了。
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

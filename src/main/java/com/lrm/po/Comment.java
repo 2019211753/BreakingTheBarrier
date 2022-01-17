@@ -110,7 +110,7 @@ public class Comment {
      * 封装成完整的"yyyy-MM-dd HH:mm:ss"的Date类型
      * 评论时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 

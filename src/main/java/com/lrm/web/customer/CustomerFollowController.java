@@ -2,7 +2,6 @@ package com.lrm.web.customer;
 
 import com.lrm.po.User;
 import com.lrm.service.UserServiceImpl;
-import com.lrm.util.FileUtils;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +40,7 @@ public class CustomerFollowController {
             user2.setAvatar(user1.getAvatar());
             user2.setFollowingUserNum(user1.getFollowingUserNum());
             user2.setFollowedUserNum(user1.getFollowedUserNum());
+            user2.setPersonalSignature(user1.getPersonalSignature());
             newUsers.add(user2);
         }
         return newUsers;

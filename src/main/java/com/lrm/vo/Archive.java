@@ -1,5 +1,6 @@
 package com.lrm.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lrm.po.Blog;
 import com.lrm.po.Comment;
@@ -27,6 +28,7 @@ public class Archive {
     /**
      * 消息的发布时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date createTime;
 
     /**
@@ -78,8 +80,16 @@ public class Archive {
         this.avatar = comment.getPostUser().getAvatar();
         this.nickname = comment.getPostUser().getNickname();
 
-        if ((blog = comment.getBlog()) != null)
-        {
+        if ((parentComment = comment.getParentComment()) != null) {
+            this.parentContent = parentComment.getContent();
+            if ((blog = comment.getBlog()) != null) {
+                this.parentId = blog.getId();
+                this.parentType = "博客的评论";
+            } else if ((question = comment.getQuestion()) != null) {
+                this.parentId = question.getId();
+                this.parentType = "问题的评论";
+            }
+        } else if ((blog = comment.getBlog()) != null) {
             this.parentContent = blog.getTitle();
             this.parentType = "博客";
             this.parentId = blog.getId();
@@ -87,14 +97,6 @@ public class Archive {
             this.parentContent = question.getTitle();
             this.parentType = "问题";
             this.parentId = question.getId();
-        } else if ((parentComment = comment.getParentComment()) != null) {
-            this.parentContent = parentComment.getContent();
-            this.parentType = "评论";
-            if (comment.getBlog() != null) {
-                this.parentId = blog.getId();
-            } else {
-                this.parentId = question.getId();
-            }
         }
     }
 
@@ -104,23 +106,23 @@ public class Archive {
         this.avatar = likes.getPostUser().getAvatar();
         this.nickname = likes.getPostUser().getNickname();
 
-        if ((blog = likes.getBlog()) != null)
-        {
+        if ((parentComment = likes.getComment()) != null) {
+            this.parentContent = parentComment.getContent();
+            if ((blog = likes.getBlog()) != null) {
+                this.parentId = blog.getId();
+                this.parentType = "博客的评论";
+            } else if ((question = likes.getQuestion()) != null) {
+                this.parentId = question.getId();
+                this.parentType = "问题的评论";
+            }
+        } else if ((blog = likes.getBlog()) != null) {
             this.parentContent = blog.getTitle();
             this.parentType = "博客";
             this.parentId = blog.getId();
         } else if ((question = likes.getQuestion()) != null) {
-            this.parentContent = question.getContent();
+            this.parentContent = question.getTitle();
             this.parentType = "问题";
             this.parentId = question.getId();
-        } else if ((parentComment = likes.getComment()) != null) {
-            this.parentContent = parentComment.getContent();
-            this.parentType = "评论";
-            if (parentComment.getBlog() != null) {
-                this.parentId = blog.getId();
-            } else {
-                this.parentId = question.getId();
-            }
         }
     }
 

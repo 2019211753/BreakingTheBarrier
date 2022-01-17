@@ -31,6 +31,8 @@ spring:
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   web:
     resources:
       static-locations: classpath:/static/, file:${web.upload_path}

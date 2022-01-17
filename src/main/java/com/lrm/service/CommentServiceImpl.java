@@ -196,8 +196,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     * 得到问题下的评论，（两级）的分级评论。为非精选评论。
-     * 即去掉为第一级的精选评论后，剩下的所有评论
+     * 得到问题下的评论，（两级）的分级评论。
      *
      * @param questionId 问题Id
      * @param isAnswer 是哪一类评论
@@ -209,7 +208,7 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> listCommentByQuestionId(Long questionId, Boolean isAnswer) {
         Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
 
-        return eachComment(commentRepository.findByQuestionIdAndAnswerAndSelected(questionId, isAnswer, sort, true));
+        return eachComment(commentRepository.findByQuestionIdAndAnswer(questionId, isAnswer, sort));
 
     }
 
