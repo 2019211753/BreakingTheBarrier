@@ -54,6 +54,8 @@ export default new Vuex.Store({
         getMyNickname(state, nickname) {
             state.me.nickname = nickname;
         },
+        getMyFollowingNum(state, followingNum) { state.me.followingUserNum = followingNum },
+        getOtherFollowedNum(state, followedNum) { state.others.followedUserNum = followedNum },
         getMySex(state, sex) {
             state.me.sex = sex;
         },
@@ -91,15 +93,14 @@ export default new Vuex.Store({
             state.me.followingUserNum = data.user.followingUserNum
         },
         getOthersFile(state, data) {
-            state.others.nickname = data.nickname;
-            console.log(state.others.nickname)
-            state.others.avatar = data.avatar;
-            state.others.personalSignature = data.personalSignature;
+            state.others.nickname = data.userInfo.nickname;
+            state.others.avatar = data.userInfo.avatar;
+            state.others.personalSignature = data.userInfo.personalSignature;
             state.questionsNum = data.questions.length;
             state.blogsNum = data.blogs.length;
             state.commentsNum = data.comments.length;
-            state.others.followingUserNum = data.followingUserNum;
-            state.others.followedUserNum = data.followedUserNum
+            state.others.followingUserNum = data.userInfo.followingUserNum;
+            state.others.followedUserNum = data.userInfo.followedUserNum
         },
         turnRead(state) {
             state.readFlag = true;

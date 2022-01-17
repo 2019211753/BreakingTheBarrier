@@ -8,7 +8,7 @@
       ></el-empty>
       <div class="event" v-for="item in list">
         <div class="label">
-          <img :src="  item.avatar" alt="" />
+          <img :src="item.avatar" alt="" />
         </div>
         <div class="content">
           <div class="summary">
@@ -22,17 +22,17 @@
               </router-link></a
             >
             <div class="date">{{ item.personalSignature }}</div>
-            <!-- <div class="buttons">
-              <button class="ui disabled circular blue icon button">
+            <div class="buttons">
+              <button class="ui mini disabled blue icon button">
                 <i class="envelope icon"></i>
               </button>
               <button
-                class="ui circular blue icon button"
+                class="ui mini red icon button"
                 @click="unfollow(item.id)"
               >
                 <i class="heart icon"></i>
               </button>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -87,9 +87,14 @@ export default {
           console.log(response.data);
           for (var i = 0; i < that.list.length; i++) {
             if (that.list[i].id == id) {
-              that.list.pop(that.list[i]);
+              that.list.splice(that.list[i],1);
+              break;
             }
           }
+          that.$store.commit(
+            "getMyFollowingNum",
+            response.data.data.myFollowingNum
+          );
         })
         .catch(function (error) {
           console.log(error);

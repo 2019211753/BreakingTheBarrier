@@ -52,15 +52,15 @@
       <div class="ui divider"></div>
       <div class="ui three mini statistics">
         <div class="statistic">
-          <div class="value">{{ $store.state.others.blogsNum }}</div>
+          <div class="value">{{ $store.state.others.commentsNum }}</div>
           <div class="label">内容</div>
         </div>
         <div class="statistic">
-          <div class="value">{{ $store.state.others.followedNum }}</div>
+          <div class="value">{{ $store.state.others.followedUserNum }}</div>
           <div class="label">粉丝</div>
         </div>
         <div class="statistic">
-          <div class="value">{{ $store.state.others.followingNum }}</div>
+          <div class="value">{{ $store.state.others.followingUserNum }}</div>
           <div class="label">关注</div>
         </div>
       </div>
@@ -153,7 +153,7 @@ export default {
         that.followingNum = response.data.data.userInfo.followingUserNum; */
         that.blogs = response.data.data.blogs;
         that.following = response.data.data.following;
-        var information = response.data.data.userInfo;
+        var information = response.data.data;
         that.$store.commit("getOthersFile", information);
       })
       .catch(function (error) {
@@ -178,6 +178,14 @@ export default {
               message: response.data.msg,
               type: "success",
             });
+            that.$store.commit(
+              "getMyFollowingNum",
+              response.data.data.myFollowingNum
+            );
+            that.$store.commit(
+              "getOtherFollowedNum",
+              response.data.data.hisFollowedNum
+            );
           }
         })
         .catch(function (error) {

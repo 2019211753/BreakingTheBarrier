@@ -23,7 +23,7 @@
     <div class="ui segment" v-else>
       <img
         class="ui tiny centered circular image"
-        :src=" $store.state.others.avatar"
+        :src="$store.state.others.avatar"
       />
       <h3 style="text-align: center">
         <a href=""
@@ -54,15 +54,15 @@
       <div class="ui divider"></div>
       <div class="ui three mini statistics">
         <div class="statistic">
-          <div class="value">{{  $store.state.others.questionsNum }}</div>
+          <div class="value">{{ $store.state.others.questionsNum }}</div>
           <div class="label">内容</div>
         </div>
         <div class="statistic">
-          <div class="value">{{  $store.state.others.followedNum }}</div>
+          <div class="value">{{ $store.state.others.followedUserNum }}</div>
           <div class="label">粉丝</div>
         </div>
         <div class="statistic">
-          <div class="value">{{  $store.state.others.followingNum }}</div>
+          <div class="value">{{ $store.state.others.followingUserNum }}</div>
           <div class="label">关注</div>
         </div>
       </div>
@@ -78,7 +78,7 @@
           :key="index"
         >
           <div class="label">
-            <img :src=" $store.state.others.avatar" />
+            <img :src="$store.state.others.avatar" />
           </div>
           <div class="content">
             <div class="summary">
@@ -155,7 +155,7 @@ export default {
         that.followingNum = response.data.data.userInfo.followingUserNum; */
         that.questions = response.data.data.questions;
         that.following = response.data.data.following;
-        var information = response.data.data.userInfo;
+        var information = response.data.data;
         that.$store.commit("getOthersFile", information);
         /* sessionStorage["posterUser"] = response.data.data.userInfo.nickname;
         sessionStorage["posterUserAvatar"] = response.data.data.userInfo.avatar;
@@ -192,6 +192,14 @@ export default {
               message: response.data.msg,
               type: "success",
             });
+            that.$store.commit(
+              "getMyFollowingNum",
+              response.data.data.myFollowingNum
+            );
+            that.$store.commit(
+              "getOtherFollowedNum",
+              response.data.data.hisFollowedNum
+            );
           }
         })
         .catch(function (error) {
