@@ -8,7 +8,9 @@
         <div class="content">
           <div class="summary">
             赞了{{ item.parentType }}：
-            <a>{{ getInnerText(item.parentContent) }}</a>
+            <a>
+              <router-link to=""></router-link>
+              {{ getInnerText(item.parentContent) }}</a>
             <div class="date">{{ item.createTime }}</div>
           </div>
         </div>

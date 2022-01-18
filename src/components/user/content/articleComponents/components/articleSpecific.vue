@@ -201,15 +201,6 @@
                   >
                 </div> -->
               </div>
-              <div
-                style="background-color: white"
-                class="ui mini icon fluid button"
-                v-if="item.commentsNum > 3"
-                @click="getMoreComments(item.id)"
-              >
-                <i class="ui angle double down icon"></i>
-                展开更多
-              </div>
             </div>
             <div class="ui divider" v-if="!selectedComments.length == 0"></div>
             <div class="comment" v-for="item in bestComments">
@@ -252,15 +243,6 @@
                     >删除</a
                   >
                 </div> -->
-              </div>
-              <div
-                style="background-color: white"
-                class="ui mini icon fluid button"
-                v-if="item.commentsNum > 3"
-                @click="getMoreComments(item.id)"
-              >
-                <i class="ui angle double down icon"></i>
-                展开更多
               </div>
             </div>
             <div class="ui divider" v-if="!bestComments.length == 0"></div>

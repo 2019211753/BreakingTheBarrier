@@ -103,8 +103,7 @@
 </template>
 
 <script>
-import imageConversion from "image-conversion";
-import { compress, compressAccurately } from "image-conversion";
+const imageConversion = require("image-conversion");
 import recommend from "./components/recommend";
 import axios from "axios";
 import $ from "jquery";
@@ -166,23 +165,22 @@ export default {
     }, */
     //把图片文件作为参数传递到方法中
     beforeAvatarUpload(file) {
-      console.log(file);
       const isJpgOrPng =
-        file.type === "image/jpeg" || file.type === "image/png";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+        file.type === "image/jpeg" ||
+        file.type === "image/png" ||
+        file.type === "image/bmp" ||
+        file.type === "image/gif" ||
+        file.type === "image/jpg";
       if (!isJpgOrPng) {
         this.$message.error("上传头像图片只能是 JPG 或 PNG 格式!");
         return false;
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-        return false;
-      }
+      console.log(file);
       return new Promise((resolve) => {
         // 压缩到100KB,这里的100就是要压缩的大小,可自定义
-        imageConversion.compressAccurately(file, 10).then((res) => {
+        imageConversion.compressAccurately(file, 100).then((res) => {
+          console.log(res);
           resolve(res);
-          console.log(resolve(res));
         });
         //compressAccurately有多个参数时传入对象
         //imageConversion.compressAccurately(file, {
@@ -211,7 +209,6 @@ export default {
           if (res.status === 200) {
             var that = this;
             console.log(res.data);
-            that.resetSetItem("avatar", res.data.data.avatar);
             that.$message.success("上传头像成功!");
             that.$store.commit("getMyAvatar", res.data.data.avatar);
           }
