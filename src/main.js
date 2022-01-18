@@ -4,6 +4,7 @@
  import store from './store'
  import axios from "axios"
 
+
  // 使用semanticUI
  import semantic from '../node_modules/semantic-ui-css/semantic.min.js'
  import '../node_modules/semantic-ui-css/semantic.min.css'
@@ -29,7 +30,7 @@
      }
  }
 
- /*Vue.prototype.$http = axios
+/*Vue.prototype.$http = axios
  axios.defaults.baseURL = '/api'*/
  import api from "./request/api";
  Vue.prototype.$api = api;

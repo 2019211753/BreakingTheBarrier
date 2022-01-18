@@ -87,7 +87,8 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.personalInformation.getPersonalInformation()
+    that.$api.personalInformation
+      .getPersonalInformation()
       .then(function (response) {
         console.log(response.data);
         that.loading = false;

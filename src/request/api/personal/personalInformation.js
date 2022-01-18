@@ -4,7 +4,7 @@
 
 import base from "../../base";
 import axios from "axios";
-
+import instance from "../../http";
 
 const personalInformation = {
     uploadAvatar(data) {
@@ -16,7 +16,7 @@ const personalInformation = {
             .post(base.base1 + "/customer/modifyAll", data)
     },
     getPersonalInformation() {
-        return axios
+        return instance
             .get(base.base1 + "/customer/personal")
     }
 }
