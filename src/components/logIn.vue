@@ -35,7 +35,7 @@
 
 
 <script>
-import axios from "axios";
+
 export default {
   name: "logIn",
   data() {
@@ -45,11 +45,12 @@ export default {
     sure() {
       var that = this;
       if (that.userName && that.passWord) {
-        axios
-          .post("/login", {
-            username: that.userName,
-            password: that.passWord,
-          })
+        var data = {
+          username: that.userName,
+          password: that.passWord,
+        };
+        that.$api.logIn
+          .logIn(data)
           .then(function (response) {
             console.log(response);
             if (response.data.code == 200) {
@@ -57,7 +58,7 @@ export default {
                 message: "登陆成功",
                 type: "success",
               });
-              /* sessionStorage["token"] = response.data.data.token; */
+
               /* that.$store.commit("getToken", response.data.data.token); */
               that.resetSetItem("token", response.data.data.token);
               that.$router.push("/helloWorld/home");

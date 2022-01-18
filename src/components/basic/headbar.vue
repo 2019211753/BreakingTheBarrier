@@ -87,8 +87,7 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/customer/personal")
+    that.$api.personalInformation.getPersonalInformation()
       .then(function (response) {
         console.log(response.data);
         that.loading = false;

@@ -2,8 +2,7 @@
  * 接口域名的管理
  */
 const base = {
-  sq: 'https://xxxx111111.com/api/v1',
-  bd: 'http://xxxxx22222.com/api'
+  base1: 'http://39.105.212.210',
 }
 
 export default base;

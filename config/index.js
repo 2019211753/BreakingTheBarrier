@@ -6,21 +6,17 @@ const path = require('path')
 
 module.exports = {
     dev: {
-
         // Paths
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: {
-            '/api': {
+            /* '/api': {
                 target: "http://39.105.212.210",
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': ''
                 },
-              // headers: {
-              //     token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuaWNrbmFtZSI6IjEyMyIsImFkbWluIjoiZmFsc2UiLCJjYW5TcGVhayI6InRydWUiLCJleHAiOjE2MzQyOTY3NjksInVzZXJJZCI6IjIifQ._DddfSm6jToeUA1sgv675fGLitxdSB3_-tmqflYVpMY'
-              // }
-            }
+            } */
         },
 
         // Various Dev Server settings

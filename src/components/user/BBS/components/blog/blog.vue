@@ -17,7 +17,7 @@
                 query: { searchContent: this.searchContent },
               }"
             >
-              <button class="ui teal button" v-if="this.searchContent">
+              <button class="ui teal button" v-if="searchContent">
                 搜索
               </button>
             </router-link>

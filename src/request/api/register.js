@@ -6,11 +6,11 @@ import base from "../base";
 import axios from "axios";
 
 
-const logIn = {
-    logIn(data) {
+const register = {
+    register(data) {
         return axios
-            .post(base.base1 + "/login", data)
+            .post(base.base1 + "/register", data)
     }
 }
 
-export default logIn;
+export default register;

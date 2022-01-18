@@ -241,10 +241,10 @@ export default {
 </script>
 
 <style scoped>
-.cards {
+/*.cards {
   border: none;
 }
 .first {
   margin-left: 27px;
-}
+}*/
 </style>

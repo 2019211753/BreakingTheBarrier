@@ -45,7 +45,8 @@
 </template>
 
 <script>
-import axios from "axios";
+
+
 export default {
   name: "register",
   data() {
@@ -63,12 +64,13 @@ export default {
       if (that.userName && that.passWord && that.surePassWord) {
         console.log(that.userName);
         if (that.passWord === that.surePassWord) {
-          axios
-            .post("/register", {
-              username: that.userName,
-              nickname: that.nickName,
-              password: that.passWord,
-            })
+          var data = {
+            username: that.userName,
+            nickname: that.nickName,
+            password: that.passWord,
+          };
+          that.$api.register
+            .register(data)
             .then(function (response) {
               console.log(response);
               if (response.data.code == 200) {
@@ -124,6 +126,7 @@ export default {
   display: flex;
   justify-content: center;
 }
+
 .a {
   margin: auto;
   position: relative;

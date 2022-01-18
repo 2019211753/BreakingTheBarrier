@@ -29,9 +29,10 @@
      }
  }
 
- Vue.prototype.$http = axios
- axios.defaults.baseURL = '/api'
-
+ /*Vue.prototype.$http = axios
+ axios.defaults.baseURL = '/api'*/
+ import api from "./request/api";
+ Vue.prototype.$api = api;
  /*
  Vue.prototype.$axios = Axios
  Axios.defaults.baseURL = '/api'

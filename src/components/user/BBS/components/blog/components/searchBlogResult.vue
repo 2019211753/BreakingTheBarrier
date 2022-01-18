@@ -159,12 +159,12 @@ export default {
       .then(function (response) {
         that.loading = false;
         that.contentList = response.data.data.pages.content;
-        for (var i = 0; i < that.contentList.length; i++) {
+        /*for (var i = 0; i < that.contentList.length; i++) {
           var url = require("../../../../../../assets/cover/cover (" +
             Math.floor(Math.random() * 51) +
             ").jpg");
           that.cover.push(url);
-        }
+        }*/
       })
       .catch(function (error) {
         console.log(error);

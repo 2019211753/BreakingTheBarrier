@@ -78,11 +78,11 @@ export default {
 </script>
 
 <style scoped>
-.framework {
+/*.framework {
   width: 100%;
-  /*  height: 200px; */
-  /* background-color: bisque; */
-}
+  !*  height: 200px; *!
+  !* background-color: bisque; *!
+}*/
 .frameworkBody {
   width: 90%;
   /* height: 200px; */
