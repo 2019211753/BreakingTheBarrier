@@ -432,6 +432,7 @@ export default {
         .get("/question/" + that.$route.query.articleId)
         .then(function (response) {
           that.questionLoading = false;
+          console.log(response.data);
           that.template = response.data.data.template;
           that.articleApproved = that.template.approved;
           that.articleDisapproved = that.template.disapproved;
@@ -441,7 +442,6 @@ export default {
           that.articleCollectNumber = that.template.collectedNum;
           that.articleDislikeNumber = that.template.disLikesNum;
           that.$store.commit("getArticleId", that.template.id);
-          console.log(that.template);
         })
         .catch(function (error) {
           console.log(error);

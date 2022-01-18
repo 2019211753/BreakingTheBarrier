@@ -8,7 +8,7 @@
       <div class="ui teal label">概述</div>
       <input type="text" placeholder="" v-model="description" />
     </div>
-    <div id="#websiteEditorElem"></div>
+    <div id="websiteEditorElem"></div>
     <div class="ui teal right floated button" @click="sure()">确定</div>
   </div>
 </template>

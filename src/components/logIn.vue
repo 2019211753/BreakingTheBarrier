@@ -22,7 +22,7 @@
           />
           <button
             class="ui big teal button"
-            style="margin-left: 18%; margin-top: 195 px; width: 150px"
+            style="margin-left: 18%; margin-top: 195px; width: 150px"
             @click="sure()"
           >
             确定
