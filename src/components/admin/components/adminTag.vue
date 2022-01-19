@@ -1,29 +1,14 @@
 <template>
   <div class="ui basic segment">
-    <createTags :msg="tagList"></createTags>
-    <!-- <div class="custom-tree-container">
-      <div class="block">
-        <el-tree
-          :data="tagList"
-          :props="defaultProps"
-          show-checkbox
-          node-key="id"
-          default-expand-all
-          :expand-on-click-node="false"
-          :render-content="renderContent"
-        >
-        </el-tree>
-      </div>
-    </div> -->
     <div class="ui modal" style="width: 400px">
       <div class="ui icon header">
         <i class="tags icon"></i>
-        修改标签
+        新增标签
         <br />
         <br />
         <div class="ui labeled input">
-          <div class="ui label">新名称</div>
-          <input type="text" placeholder="" v-model="fileName" />
+          <div class="ui label">标签名称</div>
+          <input type="text" placeholder="请输入标签名" v-model="tagName" />
         </div>
       </div>
       <div class="actions">
@@ -33,80 +18,170 @@
         </div>
       </div>
     </div>
+    <el-tree
+      :data="tagList"
+      :render-content="renderContent"
+      :default-expand-all="true"
+      :expand-on-click-node="false"
+      :props="defaultProps"
+    >
+    </el-tree>
+    <div
+      class="ui right floated icon button"
+      style="margin-top: 20px"
+      @click="createParentTag()"
+    >
+      <i class="plus icon"></i>
+    </div>
   </div>
 </template>
 <script>
-/* let id = 1000; */
-import axios from "axios";
-import createTags from "./createTags";
-
 export default {
   name: "adminTag",
-  components: { createTags },
   data() {
     return {
+      id: "",
+      tagName: "",
       tagList: [],
-      newTagId: "",
-      fileName: "",
-      /* defaultProps: {
-        children: "sonTags",
-        label: "name",
-      }, */
+      chooseTagList: [],
+      chooseTagIdList: [],
+      defaultProps: { id: "id", children: "childTags", label: "name" },
     };
   },
   created() {
-    this.tagList = [
-      {
-        id: 1,
-        parentTagId0: -1,
-        name: "test_1",
-        childTags: [
-          {
-            id: 3,
-            parentTagId0: 1,
-            name: "test_3",
-            childTags: [],
-          },
-        ],
-      },
-      {
-        id: 2,
-        parentTagId0: -1,
-        name: "test_2",
-        childTags: [],
-      },
-      {
-        id: 4,
-        parentTagId0: -1,
-        name: "testtest1",
-        childTags: [],
-      },
-    ];
-    /* var that = this;
-    axios
-      .get("/tags/")
-      .then(function (response) {
-        console.log(response.data);
-
-        that.tagList = response.data.data.tags;
-
-
-        console.log(that.tagList);
-      })
-      .catch(function (error) {
-        console.log(error);
-      }); */
+    var that = this;
+    that.getTags();
+  },
+  methods: {
+    getTags() {
+      var that = this;
+      that.$api.userTag
+        .getTags()
+        .then(function (response) {
+          console.log(response);
+          that.tagList = response.data.data.tags;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    createParentTag() {
+      $(".ui.modal").modal("show");
+      var that = this;
+      that.id = "-1";
+    },
+    appendTag(data) {
+      $(".ui.modal").modal("show");
+      var that = this;
+      that.id = data.id;
+    },
+    sure() {
+      var that = this;
+      var data = {
+        name: that.tagName,
+        parentTagId0: that.id,
+      };
+      var p1 = new Promise((resolve, reject) => {
+        var data = {
+          name: that.tagName,
+          parentTagId0: that.id,
+        };
+        that.$api.adminTag
+          .addTag(data)
+          .then(function (response) {
+            console.log(response.data);
+            that.$message({
+              message: "添加成功",
+              type: "success",
+            });
+            that.tagName = "";
+            that.id = "";
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      });
+      var p2 = new Promise((resolve, reject) => {
+        that.getTags();
+      });
+      Promise.all([p1, p2]).then((res) => {
+        console.log(res);
+      });
+    },
+    removeTag(node, data) {
+      var that = this;
+      var p1 = new Promise((resolve, reject) => {
+        that.$api.adminTag
+          .deleteTag(data.id)
+          .then(function (response) {
+            console.log(response.data);
+            /* const parent = node.parent;
+          const children = parent.data.children || parent.data;
+          const index = children.findIndex((d) => d.id === data.id);
+          children.splice(index, 1); */
+            if (response.data.code == 200) {
+              that.$message({
+                message: "删除成功",
+                type: "success",
+              });
+            } else {
+              that.$message({
+                message: response.data.msg,
+                type: "warning",
+              });
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      });
+      var p2 = new Promise((resolve, reject) => {
+        that.getTags();
+      });
+      Promise.all([p1, p2]).then((res) => {
+        console.log(res);
+      });
+    },
+    renderContent(h, { node, data, store }) {
+      console.log(data);
+      return (
+        <span class="custom-tree-node">
+          <i class="tag icon"></i>
+          <span style="margin-left:5px">{node.label}</span>
+          <span style="margin-left:80px">
+            <span>
+              <el-button
+                style="color:grey"
+                size="mini"
+                type="text"
+                on-click={() => this.appendTag(data)}
+              >
+                新增标签
+              </el-button>
+              <el-button
+                style="color:grey"
+                size="mini"
+                type="text"
+                on-click={() => this.removeTag(node, data)}
+              >
+                删除标签
+              </el-button>
+            </span>
+          </span>
+        </span>
+      );
+    },
   },
 };
 </script>
 
 <style>
-/* .custom-tree-node {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  padding-right: 8px;
-} */
+.custom-tree-node {
+  width: auto;
+  height: 25px;
+  float: right;
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 1px;
+}
 </style>

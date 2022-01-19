@@ -9,9 +9,7 @@ import instance from "../../http";
 const adminQuestion = {
     searchQuestions(data) {
         return instance
-            .post(base.base1 + "/admin/searchQuestions", {
-                query: data,
-            })
+            .post(base.base1 + "/admin/searchQuestions", data)
     },
     editeQuestion() {}
 

@@ -468,7 +468,6 @@ export default {
       var that = this;
       that.$api.userLike
         .likeQuestion(id)
-
         .then(function (response) {
           console.log(response.data);
           that.getArticleLikesAndDislikes(
@@ -489,7 +488,6 @@ export default {
       var that = this;
       that.$api.userLike
         .dislikeQuestion(id)
-
         .then(function (response) {
           console.log(response.data);
           that.getArticleLikesAndDislikes(
@@ -517,11 +515,9 @@ export default {
     },
     openCollections() {
       var that = this;
-
       $(".ui.collect.modal").modal("show");
       that.$api.personalFavorite
         .getFavorites()
-
         .then(function (response) {
           that.collectLoading = false;
           that.favoriteList = response.data.data.favorites;
@@ -530,7 +526,6 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-      /*  } */
     },
     getFavoriteId(id) {
       var that = this;
@@ -544,7 +539,6 @@ export default {
           sessionStorage.getItem("favoriteId"),
           that.$route.query.articleId
         )
-
         .then(function (response) {
           console.log(response.data);
           that.collected = response.data.data.collected;
@@ -562,7 +556,6 @@ export default {
       var that = this;
       that.$api.userQuestion
         .deleteQuestion(id)
-
         .then(function (response) {
           console.log(response.data);
           that.$message({

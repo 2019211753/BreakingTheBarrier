@@ -9,7 +9,7 @@ import instance from "../../http";
 const adminUser = {
     serchUser(data) {
         return instance
-            .post("/admin/searchBlogs", { nickname: data })
+            .post("/admin/searchBlogs", data)
     },
     controlSpeak(data) {
         return instance

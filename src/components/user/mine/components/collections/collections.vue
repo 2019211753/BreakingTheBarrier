@@ -140,7 +140,6 @@ export default {
   created() {
     var that = this;
     that.$api.personalFavorite.getFavorites()
-
       .then(function (response) {
         that.loading = false;
         that.favoriteList = response.data.data.favorites;

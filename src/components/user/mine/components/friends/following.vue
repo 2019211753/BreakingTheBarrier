@@ -50,7 +50,6 @@
 
 
 <script>
-
 export default {
   name: "following",
   data() {
@@ -58,7 +57,8 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.personalFollow.getFollowInfo()
+    that.$api.personalFollow
+      .getFollowInfo()
       .then(function (response) {
         that.loading = false;
         console.log(response.data);
@@ -71,15 +71,16 @@ export default {
   methods: {
     unfollow(id) {
       var that = this;
-      that.$api.userSocial.followOther(id)
+      that.$api.userSocial
+        .followOther(id)
         .then(function (response) {
           console.log(response.data);
-          for (var i = 0; i < that.list.length; i++) {
+          /* for (var i = 0; i < that.list.length; i++) {
             if (that.list[i].id == id) {
               that.list.splice(that.list[i], 1);
               break;
             }
-          }
+          } */
           that.$store.commit(
             "getMyFollowingNum",
             response.data.data.myFollowingNum
@@ -95,7 +96,8 @@ export default {
     },
     turnToOthers(id) {
       var that = this;
-      that.$api.userSocial.getOtherFile(id)
+      that.$api.userSocial
+        .getOtherFile(id)
         .then(function (response) {
           console.log(response.data);
           that.$store.commit("getOthersFile", response.data.data);

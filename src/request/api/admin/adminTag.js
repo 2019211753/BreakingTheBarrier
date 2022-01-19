@@ -7,15 +7,13 @@ import instance from "../../http";
 
 
 const adminTag = {
-    /*   addTag() {},
-      deleteTag() {},
-      serchBlogs(searchContent) {
-          return axios
-              .post("/admin/searchBlogs", {
-                  query: searchContent,
-              })
-      } */
-
+    addTag(data) {
+        return instance.post('/admin/tags/input', data)
+    },
+    deleteTag(data) {
+        return instance.get('/admin/tags/' +
+            data + '/delete')
+    }
 }
 
 export default adminTag;

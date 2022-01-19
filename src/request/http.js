@@ -81,15 +81,13 @@ const errorHandle = (status, msg, other) => {
   }
 }
 // 创建axios实例
-
-
 var instance = axios.create({
   headers: {
     /* "Access-Control-Allow-Origin": true, */
-    'token': sessionStorage.getItem('token')
+    'token':  sessionStorage.getItem('token')
   }
 });
-// 设置post请求头
+
 
 
 /**
@@ -111,7 +109,9 @@ var instance = axios.create({
 // 响应拦截器
  instance.interceptors.response.use(
     // 请求成功
-    res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
+    res =>
+
+      res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
     // 请求失败
     error => {
         const { response } = error;

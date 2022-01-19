@@ -6,7 +6,6 @@
       <el-tree
         :data="tagList"
         :props="defaultProps"
-        accordion
         @node-click="handleNodeClick"
       >
       </el-tree>
@@ -23,7 +22,6 @@
 </template>
 
 <script>
-
 export default {
   name: "tags",
   data() {
@@ -32,14 +30,15 @@ export default {
       chooseTagList: [],
       chooseTagIdList: [],
       defaultProps: {
-        children: "sonTags",
+        children: "childTags",
         label: "name",
       },
     };
   },
   created() {
     var that = this;
-    that.$api.userTag.getTags()
+    that.$api.userTag
+      .getTags()
       .then(function (response) {
         console.log(response);
         that.tagList = response.data.data.tags;

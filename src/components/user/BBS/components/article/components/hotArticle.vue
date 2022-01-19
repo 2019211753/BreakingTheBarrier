@@ -10,7 +10,7 @@
           :count="5"
         >
           <template slot="template"
-            ><div class="ui large feed">
+            ><div class="ui feed">
               <div class="event">
                 <div class="label">
                   <el-skeleton-item variant="circle image" />
@@ -25,10 +25,10 @@
           </template>
         </el-skeleton>
         <div>
-          <div class="ui large feed">
+          <div class="ui feed">
             <div class="event" v-for="item in impactList">
               <div class="label">
-                <img :src="  item.avatar" alt="" />
+                <img :src="item.avatar" alt="" />
               </div>
               <div class="content">
                 <!-- <div class="date">{{ item.createTime }}</div> -->
@@ -54,7 +54,6 @@
 </template>
 
 <script>
-
 export default {
   name: "hotArticle",
   data() {
@@ -62,8 +61,8 @@ export default {
   },
   created() {
     var that = this;
-   that.$api.userArticle.getQuestions(0)
-
+    that.$api.userArticle
+      .getQuestions(0)
       .then(function (response) {
         that.loading = false;
         that.impactList = response.data.data.impacts;
