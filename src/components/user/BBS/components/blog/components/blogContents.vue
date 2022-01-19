@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="six wide column">
-          <a href="/blog/120" target="_blank">
+          <a target="_blank">
             <img
               src="https://picsum.photos/800/450/?random=108"
               alt=""

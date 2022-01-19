@@ -55,24 +55,16 @@
             <div class="ui large feed">
               <div class="event">
                 <div class="label">
-                  <img :src="  item.avatar" />
+                  <img :src="item.avatar" />
                 </div>
                 <div class="content">
                   <div class="summary">
-                    <a class="user"
-                      ><font style="vertical-align: inherit"
-                        ><font style="vertical-align: inherit">
-                          {{ item.nickname }}
-                        </font></font
-                      ></a
-                    >
-                    <!-- <div class="date">
-                      <font style="vertical-align: inherit"
-                        ><font style="vertical-align: inherit">
-                          1小时前
-                        </font></font
-                      >
-                    </div> -->
+                    <a class="user">
+                      {{ item.nickname }}
+                    </a>
+                    <div class="date">
+                      {{ item.personalSignature }}
+                    </div>
                   </div>
                   <!-- <div class="meta">
                     <a class="like">
@@ -127,7 +119,6 @@
 </template>
 
 <script>
-
 export default {
   name: "left",
   data() {
@@ -135,7 +126,8 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.userRank.getRank()
+    that.$api.userRank
+      .getRank()
 
       .then(function (response) {
         that.loading = false;
