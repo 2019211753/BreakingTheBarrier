@@ -24,7 +24,7 @@
             <a href="">
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/blogContent',
+                  path: '/BreakingTheBarrier/BBS/blogContent',
                   query: {
                     blogId: item.id,
                     posterUserId0: item.posterUserId0,
@@ -99,7 +99,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+
 export default {
   name: "blogs",
 
@@ -112,8 +112,8 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/visit/" + this.$route.query.userId0)
+    that.$api.userSocial.getOtherFile(that.$route.query.userId0)
+
       .then(function (response) {
         console.log(response.data);
         /* that.loading = false; */

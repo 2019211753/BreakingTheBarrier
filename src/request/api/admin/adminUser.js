@@ -3,17 +3,17 @@
  */
 
 import base from "../../base"; // 导入接口域名列表
-import axios from "axios"; // 导入http中创建的axios实例
+import instance from "../../http";
 
 
 const adminUser = {
     serchUser(data) {
-        return axios
-            .post(base.base1 + "/admin/searchBlogs", { nickname: data })
+        return instance
+            .post("/admin/searchBlogs", { nickname: data })
     },
     controlSpeak(data) {
-        return axios
-            .get(base.base1 + "/admin/controlSpeak/" + data)
+        return instance
+            .get("/admin/controlSpeak/" + data)
     }
 }
 

@@ -3,13 +3,13 @@
  */
 
 import base from "../../base";
-import axios from "axios";
+import instance from "../../http";
 
 
 const userTag = {
     getTags() {
-        return axios
-            .get(base.base1 + "/tags/")
+        return instance
+            .get("/tags/")
     },
 }
 

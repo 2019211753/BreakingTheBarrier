@@ -127,8 +127,7 @@
 </template>
 
 <script>
-import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+
 export default {
   name: "left",
   data() {
@@ -136,8 +135,8 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/rank")
+    that.$api.userRank.getRank()
+
       .then(function (response) {
         that.loading = false;
         console.log(response.data);

@@ -39,7 +39,7 @@
 
 
 <script>
-import axios from "axios";
+
 export default {
   name: "commentFiles",
   data() {
@@ -47,8 +47,8 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/customer/archiveComment")
+    that.$api.personalArchive.archiveComment()
+
       .then(function (response) {
         console.log(response.data);
         that.contentList = response.data.data.postComments;

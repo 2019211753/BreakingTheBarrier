@@ -3,12 +3,12 @@
  */
 
 import base from "../../base";
-import axios from "axios";
+import instance from "../../http";
 
 
 const adminQuestion = {
     searchQuestions(data) {
-        return axios
+        return instance
             .post(base.base1 + "/admin/searchQuestions", {
                 query: data,
             })

@@ -3,18 +3,18 @@
  */
 
 import base from "../../base";
-import axios from "axios";
+import instance from "../../http";
 
 
 const adminTag = {
-    addTag() {},
-    deleteTag() {},
-    serchBlogs(searchContent) {
-        return axios
-            .post("/admin/searchBlogs", {
-                query: searchContent,
-            })
-    }
+    /*   addTag() {},
+      deleteTag() {},
+      serchBlogs(searchContent) {
+          return axios
+              .post("/admin/searchBlogs", {
+                  query: searchContent,
+              })
+      } */
 
 }
 

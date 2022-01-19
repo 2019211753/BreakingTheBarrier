@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import axios from "axios";
+
 export default {
   name: "following",
   data() {
@@ -54,8 +54,7 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/visit/" + this.$route.query.userId0)
+    that.$api.userSocial.getOtherFile(that.$route.query.userId0)
       .then(function (response) {
         console.log(response.data);
         /* that.loading = false; */
@@ -69,8 +68,8 @@ export default {
   methods: {
     follow(id) {
       var that = this;
-      axios
-        .get("/follow/" + id)
+      that.$api.userSocial.followOther(id)
+
         .then(function (response) {
           console.log(response.data);
           if (response.data.code == 406) {
@@ -101,11 +100,11 @@ export default {
           console.log(response.data);
 
           if (id == that.$store.state.me.id) {
-            that.$router.push("/helloWorld/mine/contents/questionFiles");
+            that.$router.push("/BreakingTheBarrier/mine/contents/questionFiles");
           } else {
             that.$store.commit("getOthersFile", response.data.data);
             that.$router.push({
-              path: "/helloWorld/visitor/questions",
+              path: "/BreakingTheBarrier/visitor/questions",
               query: { userId0: id },
             });
           }

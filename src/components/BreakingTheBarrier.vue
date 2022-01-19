@@ -14,13 +14,13 @@
 
 <script>
 export default {
-  name: "helloWorld",
+  name: "BreakingTheBarrier",
   methods: {
     turnToLogIn() {
-      this.$router.push("/helloWorld/logIn");
+      this.$router.push("/BreakingTheBarrier/logIn");
     },
     turnToRegister() {
-      this.$router.push("/helloWorld/register");
+      this.$router.push("/BreakingTheBarrier/register");
     },
   },
 };

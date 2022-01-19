@@ -28,12 +28,12 @@
       <h3 style="text-align: center">
         <router-link
           v-if="$store.state.me.id == posterUserId0"
-          to="/helloWorld/mine/contents/questionFiles"
+          to="/BreakingTheBarrier/mine/contents/questionFiles"
           >{{ $store.state.others.nickname }} </router-link
         ><router-link
           v-else
           :to="{
-            path: '/helloWorld/visitor/questions',
+            path: '/BreakingTheBarrier/visitor/questions',
             query: { userId0: posterUserId0 },
           }"
           >{{ $store.state.others.nickname }}
@@ -83,7 +83,7 @@
               <a class="user" href="">
                 <router-link
                   :to="{
-                    path: '/helloWorld/BBS/blogContent',
+                    path: '/BreakingTheBarrier/BBS/blogContent',
                     query: {
                       blogId: item.id,
                       posterUserId0: item.posterUserId0,
@@ -117,8 +117,6 @@
 </template>
 
 <script>
-import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 export default {
   name: "blogWriter",
   data() {
@@ -139,8 +137,8 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/visit/" + this.$route.query.posterUserId0)
+    that.$api.userSocial
+      .getOtherFile(that.$route.query.posterUserId0)
       .then(function (response) {
         console.log(response.data);
         that.loading = false;
@@ -162,8 +160,8 @@ export default {
   methods: {
     follow() {
       var that = this;
-      axios
-        .get("/follow/" + this.$route.query.posterUserId0)
+      that.$api.userSocial
+        .followOther(this.$route.query.posterUserId0)
         .then(function (response) {
           console.log(response.data);
           if (response.data.code == 406) {

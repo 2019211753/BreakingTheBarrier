@@ -55,25 +55,23 @@ export default {
   components: { carousel, questionnaire, team, database, wikipedia },
   methods: {
     turnWikipedia() {
-      this.$router.push("/helloWorld/literature/information");
+      this.$router.push("/BreakingTheBarrier/literature/information");
     },
     turnTeam() {
-      this.$router.push("/helloWorld/team");
+      this.$router.push("/BreakingTheBarrier/team");
     },
     turnDatabase() {
-      this.$router.push("/helloWorld/literature/data");
+      this.$router.push("/BreakingTheBarrier/literature/data");
     },
     turnHome() {
-      this.$router.push("/helloWorld/home");
+      this.$router.push("/BreakingTheBarrier/home");
     },
   },
 };
 </script>
 
 <style scoped>
-.home {
-  /* background-color: rgb(250, 250, 250); */
-}
+
 .carousel {
   height: 300px;
   margin: auto;
@@ -100,7 +98,7 @@ export default {
 
 .nav ul a:hover {
   border-bottom: 4px solid orange;
-  /* color: white; */
+
 }
 
 a {
@@ -109,10 +107,10 @@ a {
 
 .header {
   height: 40px;
-  /* background-color: rgb(100, 133, 208); */
+
   width: 50%;
   margin: auto;
-  /* margin-top: -20px; */
+
 }
 
 .logo {
@@ -134,35 +132,7 @@ li {
   width: 80%;
   margin: auto;
   margin-top: -50px;
-  /* background-color: blue; */
+
 }
-.inside {
-  width: 100%;
-  margin: auto;
-  margin-top: 20px;
-}
-.team {
-  width: 60%;
-  /* height: 800px; */
-  /* background-color: blue; */
-  float: left;
-}
-.database {
-  width: 38%;
-  height: 320px;
-  margin-left: 2%;
-  float: left;
-  background-color: aquamarine;
-}
-.wikipedia {
-  width: 100%;
-  /*   background-color: blueviolet; */
-  float: left;
-  margin-top: 40px;
-}
-.input {
-  width: 38%;
-  margin-left: 2%;
-  height: 40px;
-}
+
 </style>

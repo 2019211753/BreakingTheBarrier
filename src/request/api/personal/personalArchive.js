@@ -3,25 +3,25 @@
  */
 
 import base from "../../base";
-import axios from "axios";
+import instance from "../../http";
 
 
 const personalArchive = {
     archiveBlog() {
-        return axios
-            .get(base.base1 + "/customer/archivesBlog")
+        return instance
+            .get("/customer/archivesBlog")
     },
     archiveQuestion() {
-        return axios
-            .get(base.base1 + "/customer/archivesQuestion")
+        return instance
+            .get("/customer/archivesQuestion")
     },
     archiveComment() {
-        return axios
-            .get(base.base1 + "/customer/archiveComment")
+        return instance
+            .get("/customer/archiveComment")
     },
     archiveLike() {
-        return axios
-            .get(base.base1 + "/customer/archiveLike")
+        return instance
+            .get("/customer/archiveLike")
     }
 }
 

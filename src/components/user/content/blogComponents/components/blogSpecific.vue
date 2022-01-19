@@ -44,12 +44,12 @@
               <a class="user">
                 <router-link
                   v-if="$store.state.me.id == posterUserId0"
-                  to="/helloWorld/mine/contents/questionFiles"
+                  to="/BreakingTheBarrier/mine/contents/questionFiles"
                   >{{ template.nickname }} </router-link
                 ><router-link
                   v-else
                   :to="{
-                    path: '/helloWorld/visitor/questions',
+                    path: '/BreakingTheBarrier/visitor/questions',
                     query: { userId0: posterUserId0 },
                   }"
                   >{{ template.nickname }}
@@ -253,8 +253,6 @@
 </template>
 
 <script>
-import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 import E from "wangeditor";
 
 export default {
@@ -278,14 +276,14 @@ export default {
       articleCollectIsActive: "ui yellow button",
       favoriteId: "",
       favoriteList: [],
-      /* ---------------------------------- */
+
       likeNumber: "",
       dislikeNumber: "",
       commentList: "",
       parent: "comment",
       child: "child comment",
       parentId: "-1",
-      /* ----------------------------- */
+
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
@@ -295,6 +293,7 @@ export default {
   },
   created() {
     var that = this;
+    that.$api;
     axios
       .get("/blog/" + this.$route.query.blogId)
       .then(function (response) {
@@ -315,6 +314,7 @@ export default {
         console.log(error);
       });
     /* ------------------------- */
+    that.$api;
     axios
       .get("/blog/" + this.$route.query.articleId + "/comments")
       .then(function (response) {
@@ -347,6 +347,7 @@ export default {
   methods: {
     likeArticle(id) {
       var that = this;
+      that.$api;
       axios
         .get("/blog/" + id + "/approve")
         .then(function (response) {
@@ -364,6 +365,7 @@ export default {
     },
     dislikeArticle(id) {
       var that = this;
+      that.$api;
       axios
         .get("/blog/" + id + "/disapprove")
         .then(function (response) {
@@ -383,6 +385,7 @@ export default {
       var that = this;
       /* if (collected == false) { */
       $(".ui.collect.modal").modal("show");
+      that.$api;
       axios
         .get("/customer/favorites")
         .then(function (response) {
@@ -402,6 +405,7 @@ export default {
     },
     collectArticle() {
       var that = this;
+      that.$api;
       axios
         .get(
           "/customer/favorite/" +
@@ -424,6 +428,7 @@ export default {
     },
     deleteArticle(id) {
       var that = this;
+      that.$api;
       axios
         .get("/customer/blog/" + id + "/delete")
         .then(function (response) {
@@ -432,7 +437,7 @@ export default {
             message: "删除成功",
             type: "success",
           });
-          that.$router.push("/helloWorld/BBS/blogs");
+          that.$router.push("/BreakingTheBarrier/BBS/blogs");
         })
         .catch(function (error) {
           console.log(error);
@@ -495,6 +500,7 @@ export default {
     },
     likeComment(id) {
       var that = this;
+      that.$api;
       axios
         .get("/comment/" + id + "/approve")
         .then(function (response) {
@@ -510,6 +516,7 @@ export default {
     },
     dislikeComment(id) {
       var that = this;
+      that.$api;
       axios
         .get("/comment/" + id + "/disapprove")
         .then(function (response) {
@@ -533,6 +540,7 @@ export default {
     },
     deleteComment(id) {
       var that = this;
+      that.$api;
       axios
         .get(
           "/blog/" +
@@ -557,12 +565,17 @@ export default {
     sure() {
       var that = this;
       if (that.phoneEditor.txt.html()) {
+        var data = {
+          content: that.phoneEditor.txt.html(),
+          answer: true,
+          parentCommentId0: this.parentId,
+        };
+        that.$api.userComment.postBlogComment();
         axios
-          .post("/blog/" + sessionStorage.getItem("blogId") + "/comment/post", {
-            content: that.phoneEditor.txt.html(),
-            answer: true,
-            parentCommentId0: this.parentId,
-          })
+          .post(
+            "/blog/" + sessionStorage.getItem("blogId") + "/comment/post",
+            {}
+          )
           .then(function (response) {
             console.log(response.data);
             that.commentList = that.flatten(response.data.data.comments);

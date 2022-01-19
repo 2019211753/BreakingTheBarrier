@@ -44,7 +44,7 @@
           <h4>标题：<a href="">
             <router-link
               :to="{
-                  path: '/helloWorld/BBS/articleContent',
+                  path: '/BreakingTheBarrier/BBS/articleContent',
                   query: { articleId: item.id },
                 }"
             >{{ item.title }}
@@ -130,7 +130,7 @@
           <h4>标题：<a href="">
             <router-link
               :to="{
-                  path: '/helloWorld/BBS/articleContent',
+                  path: '/BreakingTheBarrier/BBS/articleContent',
                   query: { articleId: item.id },
                 }"
             >{{ item.title }}

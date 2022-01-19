@@ -7,7 +7,7 @@
             <a href="">
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/articleContent',
+                  path: '/BreakingTheBarrier/BBS/articleContent',
                   query: {
                     articleId: item.id,
                     posterUserId0: item.posterUserId0,
@@ -88,6 +88,31 @@
     <div class="ui segment" v-if="loading == false && !contentList.length">
       <el-empty image-size="200" description="暂无内容"></el-empty>
     </div>
+    <el-skeleton :loading="loading" animated :count="7">
+      <template slot="template">
+        <div class="ui segment">
+          <div class="ui middle aligned grid">
+            <div class="ten wide column">
+              <el-skeleton-item variant="text" /><el-skeleton-item
+                variant="text"
+              /><el-skeleton-item variant="text" /><el-skeleton-item
+                variant="text"
+              /><el-skeleton-item variant="text" /><el-skeleton-item
+                variant="text"
+              /><el-skeleton-item variant="text" /><el-skeleton-item
+                variant="text"
+              />
+            </div>
+            <div class="six wide column">
+              <el-skeleton-item
+                variant="image"
+                style="height: 120px; border-radius: 5px"
+              />
+            </div>
+          </div>
+        </div>
+      </template>
+    </el-skeleton>
     <!-- <div class="ui segment" v-for="(item, index) in contentList">
       <el-container>
         <el-aside width="45px"
@@ -98,7 +123,7 @@
             alt=""
         /></el-aside>
         <el-main
-          > 
+          >
           <h4 style="margin-top: -13px">{{ item.nickname }}</h4>
           <p style="margin-top: -13px; color: grey; font-size: 13px">
             {{ item.createTime }}
@@ -123,7 +148,7 @@
             <a href="">
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/articleContent',
+                  path: '/BreakingTheBarrier/BBS/articleContent',
                   query: {
                     articleId: item.id,
                     posterUserId0: item.posterUserId0,
@@ -136,7 +161,7 @@
         >
       </el-row>
       <el-row :gutter="24" style="margin-top: 5px">
-         
+
         <el-col :span="24"
           ><h4 style="color: grey; text-align: center">
             {{ item.description }}
@@ -175,7 +200,7 @@
         >
       </el-row>
     </div> -->
-    <el-skeleton :loading="loading" animated :count="7">
+    <!-- <el-skeleton :loading="loading" animated :count="7">
       <template slot="template"
         ><div class="ui segment">
           <el-container>
@@ -223,7 +248,7 @@
           </el-row>
         </div>
       </template>
-    </el-skeleton>
+    </el-skeleton> -->
     <el-pagination
       class="el-pagination"
       layout="prev, pager, next"
@@ -236,8 +261,6 @@
 </template>
 
 <script>
-import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 export default {
   name: "articleContents",
   data() {
@@ -245,19 +268,14 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/listQuestions/?page=0")
+    that.$api.userArticle
+      .getQuestions(0)
       .then(function (response) {
         that.loading = false;
         console.log(response.data);
         that.contentList = response.data.data.pages.content;
         that.pageSize = response.data.data.pages.totalPages;
-        /* for (var i = 0; i < that.contentList.length; i++) {
-          var url = require("../../../../../../assets/cover/cover (" +
-            Math.floor(Math.random() * 51) +
-            ").jpg");
-          that.cover.push(url);
-        } */
+
         console.log(that.cover);
       })
       .catch(function (error) {
@@ -268,8 +286,8 @@ export default {
     handleCurrentChange(val) {
       var that = this;
       var nowPage = val - 1;
-      axios
-        .get("/listQuestions/?page=" + nowPage)
+      that.$api.userArticle
+        .getQuestions(nowPage)
         .then(function (response) {
           console.log(response.data);
           that.contentList = response.data.data.pages.content;

@@ -3,33 +3,33 @@
  */
 
 import base from "../../base";
-import axios from "axios";
 
+import instance from "../../http";
 
 const userArticle = {
     getQuestions(data) {
-        return axios
-            .get(base.base1 + "/listQuestions/?page=" + data)
+        return instance
+            .get("/listQuestions/?page=" + data)
     },
     getBlogs(data) {
-        return axios
-            .get(base.base1 + "/listBlogs/?page=" + data)
+        return instance
+            .get("/listBlogs/?page=" + data)
     },
     showQuestion(data) {
-        return axios
-            .get(base.base1 + "/question/" + data)
+        return instance
+            .get("/question/" + data)
     },
     showBlog(data) {
-        return axios
-            .get(base.base1 + "/blog/" + data)
+        return instance
+            .get("/blog/" + data)
     },
     searchQuestions(data) {
-        return axios
-            .post(base.base1 + "/searchQuestions", data)
+        return instance
+            .post("/searchQuestions", data)
     },
     serchBlogs(data) {
-        return axios
-            .post(base.base1 + "/searchBlogs", data)
+        return instance
+            .post("/searchBlogs", data)
     }
 }
 

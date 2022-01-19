@@ -122,7 +122,7 @@ export default {
   name: "wikipedia",
   methods: {
     more() {
-      this.$router.push("/helloWorld/wikipedia");
+      this.$router.push("/BreakingTheBarrier/wikipedia");
     },
   },
 };

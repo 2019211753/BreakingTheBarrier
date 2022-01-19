@@ -35,7 +35,7 @@
                 <div class="summary">
                   <router-link
                     :to="{
-                      path: '/helloWorld/BBS/articleContent',
+                      path: '/BreakingTheBarrier/BBS/articleContent',
                       query: {
                         articleId: item.id,
                         posterUserId0: item.posterUserId0,
@@ -54,8 +54,7 @@
 </template>
 
 <script>
-import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+
 export default {
   name: "hotArticle",
   data() {
@@ -63,8 +62,8 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/listQuestions")
+   that.$api.userArticle.getQuestions(0)
+
       .then(function (response) {
         that.loading = false;
         that.impactList = response.data.data.impacts;

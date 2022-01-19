@@ -103,7 +103,7 @@
             <a>
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/blogContent',
+                  path: '/BreakingTheBarrier/BBS/blogContent',
                   query: { blogId: item.id, posterUserId0: item.posterUserId0 },
                 }"
                 >{{ item.title }}
@@ -143,10 +143,9 @@
 </template>
 
 <script>
-import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+
 export default {
-  name: "blogs",
+  name: "blogFiles",
   data() {
     return {
       loading: true,
@@ -158,22 +157,11 @@ export default {
       count: 0,
     };
   },
-  /* mounted() {
-    var that = this;
-    axios
-      .get("/customer/personal")
-      .then(function (response) {
-        console.log(response.data.data.user);
-        that.nowUser = response.data.data.user.nickname;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, */
+
   created() {
     var that = this;
-    axios
-      .get("/customer/archivesBlog")
+    that.$api.personalArchive.archiveBlog()
+
       .then(function (response) {
         that.loading = false;
         console.log(response.data);
@@ -185,12 +173,12 @@ export default {
             }
           }
         }
-        for (var i = 0; i < that.contentList[0].length; i++) {
+        /*for (var i = 0; i < that.contentList[0].length; i++) {
           var url = require("../../../../../../../assets/cover/cover (" +
             Math.floor(Math.random() * 10) +
             ").jpg");
           that.cover.push(url);
-        }
+        }*/
       })
       .catch(function (error) {
         console.log(error);

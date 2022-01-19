@@ -3,19 +3,20 @@
     <div class="ui segment">
       <el-row>
         <el-col :span="24"
-          ><div class="header">
+        >
+          <div class="header">
             <div class="nav">
               <ul>
                 <li>
                   <a href="" @click="turnUnread()">
-                    <router-link to="/helloWorld/mine/message/unread">
+                    <router-link to="/BreakingTheBarrier/mine/message/unread">
                       <i class="archive icon"></i> 未读
                     </router-link>
                   </a>
                 </li>
                 <li>
                   <a href="" @click="turnRead()">
-                    <router-link to="/helloWorld/mine/message/read">
+                    <router-link to="/BreakingTheBarrier/mine/message/read">
                       <i class="archive icon"></i> 已读
                     </router-link>
                   </a>
@@ -27,35 +28,36 @@
                 </li>
               </ul>
             </div>
-          </div></el-col
+          </div>
+        </el-col
         >
       </el-row>
     </div>
-    <div><router-view></router-view></div>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
-import axios from "axios";
+
 export default {
   name: "message",
   data() {
-    return { flag: true };
+    return {flag: true};
   },
   methods: {
     turnRead() {
       var that = this;
-      this.$store.commit("turnUnread");
+      that.$store.commit("turnUnread");
     },
     turnUnread() {
       var that = this;
-      this.$store.commit("turnRead");
+      that.$store.commit("turnRead");
     },
     readAll() {
       var p1 = new Promise((resolve, reject) => {
-        axios
-          .get("/customer/messages/readAllComments")
+        that.$api.personalMessage.readAllComments()
           .then((res) => {
             resolve(res);
           })
@@ -65,8 +67,7 @@ export default {
       });
 
       var p2 = new Promise((resolve, reject) => {
-        axios
-          .get("/customer/messages/readAllLikes")
+        that.$api.personalMessage.readAllLikes()
           .then((res) => {
             resolve(res);
           })
@@ -88,6 +89,7 @@ export default {
 .ui.feed {
   margin-top: 20px;
 }
+
 .ui.icon.button {
   background-color: white;
 }
@@ -109,7 +111,7 @@ export default {
 
 .nav ul a:hover {
   border-bottom: 4px solid orange;
-  /*   color: black; */
+
 }
 
 a {
@@ -119,7 +121,7 @@ a {
 .header {
   width: 100%;
   height: 30px;
-  /* background-color: rgb(100, 133, 208); */
+
   float: left;
 }
 

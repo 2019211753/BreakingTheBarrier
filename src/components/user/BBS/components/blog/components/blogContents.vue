@@ -11,7 +11,7 @@
             <a href="">
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/blogContent',
+                  path: '/BreakingTheBarrier/BBS/blogContent',
                   query: { blogId: item.id, posterUserId0: item.posterUserId0 },
                 }"
                 >{{ item.title }}
@@ -86,51 +86,27 @@
       </div>
     </div>
     <el-skeleton :loading="loading" animated :count="7">
-      <template slot="template"
-        ><div class="ui segment">
-          <el-container>
-            <el-aside width="45px"
-              ><el-skeleton-item
-                variant="circle image"
-                style="width: 45px; height: 45px; margin-top: 15px"
+      <template slot="template">
+        <div class="ui segment">
+          <div class="ui middle aligned grid">
+            <div class="ten wide column">
+              <el-skeleton-item variant="text" /><el-skeleton-item
+                variant="text"
+              /><el-skeleton-item variant="text" /><el-skeleton-item
+                variant="text"
+              /><el-skeleton-item variant="text" /><el-skeleton-item
+                variant="text"
+              /><el-skeleton-item variant="text" /><el-skeleton-item
+                variant="text"
               />
-            </el-aside>
-            <el-main
-              ><el-skeleton-item variant="text" />
-              <el-skeleton-item variant="text" />
-            </el-main>
-          </el-container>
-          <el-row :gutter="20">
-            <el-col :span="20"><el-skeleton-item variant="text" /></el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="8"
-              ><el-skeleton-item variant="image" style="height: 100px" />
-            </el-col>
-            <el-col :span="16"
-              ><el-skeleton-item variant="text" /><el-skeleton-item
-                variant="text" /><el-skeleton-item
-                variant="text" /><el-skeleton-item
-                variant="text" /><el-skeleton-item variant="text"
-            /></el-col> </el-row
-          ><el-row :gutter="20" style="margin-top: 5px">
-            <el-col :span="20"> <el-skeleton-item variant="text" /></el-col>
-          </el-row>
-          <div class="ui divider"></div>
-          <el-row :gutter="20">
-            <el-col :span="5">
-              <el-skeleton-item variant="text" style="width: 40px"
-            /></el-col>
-            <el-col :span="5">
-              <el-skeleton-item variant="text" style="width: 40px"
-            /></el-col>
-            <el-col :span="5">
-              <el-skeleton-item variant="text" style="width: 40px"
-            /></el-col>
-            <el-col :span="5"
-              ><el-skeleton-item variant="text" style="width: 40px"
-            /></el-col>
-          </el-row>
+            </div>
+            <div class="six wide column">
+              <el-skeleton-item
+                variant="image"
+                style="height: 120px; border-radius: 5px"
+              />
+            </div>
+          </div>
         </div>
       </template>
     </el-skeleton>
@@ -147,8 +123,6 @@
 </template>
 
 <script>
-import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 export default {
   name: "blogContents",
   data() {
@@ -156,8 +130,9 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/listBlogs/?page=0")
+    that.$api.userArticle
+      .getBlogs(0)
+
       .then(function (response) {
         that.loading = false;
         console.log(response.data);

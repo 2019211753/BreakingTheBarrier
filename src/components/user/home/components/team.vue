@@ -119,7 +119,7 @@ export default {
   name: "team",
   methods: {
     more() {
-      this.$router.push("/helloWorld/team");
+      this.$router.push("/BreakingTheBarrier/team");
     },
   },
 };

@@ -75,7 +75,7 @@
             <a href="">
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/articleContent',
+                  path: '/BreakingTheBarrier/BBS/articleContent',
                   query: {
                     articleId: item.id,
                     posterUserId0: item.posterUserId0,
@@ -88,9 +88,7 @@
         >
       </el-row>
       <el-row :gutter="24" style="margin-top: 5px">
-        <!-- <el-col :span="8"
-          ><img class="ui rounded fluid image" :src="cover[index]"
-        /></el-col> -->
+
         <el-col :span="24"
           ><h5 style="color: grey">
             {{ item.description }}
@@ -143,7 +141,7 @@
             <a href="">
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/blogContent',
+                  path: '/BreakingTheBarrier/BBS/blogContent',
                   query: {
                     blogId: item.id,
                     posterUserId0: item.posterUserId0,
@@ -156,9 +154,7 @@
         >
       </el-row>
       <el-row :gutter="24" style="margin-top: 5px">
-        <!-- <el-col :span="8"
-          ><img class="ui rounded fluid image" :src="cover[index]"
-        /></el-col> -->
+
         <el-col :span="24"
           ><h5 style="color: grey">
             {{ item.description }}
@@ -193,7 +189,7 @@
 </template>
 
 <script>
-import axios from "axios";
+
 
 export default {
   name: "favorite",
@@ -209,40 +205,20 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/customer/favorite/" + this.$route.query.favoriteId)
+    that.$api.personalFavorite.showFavoriteContents(that.$route.query.favoriteId)
+
       .then(function (response) {
         console.log(response.data);
         that.loading = false;
         that.questions = response.data.data.questions.content;
         that.blogs = response.data.data.blogs.content;
-        /* for (var i = 0; i < that.questions.length; i++) {
-          var url = require("../../../../../../assets/cover/cover (" +
-            Math.floor(Math.random() * 51) +
-            ").jpg");
-          that.cover.push(url);
-        } */
+
       })
       .catch(function (error) {
         console.log(error);
       });
   },
-  methods: {
-    handleCurrentChange(val) {
-      var that = this;
-      var nowPage = val - 1;
-      axios
-        .get("/listQuestions/?page=" + nowPage)
-        .then(function (response) {
-          console.log(response.data);
-          that.contentList = response.data.data.pages.content;
-          that.pageSize = response.data.data.pages.totalPages;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-  },
+
 };
 </script>
 

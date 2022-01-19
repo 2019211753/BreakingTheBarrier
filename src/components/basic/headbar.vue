@@ -6,42 +6,42 @@
         <ul>
           <li>
             <a href="">
-              <router-link to="/helloWorld/home">
+              <router-link to="/BreakingTheBarrier/home">
                 <i class="sticky note outline icon"></i>首页
               </router-link>
             </a>
           </li>
           <li>
             <a href="">
-              <router-link to="/helloWorld/BBS/questions">
+              <router-link to="/BreakingTheBarrier/BBS/questions">
                 <i class="home icon"></i>论坛
               </router-link>
             </a>
           </li>
           <li>
             <a href="">
-              <router-link to="/helloWorld/literature/data">
+              <router-link to="/BreakingTheBarrier/literature/data">
                 <i class="server icon"></i>资料库
               </router-link>
             </a>
           </li>
           <li>
             <a href="">
-              <router-link to="/helloWorld/team">
+              <router-link to="/BreakingTheBarrier/team">
                 <i class="handshake icon"></i>组队
               </router-link>
             </a>
           </li>
           <li>
             <a href="">
-              <router-link to="/helloWorld/information">
+              <router-link to="/BreakingTheBarrier/information">
                 <i class="paw icon"></i>信息百科
               </router-link>
             </a>
           </li>
           <li style="margin-left: 180px">
             <a href="">
-              <router-link to="/helloWorld/mine/contents/questionFiles">
+              <router-link to="/BreakingTheBarrier/mine/contents/questionFiles">
                 <el-skeleton :loading="loading" animated v-if="loading == true">
                   <template slot="template"
                     ><el-skeleton-item variant="circle image" />
@@ -92,11 +92,9 @@ export default {
       .then(function (response) {
         console.log(response.data);
         that.loading = false;
-        var resUser1 = response.data.data.user;
-        var resUser2 = response.data.data;
         that.$store.commit("getMyAvatar", response.data.data.user.avatar);
-        that.$store.commit("getMyFile1", resUser1);
-        that.$store.commit("getMyFile2", resUser2);
+        that.$store.commit("getMyFile1", response.data.data.user);
+        that.$store.commit("getMyFile2", response.data.data);
         /* eventBus.$emit("pushMsg", ); */
       })
       .catch(function (error) {

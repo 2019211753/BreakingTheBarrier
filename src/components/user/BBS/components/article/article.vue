@@ -13,7 +13,7 @@
             <input type="text" placeholder="搜索..." v-model="searchContent" />
             <router-link
               :to="{
-                path: '/helloWorld/BBS/searchArticleResult',
+                path: '/BreakingTheBarrier/BBS/searchArticleResult',
                 query: { searchContent: this.searchContent },
               }"
             >
@@ -43,7 +43,7 @@ export default {
   methods: {
     turnToAddArticle() {
       var that = this;
-      that.$router.push("/helloWorld/BBS/article/addArticle");
+      that.$router.push("/BreakingTheBarrier/BBS/article/addArticle");
     },
   },
 };
@@ -52,22 +52,19 @@ export default {
 <style scoped>
 .body {
   width: 80%;
-  /* height: 760px; */
+
   margin: auto;
   margin-top: 20px;
-  /* background-color: aqua; */
+
 }
-/* contents {
-  margin-top: 200px;
-} */
+
 .main {
   width: 64%;
   float: left;
 }
 
 .hot {
-  /* background-color: green; */
-  /*  margin-top: 10px; */
+
   width: 35%;
   float: left;
   margin-left: 1%;

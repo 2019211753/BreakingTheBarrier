@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import axios from "axios";
+
 /* import eventBus from "../../../../eventBus"; */
 import $ from "jquery";
 
@@ -164,7 +164,7 @@ window.addEventListener("setItem", (e) => {
   console.log(e);
   token = e.newValue;
 }); */
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+
 export default {
   name: "information",
   /* computed: {
@@ -236,7 +236,7 @@ export default {
     sure() {
       var that = this;
       if (that.passWord === that.surePassWord) {
-        var information = {
+        var data= {
           nickname: that.nickname,
           personalSignature: that.personalSignature,
           sex: that.sex,
@@ -247,8 +247,8 @@ export default {
           password: that.passWord,
           wechatId: "",
         };
-        axios
-          .post("/customer/modifyAll", information)
+        that.$api.personalInformation.modifyAllInformation(data)
+
           .then(function (response) {
             if (response.data.code == 200) {
               if (that.passWord && that.surePassWord) {

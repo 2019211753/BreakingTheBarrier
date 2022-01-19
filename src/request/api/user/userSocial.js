@@ -3,14 +3,18 @@
  */
 
 import base from "../../base";
-import axios from "axios";
+import instance from "../../http";
 
 
 const userSocial = {
     getOtherFile(data) {
-        return axios
-            .get(base.base1 + "/visit/" + data)
+        return instance
+            .get("/visit/" + data)
     },
+    followOther(data) {
+        return instance
+            .get("/follow/" + data)
+    }
 }
 
 export default userSocial;

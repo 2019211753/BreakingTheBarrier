@@ -75,25 +75,25 @@ export default {
   components: { adminArticle, adminTag, adminBlog, adminUser },
   methods: {
     turnToTag() {
-      this.$router.push("/helloWorld/admin/adminTag");
+      this.$router.push("/BreakingTheBarrier/admin/adminTag");
     },
     turnToUser() {
-      this.$router.push("/helloWorld/admin/adminUser");
+      this.$router.push("/BreakingTheBarrier/admin/adminUser");
     },
     turnToQuestion() {
-      this.$router.push("/helloWorld/admin/adminArticle");
+      this.$router.push("/BreakingTheBarrier/admin/adminArticle");
     },
     turnToBlog() {
-      this.$router.push("/helloWorld/admin/adminBlog");
+      this.$router.push("/BreakingTheBarrier/admin/adminBlog");
     },
     turnToHome() {
-      this.$router.push("/helloWorld/home");
+      this.$router.push("/BreakingTheBarrier/home");
     },
     turnToBBS() {
-      this.$router.push("/helloWorld/BBS/questions");
+      this.$router.push("/BreakingTheBarrier/BBS/questions");
     },
     turnToMine() {
-      this.$router.push("/helloWorld/mine/questionFiles");
+      this.$router.push("/BreakingTheBarrier/mine/questionFiles");
     },
   },
 };

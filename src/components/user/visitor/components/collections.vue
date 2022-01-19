@@ -17,7 +17,7 @@
               <a class="header"
                 ><router-link
                   :to="{
-                    path: '/helloWorld/visitor/collections/favorite',
+                    path: '/BreakingTheBarrier/visitor/collections/favorite',
                     query: {
                       userId0: userId0,
                       favoriteId: item.id,
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import axios from "axios";
+
 export default {
   name: "visitorCollections",
 
@@ -49,8 +49,7 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/visit/" + this.$route.query.userId0)
+    that.$api.userSocial.getOtherFile(that.$route.query.userId0)
       .then(function (response) {
         console.log(response.data);
         /* that.loading = false; */

@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import axios from "axios";
+
 export default {
   name: "likeFiles",
   data() {
@@ -51,8 +51,8 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/customer/archiveLike")
+    that.$api.personalArchive.archiveLike()
+
       .then(function (response) {
         console.log(response.data);
         that.contentList = response.data.data.postLikes;

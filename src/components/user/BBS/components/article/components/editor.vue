@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import axios from "axios";
+
 import E from "wangeditor";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+
 export default {
   name: "editor",
 
@@ -42,18 +42,17 @@ export default {
       /*      alert(that.chooseTagIdList); */
       if (that.title && that.description && that.phoneEditor.txt.html()) {
         if (!sessionStorage.getItem("chooseTagIdList")) {
-          this.$message({
+          that.$message({
             message: "请选择标签",
             type: "warning",
           });
         } else {
-          axios
-            .post("/customer/question/post", {
-              title: that.title,
-              description: that.description,
-              content: that.phoneEditor.txt.html(),
-              tagIds: sessionStorage.getItem("chooseTagIdList"),
-            })
+          var data={   title: that.title,
+            description: that.description,
+            content: that.phoneEditor.txt.html(),
+            tagIds: sessionStorage.getItem("chooseTagIdList"),}
+          that.$api.userQuestion.postQuestion(data)
+
             .then(function (response) {
               console.log(response);
               if (response.data.code == 403) {
@@ -66,7 +65,7 @@ export default {
                   message: "发布成功",
                   type: "success",
                 });
-                that.$router.push("/helloWorld/BBS/questions");
+                that.$router.push("/BreakingTheBarrier/BBS/questions");
               }
             })
             .catch(function (error) {

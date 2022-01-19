@@ -30,17 +30,19 @@
      }
  }
 
-/*Vue.prototype.$http = axios
- axios.defaults.baseURL = '/api'*/
+ /*Vue.prototype.$http = axios
+  axios.defaults.baseURL = '/api'*/
  import api from "./request/api";
  Vue.prototype.$api = api;
+ import instance from './request/http';
+ instance.defaults.baseURL = '/api';
  /*
  Vue.prototype.$axios = Axios
  Axios.defaults.baseURL = '/api'
  Axios.defaults.headers.post['Content-Type'] = 'application/json'; */
  /*  Vue.config.productionTip = false */
 
- /* eslint-disable no-new */
+
  new Vue({
      el: '#app',
      router,

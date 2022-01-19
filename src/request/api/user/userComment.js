@@ -3,43 +3,43 @@
  */
 
 import base from "../../base";
-import axios from "axios";
+import instance from "../../http";
 
 
 const userComment = {
-    postQuestionComment(data) {
-        return axios
-            .post(base.base1 + "/question/" + data +
-                "/comment/post")
+    postQuestionComment(data1, data2) {
+        return instance
+            .post("/question/" + data1 +
+                "/comment/post", data2)
     },
-    postBlogComment(data) {
-        return axios
-            .post(base.base1 + "/blog/" + data +
-                "/comment/post")
+    postBlogComment(data1, data2) {
+        return instance
+            .post("/blog/" + data1 +
+                "/comment/post", data2)
     },
     getAllQuestionComments(data) {
-        return axios
-            .get(base.base1 + "/question/" + data + "/comments")
+        return instance
+            .get("/question/" + data + "/comments")
     },
     getAllBlogComments(data) {
-        return axios
-            .get(base.base1 + "/blog/" + data + "/comments")
+        return instance
+            .get("/blog/" + data + "/comments")
     },
     getChildComments(data) {
-        return axios
-            .get(base.base1 + "/comment/" + data)
+        return instance
+            .get("/comment/" + data)
     },
     deleteQuestionComment(data1, data2) {
-        return axios
-            .get(base.base1 + "/question/" + data1 + "/comment/" + data2 + "/delete")
+        return instance
+            .get("/question/" + data1 + "/comment/" + data2 + "/delete")
     },
     deleteBlogComment(data1, data2) {
-        return axios
-            .get(base.base1 + "/blog/" + data1 + "/comment/" + data2 + "/delete")
+        return instance
+            .get("/blog/ " + data1 + " / comment / " + data2 + " / delete ")
     },
     getCommentSelected(data1, data2) {
-        return axios
-            .get(base.base1 + "/question/" + data1 + "/comment/" +
+        return instance
+            .get("/question/" + data1 + "/comment/" +
                 data2 + "/select")
     }
 }

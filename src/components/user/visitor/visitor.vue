@@ -89,7 +89,7 @@
                     <a
                       ><router-link
                         :to="{
-                          path: '/helloWorld/visitor/questions',
+                          path: '/BreakingTheBarrier/visitor/questions',
                           query: { userId0: userId0 },
                         }"
                         >问题
@@ -100,7 +100,7 @@
                     <a
                       ><router-link
                         :to="{
-                          path: '/helloWorld/visitor/blogs',
+                          path: '/BreakingTheBarrier/visitor/blogs',
                           query: { userId0: userId0 },
                         }"
                         >博客
@@ -111,7 +111,7 @@
                     <a
                       ><router-link
                         :to="{
-                          path: '/helloWorld/visitor/following',
+                          path: '/BreakingTheBarrier/visitor/following',
                           query: { userId0: userId0 },
                         }"
                         >关注
@@ -122,7 +122,7 @@
                     <a
                       ><router-link
                         :to="{
-                          path: '/helloWorld/visitor/collections',
+                          path: '/BreakingTheBarrier/visitor/collections',
                           query: { userId0: userId0 },
                         }"
                         >收藏

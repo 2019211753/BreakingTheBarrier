@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-skeleton :loading="questionLoading" animated style="margin-top: 14px">
-      <template slot="template"
-        ><div>
+      <template slot="template">
+        <div>
           <div class="ui segment">
             <div class="ui large feed">
               <div class="event">
@@ -14,20 +14,22 @@
                 </div>
               </div>
             </div>
-            <h3 class="title"><el-skeleton-item variant="text" /></h3>
+            <h3 class="title">
+              <el-skeleton-item variant="text" />
+            </h3>
             <div class="ui divider"></div>
             <el-skeleton-item
               variant="image"
               style="width: 80%; height: 400px; margin: auto"
-            /><br />
-            <el-skeleton-item variant="text" /><el-skeleton-item
-              variant="text"
             />
+            <br />
+            <el-skeleton-item variant="text" />
+            <el-skeleton-item variant="text" />
             <el-skeleton-item variant="text" />
             <el-row>
-              <el-col :span="20"
-                ><div class="grid-content bg-purple-dark"></div
-              ></el-col>
+              <el-col :span="20">
+                <div class="grid-content bg-purple-dark"></div>
+              </el-col>
             </el-row>
           </div>
         </div>
@@ -41,15 +43,16 @@
           </div>
           <div class="content">
             <div class="summary">
-              <a class="user"
-                ><router-link
+              <a class="user">
+                <router-link
                   v-if="$store.state.me.id == posterUserId0"
-                  to="/helloWorld/mine/contents/questionFiles"
-                  >{{ template.nickname }} </router-link
-                ><router-link
+                  to="/BreakingTheBarrier/mine/contents/questionFiles"
+                  >{{ template.nickname }}
+                </router-link>
+                <router-link
                   v-else
                   :to="{
-                    path: '/helloWorld/visitor/questions',
+                    path: '/BreakingTheBarrier/visitor/questions',
                     query: { userId0: posterUserId0 },
                   }"
                   >{{ template.nickname }}
@@ -75,8 +78,11 @@
       <h3 class="title">{{ template.title }}</h3>
       <div class="ui divider"></div>
       <div v-html="articleContent">{{ articleContent }}</div>
-      <br /><el-row>
-        <el-col :span="7"><div style="height: 1px"></div></el-col>
+      <br />
+      <el-row>
+        <el-col :span="7">
+          <div style="height: 1px"></div>
+        </el-col>
         <el-col :span="12">
           <div
             @click="likeArticle(template.id)"
@@ -97,7 +103,9 @@
             <i class="comment icon"></i>
           </div>
         </el-col>
-        <el-col :span="5"><div class="grid-content bg-purple"></div></el-col>
+        <el-col :span="5">
+          <div class="grid-content bg-purple"></div>
+        </el-col>
       </el-row>
       <div class="ui divider"></div>
       <div class="ui mini labeled button" style="margin-left: 3%"></div>
@@ -145,8 +153,8 @@
               description="暂无评论"
             ></el-empty>
             <el-skeleton :loading="commentLoading" animated :count="5">
-              <template slot="template"
-                ><div class="ui large feed">
+              <template slot="template">
+                <div class="ui large feed">
                   <div class="event">
                     <div class="label">
                       <el-skeleton-item variant="circle image" />
@@ -165,14 +173,14 @@
                 <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
-                <a class="author"
-                  ><router-link
+                <a class="author">
+                  <router-link
                     :to="{
-                      path: '/helloWorld/visitor',
+                      path: '/BreakingTheBarrier/visitor',
                       query: { userId0: item.postUserId0 },
                     }"
                     >{{ item.nickname }}
-                  </router-link></a
+                  </router-link> </a
                 ><a
                   class="ui mini basic blue label"
                   style="margin-left: 5px"
@@ -208,14 +216,14 @@
                 <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
-                <a class="author"
-                  ><router-link
+                <a class="author">
+                  <router-link
                     :to="{
-                      path: '/helloWorld/visitor',
+                      path: '/BreakingTheBarrier/visitor',
                       query: { userId0: item.postUserId0 },
                     }"
                     >{{ item.nickname }}
-                  </router-link></a
+                  </router-link> </a
                 ><a
                   class="ui mini basic blue label"
                   style="margin-left: 5px"
@@ -254,14 +262,14 @@
                 <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
-                <a class="author"
-                  ><router-link
+                <a class="author">
+                  <router-link
                     :to="{
-                      path: '/helloWorld/visitor',
+                      path: '/BreakingTheBarrier/visitor',
                       query: { userId0: item.postUserId0 },
                     }"
                     >{{ item.nickname }}
-                  </router-link></a
+                  </router-link> </a
                 ><a
                   class="ui mini basic blue label"
                   style="margin-left: 5px"
@@ -309,8 +317,8 @@
       </div>
       <div class="ui collect modal" style="width: 400px">
         <el-skeleton :loading="collectLoading" animated :count="1">
-          <template slot="template"
-            ><el-skeleton-item
+          <template slot="template">
+            <el-skeleton-item
               variant="text"
               style="height: 50px; margin-top: 15px"
             />
@@ -321,8 +329,8 @@
             <el-aside width="70px"
               ><i class="huge yellow folder icon"></i
             ></el-aside>
-            <el-main
-              ><el-row :gutter="24">
+            <el-main>
+              <el-row :gutter="24">
                 <el-col :span="21">
                   <div
                     class="ui button"
@@ -369,7 +377,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import E from "wangeditor";
 
 export default {
@@ -410,8 +417,9 @@ export default {
   created() {
     var that = this;
     var p1 = new Promise((resolve, reject) => {
-      axios
-        .get("/question/" + that.$route.query.articleId)
+      that.$api.userArticle
+        .showQuestion(that.$route.query.articleId)
+
         .then(function (response) {
           that.questionLoading = false;
           console.log(response.data);
@@ -458,8 +466,9 @@ export default {
   methods: {
     likeArticle(id) {
       var that = this;
-      axios
-        .get("/question/" + id + "/approve")
+      that.$api.userLike
+        .likeQuestion(id)
+
         .then(function (response) {
           console.log(response.data);
           that.getArticleLikesAndDislikes(
@@ -478,8 +487,9 @@ export default {
     },
     dislikeArticle(id) {
       var that = this;
-      axios
-        .get("/question/" + id + "/disapprove")
+      that.$api.userLike
+        .dislikeQuestion(id)
+
         .then(function (response) {
           console.log(response.data);
           that.getArticleLikesAndDislikes(
@@ -507,10 +517,11 @@ export default {
     },
     openCollections() {
       var that = this;
-      /* if (collected == false) { */
+
       $(".ui.collect.modal").modal("show");
-      axios
-        .get("/customer/favorites")
+      that.$api.personalFavorite
+        .getFavorites()
+
         .then(function (response) {
           that.collectLoading = false;
           that.favoriteList = response.data.data.favorites;
@@ -528,13 +539,12 @@ export default {
     },
     collectArticle() {
       var that = this;
-      axios
-        .get(
-          "/customer/favorite/" +
-            sessionStorage.getItem("favoriteId") +
-            "/modify/question/" +
-            this.$route.query.articleId
+      that.$api.userFavorite
+        .collectQuestion(
+          sessionStorage.getItem("favoriteId"),
+          that.$route.query.articleId
         )
+
         .then(function (response) {
           console.log(response.data);
           that.collected = response.data.data.collected;
@@ -550,15 +560,16 @@ export default {
     },
     deleteArticle(id) {
       var that = this;
-      axios
-        .get("/customer/question/" + id + "/delete")
+      that.$api.userQuestion
+        .deleteQuestion(id)
+
         .then(function (response) {
           console.log(response.data);
           that.$message({
             message: "删除成功",
             type: "success",
           });
-          that.$router.push("/helloWorld/BBS/questions");
+          that.$router.push("/BreakingTheBarrier/BBS/questions");
         })
         .catch(function (error) {
           console.log(error);
@@ -620,8 +631,9 @@ export default {
     },
     getAllComments() {
       var that = this;
-      axios
-        .get("/question/" + this.$route.query.articleId + "/comments")
+      that.$api.userComment
+        .getAllQuestionComments(this.$route.query.articleId)
+
         .then(function (response) {
           that.commentLoading = false;
           console.log(response.data);
@@ -636,8 +648,9 @@ export default {
     },
     getMoreComments(id) {
       var that = this;
-      axios
-        .get("/comment/" + id)
+      that.$api.userComment
+        .getChildComments(id)
+
         .then(function (response) {
           console.log(response.data);
         })
@@ -657,8 +670,9 @@ export default {
     },
     likeComment(id) {
       var that = this;
-      axios
-        .get("/comment/" + id + "/approve")
+      that.$api.userLike
+        .likeComment(id)
+
         .then(function (response) {
           console.log(response.data);
           that.getCommentLikesAndDislikes(
@@ -677,8 +691,9 @@ export default {
     },
     dislikeComment(id) {
       var that = this;
-      axios
-        .get("/comment/" + id + "/disapprove")
+      that.$api.userLike
+        .dislikeComment(id)
+
         .then(function (response) {
           console.log(response.data);
           that.getCommentLikesAndDislikes(
@@ -702,14 +717,9 @@ export default {
     },
     setSelectedComment(id) {
       var that = this;
-      axios
-        .get(
-          "/question/" +
-            that.$store.state.articleId +
-            "/comment/" +
-            id +
-            "/select"
-        )
+      that.$api.userComment
+        .getCommentSelected(that.$store.state.articleId, id)
+
         .then(function (response) {
           console.log(response.data);
           that.template.solved = response.data.data.solved;
@@ -726,14 +736,9 @@ export default {
     deleteComment(id) {
       var that = this;
       var p1 = new Promise((resolve, reject) => {
-        axios
-          .get(
-            "/question/" +
-              this.$route.query.articleId +
-              "/comment/" +
-              id +
-              "/delete"
-          )
+        that.$api.userComment
+          .deleteQuestionComment(this.$route.query.articleId, id)
+
           .then(function (response) {
             console.log(response.data);
             setTimeout(that.getAllComments(), 100);
@@ -778,15 +783,14 @@ export default {
       var that = this;
       var p1 = new Promise((resolve, reject) => {
         if (that.phoneEditor.txt.html()) {
-          axios
-            .post(
-              "/question/" + that.$store.state.articleId + "/comment/post",
-              {
-                content: that.phoneEditor.txt.html(),
-                answer: true,
-                parentCommentId0: that.parentId,
-              }
-            )
+          var data = {
+            content: that.phoneEditor.txt.html(),
+            answer: true,
+            parentCommentId0: that.parentId,
+          };
+          that.$api.userComment
+            .postQuestionComment(that.$route.query.articleId, data)
+
             .then(function (response) {
               console.log(response.data);
               that.parentId = "-1";
@@ -807,8 +811,9 @@ export default {
       });
 
       var p2 = new Promise((resolve, reject) => {
-        axios
-          .get("/question/" + that.$store.state.articleId + "/comments")
+        that.$api.userArticle
+          .showQuestion(that.$store.state.articleId)
+
           .then(function (response) {
             console.log(that.flatten(response.data.data.comments2));
             that.commentList = that.flatten(response.data.data.comments2);

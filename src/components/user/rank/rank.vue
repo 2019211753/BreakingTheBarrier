@@ -22,35 +22,21 @@ export default {
 .body {
   width: 80%;
   margin: auto;
-  /* height: 760px; */
-  /* background-color: aqua; */
+
 }
 
 .main {
   margin-top: 20px;
   width: 60%;
   float: left;
-  /* background-color: bisque; */
+
 }
 .side {
   margin-top: 20px;
   width: 35%;
   float: left;
   margin-left: 5%;
-  /* height: 600px; */
-  /* background-color: bisque; */
-}
-.specific {
-  width: 90%;
-  margin: auto;
-  /*  height: 200px; */
-  /* background-color: red; */
+
 }
 
-.writer {
-  margin: auto;
-  width: 90%;
-  /* height: 200px; */
-  /* background-color: red; */
-}
 </style>

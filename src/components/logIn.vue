@@ -3,7 +3,7 @@
     <div class="background"></div>
     <div class="a">
       <div class="b">
-        <img :src="imgSrc" height="100%" alt="" />
+        <img :src="imgSrc" height="100%" alt=""/>
       </div>
       <div class="c">
         <div class="d">
@@ -35,11 +35,10 @@
 
 
 <script>
-
 export default {
   name: "logIn",
   data() {
-    return { userName: "", passWord: "", imgSrc: require("../assets/bg.jpg") };
+    return {userName: "", passWord: "", imgSrc: require("../assets/bg.jpg")};
   },
   methods: {
     sure() {
@@ -58,10 +57,9 @@ export default {
                 message: "登陆成功",
                 type: "success",
               });
-
-              /* that.$store.commit("getToken", response.data.data.token); */
+              /*that.$store.commit("getToken", response.data.data.token);*/
               that.resetSetItem("token", response.data.data.token);
-              that.$router.push("/helloWorld/home");
+              that.$router.push("/BreakingTheBarrier/home");
               history.pushState(null, null, document.URL);
               window.addEventListener("popstate", function () {
                 history.pushState(null, null, document.URL);
@@ -97,6 +95,7 @@ export default {
   display: flex;
   justify-content: center;
 }
+
 .a {
   margin: auto;
   position: relative;

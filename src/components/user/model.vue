@@ -10,17 +10,18 @@
 </template>
 
 <script>
-import axios from "axios";
+
 import headbar from "../basic/headbar";
 import home from "./home/home";
 import BBS from "./BBS/BBS";
 import wikipedia from "./wikipedia/wikipedia";
 import bottom from "../basic/bottom";
-axios.defaults.headers["token"] = sessionStorage.getItem("token");
-window.addEventListener("setItem", (e) => {
+import instance from "../../request/http";
+
+ window.addEventListener("setItem", (e) => {
   console.log(e);
   if (e.key == "token") {
-    axios.defaults.headers["token"] = e.newValue;
+    instance.defaults.headers["token"] = e.newValue;
   }
 });
 export default {

@@ -3,13 +3,12 @@
  */
 
 import base from "../../base";
-import axios from "axios";
+import instance from "../../http";
 
 
 const userRank = {
     getRank() {
-        return axios
-            .get(base.base1 + "/rank")
+        return instance.get("/rank")
     }
 }
 

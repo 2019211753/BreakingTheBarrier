@@ -79,16 +79,16 @@
         console.log('---+++');
       },
       turnWikipedia() {
-        this.$router.push("/helloWorld/literature/information");
+        this.$router.push("/BreakingTheBarrier/literature/information");
       },
       turnTeam() {
-        this.$router.push("/helloWorld/team");
+        this.$router.push("/BreakingTheBarrier/team");
       },
       turnDatabase() {
-        this.$router.push("/helloWorld/literature/data");
+        this.$router.push("/BreakingTheBarrier/literature/data");
       },
       turnHome() {
-        this.$router.push("/helloWorld/home");
+        this.$router.push("/BreakingTheBarrier/home");
       },
     },
     components: {

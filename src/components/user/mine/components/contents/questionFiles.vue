@@ -103,7 +103,7 @@
             <a>
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/articleContent',
+                  path: '/BreakingTheBarrier/BBS/articleContent',
                   query: {
                     articleId: item.id,
                     posterUserId0: item.posterUserId0,
@@ -146,11 +146,9 @@
 </template>
 
 <script>
-import axios from "axios";
 
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
 export default {
-  name: "questions",
+  name: "questionFiles",
   data() {
     return {
       loading: true,
@@ -162,23 +160,11 @@ export default {
       count: 0,
     };
   },
-  /* mounted() {
-    var that = this;
-    axios
-      .get("/customer/personal")
-      .then(function (response) {
-        that.loading = false;
-        console.log(response.data.data.user);
-        that.nowUser = response.data.data.user.nickname;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, */
+
   created() {
     var that = this;
-    axios
-      .get("/customer/archivesQuestion")
+    that.$api.personalArchive.archiveQuestion()
+
       .then(function (response) {
         that.loading = false;
         console.log(response.data);

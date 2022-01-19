@@ -3,21 +3,21 @@
  */
 
 import base from "../../base";
-import axios from "axios";
+
 import instance from "../../http";
 
 const personalInformation = {
     uploadAvatar(data) {
-        return axios
-            .post(base.base1 + "/customer/uploadAvatar", data)
+        return instance
+            .post("/customer/uploadAvatar", data)
     },
     modifyAllInformation(data) {
-        return axios
-            .post(base.base1 + "/customer/modifyAll", data)
+        return instance
+            .post("/customer/modifyAll", data)
     },
     getPersonalInformation() {
         return instance
-            .get(base.base1 + "/customer/personal")
+            .get("/customer/personal")
     }
 }
 

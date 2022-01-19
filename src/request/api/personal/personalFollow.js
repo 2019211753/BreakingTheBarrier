@@ -3,13 +3,12 @@
  */
 
 import base from "../../base";
-import axios from "axios";
+import instance from "../../http";
 
 
 const personalFollow = {
     getFollowInfo() {
-        return axios
-            .get(base.base1 + "/customer/followInfo")
+        return instance.get("/customer/followInfo")
     }
 }
 

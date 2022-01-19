@@ -3,31 +3,31 @@
  */
 
 import base from "../../base";
-import axios from "axios";
 
+import instance from "../../http";
 
 const personalMessage = {
     getAllMessage() {
-        return axios
-            .get(base.base1 + "/customer/messages/")
+        return instance
+            .get("/customer/messages/")
     },
     readComment(data) {
-        return axios
-            .get(base.base1 + "/customer/messages/comment/" +
+        return instance
+            .get("/customer/messages/comment/" +
                 data + "/read")
     },
     readLike(data) {
-        return axios
-            .get(base.base1 + " /customer/messages/likes/ " + data +
+        return instance
+            .get(" /customer/messages/likes/ " + data +
                 "/read")
     },
     readAllComments() {
-        return axios
-            .get(base.base1 + "/customer/messages/readAllComments")
+        return instance
+            .get("/customer/messages/readAllComments")
     },
     readAllLikes() {
-        return axios
-            .get(base.base1 + "/customer/messages/readAllLikes")
+        return instance
+            .get("/customer/messages/readAllLikes")
     }
 }
 

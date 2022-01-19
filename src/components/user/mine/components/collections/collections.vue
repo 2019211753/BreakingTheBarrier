@@ -3,27 +3,33 @@
     <el-container v-for="(item, index) in favoriteList" :key="index">
       <el-aside width="70px"><i class="huge yellow folder icon"></i></el-aside>
       <el-main
-        ><el-row :gutter="20">
+      >
+        <el-row :gutter="20">
           <el-col :span="19">
             <h4>
               <a class="header"
-                ><router-link
+              >
+                <router-link
                   :to="{
-                    path: '/helloWorld/mine/collections/favorite',
+                    path: '/BreakingTheBarrier/mine/collections/favorite',
                     query: { favoriteId: item.id },
                   }"
-                  >{{ item.title }}</router-link
-                ></a
+                >{{ item.title }}
+                </router-link
+                >
+              </a
               ><a
-                v-if="item.open == false"
-                class="ui small blue label"
-                style="margin-left: 20px"
-                >私密</a
-              >
-            </h4></el-col
+              v-if="item.open == false"
+              class="ui small blue label"
+              style="margin-left: 20px"
+            >私密</a
+            >
+            </h4>
+          </el-col
           >
           <el-col :span="5"
-            ><div
+          >
+            <div
               class="ui mini icon button"
               style="background-color: white"
               @click="editFavorite(item.id, item.title, item.open)"
@@ -36,10 +42,13 @@
               @click="deleteFavorite(item.id)"
             >
               <i class="ui trash icon"></i></div
-          ></el-col>
+            >
+          </el-col>
         </el-row>
-      </el-main> </el-container
-    ><el-container v-if="loading == false">
+      </el-main>
+    </el-container
+    >
+    <el-container v-if="loading == false">
       <el-aside width="70px"><i class="huge yellow folder icon"></i></el-aside>
       <el-main>
         <div
@@ -55,11 +64,11 @@
       <div class="ui icon header">
         <i class="teal archive icon"></i>
         创建收藏夹
-        <br />
-        <br />
+        <br/>
+        <br/>
         <div class="ui labeled input">
           <div class="ui teal label">名称</div>
-          <input type="text" placeholder="" v-model="fileName" />
+          <input type="text" placeholder="" v-model="fileName"/>
         </div>
       </div>
       <div class="actions">
@@ -74,8 +83,8 @@
       <div class="ui icon header">
         <i class="archive icon"></i>
         修改信息
-        <br />
-        <br />
+        <br/>
+        <br/>
         <div class="ui labeled input">
           <div class="ui label">收藏夹名称</div>
           <input
@@ -100,7 +109,8 @@
     </div>
     <el-skeleton :loading="loading" animated :count="5">
       <template slot="template"
-        ><el-skeleton-item
+      >
+        <el-skeleton-item
           variant="text"
           style="height: 50px; margin-top: 15px"
         />
@@ -110,8 +120,7 @@
 </template>
 
 <script>
-import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+
 export default {
   name: "collections",
   data() {
@@ -130,8 +139,8 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/customer/favorites")
+    that.$api.personalFavorite.getFavorites()
+
       .then(function (response) {
         that.loading = false;
         that.favoriteList = response.data.data.favorites;
@@ -168,11 +177,12 @@ export default {
     },
     sureCreateFavorites() {
       var that = this;
-      axios
-        .post("/customer/favorite/create", {
-          title: that.fileName,
-          open: !that.isPrivate,
-        })
+      var data = {
+        title: that.fileName,
+        open: !that.isPrivate,
+      }
+      that.$api.personalFavorite.createFavorite(data)
+
         .then(function (response) {
           console.log(response.data);
           that.favoriteList.push(response.data.data.favorite);
@@ -190,12 +200,13 @@ export default {
     },
     sureEditFavorites() {
       var that = this;
-      axios
-        .post("/customer/favorite/edit", {
-          title: that.fileName,
-          open: that.nowPrivate,
-          id: that.nowFavoriteId,
-        })
+      var data = {
+        title: that.fileName,
+        open: that.nowPrivate,
+        id: that.nowFavoriteId,
+      }
+      that.$api.personalFavorite.editFavorite(data)
+
         .then(function (response) {
           console.log(response.data);
           that.$message({
@@ -217,8 +228,8 @@ export default {
     },
     deleteFavorite(id) {
       var that = this;
-      axios
-        .get("/customer/favorite/" + id + "/delete")
+      that.$api.personalFavorite.deleteFavorite(id)
+
         .then(function (response) {
           console.log(response.data);
           for (var i = 0; i < that.favoriteList.length; i++) {

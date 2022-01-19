@@ -4,84 +4,87 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const data = () => import('../components/literature/data/data')
-const information = () => import('../components/literature/Information/Information')
-const literature = () => import('../components/literature/literature')
+const data = () =>
+    import ('../components/literature/data/data')
+const information = () =>
+    import ('../components/literature/Information/Information')
+const literature = () =>
+    import ('../components/literature/literature')
 
 export default new Router({
         mode: "history",
         routes: [{
                 path: '/',
-                name: 'helloWorld',
+                name: 'BreakingTheBarrier',
                 component: () =>
-                    import ("../components/helloWorld")
+                    import ("../components/BreakingTheBarrier")
             }, {
-                path: '/helloWorld/logIn',
+                path: '/BreakingTheBarrier/logIn',
                 name: 'logIn',
                 component: () =>
                     import ("../components/logIn")
             },
             {
-                path: '/helloWorld/register',
+                path: '/BreakingTheBarrier/register',
                 name: 'register',
                 component: () =>
                     import ("../components/register")
             },
             {
-                path: '/helloWorld/model',
+                path: '/BreakingTheBarrier/model',
                 name: 'model',
                 component: () =>
                     import ("../components/user/model"),
                 children: [{
-                        path: '/helloWorld/admin',
+                        path: '/BreakingTheBarrier/admin',
                         name: 'admin',
                         component: () =>
                             import ("../components/admin/admin"),
                         children: [{
-                            path: '/helloWorld/admin/adminTag',
+                            path: '/BreakingTheBarrier/admin/adminTag',
                             name: 'adminTag',
                             component: () =>
                                 import ("../components/admin/components/adminTag")
                         }, {
-                            path: '/helloWorld/admin/adminUser',
+                            path: '/BreakingTheBarrier/admin/adminUser',
                             name: 'adminUser',
                             component: () =>
                                 import ("../components/admin/components/adminUser")
                         }, {
-                            path: '/helloWorld/admin/adminBlog',
+                            path: '/BreakingTheBarrier/admin/adminBlog',
                             name: 'adminBlog',
                             component: () =>
                                 import ("../components/admin/components/adminBlogFunctions/adminBlog")
                         }, {
-                            path: '/helloWorld/admin/adminArticle',
+                            path: '/BreakingTheBarrier/admin/adminArticle',
                             name: 'adminArticle',
                             component: () =>
                                 import ("../components/admin/components/adminArticleFunctions/adminArticle")
                         }, ]
                     }, {
-                        path: '/helloWorld/home',
+                        path: '/BreakingTheBarrier/home',
                         name: 'home',
                         component: () =>
                             import ("../components/user/home/home")
                     },
                     {
-                        path: '/helloWorld/BBS',
+                        path: '/BreakingTheBarrier/BBS',
                         name: 'BBS',
                         component: () =>
                             import ("../components/user/BBS/BBS"),
                         children: [{
-                                path: '/helloWorld/BBS/question',
+                                path: '/BreakingTheBarrier/BBS/question',
                                 name: 'article',
                                 component: () =>
                                     import ("../components/user/BBS/components/article/article"),
                                 children: [{
-                                        path: '/helloWorld/BBS/questions',
+                                        path: '/BreakingTheBarrier/BBS/questions',
                                         name: 'articleContents',
                                         component: () =>
                                             import ("../components/user/BBS/components/article/components/articleContents")
                                     },
                                     {
-                                        path: '/helloWorld/BBS/searchArticleResult',
+                                        path: '/BreakingTheBarrier/BBS/searchArticleResult',
                                         name: 'searchArticleResult',
                                         component: () =>
                                             import ("../components/user/BBS/components/article/components/searchArticleResult")
@@ -89,35 +92,35 @@ export default new Router({
                                 ]
                             },
                             {
-                                path: '/helloWorld/BBS/blog',
+                                path: '/BreakingTheBarrier/BBS/blog',
                                 name: 'blog',
                                 component: () =>
                                     import ("../components/user/BBS/components/blog/blog"),
                                 children: [{
-                                    path: '/helloWorld/BBS/blogs',
+                                    path: '/BreakingTheBarrier/BBS/blogs',
                                     name: 'blogContents',
                                     component: () =>
                                         import ("../components/user/BBS/components/blog/components/blogContents")
                                 }, {
-                                    path: '/helloWorld/BBS/searchBlogResult',
+                                    path: '/BreakingTheBarrier/BBS/searchBlogResult',
                                     name: 'searchBlogResult',
                                     component: () =>
                                         import ("../components/user/BBS/components/blog/components/searchBlogResult")
                                 }]
                             },
                             {
-                                path: '/helloWorld/BBS/article/addArticle',
+                                path: '/BreakingTheBarrier/BBS/article/addArticle',
                                 name: 'addArticle',
                                 component: () =>
                                     import ("../components/user/BBS/components/article/components/addArticle")
                             },
                             {
-                                path: '/helloWorld/BBS/blog/addBlog',
+                                path: '/BreakingTheBarrier/BBS/blog/addBlog',
                                 name: 'addBlog',
                                 component: () =>
                                     import ("../components/user/BBS/components/blog/components/addBlog")
                             }, {
-                                path: '/helloWorld/BBS/rank',
+                                path: '/BreakingTheBarrier/BBS/rank',
                                 name: 'rank',
                                 component: () =>
                                     import ("../components/user/rank/rank")
@@ -125,123 +128,123 @@ export default new Router({
                         ]
                     },
                     {
-                        path: '/helloWorld/BBS/articleContent',
+                        path: '/BreakingTheBarrier/BBS/articleContent',
                         name: 'articleContent',
                         component: () =>
                             import ("../components/user/content/articleComponents/articleContent")
                     },
                     {
-                        path: '/helloWorld/BBS/blogContent',
+                        path: '/BreakingTheBarrier/BBS/blogContent',
                         name: 'blogContent',
                         component: () =>
                             import ("../components/user/content/blogComponents/blogContent")
                     },
                     {
-                        path: '/helloWorld/mine',
+                        path: '/BreakingTheBarrier/mine',
                         name: 'mine',
                         component: () =>
                             import ("../components/user/mine/mine"),
                         children: [{
-                                path: '/helloWorld/mine/contents',
+                                path: '/BreakingTheBarrier/mine/contents',
                                 name: 'contents',
                                 component: () =>
                                     import ("../components/user/mine/components/contents/contents"),
                                 children: [{
-                                    path: '/helloWorld/mine/contents/blogFiles',
+                                    path: '/BreakingTheBarrier/mine/contents/blogFiles',
                                     name: 'blogFiles',
                                     component: () =>
-                                        import ("../components/user/mine/components/contents/blogFiles/blogFiles")
+                                        import ("../components/user/mine/components/contents/blogFiles")
                                 }, {
-                                    path: '/helloWorld/mine/contents/questionFiles',
+                                    path: '/BreakingTheBarrier/mine/contents/questionFiles',
                                     name: 'questionFiles',
                                     component: () =>
-                                        import ("../components/user/mine/components/contents/questionFiles/questionFiles")
+                                        import ("../components/user/mine/components/contents/questionFiles")
                                 }, {
-                                    path: '/helloWorld/mine/contents/commentFiles',
+                                    path: '/BreakingTheBarrier/mine/contents/commentFiles',
                                     name: 'commentFiles',
                                     component: () =>
                                         import ("../components/user/mine/components/contents/commentFiles")
                                 }, {
-                                    path: '/helloWorld/mine/contents/likeFiles',
+                                    path: '/BreakingTheBarrier/mine/contents/likeFiles',
                                     name: 'likeFiles',
                                     component: () =>
                                         import ("../components/user/mine/components/contents/likeFiles")
                                 }]
                             },
                             {
-                                path: '/helloWorld/mine/friends/following',
+                                path: '/BreakingTheBarrier/mine/friends/following',
                                 name: 'following',
                                 component: () =>
-                                    import ("../components/user/mine/components/friends/components/following")
+                                    import ("../components/user/mine/components/friends/following")
                             }, {
-                                path: '/helloWorld/mine/friends/followed',
+                                path: '/BreakingTheBarrier/mine/friends/followed',
                                 name: 'followed',
                                 component: () =>
-                                    import ("../components/user/mine/components/friends/components/followed")
+                                    import ("../components/user/mine/components/friends/followed")
                             }, {
-                                path: '/helloWorld/mine/information',
+                                path: '/BreakingTheBarrier/mine/information',
                                 name: 'information',
                                 component: () =>
                                     import ("../components/user/mine/components/information/information")
                             },
                             {
-                                path: '/helloWorld/mine/message',
+                                path: '/BreakingTheBarrier/mine/message',
                                 name: 'message',
                                 component: () =>
                                     import ("../components/user/mine/components/message/message"),
                                 children: [{
-                                    path: '/helloWorld/mine/message/read',
+                                    path: '/BreakingTheBarrier/mine/message/read',
                                     name: 'read',
                                     component: () =>
-                                        import ("../components/user/mine/components/message/read/read")
+                                        import ("../components/user/mine/components/message/components/read")
                                 }, {
-                                    path: '/helloWorld/mine/message/unread',
+                                    path: '/BreakingTheBarrier/mine/message/unread',
                                     name: 'unread',
                                     component: () =>
-                                        import ("../components/user/mine/components/message/unread/unread")
+                                        import ("../components/user/mine/components/message/components/unread")
                                 }]
                             },
 
                             {
-                                path: '/helloWorld/mine/collections',
+                                path: '/BreakingTheBarrier/mine/collections',
                                 name: 'collections',
                                 component: () =>
                                     import ("../components/user/mine/components/collections/collections")
                             },
                             {
-                                path: '/helloWorld/mine/collections/favorite',
+                                path: '/BreakingTheBarrier/mine/collections/favorite',
                                 name: 'favorite',
                                 component: () =>
                                     import ("../components/user/mine/components/collections/components/favorite")
                             }
                         ]
                     }, {
-                        path: '/helloWorld/visitor',
+                        path: '/BreakingTheBarrier/visitor',
                         name: 'visitor',
                         component: () =>
                             import ("../components/user/visitor/visitor"),
                         children: [{
-                            path: '/helloWorld/visitor/questions',
+                            path: '/BreakingTheBarrier/visitor/questions',
                             name: 'questions',
                             component: () =>
                                 import ("../components/user/visitor/components/questions")
                         }, {
-                            path: '/helloWorld/visitor/blogs',
+                            path: '/BreakingTheBarrier/visitor/blogs',
                             name: 'blogs',
                             component: () =>
                                 import ("../components/user/visitor/components/blogs")
                         }, {
-                            path: '/helloWorld/visitor/collections',
+                            path: '/BreakingTheBarrier/visitor/collections',
                             name: 'collections',
                             component: () =>
                                 import ("../components/user/visitor/components/collections")
                         }, {
-                            path: '/helloWorld/visitor/following',
+                            path: '/BreakingTheBarrier/visitor/following',
                             name: 'following',
                             component: () =>
                                 import ("../components/user/visitor/components/following")
                         }, {
-                            path: '/helloWorld/visitor/collections/favorite',
+                            path: '/BreakingTheBarrier/visitor/collections/favorite',
                             name: 'favorite',
                             component: () =>
                                 import ("../components/user/visitor/components/favorite")
@@ -249,58 +252,27 @@ export default new Router({
 
                     },
                     {
-                        path: '/helloWorld/wikipedia',
+                        path: '/BreakingTheBarrier/wikipedia',
                         name: 'wikipedia',
                         component: () =>
                             import ("../components/user/wikipedia/wikipedia")
                     },
-                  {
-                    path: '/helloWorld/literature',
-                    redirect: '/helloWorld/literature/data',
-                    component: literature,
-                    children: [
-                      {
-                        path: '/helloWorld/literature/data',
-                        component: data,
-                      },
-                      {
-                        path: '/helloWorld/literature/information',
-                        component: information
-                      }
-                    ]
-                  }
+                    {
+                        path: '/BreakingTheBarrier/literature',
+                        redirect: '/BreakingTheBarrier/literature/data',
+                        component: literature,
+                        children: [{
+                                path: '/BreakingTheBarrier/literature/data',
+                                component: data,
+                            },
+                            {
+                                path: '/BreakingTheBarrier/literature/information',
+                                component: information
+                            }
+                        ]
+                    }
                 ]
             }
         ]
     })
-    /*children: [{
-                                path: '/helloWorld/visitor/blogFiles',
-                                name: 'visitorBlogFiles',
-                                component: () =>
-                                    import ("../components/user/visitor/components/blogs")
-                            },
-                          {
-                                path: '/helloWorld/visitor/questionFiles',
-                                name: 'visitorQuestionFiles',
-                                component: () =>
-                                    import ("../components/user/visitor/components/questions")
-                            },
-                          {
-                                path: '/helloWorld/visitor/following',
-                                name: 'visitorFollowing',
-                                component: () =>
-                                    import ("../components/user/visitor/components/following")
-                            },
-                            {
-                                path: '/helloWorld/visitor/collections',
-                                name: 'visitorCollections',
-                                component: () =>
-                                    import ("../components/user/visitor/components/collections")
-                            },
-                            {
-                                path: '/helloWorld/visitor/collections/favorite',
-                                name: 'visitorFavorite',
-                                component: () =>
-                                    import ("../components/user/visitor/components/favorite")
-                            }
-                        ]*/
+

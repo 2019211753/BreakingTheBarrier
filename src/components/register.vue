@@ -45,8 +45,6 @@
 </template>
 
 <script>
-
-
 export default {
   name: "register",
   data() {
@@ -78,7 +76,7 @@ export default {
                   message: "注册成功",
                   type: "success",
                 });
-                that.$router.push("/helloWorld/logIn");
+                that.$router.push("/BreakingTheBarrier/logIn");
               } else {
                 that.$message({
                   message: response.data.msg,

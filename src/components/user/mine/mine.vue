@@ -33,7 +33,8 @@
         </el-skeleton> -->
         <el-row :gutter="20">
           <el-col :span="6"
-            ><div class="avatar" style="margin-left: 20px; margin-top: 10px">
+          >
+            <div class="avatar" style="margin-left: 20px; margin-top: 10px">
               <div class="ui inverted dimmer">
                 <div class="content">
                   <el-upload
@@ -105,65 +106,32 @@
 <script>
 const imageConversion = require("image-conversion");
 import recommend from "./components/recommend";
-import axios from "axios";
+
 import $ from "jquery";
 /* import jwtDecode from "jwt-decode"; */
 export default {
-  components: { recommend },
+  components: {recommend},
   name: "mine",
-  computed: {
+  /*computed: {
     headers() {
       return {
         Authorization: sessionStorage.getItem("token"), // 直接从本地获取token就行
       };
     },
-  },
+  },*/
   data() {
     return {
       loading: true,
     };
   },
   created() {
-    var that = this;
     $(function () {
       $(".avatar").dimmer({
         on: "hover",
       });
     });
-    /*  window.addEventListener("setItem", (e) => {
-      if (e.key == "nickname") {
-        console.log(e.newValue);
-        that.nickname = e.newValue;
-      }
-    });
-    window.addEventListener("setItem", (e) => {
-      if (e.key == "personalSignature") {
-        console.log(e.newValue);
-        that.personalSignature = e.newValue;
-      }
-    }); */
-    /* window.addEventListener("setItem", (e) => {
-      that.nickname = e.newValue;
-    }); */
-    /* window.addEventListener("setItem", (e) => {
-      that.personalSignature = e.newValue;
-    }); */
   },
   methods: {
-    /* handleRemove(file, fileList) {
-      console.log("____________________");
-      console.log(file, fileList);
-    },
-    handlePictureCardPreview(file) {
-      console.log("____________________");
-      console.log("file.url");
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    }, */
-    //把图片文件作为参数传递到方法中
     beforeAvatarUpload(file) {
       const isJpgOrPng =
         file.type === "image/jpeg" ||
@@ -203,8 +171,8 @@ export default {
       }
       const formData = new FormData();
       formData.append("file", file.file);
-      axios
-        .post("/customer/uploadAvatar", formData)
+      var that = this;
+      that.$api.personalInformation.uploadAvatar(formData)
         .then((res) => {
           if (res.status === 200) {
             var that = this;

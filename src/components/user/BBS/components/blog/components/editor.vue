@@ -2,16 +2,16 @@
   <div>
     <div class="ui fluid labeled input">
       <div class="ui teal label">标题</div>
-      <input type="text" placeholder="" v-model="title" />
+      <input type="text" placeholder="" v-model="title"/>
     </div>
     <div class="ui fluid labeled input">
       <div class="ui teal label">概述</div>
-      <input type="text" placeholder="" v-model="description" />
+      <input type="text" placeholder="" v-model="description"/>
     </div>
     <div id="websiteEditorElem"></div>
     <div class="ui fluid labeled input" v-if="original == false">
       <div class="ui teal label">转载声明</div>
-      <input type="text" placeholder="" v-model="statement" />
+      <input type="text" placeholder="" v-model="statement"/>
     </div>
     <div :class="original == true ? Y : N" @click="setOriginal()">转载</div>
     <div :class="open == true ? Y : N" @click="setOpen()">私密</div>
@@ -30,8 +30,7 @@
 
 <script>
 import E from "wangeditor";
-import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+
 export default {
   name: "editor",
   data() {
@@ -104,18 +103,19 @@ export default {
               type: "warning",
             });
           } else {
-            axios
-              .post("/customer/blog/post", {
-                title: that.title,
-                description: that.description,
-                content: that.phoneEditor.txt.html(),
-                tagIds: sessionStorage.getItem("chooseTagIdList"),
-                origin: that.original,
-                appreciation: that.appreciationAllowed,
-                open: that.open,
-                commentAllowed: that.commentAllowed,
-                transferStatement: that.statement,
-              })
+            var data = {
+              title: that.title,
+              description: that.description,
+              content: that.phoneEditor.txt.html(),
+              tagIds: sessionStorage.getItem("chooseTagIdList"),
+              origin: that.original,
+              appreciation: that.appreciationAllowed,
+              open: that.open,
+              commentAllowed: that.commentAllowed,
+              transferStatement: that.statement
+            }
+            that.$api.userBlog.postBlog(data)
+
               .then(function (response) {
                 console.log(response);
                 if (response.data.code == 403) {
@@ -128,7 +128,7 @@ export default {
                     message: "发布成功",
                     type: "success",
                   });
-                  that.$router.push("/helloWorld/BBS/blogs");
+                  that.$router.push("/BreakingTheBarrier/BBS/blogs");
                 }
               })
               .catch(function (error) {
@@ -149,18 +149,19 @@ export default {
               type: "warning",
             });
           } else {
-            axios
-              .post("/customer/blog/post", {
-                title: that.title,
-                description: that.description,
-                content: that.phoneEditor.txt.html(),
-                tagIds: sessionStorage.getItem("chooseTagIdList"),
-                origin: that.original,
-                appreciation: that.appreciationAllowed,
-                open: that.open,
-                commentAllowed: that.commentAllowed,
-                transferStatement: that.statement,
-              })
+            var data = {
+              title: that.title,
+              description: that.description,
+              content: that.phoneEditor.txt.html(),
+              tagIds: sessionStorage.getItem("chooseTagIdList"),
+              origin: that.original,
+              appreciation: that.appreciationAllowed,
+              open: that.open,
+              commentAllowed: that.commentAllowed,
+              transferStatement: that.statement,
+            };
+            that.$api.userBlog.postBlog(data)
+
               .then(function (response) {
                 console.log(response);
                 if (response.data.code == 403) {
@@ -173,7 +174,7 @@ export default {
                     message: "发布成功",
                     type: "success",
                   });
-                  that.$router.push("/helloWorld/BBS/blogs");
+                  that.$router.push("/BreakingTheBarrier/BBS/blogs");
                 }
               })
               .catch(function (error) {
@@ -196,12 +197,15 @@ export default {
 .input {
   margin-top: 20px;
 }
+
 #websiteEditorElem {
   margin-top: 20px;
 }
+
 .button {
   margin-top: 20px;
 }
+
 .el-switch {
   margin-left: 10px;
   margin-top: 30px;

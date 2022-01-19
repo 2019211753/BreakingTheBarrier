@@ -101,7 +101,7 @@
             <a href="">
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/articleContent',
+                  path: '/BreakingTheBarrier/BBS/articleContent',
                   query: {
                     articleId: item.id,
                     posterUserId0: item.posterUserId0,
@@ -169,7 +169,7 @@
             <a href="">
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/blogContent',
+                  path: '/BreakingTheBarrier/BBS/blogContent',
                   query: {
                     blogId: item.id,
                     posterUserId0: item.posterUserId0,
@@ -220,7 +220,7 @@
 
 
 <script>
-import axios from "axios";
+
 export default {
   name: "favorite",
   data() {
@@ -235,8 +235,8 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/customer/favorite/" + this.$route.query.favoriteId)
+    that.$api.personalFavorite.showFavoriteContents(that.$route.query.favoriteId)
+
       .then(function (response) {
         console.log(response.data);
         that.loading = false;
@@ -253,22 +253,7 @@ export default {
         console.log(error);
       });
   },
-  methods: {
-    handleCurrentChange(val) {
-      var that = this;
-      var nowPage = val - 1;
-      axios
-        .get("/listQuestions/?page=" + nowPage)
-        .then(function (response) {
-          console.log(response.data);
-          that.contentList = response.data.data.pages.content;
-          that.pageSize = response.data.data.pages.totalPages;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-  },
+
 };
 </script>
 

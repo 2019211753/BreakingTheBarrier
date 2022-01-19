@@ -54,7 +54,7 @@ export default {
   name: "database",
   methods: {
     more() {
-      this.$router.push("/helloWorld/database");
+      this.$router.push("/BreakingTheBarrier/database");
     },
   },
 };

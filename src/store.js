@@ -7,7 +7,7 @@ export default new Vuex.Store({
         articleId: "",
         blogId: "",
         me: {
-            /* token: "", */
+            /*token: "",*/
             id: "",
             /* admin: "", */
             canSpeak: "",
@@ -44,7 +44,10 @@ export default new Vuex.Store({
         getBlogId(state, blogId) {
             state.blogId = blogId;
         },
-        /* getToken(state, token) { state.me.token = token }, */
+        /*getToken(state, token) {
+            state.me.token = token;
+            console.log(state.me.token)
+        },*/
         /* getCanSpeak(state, CanSpeak) {
             state.me.avatar = avatar;
         }, */

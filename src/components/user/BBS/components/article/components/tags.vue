@@ -23,8 +23,7 @@
 </template>
 
 <script>
-import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+
 export default {
   name: "tags",
   data() {
@@ -40,8 +39,8 @@ export default {
   },
   created() {
     var that = this;
-    axios
-      .get("/tags/")
+    that.$api.userTag.getTags()
+
       .then(function (response) {
         console.log(response);
         that.tagList = response.data.data.tags;

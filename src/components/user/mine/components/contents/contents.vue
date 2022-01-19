@@ -8,28 +8,28 @@
               <ul>
                 <li>
                   <a>
-                    <router-link to="/helloWorld/mine/contents/questionFiles">
+                    <router-link to="/BreakingTheBarrier/mine/contents/questionFiles">
                       <i class="archive icon"></i> 提问
                     </router-link>
                   </a>
                 </li>
                 <li>
                   <a>
-                    <router-link to="/helloWorld/mine/contents/blogFiles">
+                    <router-link to="/BreakingTheBarrier/mine/contents/blogFiles">
                       <i class="archive icon"></i> 博客
                     </router-link>
                   </a>
                 </li>
                 <li>
                   <a>
-                    <router-link to="/helloWorld/mine/contents/likeFiles">
+                    <router-link to="/BreakingTheBarrier/mine/contents/likeFiles">
                       <i class="archive icon"></i> 点赞
                     </router-link>
                   </a>
                 </li>
                 <li>
                   <a>
-                    <router-link to="/helloWorld/mine/contents/commentFiles">
+                    <router-link to="/BreakingTheBarrier/mine/contents/commentFiles">
                       <i class="archive icon"></i> 评论
                     </router-link>
                   </a>

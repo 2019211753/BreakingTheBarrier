@@ -60,7 +60,7 @@
             标题：<a href="">
               <router-link
                 :to="{
-                  path: '/helloWorld/BBS/blogContent',
+                  path: '/BreakingTheBarrier/BBS/blogContent',
                   query: { blogId: item.id },
                 }"
                 >{{ item.title }}
@@ -187,7 +187,7 @@ export default {
   methods: {
     search() {
       var that = this;
-      /* this.$router.push("/helloWorld/admin/adminArticle/adminArticleData"); */
+      /* this.$router.push("/BreakingTheBarrier/admin/adminArticle/adminArticleData"); */
       if (that.searchContent) {
         axios
           .post("/admin/searchBlogs", {

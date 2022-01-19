@@ -6,21 +6,21 @@
         <ul>
           <li>
             <a href=""
-              ><router-link to="/helloWorld/BBS/questions"
+              ><router-link to="/BreakingTheBarrier/BBS/questions"
                 ><i class="home icon"></i>问答</router-link
               ></a
             >
           </li>
           <li>
             <a href=""
-              ><router-link to="/helloWorld/BBS/blogs"
+              ><router-link to="/BreakingTheBarrier/BBS/blogs"
                 ><i class="home icon"></i>博客</router-link
               ></a
             >
           </li>
           <li>
             <a href=""
-              ><router-link to="/helloWorld/BBS/rank"
+              ><router-link to="/BreakingTheBarrier/BBS/rank"
                 ><i class="home icon"></i>排行榜</router-link
               ></a
             >
