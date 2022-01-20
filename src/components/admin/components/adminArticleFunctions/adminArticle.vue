@@ -6,22 +6,24 @@
         placeholder="请输入关键字搜索..."
         v-model="searchContent"
       /><i class="inverted circular search link icon" @click="search()"></i>
-    </div><div style="margin-top: 15px">
-  <el-skeleton :loading="loading" animated :count="3" >
-      <template slot="template"
-        ><div class="ui segment" >
-          <el-skeleton-item variant="text" />
-          <el-skeleton-item variant="text" />
-          <el-skeleton-item variant="text" />
-          <el-skeleton-item variant="text" />
-          <el-skeleton-item variant="text" />
-          <el-skeleton-item variant="text" />
-          <el-skeleton-item variant="text" />
-          <el-skeleton-item variant="text" />
-          <el-skeleton-item variant="text" />
-        </div>
-      </template>
-    </el-skeleton>
+    </div>
+    <div style="margin-top: 15px">
+      <el-skeleton :loading="loading" animated :count="3">
+        <template slot="template"
+        >
+          <div class="ui segment">
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+          </div>
+        </template>
+      </el-skeleton>
     </div>
     <div class="ui segment" v-for="(item,index) in contentList" :key="index">
       <el-row :gutter="24"
@@ -85,10 +87,11 @@
       </el-row>
       <br>
       <el-row :gutter="24">
-      <el-col :span="8"><h4>solvedNum：{{ item.solvedNum }}</h4></el-col>
-      <el-col :span="8"><h4>solved：{{ item.solved }}</h4></el-col>
-      <el-col :span="8"><h4>是否隐藏：{{ item.hidden }}</h4></el-col>
-      </el-row><br>
+        <el-col :span="8"><h4>solvedNum：{{ item.solvedNum }}</h4></el-col>
+        <el-col :span="8"><h4>solved：{{ item.solved }}</h4></el-col>
+        <el-col :span="8"><h4>是否隐藏：{{ item.hidden }}</h4></el-col>
+      </el-row>
+      <br>
       <div class="ui divider"></div>
       <button class="ui right floated blue icon button" @click="viewArticle(item.id)">
         <i class="eye icon"></i>
@@ -106,7 +109,7 @@
     <div class="ui segment" style="height:350px" v-if="contentList.length==0&&loading==false">
       <el-empty
         :image-size="150"
-        description="找不到任何结果"
+        description="暂无结果"
       ></el-empty>
     </div>
     <div class="ui segment" v-for="item in contentList" :key="item.id">
@@ -171,10 +174,11 @@
       </el-row>
       <br>
       <el-row :gutter="24">
-      <el-col :span="8"><h4>solvedNum：{{ item.solvedNum }}</h4></el-col>
-      <el-col :span="8"><h4>solved：{{ item.solved }}</h4></el-col>
-      <el-col :span="8"><h4>是否隐藏：{{ item.hidden }}</h4></el-col>
-      </el-row><br>
+        <el-col :span="8"><h4>solvedNum：{{ item.solvedNum }}</h4></el-col>
+        <el-col :span="8"><h4>solved：{{ item.solved }}</h4></el-col>
+        <el-col :span="8"><h4>是否隐藏：{{ item.hidden }}</h4></el-col>
+      </el-row>
+      <br>
       <div class="ui divider"></div>
       <button class="ui right floated blue icon button" @click="viewArticle(item.id)">
         <i class="eye icon"></i>
@@ -190,49 +194,36 @@
       </button>
     </div>
     <div class="ui adminArticleContent modal" style="width:600px">
-      <adminArticleContent></adminArticleContent>
+<!--      <adminArticleContent></adminArticleContent>-->
     </div>
-
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import adminArticleContent from "./components/adminArticleContent.vue";
-
+/*import adminArticleContent from "./components/adminArticleContent.vue";*/
 export default {
-  components: { adminArticleContent },
+  /*components: {adminArticleContent},*/
   name: "adminArticle",
   data() {
-    return { loading: true, searchContent: "", contentList: [], tag: [] };
-  },
-  created() {
-    var that = this;
-    axios
-      .get("/listQuestions/?page=0")
-      .then(function (response) {
-        that.loading = false;
-        console.log(response.data);
-        that.contentList = response.data.data.pages.content;
-        that.pageSize = response.data.data.pages.totalPages;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    return {loading: false, searchContent: "", contentList: [], tag: []};
   },
   methods: {
     search() {
       var that = this;
       if (that.searchContent) {
-        axios
-          .post("/admin/searchQuestions", {
-            query: that.searchContent,
-          })
+        that.loading = true;
+        var data = {
+          query: that.searchContent,
+          nickname: "",
+          tagIds: ""
+        };
+        that.$api.adminQuestion.searchQuestions(data)
           .then(function (response) {
+            console.log(response.data)
             that.contentList = response.data.data.pages.content;
             console.log(that.contentList);
             for (var i = 0; i < that.contentList.length; i++) {
-              var newTag = { id: that.contentList[i].id, state: "1" };
+              var newTag = {id: that.contentList[i].id, state: "1"};
               that.tag.push(newTag);
             }
             that.loading = false;
@@ -254,8 +245,7 @@ export default {
     },
     deleteArticle(id) {
       var that = this;
-      axios
-        .get("/customer/question/" + id + "/delete")
+      that.$api.userQuestion.deleteQuestion(id)
         .then(function (response) {
           console.log(response.data);
           for (var i = 0; i < that.contentList.length; i++) {

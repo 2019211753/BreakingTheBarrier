@@ -54,7 +54,7 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.userSocial.getOtherFile(that.$route.query.userId0)
+    that.$api.userSocial.getOtherFile(that.$route.query.userId)
       .then(function (response) {
         console.log(response.data);
         /* that.loading = false; */
@@ -105,7 +105,7 @@ export default {
             that.$store.commit("getOthersFile", response.data.data);
             that.$router.push({
               path: "/BreakingTheBarrier/visitor/questions",
-              query: { userId0: id },
+              query: { userId: id },
             });
           }
         })

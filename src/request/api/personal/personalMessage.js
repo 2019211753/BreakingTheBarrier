@@ -18,7 +18,7 @@ const personalMessage = {
     },
     readLike(data) {
         return instance
-            .get(" /customer/messages/likes/ " + data +
+            .get("/customer/messages/likes/" + data +
                 "/read")
     },
     readAllComments() {

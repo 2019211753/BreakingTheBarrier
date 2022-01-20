@@ -45,7 +45,7 @@
             <div class="summary">
               <a class="user">
                 <router-link
-                  v-if="$store.state.me.id == posterUserId0"
+                  v-if="$store.state.me.id == postUserId"
                   to="/BreakingTheBarrier/mine/contents/questionFiles"
                   >{{ template.nickname }}
                 </router-link>
@@ -53,7 +53,7 @@
                   v-else
                   :to="{
                     path: '/BreakingTheBarrier/visitor/questions',
-                    query: { userId0: posterUserId0 },
+                    query: { userId: postUserId },
                   }"
                   >{{ template.nickname }}
                 </router-link>
@@ -130,7 +130,7 @@
       <div
         class="ui mini labeled button"
         @click="deleteArticle(template.id)"
-        v-if="posterUserId0 == $store.state.me.id"
+        v-if="postUserId == $store.state.me.id"
         style="margin-left: 3%"
       >
         <i class="trash icon"></i>删除
@@ -177,14 +177,14 @@
                   <router-link
                     :to="{
                       path: '/BreakingTheBarrier/visitor',
-                      query: { userId0: item.postUserId0 },
+                      query: { userId: item.postUserId },
                     }"
                     >{{ item.nickname }}
                   </router-link> </a
                 ><a
                   class="ui mini basic blue label"
                   style="margin-left: 5px"
-                  v-if="item.postUserId0 == posterUserId0"
+                  v-if="item.postUserId == postUserId"
                   >发布者</a
                 >
                 <div class="metadata">
@@ -204,7 +204,7 @@
                   ><a
                     class="reply"
                     @click="deleteComment(item.id)"
-                    v-if="item.postUserId0 == $store.state.me.id"
+                    v-if="item.postUserId == $store.state.me.id"
                     >删除</a
                   >
                 </div> -->
@@ -220,14 +220,14 @@
                   <router-link
                     :to="{
                       path: '/BreakingTheBarrier/visitor',
-                      query: { userId0: item.postUserId0 },
+                      query: { userId: item.postUserId },
                     }"
                     >{{ item.nickname }}
                   </router-link> </a
                 ><a
                   class="ui mini basic blue label"
                   style="margin-left: 5px"
-                  v-if="item.postUserId0 == posterUserId0"
+                  v-if="item.postUserId == postUserId"
                   >发布者</a
                 >
                 <div class="metadata">
@@ -247,7 +247,7 @@
                   <a
                     class="reply"
                     @click="deleteComment(item.id)"
-                    v-if="item.postUserId0 == $store.state.me.id"
+                    v-if="item.postUserId == $store.state.me.id"
                     >删除</a
                   >
                 </div> -->
@@ -255,7 +255,7 @@
             </div>
             <div class="ui divider" v-if="!bestComments.length == 0"></div>
             <div
-              :class="item.parentCommentId0 == -1 ? parent : child"
+              :class="item.parentCommentId == -1 ? parent : child"
               v-for="item in commentList"
             >
               <a class="avatar">
@@ -266,14 +266,14 @@
                   <router-link
                     :to="{
                       path: '/BreakingTheBarrier/visitor',
-                      query: { userId0: item.postUserId0 },
+                      query: { userId: item.postUserId },
                     }"
                     >{{ item.nickname }}
                   </router-link> </a
                 ><a
                   class="ui mini basic blue label"
                   style="margin-left: 5px"
-                  v-if="item.postUserId0 == posterUserId0"
+                  v-if="item.postUserId == postUserId"
                   >发布者</a
                 >
                 <div class="metadata">
@@ -291,13 +291,13 @@
                   ><a class="reply" @click="replyComment(item.id)">回复</a
                   ><a
                     class="reply"
-                    v-if="posterUserId0 == $store.state.me.id"
+                    v-if="postUserId == $store.state.me.id"
                     @click="setSelectedComment(item.id)"
                     >设为精选评论</a
                   ><a
                     class="reply"
                     @click="deleteComment(item.id)"
-                    v-if="item.postUserId0 == $store.state.me.id"
+                    v-if="item.postUserId == $store.state.me.id"
                     >删除</a
                   >
                 </div>
@@ -411,7 +411,7 @@ export default {
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
-      posterUserId0: this.$route.query.posterUserId0,
+      postUserId: this.$route.query.postUserId,
     };
   },
   created() {
@@ -419,7 +419,6 @@ export default {
     var p1 = new Promise((resolve, reject) => {
       that.$api.userArticle
         .showQuestion(that.$route.query.articleId)
-
         .then(function (response) {
           that.questionLoading = false;
           console.log(response.data);
@@ -575,7 +574,7 @@ export default {
           {
             adminComment,
             answer,
-            blogId0,
+            blogId,
             commentsNum,
             id,
             approved,
@@ -588,9 +587,9 @@ export default {
             likesNum,
             looked,
             nickname,
-            parentCommentId0,
-            postUserId0,
-            questionId0,
+            parentCommentId,
+            postUserId,
+            questionId,
             receiveComments = [],
           }
         ) =>
@@ -599,7 +598,7 @@ export default {
               {
                 adminComment,
                 answer,
-                blogId0,
+                blogId,
                 commentsNum,
                 id,
                 approved,
@@ -612,9 +611,9 @@ export default {
                 likesNum,
                 looked,
                 nickname,
-                parentCommentId0,
-                postUserId0,
-                questionId0,
+                parentCommentId,
+                postUserId,
+                questionId,
               },
             ],
             this.flatten(receiveComments, id)
@@ -625,8 +624,7 @@ export default {
     getAllComments() {
       var that = this;
       that.$api.userComment
-        .getAllQuestionComments(this.$route.query.articleId)
-
+        .getAllQuestionComments(that.$route.query.articleId)
         .then(function (response) {
           that.commentLoading = false;
           console.log(response.data);

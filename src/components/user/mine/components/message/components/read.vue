@@ -16,10 +16,10 @@
             <a class="user"> {{ item.parentContent }} </a> 中评论了你：
             <a href=""
               ><router-link
-                v-if="item.blogId"
+                v-if="item.parentType == '博客' || item.parentType == '博客的评论'"
                 :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
-                  query: { blogId: item.blogId0 },
+                  query: { blogId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
                 {{ getInnerText(item.content) }}</router-link
@@ -27,7 +27,7 @@
                 v-else
                 :to="{
                   path: '/BreakingTheBarrier/BBS/articleContent',
-                  query: { articleId: item.questionId0 },
+                  query: { articleId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
                 {{ getInnerText(item.content) }}</router-link
@@ -43,15 +43,16 @@
         </div>
         <div class="content">
           <div class="summary">
-            <a class="user"> {{ item.nickname }} </a> 点赞了你的{{
+            <a class="user">
+              {{ item.nickname }} </a> 点赞了你的{{
               item.parentType
             }}：
             <a href=""
               ><router-link
-                v-if="item.blogId"
+                v-if="item.parentType == '博客' || item.parentType == '博客的评论'"
                 :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
-                  query: { blogId: item.blogId0 },
+                  query: { blogId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
                 {{ getInnerText(item.parentContent) }}</router-link
@@ -59,7 +60,7 @@
                 v-else
                 :to="{
                   path: '/BreakingTheBarrier/BBS/articleContent',
-                  query: { articleId: item.questionId0 },
+                  query: { articleId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
                 {{ getInnerText(item.parentContent) }}</router-link
@@ -99,7 +100,6 @@ export default {
   created() {
     var that = this;
     that.$api.personalMessage.getAllMessage()
-
       .then(function (response) {
         that.loading = false;
         that.lookedComments = response.data.data.lookedComments;

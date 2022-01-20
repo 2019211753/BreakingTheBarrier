@@ -4,11 +4,11 @@
       <div class="ui icon header">
         <i class="tags icon"></i>
         新增标签
-        <br />
-        <br />
+        <br/>
+        <br/>
         <div class="ui labeled input">
           <div class="ui label">标签名称</div>
-          <input type="text" placeholder="请输入标签名" v-model="tagName" />
+          <input type="text" placeholder="请输入标签名" v-model="tagName"/>
         </div>
       </div>
       <div class="actions">
@@ -18,12 +18,20 @@
         </div>
       </div>
     </div>
-    <el-tree
-      :data="tagList"
-      :render-content="renderContent"
-      :default-expand-all="true"
-      :expand-on-click-node="false"
-      :props="defaultProps"
+    <el-skeleton :loading="loading" animated :count="3">
+      <template slot="template">
+        <el-skeleton-item variant="text"/>
+        <el-skeleton-item variant="text"/>
+        <el-skeleton-item variant="text"/>
+
+      </template>
+    </el-skeleton>
+    <el-tree v-if="loading==false"
+             :data="tagList"
+             :render-content="renderContent"
+             :default-expand-all="true"
+             :expand-on-click-node="false"
+             :props="defaultProps"
     >
     </el-tree>
     <div
@@ -40,12 +48,13 @@ export default {
   name: "adminTag",
   data() {
     return {
+      loading: true,
       id: "",
       tagName: "",
       tagList: [],
       chooseTagList: [],
       chooseTagIdList: [],
-      defaultProps: { id: "id", children: "childTags", label: "name" },
+      defaultProps: {id: "id", children: "childTags", label: "name"},
     };
   },
   created() {
@@ -60,6 +69,7 @@ export default {
         .then(function (response) {
           console.log(response);
           that.tagList = response.data.data.tags;
+          that.loading=false;
         })
         .catch(function (error) {
           console.log(error);
@@ -142,7 +152,7 @@ export default {
         console.log(res);
       });
     },
-    renderContent(h, { node, data, store }) {
+    renderContent(h, {node, data, store}) {
       console.log(data);
       return (
         <span class="custom-tree-node">

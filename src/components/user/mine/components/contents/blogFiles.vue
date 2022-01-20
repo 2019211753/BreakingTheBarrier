@@ -82,7 +82,7 @@
           ><img
             class="ui medium circular image"
             style="width: 40px"
-            :src="  $store.state.me.avatar"
+            :src="$store.state.me.avatar"
         /></el-aside>
         <el-main>
           <h4 style="margin-top: -20px">{{ $store.state.me.nickname }}</h4>
@@ -104,7 +104,7 @@
               <router-link
                 :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
-                  query: { blogId: item.id, posterUserId0: item.posterUserId0 },
+                  query: { blogId: item.id, postUserId: $store.state.me.id },
                 }"
                 >{{ item.title }}
               </router-link>

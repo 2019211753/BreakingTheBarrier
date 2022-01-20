@@ -104,7 +104,7 @@
                   path: '/BreakingTheBarrier/BBS/articleContent',
                   query: {
                     articleId: item.id,
-                    posterUserId0: item.posterUserId0,
+                    postUserId: item.postUserId,
                   },
                 }"
                 >{{ item.title }}
@@ -172,7 +172,7 @@
                   path: '/BreakingTheBarrier/BBS/blogContent',
                   query: {
                     blogId: item.id,
-                    posterUserId0: item.posterUserId0,
+                    postUserId: item.postUserId,
                   },
                 }"
                 >{{ item.title }}
@@ -226,28 +226,18 @@ export default {
   data() {
     return {
       loading: true,
-      avatar: sessionStorage.getItem("imgSrc"),
-      cover: [],
       questions: [],
       blogs: [],
-      nowUser: sessionStorage.getItem("nickname"),
     };
   },
   created() {
     var that = this;
     that.$api.personalFavorite.showFavoriteContents(that.$route.query.favoriteId)
-
       .then(function (response) {
         console.log(response.data);
         that.loading = false;
         that.questions = response.data.data.questions.content;
         that.blogs = response.data.data.blogs.content;
-        /* for (var i = 0; i < that.questions.length; i++) {
-          var url = require("../../../../../../assets/cover/cover (" +
-            Math.floor(Math.random() * 51) +
-            ").jpg");
-          that.cover.push(url);
-        } */
       })
       .catch(function (error) {
         console.log(error);

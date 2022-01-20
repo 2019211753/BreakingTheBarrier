@@ -19,7 +19,7 @@
                   :to="{
                     path: '/BreakingTheBarrier/visitor/collections/favorite',
                     query: {
-                      userId0: userId0,
+                      userId: userId,
                       favoriteId: item.id,
                     },
                   }"
@@ -43,13 +43,13 @@ export default {
   data() {
     return {
       loading: true,
-      userId0: this.$route.query.userId0,
+      userId: this.$route.query.userId,
       favoriteList: [],
     };
   },
   created() {
     var that = this;
-    that.$api.userSocial.getOtherFile(that.$route.query.userId0)
+    that.$api.userSocial.getOtherFile(that.$route.query.userId)
       .then(function (response) {
         console.log(response.data);
         /* that.loading = false; */

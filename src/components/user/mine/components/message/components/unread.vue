@@ -27,7 +27,7 @@
                   path: '/BreakingTheBarrier/BBS/articleContent',
                   query: {
                     articleId: item.parentId,
-                    posterUserId0: item.posterUserId0,
+                    postUserId: item.parentUserId,
                   },
                 }"
               >
@@ -36,7 +36,7 @@
                 v-else
                 :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
-                  query: { blogId: item.parentId },
+                  query: { blogId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
                 {{ getInnerText(item.content) }}</router-link
@@ -62,7 +62,7 @@
                 "
                 :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
-                  query: { blogId: item.blogId0 },
+                  query: { blogId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
                 {{ getInnerText(item.parentContent) }}</router-link
@@ -70,7 +70,7 @@
                 v-else
                 :to="{
                   path: '/BreakingTheBarrier/BBS/articleContent',
-                  query: { articleId: item.questionId0 },
+                  query: { articleId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
                 {{ getInnerText(item.parentContent) }}</router-link
@@ -130,7 +130,6 @@ export default {
     readLike(id) {
       var that = this;
       that.$api.personalMessage.readLike(id)
-
         .then(function (response) {
           console.log(response.data);
         })
@@ -141,7 +140,6 @@ export default {
     readComment(id) {
       var that = this;
       that.$api.personalMessage.readComment(id)
-
         .then(function (response) {
           console.log(response.data);
         })

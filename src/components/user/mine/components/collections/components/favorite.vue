@@ -78,7 +78,7 @@
                   path: '/BreakingTheBarrier/BBS/articleContent',
                   query: {
                     articleId: item.id,
-                    posterUserId0: item.posterUserId0,
+                    postUserId: item.postUserId,
                   },
                 }"
                 >{{ item.title }}
@@ -144,7 +144,7 @@
                   path: '/BreakingTheBarrier/BBS/blogContent',
                   query: {
                     blogId: item.id,
-                    posterUserId0: item.posterUserId0,
+                    posterId: item.posterId,
                   },
                 }"
                 >{{ item.title }}

@@ -90,7 +90,7 @@
                       ><router-link
                         :to="{
                           path: '/BreakingTheBarrier/visitor/questions',
-                          query: { userId0: userId0 },
+                          query: { userId: userId },
                         }"
                         >问题
                       </router-link>
@@ -101,7 +101,7 @@
                       ><router-link
                         :to="{
                           path: '/BreakingTheBarrier/visitor/blogs',
-                          query: { userId0: userId0 },
+                          query: { userId: userId },
                         }"
                         >博客
                       </router-link>
@@ -112,7 +112,7 @@
                       ><router-link
                         :to="{
                           path: '/BreakingTheBarrier/visitor/following',
-                          query: { userId0: userId0 },
+                          query: { userId: userId },
                         }"
                         >关注
                       </router-link>
@@ -123,7 +123,7 @@
                       ><router-link
                         :to="{
                           path: '/BreakingTheBarrier/visitor/collections',
-                          query: { userId0: userId0 },
+                          query: { userId: userId },
                         }"
                         >收藏
                       </router-link>
@@ -154,7 +154,7 @@ export default {
   data() {
     return {
       /*   loading: true, */
-      userId0: this.$route.query.userId0,
+      userId: this.$route.query.userId,
     };
   },
   /*   created() {

@@ -27,7 +27,7 @@
                   path: '/BreakingTheBarrier/BBS/blogContent',
                   query: {
                     blogId: item.id,
-                    posterUserId0: item.posterUserId0,
+                    postUserId: item.postUserId,
                   },
                 }"
                 >{{ item.title }}
@@ -112,7 +112,7 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.userSocial.getOtherFile(that.$route.query.userId0)
+    that.$api.userSocial.getOtherFile(that.$route.query.userId)
 
       .then(function (response) {
         console.log(response.data);

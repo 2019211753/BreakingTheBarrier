@@ -1,6 +1,5 @@
 <template>
   <div class="ui basic segment">
-    
     <div class="ui segment" v-if="loading == false && !contentList.length">
       <el-empty image-size="200" description="暂无内容"></el-empty>
     </div>
@@ -12,7 +11,7 @@
               <router-link
                 :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
-                  query: { blogId: item.id, posterUserId0: item.posterUserId0 },
+                  query: { blogId: item.id, postUserId: item.postUserId, },
                 }"
                 >{{ item.title }}
               </router-link>
@@ -110,14 +109,14 @@
         </div>
       </template>
     </el-skeleton>
-    <el-pagination
+<!--    <el-pagination
       class="el-pagination"
       layout="prev, pager, next"
       @current-change="handleCurrentChange"
       :page-count="pageSize"
       :hide-on-single-page="true"
     >
-    </el-pagination>
+    </el-pagination>-->
   </div>
 </template>
 
@@ -132,22 +131,19 @@ export default {
     var that = this;
     var data={ query: that.$route.query.searchContent }
     that.$api.userBlog.serchBlogs(data)
-
       .then(function (response) {
         that.loading = false;
         that.contentList = response.data.data.pages.content;
-     
       })
       .catch(function (error) {
         console.log(error);
       });
   },
-  methods: {
+  /*methods: {
     handleCurrentChange(val) {
       var that = this;
       var nowPage = val - 1;
       that.$api.userArticle.getBlogs(nowPage)
-
         .then(function (response) {
           console.log(response.data);
           that.contentList = response.data.data.pages.content;
@@ -157,7 +153,7 @@ export default {
           console.log(error);
         });
     },
-  },
+  },*/
 };
 </script>
 

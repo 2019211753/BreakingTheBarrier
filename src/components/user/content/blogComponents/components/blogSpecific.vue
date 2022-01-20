@@ -2,32 +2,39 @@
   <div>
     <el-skeleton :loading="blogLoading" animated style="margin-top: 14px">
       <template slot="template"
-        ><div>
+      >
+        <div>
           <div class="ui segment">
             <div class="ui large feed">
               <div class="event">
                 <div class="label">
-                  <el-skeleton-item variant="circle image" />
+                  <el-skeleton-item variant="circle image"/>
                 </div>
                 <div class="content">
                   <div class="summary"></div>
                 </div>
               </div>
             </div>
-            <h3 class="title"><el-skeleton-item variant="text" /></h3>
+            <h3 class="title">
+              <el-skeleton-item variant="text"/>
+            </h3>
             <div class="ui divider"></div>
             <el-skeleton-item
               variant="image"
               style="width: 80%; height: 400px; margin: auto"
-            /><br />
-            <el-skeleton-item variant="text" /><el-skeleton-item
+            />
+            <br/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item
               variant="text"
             />
-            <el-skeleton-item variant="text" />
+            <el-skeleton-item variant="text"/>
             <el-row>
               <el-col :span="20"
-                ><div class="grid-content bg-purple-dark"></div
-              ></el-col>
+              >
+                <div class="grid-content bg-purple-dark"></div
+                >
+              </el-col>
             </el-row>
           </div>
         </div>
@@ -37,22 +44,24 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="template.avatar" alt="" />
+            <img :src="template.avatar" alt=""/>
           </div>
           <div class="content">
             <div class="summary">
               <a class="user">
                 <router-link
-                  v-if="$store.state.me.id == posterUserId0"
+                  v-if="$store.state.me.id == postUserId"
                   to="/BreakingTheBarrier/mine/contents/questionFiles"
-                  >{{ template.nickname }} </router-link
-                ><router-link
+                >{{ template.nickname }}
+                </router-link
+                >
+                <router-link
                   v-else
                   :to="{
                     path: '/BreakingTheBarrier/visitor/questions',
-                    query: { userId0: posterUserId0 },
+                    query: { userId: postUserId},
                   }"
-                  >{{ template.nickname }}
+                >{{ template.nickname }}
                 </router-link>
               </a>
               <div class="date">
@@ -62,7 +71,7 @@
             <a
               v-if="template.origin == true"
               class="ui green right ribbon label"
-              >原创</a
+            >原创</a
             >
             <a v-else class="ui blue right ribbon label">转载</a>
           </div>
@@ -71,15 +80,18 @@
       <h3 class="title" style="margin-top: -20px">{{ template.title }}</h3>
       <div class="ui divider"></div>
       <div v-html="articleContent">{{ articleContent }}</div>
-      <br />
+      <br/>
       <p
         style="color: grey"
         v-if="template.origin == false && template.transferStatement"
       >
         转载声明： {{ template.transferStatement }}
       </p>
-      <br /><el-row>
-        <el-col :span="7"><div style="height: 1px"></div></el-col>
+      <br/>
+      <el-row>
+        <el-col :span="7">
+          <div style="height: 1px"></div>
+        </el-col>
         <el-col :span="12">
           <div
             @click="likeArticle(template.id)"
@@ -100,7 +112,9 @@
             <i class="comment icon"></i>
           </div>
         </el-col>
-        <el-col :span="5"><div class="grid-content bg-purple"></div></el-col>
+        <el-col :span="5">
+          <div class="grid-content bg-purple"></div>
+        </el-col>
       </el-row>
 
       <div class="ui divider"></div>
@@ -121,14 +135,14 @@
       <div
         class="ui mini labeled button"
         @click="deleteArticle(template.id)"
-        v-if="posterUserId0 == $store.state.me.id"
+        v-if="postUserId == $store.state.me.id"
         style="margin-left: 3%"
       >
         <i class="trash icon"></i>删除
       </div>
     </div>
 
-    <br />
+    <br/>
     <div>
       <div class="ui segment">
         <div>
@@ -142,14 +156,15 @@
             ></el-empty>
             <el-skeleton :loading="commentLoading" animated :count="5">
               <template slot="template"
-                ><div class="ui large feed">
+              >
+                <div class="ui large feed">
                   <div class="event">
                     <div class="label">
-                      <el-skeleton-item variant="circle image" />
+                      <el-skeleton-item variant="circle image"/>
                     </div>
                     <div class="content">
                       <div class="summary">
-                        <el-skeleton-item variant="text" />
+                        <el-skeleton-item variant="text"/>
                       </div>
                     </div>
                   </div>
@@ -161,7 +176,7 @@
               v-for="item in commentList"
             >
               <a class="avatar">
-                <img :src="item.avatar" alt="" />
+                <img :src="item.avatar" alt=""/>
               </a>
               <div class="content">
                 <a class="author">{{ item.nickname }}</a>
@@ -174,16 +189,16 @@
                     class="reply"
                     @click="likeComment(item.id)"
                     v-model="likeNumber"
-                    >赞( {{ item.likesNum }})</a
+                  >赞( {{ item.likesNum }})</a
                   ><a class="reply" @click="dislikeComment(item.id)"
-                    >踩({{ item.disLikesNum }})</a
-                  ><a class="reply" @click="replyComment(item.id)">回复</a
-                  ><a
-                    class="reply"
-                    @click="deleteComment(item.id)"
-                    v-if="item.postUserId0 == $store.state.me.id"
-                    >删除</a
-                  >
+                >踩({{ item.disLikesNum }})</a
+                ><a class="reply" @click="replyComment(item.id)">回复</a
+                ><a
+                  class="reply"
+                  @click="deleteComment(item.id)"
+                  v-if="item.postUserId == $store.state.me.id"
+                >删除</a
+                >
                 </div>
               </div>
             </div>
@@ -194,7 +209,8 @@
       <div class="ui collect modal" style="width: 400px">
         <el-skeleton :loading="collectLoading" animated :count="1">
           <template slot="template"
-            ><el-skeleton-item
+          >
+            <el-skeleton-item
               variant="text"
               style="height: 50px; margin-top: 15px"
             />
@@ -203,7 +219,7 @@
         <div class="ui basic segment">
           <el-container v-for="(item, index) in favoriteList" :key="index">
             <el-aside width="70px"
-              ><i class="huge yellow folder icon"></i
+            ><i class="huge yellow folder icon"></i
             ></el-aside>
             <el-main>
               <el-row :gutter="24">
@@ -219,14 +235,14 @@
                     v-if="item.open == false"
                     class="ui small blue label"
                     style="margin-left: 10px"
-                    >私密</a
+                  >私密</a
                   >
                 </el-col>
                 <el-col :span="3"
-                  ><i
-                    :class="item.id == favoriteId ? selected : unselected"
-                    style="margin-top: 2px"
-                  ></i>
+                ><i
+                  :class="item.id == favoriteId ? selected : unselected"
+                  style="margin-top: 2px"
+                ></i>
                 </el-col>
               </el-row>
             </el-main>
@@ -283,19 +299,15 @@ export default {
       parent: "comment",
       child: "child comment",
       parentId: "-1",
-
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
-
-      posterUserId0: this.$route.query.posterUserId0,
+      postUserId: this.$route.query.postUserId,
     };
   },
   created() {
     var that = this;
-    that.$api;
-    axios
-      .get("/blog/" + this.$route.query.blogId)
+    that.$api.userArticle.showBlog(that.$route.query.blogId)
       .then(function (response) {
         that.blogLoading = false;
         that.template = response.data.data.template;
@@ -314,9 +326,7 @@ export default {
         console.log(error);
       });
     /* ------------------------- */
-    that.$api;
-    axios
-      .get("/blog/" + this.$route.query.articleId + "/comments")
+    that.$api.userComment.getAllBlogComments(that.$route.query.blogId)
       .then(function (response) {
         that.commentLoading = false;
         console.log(that.flatten(response.data.data.comments2));
@@ -347,9 +357,7 @@ export default {
   methods: {
     likeArticle(id) {
       var that = this;
-      that.$api;
-      axios
-        .get("/blog/" + id + "/approve")
+      that.$api.userLike.likeBlog(id)
         .then(function (response) {
           console.log(response.data);
           that.approved = response.data.data.approved;
@@ -365,9 +373,8 @@ export default {
     },
     dislikeArticle(id) {
       var that = this;
-      that.$api;
-      axios
-        .get("/blog/" + id + "/disapprove")
+      that.$api.userLike.dislikeBlog(id)
+
         .then(function (response) {
           console.log(response.data);
           that.disapproved = response.data.data.disapproved;
@@ -385,9 +392,8 @@ export default {
       var that = this;
       /* if (collected == false) { */
       $(".ui.collect.modal").modal("show");
-      that.$api;
-      axios
-        .get("/customer/favorites")
+      that.$api.personalFavorite.getFavorites()
+
         .then(function (response) {
           that.collectLoading = false;
           that.favoriteList = response.data.data.favorites;
@@ -405,14 +411,7 @@ export default {
     },
     collectArticle() {
       var that = this;
-      that.$api;
-      axios
-        .get(
-          "/customer/favorite/" +
-            sessionStorage.getItem("favoriteId") +
-            "/modify/blog/" +
-            this.$route.query.blogId
-        )
+      that.$api.userFavorite.collectBlog(sessionStorage.getItem("favoriteId"), that.$route.query.blogId)
         .then(function (response) {
           console.log(response.data);
           that.collected = response.data.data.collected;
@@ -428,9 +427,7 @@ export default {
     },
     deleteArticle(id) {
       var that = this;
-      that.$api;
-      axios
-        .get("/customer/blog/" + id + "/delete")
+      that.$api.userBlog.deleteBlog(id)
         .then(function (response) {
           console.log(response.data);
           that.$message({
@@ -465,8 +462,8 @@ export default {
             looked,
             nickname,
             parentCommentId0,
-            postUserId0,
-            questionId0,
+            postUserId,
+            questionId,
             receiveComments = [],
           }
         ) =>
@@ -489,8 +486,8 @@ export default {
                 looked,
                 nickname,
                 parentCommentId0,
-                postUserId0,
-                questionId0,
+                postUserId,
+                questionId,
               },
             ],
             this.flatten(receiveComments, id)
@@ -544,10 +541,10 @@ export default {
       axios
         .get(
           "/blog/" +
-            sessionStorage.getItem("articleId") +
-            "/comment/" +
-            id +
-            "/delete"
+          sessionStorage.getItem("articleId") +
+          "/comment/" +
+          id +
+          "/delete"
         )
         .then(function (response) {
           console.log(response.data);
@@ -570,12 +567,7 @@ export default {
           answer: true,
           parentCommentId0: this.parentId,
         };
-        that.$api.userComment.postBlogComment();
-        axios
-          .post(
-            "/blog/" + sessionStorage.getItem("blogId") + "/comment/post",
-            {}
-          )
+        that.$api.userComment.postBlogComment(data)
           .then(function (response) {
             console.log(response.data);
             that.commentList = that.flatten(response.data.data.comments);

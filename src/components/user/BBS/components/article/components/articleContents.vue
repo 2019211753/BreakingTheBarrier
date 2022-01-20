@@ -10,7 +10,7 @@
                   path: '/BreakingTheBarrier/BBS/articleContent',
                   query: {
                     articleId: item.id,
-                    posterUserId0: item.posterUserId0,
+                    postUserId: item.postUserId,
                   },
                 }"
                 >{{ item.title }}
@@ -24,7 +24,9 @@
                 <div class="item">
                   <img :src="item.avatar" alt="" class="ui avatar image" />
                   <div class="content">
-                    <a class="header">{{ item.nickname }}</a>
+                    <a class="header">
+                     {{ item.nickname }}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -76,7 +78,7 @@
         <div class="six wide column">
           <a target="_blank">
             <img
-              src="https://picsum.photos/800/450/?random=3"
+              src="https://picsum.photos/800/450/?random=5"
               alt=""
               class="ui rounded image"
             />

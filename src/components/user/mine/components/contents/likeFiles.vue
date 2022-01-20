@@ -7,10 +7,26 @@
         </div>
         <div class="content">
           <div class="summary">
-            赞了{{ item.parentType }}：
-            <a>
-              <router-link to=""></router-link>
-              {{ getInnerText(item.parentContent) }}</a>
+            我赞了{{ item.parentType }}：
+            <a href=""
+            ><router-link
+              v-if="item.parentType == '博客' || item.parentType == '博客的评论'"
+              :to="{
+                  path: '/BreakingTheBarrier/BBS/blogContent',
+                  query: { blogId: item.parentId,postUserId: item.parentUserId, },
+                }"
+            >
+              {{ getInnerText(item.parentContent) }}</router-link
+            ><router-link
+              v-else
+              :to="{
+                  path: '/BreakingTheBarrier/BBS/articleContent',
+                  query: { articleId: item.parentId,postUserId: item.parentUserId, },
+                }"
+            >
+              {{ getInnerText(item.parentContent) }}</router-link
+            ></a
+            >
             <div class="date">{{ item.createTime }}</div>
           </div>
         </div>

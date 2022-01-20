@@ -38,7 +38,7 @@
                       path: '/BreakingTheBarrier/BBS/blogContent',
                       query: {
                         blogId: item.id,
-                        posterUserId0: item.posterUserId0,
+                        postUserId: item.postUserId,
                       },
                     }"
                     >{{ item.title }}</router-link

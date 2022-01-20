@@ -28,14 +28,14 @@
       <h3 style="text-align: center">
         <a href=""
           ><router-link
-            v-if="$store.state.me.id == posterUserId0"
+            v-if="$store.state.me.id == postUserId"
             to="/BreakingTheBarrier/mine/contents/questionFiles"
             >{{ $store.state.others.nickname }} </router-link
           ><router-link
             v-else
             :to="{
               path: '/BreakingTheBarrier/visitor/questions',
-              query: { userId0: posterUserId0 },
+              query: { userId: postUserId },
             }"
             >{{ $store.state.others.nickname }}
           </router-link></a
@@ -45,7 +45,7 @@
       <div class="button">
         <div
           class="ui button"
-          @click="follow(posterUserId0)"
+          @click="follow(postUserId)"
           :class="following == true ? userFollowing : userUnFollowing"
         >
           关注
@@ -88,7 +88,7 @@
                     path: '/BreakingTheBarrier/BBS/articleContent',
                     query: {
                       articleId: item.id,
-                      posterUserId0: item.posterUserId0,
+                      postUserId: postUserId,
                     },
                   }"
                   >{{ item.title }}
@@ -134,13 +134,13 @@ export default {
       following: "",
       userFollowing: "ui red button",
       userUnFollowing: "ui button",
-      posterUserId0: this.$route.query.posterUserId0,
+      postUserId: this.$route.query.postUserId,
     };
   },
   created() {
     var that = this;
     that.$api.userSocial
-      .getOtherFile(that.$route.query.posterUserId0)
+      .getOtherFile(that.$route.query.postUserId)
 
       .then(function (response) {
         console.log(response.data);
@@ -157,7 +157,7 @@ export default {
     follow() {
       var that = this;
       that.$api.userSocial
-        .followOther(this.$route.query.posterUserId0)
+        .followOther(this.$route.query.postUserId)
 
         .then(function (response) {
           console.log(response.data);

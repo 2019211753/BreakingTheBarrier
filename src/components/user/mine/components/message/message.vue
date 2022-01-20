@@ -22,7 +22,7 @@
                   </a>
                 </li>
                 <li v-if="$store.state.readFlag == true">
-                  <a href="" @click="readAll()">
+                  <a @click="readAll()">
                     <i class="archive icon"></i> 全部标记为已读
                   </a>
                 </li>
@@ -56,6 +56,7 @@ export default {
       that.$store.commit("turnRead");
     },
     readAll() {
+      var that = this;
       var p1 = new Promise((resolve, reject) => {
         that.$api.personalMessage.readAllComments()
           .then((res) => {
@@ -111,7 +112,6 @@ export default {
 
 .nav ul a:hover {
   border-bottom: 4px solid orange;
-
 }
 
 a {
@@ -121,7 +121,6 @@ a {
 .header {
   width: 100%;
   height: 30px;
-
   float: left;
 }
 

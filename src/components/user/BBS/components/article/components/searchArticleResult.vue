@@ -1,6 +1,5 @@
 <template>
   <div class="ui basic segment">
-  
     <div class="ui segment" v-if="loading == false && !contentList.length">
       <el-empty image-size="200" description="暂无内容"></el-empty>
     </div>
@@ -14,7 +13,7 @@
                   path: '/BreakingTheBarrier/BBS/articleContent',
                   query: {
                     articleId: item.id,
-                    posterUserId0: item.posterUserId0,
+                    postUserId: item.postUserId,
                   },
                 }"
                 >{{ item.title }}
@@ -113,14 +112,14 @@
         </div>
       </template>
     </el-skeleton>
-    <el-pagination
+<!--    <el-pagination
       class="el-pagination"
       layout="prev, pager, next"
       @current-change="handleCurrentChange"
       :page-count="pageSize"
       :hide-on-single-page="true"
     >
-    </el-pagination>
+    </el-pagination>-->
   </div>
 </template>
 
@@ -135,17 +134,16 @@ export default {
     var data = { query: that.$route.query.searchContent };
     that.$api.userQuestion
       .serchQuestions(data)
-
       .then(function (response) {
+        console.log(response.data)
         that.loading = false;
         that.contentList = response.data.data.pages.content;
-     
       })
       .catch(function (error) {
         console.log(error);
       });
   },
-  methods: {
+  /*methods: {
     handleCurrentChange(val) {
       var that = this;
       var nowPage = val - 1;
@@ -160,7 +158,7 @@ export default {
           console.log(error);
         });
     },
-  },
+  },*/
 };
 </script>
 

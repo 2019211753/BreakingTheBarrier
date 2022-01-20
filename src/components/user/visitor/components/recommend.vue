@@ -27,6 +27,5 @@ export default {
 .user {
   width: 90%;
   margin: auto;
-  /* background-color: blue; */
 }
 </style>
