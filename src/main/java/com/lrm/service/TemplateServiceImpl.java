@@ -17,8 +17,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.*;
 
 /**
@@ -57,7 +59,6 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         t.setTags(tagService.listTags(t.getTagIds()));
         //关联用户相关
         t.setUser(user);
-        t.setPosterUserId0(user.getId());
         //时间是date对象所以新增的时候需要初始化 否则为null;
         t.setCreateTime(new Date());
         t.setNewCommentedTime(new Date());
@@ -171,13 +172,12 @@ public abstract class TemplateServiceImpl<T extends Template>  {
                 listOr.add(cb.like(root.get("title"), "%" + query + "%"));
                 listOr.add(cb.like(root.get("description"), "%" + query + "%"));
                 listOr.add(cb.like(root.get("content"), "%" + query + "%"));
-
             }
             //or查询加入查询条件
             Predicate predicateOr = cb.or(listOr.toArray(new Predicate[0]));
 
             //与查询
-            List<Predicate> listAnd = new ArrayList<>();
+            List<Predicate> listAnd = new ArrayList<>(4);
 
             if (nickname != null && !"".equals(nickname)) {
                 Join<Object, Object> join = root.join("user");
@@ -189,6 +189,11 @@ public abstract class TemplateServiceImpl<T extends Template>  {
                 listAnd.add(cb.like(root.get("tagIds"), "%" + newTagIds + "%"));
             }
 
+            listAnd.addAll(setMoreCriteria(cb, root));
+
+            if (root.get("open") != null) {
+                listAnd.add(cb.equal(root.get("open"), false));
+            }
             //and查询加入查询条件
             Predicate predicateAnd = cb.and(listAnd.toArray(new Predicate[0]));
 
@@ -199,7 +204,8 @@ public abstract class TemplateServiceImpl<T extends Template>  {
         //TODO: 待测试
         //不合法的数据：如需要查询的tagIds为1,2,3 但上面会把 11,2,31也查询出来
         //特殊数据 1 会出现21 12 就查询每个id 如果包含1就合法
-label:  for (T t : pages.getContent())
+        ArrayList<T> contents = new ArrayList<>(pages.getContent());
+label:  for (T t : contents)
         {
             //需要查询的tagIds的第一个和最后一个,出现的位置
             int firstCom = tagIds.indexOf(",");
@@ -230,6 +236,10 @@ label:  for (T t : pages.getContent())
         }
 
         return pages;
+    }
+
+    public List<Predicate> setMoreCriteria(CriteriaBuilder query, Root<T> root) {
+        return null;
     }
 
     public T getAndConvert(Long id, T frontT) {

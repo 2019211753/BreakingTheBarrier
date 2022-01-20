@@ -8,6 +8,7 @@ import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
 import com.lrm.util.TokenInfo;
+import com.lrm.vo.CommentShow;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -47,141 +48,6 @@ public class CommentController
 
     @Autowired
     private DisLikesServiceImpl disLikesServiceImpl;
-
-
-    /**
-     * 展示问题下所有评论
-     *
-     * @param questionId 评论在哪个问题下 对应的问题Id
-     * @param request    用于得到当前userId 处理当前用户点没点过赞的
-     * @return 第一类评论、第二类的非精选评论、第二类评论的精选评论
-     */
-    @GetMapping("/question/{questionId}/comments")
-    public Result getQuestionComments(@PathVariable Long questionId, HttpServletRequest request) {
-        Map<String, Object> hashMap = new HashMap<>(4);
-
-        if (questionServiceImpl.getById(questionId) == null) {
-            throw new NotFoundException("未查询到该问题");
-        }
-
-        Long userId = TokenInfo.getCustomUserId(request);
-
-        //分别返回两类评论和对应点赞
-        List<Comment> comments1 = commentServiceImpl.listCommentByQuestionId(questionId, false);
-        hashMap.put("comments1", dealComment(comments1, userId));
-
-        List<Comment> comments2 = commentServiceImpl.listCommentByQuestionId(questionId, true);
-        hashMap.put("comments2", dealComment(comments2, userId));
-
-        List<Comment> selectedComments = commentServiceImpl.listSelectedAnswerByQuestionId(questionId);
-        for (Comment comment : selectedComments) {
-            insertAttribute(comment, userId);
-        }
-        hashMap.put("selectedComments", selectedComments);
-
-        List<Comment> bestComments = commentServiceImpl.listBestComments(questionId);
-        bestComments.removeAll(selectedComments);
-        for (Comment comment : bestComments) {
-            insertAttribute(comment, userId);
-        }
-        hashMap.put("bestComments", bestComments);
-
-        return new Result(hashMap, "");
-    }
-
-    /**
-     * 展示博客下所有评论
-     */
-    @GetMapping("/blog/{blogId}/comments")
-    public Result getBlogComments(@PathVariable Long blogId, HttpServletRequest request) {
-        Map<String, Object> hashMap = new HashMap<>(2);
-
-        if (blogServiceImpl.getById(blogId) == null) {
-            throw new NotFoundException("未查询到该博客");
-        }
-
-        Long userId = TokenInfo.getCustomUserId(request);
-
-        List<Comment> comments1 = commentServiceImpl.listCommentByBlogId(blogId, false);
-
-        hashMap.put("comments1", dealComment(comments1, userId));
-
-        List<Comment> comments2 = commentServiceImpl.listCommentByBlogId(blogId, true);
-
-        hashMap.put("comments2", dealComment(comments2, userId));
-
-        return new Result(hashMap, "");
-    }
-
-    @GetMapping("/comment/{commentId}")
-    public Result getMoreComments(@PathVariable Long commentId, HttpServletRequest request) {
-        Map<String, Object> hashMap = new HashMap<>(1);
-        Long userId = TokenInfo.getCustomUserId(request);
-
-        Comment comment = commentServiceImpl.getComment(commentId);
-        commentServiceImpl.listReceivedComments(comment);
-        List<Comment> receiveComments = comment.getReceiveComments();
-        for (Comment comment1 : receiveComments) {
-            insertAttribute(comment1, userId);
-        }
-        hashMap.put("receiveComments", receiveComments);
-
-        return new Result(hashMap, "");
-    }
-
-    /**
-     * @param comments 被处理的comment集合 我更改的只是comment的receiveComment[]属性
-     *                 并没有更改他们的父级评论属性 所以仍然可以根据他们的parentComment获取nickname
-     * @param userId   当前用户对象 用于处理是否点过赞的
-     * @return 给前端的comment集合
-     */
-    List<Comment> dealComment(List<Comment> comments, Long userId) {
-        if (comments.size() != 0) {
-            for (Comment comment : comments) {
-                insertAttribute(comment, userId);
-                List<Comment> receiveComments = comment.getReceiveComments();
-                if (receiveComments.size() != 0) {
-                    for (Comment receiveComment : receiveComments) {
-                        insertAttribute(receiveComment, userId);
-                    }
-                }
-            }
-        }
-        return comments;
-    }
-
-    /**
-     * 配合dealComment插入数据 用于处理当前用户是否对该评论点过赞/踩 以及添加评论的头像、昵称
-     *
-     * @param comment 评论
-     * @param userId  当前用户对象
-     */
-    void insertAttribute(Comment comment, Long userId) {
-        Comment parentComment = comment.getParentComment();
-        if (parentComment != null)
-        {
-            //父级评论发布者
-            comment.setParentCommentName(parentComment.getPostUser().getNickname());
-        }
-        //得到发布问题的人
-        User postUser = comment.getPostUser();
-
-        if (likesServiceImpl.get(userServiceImpl.getUser(userId), comment) != null) {
-            comment.setApproved(true);
-        } else {
-            comment.setApproved(false);
-        }
-
-        if (disLikesServiceImpl.get(userServiceImpl.getUser(userId), comment) != null) {
-            comment.setDisapproved(true);
-        } else {
-            comment.setDisapproved(false);
-        }
-
-        comment.setAvatar(postUser.getAvatar());
-        comment.setNickname(postUser.getNickname());
-    }
-
 
     /**
      * 提交评论到问题
@@ -255,7 +121,6 @@ public class CommentController
         }
     }
 
-
     /**
      * 删除问题的评论
      *
@@ -314,6 +179,139 @@ public class CommentController
     }
 
     /**
+     * 展示问题下所有评论
+     *
+     * @param questionId 评论在哪个问题下 对应的问题Id
+     * @param request    用于得到当前userId 处理当前用户点没点过赞的
+     * @return 第一类评论、第二类的非精选评论、第二类评论的精选评论
+     */
+    @GetMapping("/question/{questionId}/comments")
+    public Result getQuestionComments(@PathVariable Long questionId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(4);
+
+        if (questionServiceImpl.getById(questionId) == null) {
+            throw new NotFoundException("未查询到该问题");
+        }
+
+        Long userId = TokenInfo.getCustomUserId(request);
+
+        //分别返回两类评论和对应点赞
+        List<Comment> comments1 = commentServiceImpl.listCommentByQuestionId(questionId, false);
+        hashMap.put("comments1", CommentShow.getCommentsShow(dealComment(comments1, userId)));
+
+        List<Comment> comments2 = commentServiceImpl.listCommentByQuestionId(questionId, true);
+        hashMap.put("comments2", CommentShow.getCommentsShow(dealComment(comments2, userId)));
+
+        List<Comment> selectedComments = commentServiceImpl.listSelectedAnswerByQuestionId(questionId);
+        for (Comment comment : selectedComments) {
+            insertAttribute(comment, userId);
+        }
+        hashMap.put("selectedComments",  CommentShow.getCommentsShow(selectedComments));
+
+        List<Comment> bestComments = commentServiceImpl.listBestComments(questionId);
+        bestComments.removeAll(selectedComments);
+        for (Comment comment : bestComments) {
+            insertAttribute(comment, userId);
+        }
+        hashMap.put("bestComments",  CommentShow.getCommentsShow(bestComments));
+
+        return new Result(hashMap, "");
+    }
+
+    /**
+     * 展示博客下所有评论
+     */
+    @GetMapping("/blog/{blogId}/comments")
+    public Result getBlogComments(@PathVariable Long blogId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(2);
+
+        if (blogServiceImpl.getById(blogId) == null) {
+            throw new NotFoundException("未查询到该博客");
+        }
+
+        Long userId = TokenInfo.getCustomUserId(request);
+
+        List<Comment> comments1 = commentServiceImpl.listCommentByBlogId(blogId, false);
+
+        hashMap.put("comments1",  CommentShow.getCommentsShow(dealComment(comments1, userId)));
+
+        List<Comment> comments2 = commentServiceImpl.listCommentByBlogId(blogId, true);
+
+        hashMap.put("comments2",  CommentShow.getCommentsShow(dealComment(comments2, userId)));
+
+        return new Result(hashMap, "");
+    }
+
+    @GetMapping("/comment/{commentId}")
+    public Result getMoreComments(@PathVariable Long commentId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(1);
+        Long userId = TokenInfo.getCustomUserId(request);
+
+        Comment comment = commentServiceImpl.getComment(commentId);
+        commentServiceImpl.listReceivedComments(comment);
+        List<Comment> receiveComments = comment.getReceiveComments();
+        for (Comment comment1 : receiveComments) {
+            insertAttribute(comment1, userId);
+        }
+        hashMap.put("receiveComments",  CommentShow.getCommentsShow(receiveComments));
+
+        return new Result(hashMap, "");
+    }
+
+    /**
+     * @param comments 被处理的comment集合 我更改的只是comment的receiveComment[]属性
+     *                 并没有更改他们的父级评论属性 所以仍然可以根据他们的parentComment获取nickname
+     * @param userId   当前用户对象 用于处理是否点过赞的
+     * @return 给前端的comment集合
+     */
+    List<Comment> dealComment(List<Comment> comments, Long userId) {
+        if (comments.size() != 0) {
+            for (Comment comment : comments) {
+                insertAttribute(comment, userId);
+                List<Comment> receiveComments = comment.getReceiveComments();
+                if (receiveComments.size() != 0) {
+                    for (Comment receiveComment : receiveComments) {
+                        insertAttribute(receiveComment, userId);
+                    }
+                }
+            }
+        }
+        return comments;
+    }
+
+    /**
+     * 配合dealComment插入数据 用于处理当前用户是否对该评论点过赞/踩 以及添加评论的头像、昵称
+     *
+     * @param comment 评论
+     * @param userId  当前用户对象
+     */
+    void insertAttribute(Comment comment, Long userId) {
+        Comment parentComment = comment.getParentComment();
+        if (parentComment != null)
+        {
+            //父级评论发布者
+            comment.setParentCommentName(parentComment.getPostUser().getNickname());
+        }
+        //得到发布评论的人
+        User postUser = comment.getPostUser();
+
+        if (likesServiceImpl.get(userServiceImpl.getUser(userId), comment) != null) {
+            comment.setApproved(true);
+        } else {
+            comment.setApproved(false);
+        }
+
+        if (disLikesServiceImpl.get(userServiceImpl.getUser(userId), comment) != null) {
+            comment.setDisapproved(true);
+        } else {
+            comment.setDisapproved(false);
+        }
+
+        comment.setAvatar(postUser.getAvatar());
+        comment.setNickname(postUser.getNickname());
+    }
+
+    /**
      * @param questionId 问题Id
      * @param commentId  评论Id
      */
@@ -333,7 +331,7 @@ public class CommentController
 
         Long userId = TokenInfo.getCustomUserId(request);
         //如果当前用户是发布问题的用户或是管理员
-        if (userId.equals(question.getPosterUserId0()) || userServiceImpl.getUser(userId).getAdmin()) {
+        if (userId.equals(question.getUser().getId()) || userServiceImpl.getUser(userId).getAdmin()) {
             //如果该评论是正式评论
             if (comment.getAnswer()) {
                 //如果该评论已经被精选

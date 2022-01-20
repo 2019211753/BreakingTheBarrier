@@ -2,6 +2,7 @@ package com.lrm.po;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lrm.util.ContentSerializerUtils;
 
@@ -27,6 +28,7 @@ public class Comment {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     /**
@@ -51,6 +53,7 @@ public class Comment {
      * 是否是第二类回答 即正式回答 true为正式回答
      * 前端必填
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull(message = "请选择是否为正式回答")
     private Boolean answer;
 
@@ -58,53 +61,45 @@ public class Comment {
      * 如果标识为1 即发布这个comment的人也是帖子的发布者
      * 那么它应该有一个类似楼主的标志
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean adminComment;
 
     /**
      * 通知是否已读 true为已读
      * 不能用isRead（jpa的问题） 也不能用read关键字 只好用looked了
      */
+    @JsonIgnore
     private Boolean looked;
 
     /**
      * 被精选的回答；
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean selected;
 
     /**
      * 点赞数
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer likesNum;
 
     /**
      * 被评论数
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer commentsNum;
 
     /**
      * 点踩数
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer disLikesNum;
 
     /**
      * 是否被隐藏
      */
+    @JsonIgnore
     private Boolean isHidden;
-
-    /**
-     * 评论发布者Id
-     */
-    private Long postUserId0;
-
-    /**
-     * 评论对应问题Id
-     */
-    private Long questionId0;
-
-    /**
-     * 评论对应博客Id
-     */
-    private Long blogId0;
 
     /**
      * 封装成完整的"yyyy-MM-dd HH:mm:ss"的Date类型
@@ -112,6 +107,7 @@ public class Comment {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createTime;
 
 
@@ -177,27 +173,27 @@ public class Comment {
      * 这里不返回给前端 用receiveComments代替
      */
     @JsonIgnore
-    @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.REMOVE)
     private List<Comment> replyComments = new ArrayList<>();
     /**
      * 评论的父评论
      */
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Comment parentComment;
 
     /**
      * 评论收到的点赞
      */
     @JsonIgnore
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private List<Likes> likes;
 
     /**
      * 评论收到的点踩
      */
     @JsonIgnore
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private List<DisLikes> dislikes;
 
     /**
@@ -324,30 +320,6 @@ public class Comment {
 
     public void setDisapproved(Boolean disapproved) {
         this.disapproved = disapproved;
-    }
-
-    public Long getPostUserId0() {
-        return postUserId0;
-    }
-
-    public void setPostUserId0(Long postUserId0) {
-        this.postUserId0 = postUserId0;
-    }
-
-    public Long getQuestionId0() {
-        return questionId0;
-    }
-
-    public void setQuestionId0(Long questionId0) {
-        this.questionId0 = questionId0;
-    }
-
-    public Long getBlogId0() {
-        return blogId0;
-    }
-
-    public void setBlogId0(Long blogId0) {
-        this.blogId0 = blogId0;
     }
 
     public Long getParentCommentId0() {

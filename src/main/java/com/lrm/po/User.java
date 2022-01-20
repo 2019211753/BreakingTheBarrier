@@ -26,6 +26,7 @@ public class User {
      */
     @Id
     @GeneratedValue
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     /**
@@ -113,11 +114,13 @@ public class User {
     /**
      * 关注了几个人
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer followingUserNum;
 
     /**
      * 被几个人关注了
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer followedUserNum;
 
     /**
@@ -128,11 +131,13 @@ public class User {
     /**
      * 能否发言 true可以发言
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean canSpeak;
 
     /**
      * 贡献值
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer donation;
 
     /**
@@ -143,6 +148,7 @@ public class User {
      * 所以我们在格式化的时候要指定时区（timezone）。这里我们在yml中的jackson下面配置了。
      */
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date registerTime;
 

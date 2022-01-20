@@ -95,7 +95,7 @@ public class ApproveController {
 
             dealLikes(e, receiveUser, -1, repository);
             hashMap.put("approved", false);
-            hashMap.put("disapproved", dislikes != null);
+            hashMap.put("disapproved", false);
             hashMap.put("likesNum", e.getLikesNum());
             hashMap.put("disLikesNum", e.getDisLikesNum());
             return new Result(hashMap, "取消赞成功");
@@ -172,7 +172,7 @@ public class ApproveController {
             dislikesServiceImpl.delete(dislikes);
 
             hideTemplate(e, -1, repository);
-            hashMap.put("approved", likes != null);
+            hashMap.put("approved", false);
             hashMap.put("disapproved", false);
             hashMap.put("likesNum", e.getLikesNum());
             hashMap.put("disLikesNum", e.getDisLikesNum());
@@ -224,6 +224,7 @@ public class ApproveController {
                 //取消点赞前的最高赞数 并处理
                 deleteCommentLikes(comment, likes, receiveUser);
                 hashMap.put("approved", false);
+                hashMap.put("disapproved", false);
                 hashMap.put("likesNum", comment.getLikesNum());
                 hashMap.put("disLikesNum", comment.getDisLikesNum());
                 return new Result(hashMap, "取消赞成功");
@@ -253,6 +254,7 @@ public class ApproveController {
                     dealLikes(receiveUser, comment, comment.getBlog(), maxNum0, 1, blogServiceImpl);
                 }
                 hashMap.put("approved", true);
+                hashMap.put("disapproved", false);
                 hashMap.put("likesNum", comment.getLikesNum());
                 hashMap.put("disLikesNum", comment.getDisLikesNum());
                 return new Result(hashMap, "点赞成功");
@@ -284,6 +286,7 @@ public class ApproveController {
             dislikesServiceImpl.delete(disLikes);
 
             hideComment(comment, -1);
+            hashMap.put("approved", false);
             hashMap.put("disapproved", false);
             hashMap.put("likesNum", comment.getLikesNum());
             hashMap.put("disLikesNum", comment.getDisLikesNum());
@@ -297,11 +300,14 @@ public class ApproveController {
 
             DisLikes disLikes1 = new DisLikes();
 
-            disLikes1.setPostUser(postUser);
-            disLikes1.setComment(comment);
-            dislikesServiceImpl.save(disLikes1);
+            if (comment.getQuestion() != null) {
+                dislikesServiceImpl.save(comment.getQuestion(), disLikes1, postUser);
+            } else if (comment.getBlog() != null) {
+                dislikesServiceImpl.save(comment.getBlog(), disLikes1, postUser);
+            }
 
             hideComment(comment, 1);
+            hashMap.put("approved", false);
             hashMap.put("disapproved", true);
             hashMap.put("likesNum", comment.getLikesNum());
             hashMap.put("disLikesNum", comment.getDisLikesNum());

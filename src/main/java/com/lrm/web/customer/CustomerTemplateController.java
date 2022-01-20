@@ -7,7 +7,9 @@ import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
 import com.lrm.util.TokenInfo;
+import com.lrm.vo.BlogShow;
 import com.lrm.vo.Magic;
+import com.lrm.vo.QuestionShow;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -200,7 +202,12 @@ public class CustomerTemplateController {
         if (blog == null) {
             throw new NotFoundException("未查询到该博客");
         }
-        return editTemplate(blog);
+        Map<String, Object> hashMap = new HashMap<>(2);
+        blog = editTemplate(blog);
+        List<Tag> tags = tagServiceImpl.listTagTop();
+        hashMap.put("template", new BlogShow(blog));
+        hashMap.put("tags", tags);
+        return new Result(hashMap, "");
     }
 
     /**
@@ -208,18 +215,10 @@ public class CustomerTemplateController {
      * @param <T> t的类型
      * @return 返回前端的博客/问题
      */
-    public <T extends Template> Result editTemplate(T t) {
-        Map<String, Object> hashMap = new HashMap<>(2);
-
+    public <T extends Template> T editTemplate(T t) {
         t.init();
         t.setDetails(t.getContent());
-
-        List<Tag> tags = tagServiceImpl.listTagTop();
-
-        hashMap.put("template", t);
-        hashMap.put("tags", tags);
-
-        return new Result(hashMap, "");
+        return t;
     }
 
 
@@ -240,8 +239,11 @@ public class CustomerTemplateController {
         String nickname = TokenInfo.getCustomNickname(request);
         query.put("nickname", nickname);
 
-        return searchTemplate(pageable, query, questionServiceImpl);
-    }
+        Map<String, Object> hashMap = new HashMap<>(1);
+
+        Page<Question> ts = searchTemplate(pageable, query, questionServiceImpl);
+        hashMap.put("pages", ts.map(QuestionShow::new));
+        return new Result(hashMap, "");    }
 
     /**
      * 个人主页搜索 根据标题+标签 返回个人发出的博客
@@ -259,8 +261,11 @@ public class CustomerTemplateController {
         String nickname = TokenInfo.getCustomNickname(request);
         query.put("nickname", nickname);
 
-        return searchTemplate(pageable, query, blogServiceImpl);
-    }
+        Map<String, Object> hashMap = new HashMap<>(1);
+
+        Page<Blog> ts = searchTemplate(pageable, query, blogServiceImpl);
+        hashMap.put("pages", ts.map(BlogShow::new));
+        return new Result(hashMap, "");    }
 
     /**
      * @param pageable 分页对象
@@ -269,9 +274,7 @@ public class CustomerTemplateController {
      * @param <T> t的类型
      * @return 搜索结果
      */
-    public <T extends Template> Result searchTemplate(Pageable pageable, Map<String, String> query, TemplateServiceImpl<T> templateServiceImpl) {
-        Map<String, Object> hashMap = new HashMap<>(1);
-
+    public <T extends Template> Page<T> searchTemplate(Pageable pageable, Map<String, String> query, TemplateServiceImpl<T> templateServiceImpl) {
         Page<T> ts = templateServiceImpl.listByQueryAndTagIdsAndNickname(pageable, query);
 
         for (T t0 : ts.getContent()) {
@@ -280,8 +283,6 @@ public class CustomerTemplateController {
 
             t0.setNickname(postUser.getNickname());
         }
-        hashMap.put("pages", ts);
-
-        return new Result(hashMap, "搜索完成");
+        return ts;
     }
 }

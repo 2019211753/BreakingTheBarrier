@@ -1,12 +1,12 @@
 package com.lrm.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lrm.po.Blog;
 import com.lrm.po.Comment;
 import com.lrm.po.Likes;
 import com.lrm.po.Question;
 import com.lrm.util.ContentSerializerUtils;
+import com.lrm.util.MyBeanUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +28,6 @@ public class Archive {
     /**
      * 消息的发布时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date createTime;
 
     /**
@@ -49,9 +48,14 @@ public class Archive {
     public String parentType;
 
     /**
-     * 消息的被动接受者的id 方便点击跳转、
+     * 消息的被动接受者（如博客或问题）的id 方便点击跳转
      */
     public Long parentId;
+
+    /**
+     * 被动接受者的发布者的id
+     */
+    public Long parentUserId;
 
     /**
      * 消息发送者的头像
@@ -63,44 +67,46 @@ public class Archive {
      */
     public String nickname;
 
-    /**
-     * 消息的三种被动接受者
-     */
-    Blog blog;
-    Question question;
-    Comment parentComment;
-
     public Archive() {
     }
 
     public Archive(Comment comment) {
-        this.id = comment.getId();
-        this.content = comment.getContent();
-        this.createTime = comment.getCreateTime();
-        this.avatar = comment.getPostUser().getAvatar();
-        this.nickname = comment.getPostUser().getNickname();
+        Blog blog;
+        Question question;
+        Comment parentComment;
 
+        MyBeanUtils.copyVo(Comment.class, comment, Archive.class, this);
+
+        this.content = comment.getContent();
         if ((parentComment = comment.getParentComment()) != null) {
             this.parentContent = parentComment.getContent();
             if ((blog = comment.getBlog()) != null) {
                 this.parentId = blog.getId();
+                this.parentUserId = blog.getUser().getId();
                 this.parentType = "博客的评论";
             } else if ((question = comment.getQuestion()) != null) {
                 this.parentId = question.getId();
+                this.parentUserId = question.getUser().getId();
                 this.parentType = "问题的评论";
             }
         } else if ((blog = comment.getBlog()) != null) {
             this.parentContent = blog.getTitle();
             this.parentType = "博客";
             this.parentId = blog.getId();
+            this.parentUserId = blog.getUser().getId();
         } else if ((question = comment.getQuestion()) != null) {
             this.parentContent = question.getTitle();
             this.parentType = "问题";
             this.parentId = question.getId();
+            this.parentUserId = question.getUser().getId();
         }
     }
 
     public Archive(Likes likes) {
+        Blog blog;
+        Question question;
+        Comment parentComment;
+
         this.id = likes.getId();
         this.createTime = likes.getCreateTime();
         this.avatar = likes.getPostUser().getAvatar();
@@ -110,20 +116,44 @@ public class Archive {
             this.parentContent = parentComment.getContent();
             if ((blog = likes.getBlog()) != null) {
                 this.parentId = blog.getId();
+                this.parentUserId = blog.getUser().getId();
                 this.parentType = "博客的评论";
             } else if ((question = likes.getQuestion()) != null) {
                 this.parentId = question.getId();
+                this.parentUserId = question.getUser().getId();
                 this.parentType = "问题的评论";
             }
         } else if ((blog = likes.getBlog()) != null) {
             this.parentContent = blog.getTitle();
             this.parentType = "博客";
             this.parentId = blog.getId();
+            this.parentUserId = blog.getUser().getId();
         } else if ((question = likes.getQuestion()) != null) {
             this.parentContent = question.getTitle();
             this.parentType = "问题";
             this.parentId = question.getId();
+            this.parentUserId = question.getUser().getId();
         }
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public static List<Archive> getCommentMessages(List<Comment> comments) {

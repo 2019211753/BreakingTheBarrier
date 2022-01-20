@@ -87,9 +87,8 @@ public class CommentServiceImpl implements CommentService {
             comment.setParentComment(null);
             comment.setReceiveUser(t.getUser());
 
-            //如果评论发布者为问题发布者 设为已读
-            if (postUser.equals(t.getUser())) {
-                samePerson = true;
+            if (t instanceof Question) {
+                comment.setQuestion((Question) t);
             }
         }
 
@@ -101,22 +100,22 @@ public class CommentServiceImpl implements CommentService {
         t.setCommentsNum(t.getCommentsNum() + 1);
         //影响力
         t.setImpact(t.getImpact() + ImpactGrow.COMMENTED.getGrow());
-        if (t instanceof Question) {
-            comment.setQuestion((Question) t);
-            comment.setQuestionId0(t.getId());
-        }
-        if (t instanceof Blog) {
-            comment.setBlog((Blog) t);
-            comment.setBlogId0(t.getId());
-        }
         comment.setCreateTime(new Date());
         comment.setLikesNum(0);
         comment.setDisLikesNum(0);
         comment.setCommentsNum(0);
         comment.setHidden(false);
         comment.setPostUser(postUser);
-        comment.setPostUserId0(postUser.getId());
         comment.setSelected(false);
+
+        if (t instanceof Blog) {
+            comment.setBlog((Blog) t);
+        }
+
+        //如果评论发布者为问题发布者 设为已读
+        if (postUser.equals(t.getUser())) {
+            samePerson = true;
+        }
 
         //如果是有效回答 回答者贡献+ 问题影响力+ 否则仅仅问题影响力+
         if (comment.getAnswer()) {

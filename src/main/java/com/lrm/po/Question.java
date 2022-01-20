@@ -1,6 +1,7 @@
 package com.lrm.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,12 +21,15 @@ public class Question extends Template {
     /**
      * 问题的精选评论数
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer solvedNum;
 
     /**
      * 问题是否已经被解决
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean solved;
+
 
     /**
      * 问题拥有的赞

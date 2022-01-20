@@ -9,7 +9,9 @@ import com.lrm.exception.NotFoundException;
 import com.lrm.po.*;
 import com.lrm.service.*;
 import com.lrm.util.TokenInfo;
+import com.lrm.vo.BlogShow;
 import com.lrm.vo.Magic;
+import com.lrm.vo.QuestionShow;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -200,8 +202,8 @@ public class CustomerFavoriteController {
             }
         }
 
-        hashMap.put("questions", insertAttribute(questionServiceImpl.listByFavoriteId(favoriteId, pageable)));
-        hashMap.put("blogs", insertAttribute(blogServiceImpl.listByFavoriteId(favoriteId, pageable)));
+        hashMap.put("questions", insertAttribute(questionServiceImpl.listByFavoriteId(favoriteId, pageable)).map(QuestionShow::new));
+        hashMap.put("blogs", insertAttribute(blogServiceImpl.listByFavoriteId(favoriteId, pageable)).map(BlogShow::new));
         return new Result(hashMap, "");
     }
 

@@ -8,7 +8,9 @@ import com.lrm.util.FileTypeUtils;
 import com.lrm.util.FileUtils;
 import com.lrm.util.OSSUtils;
 import com.lrm.util.TokenInfo;
+import com.lrm.vo.BlogShow;
 import com.lrm.vo.Magic;
+import com.lrm.vo.QuestionShow;
 import com.lrm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,8 +75,11 @@ public class TemplateController {
      */
     @GetMapping("/listQuestions")
     public Result listQuestions(@PageableDefault(size = Magic.INDEX_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
-        return listTemplates(questionServiceImpl, pageable);
-    }
+        Map<String, Object> hashMap = new HashMap<>(2);
+        Page<Question> pages = listTemplates(questionServiceImpl, pageable);
+        hashMap.put("pages", pages.map(QuestionShow::new));
+        hashMap.put("impacts", QuestionShow.getCommentsShow(questionServiceImpl.listImpactTop(Magic.RECOMMENDED_SIZE)));
+        return new Result(hashMap, "");    }
 
     /**
      * 返回主页问题
@@ -84,11 +89,14 @@ public class TemplateController {
      */
     @GetMapping("/listBlogs")
     public Result listBlogs(@PageableDefault(size = Magic.INDEX_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable) {
-        return listTemplates(blogServiceImpl, pageable);
+        Map<String, Object> hashMap = new HashMap<>(2);
+        Page<Blog> pages = listTemplates(blogServiceImpl, pageable);
+        hashMap.put("pages", pages.map(BlogShow::new));
+        hashMap.put("impacts", BlogShow.getCommentsShow(blogServiceImpl.listImpactTop(Magic.RECOMMENDED_SIZE)));
+        return new Result(hashMap, "");
     }
 
-    <T extends Template> Result listTemplates(TemplateServiceImpl<T> templateServiceImpl, Pageable pageable) {
-        Map<String, Object> hashMap = new HashMap<>(3);
+    <T extends Template> Page<T> listTemplates(TemplateServiceImpl<T> templateServiceImpl, Pageable pageable) {
 
         Page<T> pages = templateServiceImpl.listAll(pageable);
 
@@ -99,9 +107,7 @@ public class TemplateController {
             t.setAvatar(postUser.getAvatar());
             t.setNickname(postUser.getNickname());
         }
-        hashMap.put("pages", pages);
-        hashMap.put("impacts", templateServiceImpl.listImpactTop(Magic.RECOMMENDED_SIZE));
-        return new Result(hashMap, "");
+       return pages;
     }
 
 
@@ -115,8 +121,13 @@ public class TemplateController {
     @PostMapping("/searchQuestions")
     public Result searchQuestions(@PageableDefault(size = Magic.SEARCH_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                               @RequestBody Map<String, String> query) {
+        Map<String, Object> hashMap = new HashMap<>(2);
 
-        return searchTemplates(questionServiceImpl, query.get("query"), pageable);
+        Page<Question> pages =  searchTemplates(questionServiceImpl, query.get("query"), pageable);
+        hashMap.put("pages", pages.map(QuestionShow::new));
+        //还要传回 保证在新的查询页面 查询框中也有自己之前查询的条件的内容
+        hashMap.put("query", query);
+        return new Result(hashMap, "");
     }
 
     /**
@@ -130,10 +141,16 @@ public class TemplateController {
     public Result searchBlogs(@PageableDefault(size = Magic.SEARCH_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                               @RequestBody Map<String, String> query) {
 
-        return searchTemplates(blogServiceImpl, query.get("query"), pageable);
+        Map<String, Object> hashMap = new HashMap<>(2);
+
+        Page<Blog> pages =  searchTemplates(blogServiceImpl, query.get("query"), pageable);
+        hashMap.put("pages", pages.map(BlogShow::new));
+        //还要传回 保证在新的查询页面 查询框中也有自己之前查询的条件的内容
+        hashMap.put("query", query);
+        return new Result(hashMap, "");
     }
 
-    <T extends Template> Result searchTemplates(TemplateServiceImpl<T> templateServiceImpl, String query, Pageable pageable) {
+    <T extends Template> Page<T> searchTemplates(TemplateServiceImpl<T> templateServiceImpl, String query, Pageable pageable) {
         Map<String, Object> hashMap = new HashMap<>(2);
 
         //mysql语句 模糊查询的格式 jpa不会帮处理string前后有没有%的
@@ -145,12 +162,7 @@ public class TemplateController {
             t0.setAvatar(postUser.getAvatar());
             t0.setNickname(postUser.getNickname());
         }
-
-        hashMap.put("pages", pages);
-
-        //还要传回 保证在新的查询页面 查询框中也有自己之前查询的条件的内容
-        hashMap.put("query", query);
-        return new Result(hashMap, "");
+        return pages;
     }
 
     /**
@@ -161,14 +173,29 @@ public class TemplateController {
      */
     @GetMapping("/question/{questionId}")
     public Result getQuestion(@PathVariable Long questionId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(2);
+        Long userId = TokenInfo.getCustomUserId(request);
+
         Question backQuestion = questionServiceImpl.getById(questionId);
         if (backQuestion == null) {
-            throw new NotFoundException("未查询到该问题");
+            throw new NotFoundException("未查询到该博客");
         }
         //返回前端的问题
         Question frontQuestion = new Question();
 
-        return getTemplate(request, backQuestion, frontQuestion, questionServiceImpl);
+        frontQuestion = getTemplate(userId, backQuestion, frontQuestion, questionServiceImpl);
+        hashMap.put("template", new QuestionShow(frontQuestion));
+
+        User receiveUser = frontQuestion.getUser();
+        User postUser = userServiceImpl.getUser(userId);
+        if (receiveUser.getFollowedUsers().contains(postUser) &&
+                postUser.getFollowingUsers().contains(receiveUser)) {
+            hashMap.put("following", true);
+        } else {
+            hashMap.put("following", false);
+        }
+
+        return new Result(hashMap, "");
     }
 
     /**
@@ -179,20 +206,32 @@ public class TemplateController {
      */
     @GetMapping("/blog/{blogId}")
     public Result getBlog(@PathVariable Long blogId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(2);
+        Long userId = TokenInfo.getCustomUserId(request);
+
         Blog backBlog = blogServiceImpl.getById(blogId);
         if (backBlog == null) {
             throw new NotFoundException("未查询到该博客");
         }
-        //返回前端的问题
+        //返回前端的博客
         Blog frontBlog = new Blog();
 
-        return getTemplate(request, backBlog, frontBlog, blogServiceImpl);
+        frontBlog = getTemplate(userId, backBlog, frontBlog, blogServiceImpl);
+        hashMap.put("template", new BlogShow(frontBlog));
+
+        User receiveUser = frontBlog.getUser();
+        User postUser = userServiceImpl.getUser(userId);
+        if (receiveUser.getFollowedUsers().contains(postUser) &&
+                postUser.getFollowingUsers().contains(receiveUser)) {
+            hashMap.put("following", true);
+        } else {
+            hashMap.put("following", false);
+        }
+
+        return new Result(hashMap, "");
     }
 
-    <T extends Template> Result getTemplate(HttpServletRequest request, T backT, T frontT, TemplateServiceImpl<T> templateServiceImpl) {
-        Map<String, Object> hashMap = new HashMap<>(1);
-        Long userId = TokenInfo.getCustomUserId(request);
-
+    <T extends Template> T getTemplate(Long userId, T backT, T frontT, TemplateServiceImpl<T> templateServiceImpl) {
         frontT = templateServiceImpl.getAndConvert(backT.getId(), frontT);
 
         frontT.setApproved(likesServiceImp.get(userServiceImpl.getUser(userId), backT) != null);
@@ -222,18 +261,7 @@ public class TemplateController {
         frontT.setAvatar(backT.getUser().getAvatar());
         frontT.setNickname(backT.getUser().getNickname());
 
-        hashMap.put("template", frontT);
-
-        User receiveUser = frontT.getUser();
-        User postUser = userServiceImpl.getUser(userId);
-        if (receiveUser.getFollowedUsers().contains(postUser) &&
-                postUser.getFollowingUsers().contains(receiveUser)) {
-            hashMap.put("following", true);
-        } else {
-            hashMap.put("following", false);
-        }
-
-        return new Result(hashMap, "");
+        return frontT;
     }
 
     /**

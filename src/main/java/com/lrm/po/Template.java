@@ -29,6 +29,7 @@ public class Template {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     /**
@@ -67,44 +68,46 @@ public class Template {
     private String tagIds;
 
     /**
-     * 前端展示的发布者的Id
-     */
-    private Long posterUserId0;
-
-    /**
      * 浏览次数
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer view;
 
     /**
      * 获得点赞数量
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer likesNum;
 
     /**
      * 获得评论数量
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer commentsNum;
 
     /**
      * 被点踩数量
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer disLikesNum;
 
     /**
      * 被收藏数量
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer collectedNum;
 
     /**
      * 是否被隐藏 true为被隐藏了
      */
-    private Boolean isHidden;
+    @JsonIgnore
+    private Boolean hidden;
 
     /**
      * 占比待定
      * 影响力
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer impact;
 
     /**
@@ -113,6 +116,7 @@ public class Template {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createTime;
 
     /**
@@ -120,6 +124,7 @@ public class Template {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date newCommentedTime;
 
 
@@ -251,14 +256,6 @@ public class Template {
         this.nickname = nickname;
     }
 
-    public Long getPosterUserId0() {
-        return posterUserId0;
-    }
-
-    public void setPosterUserId0(Long posterUserId0) {
-        this.posterUserId0 = posterUserId0;
-    }
-
     public Integer getView() {
         return view;
     }
@@ -300,11 +297,11 @@ public class Template {
     }
 
     public Boolean getHidden() {
-        return isHidden;
+        return hidden;
     }
 
     public void setHidden(Boolean hidden) {
-        isHidden = hidden;
+        this.hidden = hidden;
     }
 
     public Integer getImpact() {
@@ -380,12 +377,12 @@ public class Template {
             return false;
         }
         Template template = (Template) o;
-        return Objects.equals(getId(), template.getId()) && Objects.equals(getTitle(), template.getTitle()) && Objects.equals(getDescription(), template.getDescription()) && Objects.equals(getContent(), template.getContent()) && Objects.equals(getTagIds(), template.getTagIds()) && Objects.equals(getPosterUserId0(), template.getPosterUserId0()) && Objects.equals(getView(), template.getView()) && Objects.equals(getLikesNum(), template.getLikesNum()) && Objects.equals(getCommentsNum(), template.getCommentsNum()) && Objects.equals(getDisLikesNum(), template.getDisLikesNum()) && Objects.equals(isHidden, template.isHidden) && Objects.equals(getImpact(), template.getImpact()) && Objects.equals(getCreateTime(), template.getCreateTime()) && Objects.equals(getNewCommentedTime(), template.getNewCommentedTime()) && Objects.equals(getAvatar(), template.getAvatar()) && Objects.equals(getNickname(), template.getNickname()) && Objects.equals(getApproved(), template.getApproved()) && Objects.equals(getDisapproved(), template.getDisapproved()) && Objects.equals(getCollected(), template.getCollected()) && Objects.equals(getFavorites(), template.getFavorites()) && Objects.equals(getUser(), template.getUser()) && Objects.equals(getTags(), template.getTags());
+        return Objects.equals(getId(), template.getId()) && Objects.equals(getTitle(), template.getTitle()) && Objects.equals(getDescription(), template.getDescription()) && Objects.equals(getContent(), template.getContent()) && Objects.equals(getTagIds(), template.getTagIds())  && Objects.equals(getView(), template.getView()) && Objects.equals(getLikesNum(), template.getLikesNum()) && Objects.equals(getCommentsNum(), template.getCommentsNum()) && Objects.equals(getDisLikesNum(), template.getDisLikesNum()) && Objects.equals(hidden, template.hidden) && Objects.equals(getImpact(), template.getImpact()) && Objects.equals(getCreateTime(), template.getCreateTime()) && Objects.equals(getNewCommentedTime(), template.getNewCommentedTime()) && Objects.equals(getAvatar(), template.getAvatar()) && Objects.equals(getNickname(), template.getNickname()) && Objects.equals(getApproved(), template.getApproved()) && Objects.equals(getDisapproved(), template.getDisapproved()) && Objects.equals(getCollected(), template.getCollected()) && Objects.equals(getFavorites(), template.getFavorites()) && Objects.equals(getUser(), template.getUser()) && Objects.equals(getTags(), template.getTags());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitle(), getDescription(), getContent(), getTagIds(), getAvatar(), getNickname(), getPosterUserId0(), getView(), getLikesNum(), getCommentsNum(), getDisLikesNum(), isHidden, getImpact(), getCreateTime(), getNewCommentedTime(), getApproved(), getDisapproved(), getCollected(), getFavorites(), getUser(), getTags());
+        return Objects.hash(getId(), getTitle(), getDescription(), getContent(), getTagIds(), getAvatar(), getNickname(), getView(), getLikesNum(), getCommentsNum(), getDisLikesNum(), hidden, getImpact(), getCreateTime(), getNewCommentedTime(), getApproved(), getDisapproved(), getCollected(), getFavorites(), getUser(), getTags());
     }
 
 

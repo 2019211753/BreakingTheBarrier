@@ -83,6 +83,9 @@ public class TagController {
             throw new NotFoundException("未查询到该标签");
         }
 
+        if (tag.getQuestions() != null || tag.getBlogs() != null) {
+            throw new FailedOperationException("有博客或问题使用了该标签，无法删除");
+        }
         tagServiceImpl.deleteTag(tagId);
         tag = tagServiceImpl.getTag(tagId);
         if (tag != null) {

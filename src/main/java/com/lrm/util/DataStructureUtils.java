@@ -52,6 +52,7 @@ public class DataStructureUtils {
     }
 
     /**
+     * 参考使用Page.map
      * 将List转换为Page
      *
      * @param <T>      list泛型

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lrm.util.JWTUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2021-07-21
  */
-public class AuthorityInterceptor extends HandlerInterceptorAdapter {
+public class AuthorityInterceptor implements HandlerInterceptor {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override

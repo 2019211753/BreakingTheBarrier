@@ -76,15 +76,15 @@ public class LoginController {
         String password = user.getPassword();
         StringBuilder errorMsg = new StringBuilder(64);
         if (username == null & password != null) {
-            errorMsg.append("请输入账号；");
+            errorMsg.append("请输入账号；\n");
             throw new IllegalParameterException(new String(errorMsg));
 
         } else if (username == null & password == null) {
-            errorMsg.append("请输入账号；");
+            errorMsg.append("请输入账号；\n");
         }
         if (password == null)
         {
-            errorMsg.append("请输入密码；");
+            errorMsg.append("请输入密码；\n");
             throw new IllegalParameterException(new String(errorMsg));
         }
 

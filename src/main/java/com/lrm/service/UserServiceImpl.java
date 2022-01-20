@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -84,11 +83,11 @@ public class UserServiceImpl implements UserService
      */
     @Override
     @Transactional
-    public User updateUser(User user) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public User updateUser(User user) {
         //这个u和user虽然id相同，但是已经不是一个对象了
         User u = getUser(user.getId());
 
-        MyBeanUtils.populate(User.class, user, u);
+        MyBeanUtils.copy(User.class, user, u);
 
         return userRepository.save(u);
     }

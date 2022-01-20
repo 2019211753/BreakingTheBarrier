@@ -30,17 +30,14 @@ public class LikesServiceImpl extends EmotionServiceImpl<Likes> implements Likes
     public <E extends Template> Likes save(E e, Likes likes, User postUser, User receiveUser) {
         if (e instanceof Blog) {
             likes.setBlog((Blog) e);
-            likes.setBlogId0(e.getId());
         }
         if (e instanceof Question) {
             likes.setQuestion((Question) e);
-            likes.setQuestionId0(e.getId());
         }
         likes.setCreateTime(new Date());
         likes.setPostUser(postUser);
         likes.setReceiveUser(receiveUser);
         likes.setLooked(receiveUser.equals(postUser));
-        likes.setPostUserId0(postUser.getId());
         return likesRepository.save(likes);
     }
 

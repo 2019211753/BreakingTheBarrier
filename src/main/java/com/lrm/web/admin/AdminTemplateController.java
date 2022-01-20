@@ -3,14 +3,19 @@ package com.lrm.web.admin;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.exception.NotFoundException;
+import com.lrm.po.Blog;
 import com.lrm.po.Question;
+import com.lrm.po.Tag;
 import com.lrm.service.BlogServiceImpl;
 import com.lrm.service.QuestionServiceImpl;
 import com.lrm.service.TagServiceImpl;
+import com.lrm.vo.BlogShow;
 import com.lrm.vo.Magic;
+import com.lrm.vo.QuestionShow;
 import com.lrm.vo.Result;
 import com.lrm.web.customer.CustomerTemplateController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -18,6 +23,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,7 +61,12 @@ public class AdminTemplateController {
         if (question == null) {
             throw new NotFoundException("未查询到该问题");
         }
-        return customerTemplateController.editTemplate(question);
+        Map<String, Object> hashMap = new HashMap<>(2);
+        question = customerTemplateController.editTemplate(question);
+        List<Tag> tags = tagServiceImpl.listTagTop();
+        hashMap.put("template", new QuestionShow(question));
+        hashMap.put("tags", tags);
+        return new Result(hashMap, "");
     }
 
 
@@ -96,7 +108,12 @@ public class AdminTemplateController {
     @PostMapping("/searchQuestions")
     public Result searchQuestions(@PageableDefault(size = Magic.SEARCH_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                                   @RequestBody Map<String, String> query) {
-        return customerTemplateController.searchTemplate(pageable, query, questionServiceImpl);
+        Map<String, Object> hashMap = new HashMap<>(1);
+
+        Page<Question> ts = customerTemplateController.searchTemplate(pageable, query, questionServiceImpl);
+        Page<QuestionShow> questionShows = ts.map(QuestionShow::new);
+        hashMap.put("pages", questionShows);
+        return new Result(hashMap, "");
     }
 
     /**
@@ -108,6 +125,11 @@ public class AdminTemplateController {
     @PostMapping("/searchBlogs")
     public Result searchBlogs(@PageableDefault(size = Magic.SEARCH_PAGE_SIZE, sort = {"createTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                               @RequestBody Map<String, String> query) {
-        return customerTemplateController.searchTemplate(pageable, query, blogServiceImpl);
+        Map<String, Object> hashMap = new HashMap<>(1);
+
+        Page<Blog> ts = customerTemplateController.searchTemplate(pageable, query, blogServiceImpl);
+        Page<BlogShow> blogShows = ts.map(BlogShow::new);
+        hashMap.put("pages", blogShows);
+        return new Result(hashMap, "");
     }
 }

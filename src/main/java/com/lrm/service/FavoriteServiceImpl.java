@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -91,8 +90,8 @@ public class FavoriteServiceImpl implements FavoriteService {
      */
     @Override
     @Transactional
-    public Favorite updateFavorite(Favorite favorite, Favorite f) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        MyBeanUtils.populate(Favorite.class, favorite, f);
+    public Favorite updateFavorite(Favorite favorite, Favorite f) {
+        MyBeanUtils.copy(Favorite.class, favorite, f);
         f.setUpdateTime(new Date());
         return favoriteRepository.save(f);
     }

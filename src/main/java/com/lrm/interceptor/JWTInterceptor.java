@@ -29,6 +29,7 @@ public class JWTInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         Map<String, Object> map = new HashMap<>();
         String requestURL = request.getRequestURI();
+        logger.debug(token);
         try {
             logger.info("RequestURL: {} ", requestURL);
             logger.info("GetMethod: {}", handler);

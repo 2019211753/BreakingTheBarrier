@@ -2,6 +2,7 @@ package com.lrm.po;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,27 +21,14 @@ public class Likes extends Emotion{
      * 是否已读
      * 不能用isRead 也不能用read关键字 只能这样了。。。
      */
+    @JsonIgnore
     private Boolean looked;
-
-    /**
-     * 返回前端的点赞发布者Id
-     */
-    private Long postUserId0;
-
-    /**
-     * 返回前端的点赞所在问题Id
-     */
-    private Long questionId0;
-
-    /**
-     * 返回前端的点赞所在问题Id
-     */
-    private Long blogId0;
 
     /**
      * 封装成完整的"yyyy-MM-dd HH:mm:ss"的Date类型
      * 点赞时间
      */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
@@ -77,30 +65,6 @@ public class Likes extends Emotion{
         this.looked = looked;
     }
 
-    public Long getPostUserId0() {
-        return postUserId0;
-    }
-
-    public void setPostUserId0(Long postUserId0) {
-        this.postUserId0 = postUserId0;
-    }
-
-    public Long getQuestionId0() {
-        return questionId0;
-    }
-
-    public void setQuestionId0(Long questionId0) {
-        this.questionId0 = questionId0;
-    }
-
-    public Long getBlogId0() {
-        return blogId0;
-    }
-
-    public void setBlogId0(Long blogId0) {
-        this.blogId0 = blogId0;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -124,7 +88,6 @@ public class Likes extends Emotion{
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-
 
     public User getReceiveUser() {
         return receiveUser;
