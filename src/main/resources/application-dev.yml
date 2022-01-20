@@ -44,24 +44,6 @@ file.upload_path: F://uploadTest//
 file.download_path: F://uploadTest//
 token-salt: 321AIVD#!@~~A134
 
-oss:
-  endpoint: oss-cn-beijing.aliyuncs.com
-  accessKeyId: LTAI5t962vrgyQ86Cf2VWMEX
-  accessKeySecret: PLaMPLkjDLULIK7GGrCtZdHyNr3YZc
-  bucketName: wordverybig
-  urlPrefix: wordverybig.oss-cn-beijing.aliyuncs.com
-
-  endpoint_avatar: oss-cn-beijing.aliyuncs.com
-  accessKeyId_avatar: LTAI5tAbEzpHDD8K96YQ2T3v
-  accessKeySecret_avatar: DKki3xrpzVsQItM5Ol7DgHIgaDerax
-  bucketName_avatar: test-oss-weswallows
-  urlPrefix_avatar: test-oss-weswallows.oss-cn-beijing.aliyuncs.com
-
-  endpoint_content: oss-cn-beijing.aliyuncs.com
-  accessKeyId_content: LTAI5tAbEzpHDD8K96YQ2T3v
-  accessKeySecret_content: DKki3xrpzVsQItM5Ol7DgHIgaDerax
-  bucketName_content: test-oss-weswallows
-  urlPrefix_content: test-oss-weswallows.oss-cn-beijing.aliyuncs.com
 
 # 项目运行端口
 server:
