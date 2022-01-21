@@ -284,12 +284,13 @@
                 </div>
                 <div class="text" v-html="item.content"></div>
                 <div class="actions">
-                  <a
-                    :class="item.approved==true?redReply:reply"
-                    @click="likeComment(item.id)"
-                    v-model="likeNumber"
+                  <a :style="item.approved==true?'color:red':''"
+                     class="reply"
+                     @click="likeComment(item.id)"
+                     v-model="likeNumber"
                   >赞( {{ item.likesNum }})</a
-                  ><a :class="item.disapproved==true?'blueReply':'reply'" @click="dislikeComment(item.id)"
+                  ><a :style="item.disapproved==true?'color:blue':''"
+                      class="reply" @click="dislikeComment(item.id)"
                 >踩({{ item.disLikesNum }})</a
                 ><a class="reply" @click="replyComment(item.id)">回复</a
                 ><a
@@ -409,11 +410,10 @@ export default {
       bestComments: "",
       selectedComments: "",
       reply: "reply",
-      redReply: "redReply reply",
-      blueReply: "blueReply reply",
+
       parent: "comment",
       child: "child comment",
-      parentId: null,
+      parentId: "-1",
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
@@ -649,12 +649,14 @@ export default {
           console.log(error);
         });
     },
-    getCommentLikesAndDislikes(commentId, likesNum, dislikesNum) {
+    getCommentLikesAndDislikes(commentId, likesNum, dislikesNum,approved,disapproved) {
       var that = this;
       for (var i in that.commentList) {
         if (that.commentList[i].id == commentId) {
           that.commentList[i].likesNum = likesNum;
           that.commentList[i].disLikesNum = dislikesNum;
+          that.commentList[i].approved=approved;
+          that.commentList[i].disapproved=disapproved;
           break;
         }
       }
@@ -663,13 +665,14 @@ export default {
       var that = this;
       that.$api.userLike
         .likeComment(id)
-
         .then(function (response) {
           console.log(response.data);
           that.getCommentLikesAndDislikes(
             id,
             response.data.data.likesNum,
-            response.data.data.disLikesNum
+            response.data.data.disLikesNum,
+            response.data.data.approved,
+            response.data.data.disapproved
           );
           that.$message({
             message: "点赞成功",
@@ -825,10 +828,6 @@ export default {
 </script>
 
 <style scoped>
-.redReply {
-   color: red
-}
-
 h3:nth-child(2) {
   text-align: center;
 }
