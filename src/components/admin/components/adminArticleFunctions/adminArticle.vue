@@ -37,7 +37,7 @@
           :src=item.avatar alt=""
         /></h4></el-col
         >
-        <el-col :span="6"><h4>发布者id：{{ item.posterUserId0 }}</h4></el-col>
+        <el-col :span="6"><h4>发布者id：{{ item.postUserId }}</h4></el-col>
       </el-row
       >
       <br/>
