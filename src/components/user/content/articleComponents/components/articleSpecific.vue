@@ -436,11 +436,9 @@ export default {
           console.log(error);
         });
     });
-
     var p2 = new Promise((resolve, reject) => {
       that.getAllComments();
     });
-
     Promise.all([p1, p2]).then((res) => {
       console.log(res);
     });
@@ -567,7 +565,7 @@ export default {
           console.log(error);
         });
     },
-    flatten(data) {
+    flatten(data) {var that=this;
       return data.reduce(
         (
           arr,
@@ -587,14 +585,13 @@ export default {
             likesNum,
             looked,
             nickname,
-            parentCommentId,
+
             postUserId,
             questionId,
-            receiveComments = [],
+            receiveComments = null,
           }
         ) =>
-          arr.concat(
-            [
+          arr.concat([
               {
                 adminComment,
                 answer,
@@ -611,15 +608,11 @@ export default {
                 likesNum,
                 looked,
                 nickname,
-                parentCommentId,
+
                 postUserId,
                 questionId,
               },
-            ],
-            this.flatten(receiveComments, id)
-          ),
-        []
-      );
+            ],that.flatten(receiveComments)), []);
     },
     getAllComments() {
       var that = this;
@@ -627,7 +620,7 @@ export default {
         .getAllQuestionComments(that.$route.query.articleId)
         .then(function (response) {
           that.commentLoading = false;
-          console.log(response.data);
+          console.log(response.data.data.comments2);
           console.log(that.flatten(response.data.data.comments2));
           that.commentList = that.flatten(response.data.data.comments2);
           that.bestComments = response.data.data.bestComments;

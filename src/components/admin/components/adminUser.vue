@@ -30,7 +30,7 @@
         ><h4>
           头像：<img
           class="ui mini right floated circular image"
-          :src="'data:image/jpg;base64,' + nowUser.avatar"
+          :src=nowUser.avatar
           alt=""
         /></h4
         ></el-col>

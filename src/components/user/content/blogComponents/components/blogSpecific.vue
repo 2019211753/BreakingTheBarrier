@@ -292,7 +292,6 @@ export default {
       articleCollectIsActive: "ui yellow button",
       favoriteId: "",
       favoriteList: [],
-
       likeNumber: "",
       dislikeNumber: "",
       commentList: "",
@@ -319,13 +318,10 @@ export default {
         that.articleCollectNumber = that.template.collectedNum;
         that.articleDislikeNumber = that.template.disLikesNum;
         that.$store.commit("getBlogId", that.template.id);
-
-        /* sessionStorage["posterUserId0"] = that.template.posterUserId0; */
       })
       .catch(function (error) {
         console.log(error);
       });
-    /* ------------------------- */
     that.$api.userComment.getAllBlogComments(that.$route.query.blogId)
       .then(function (response) {
         that.commentLoading = false;
