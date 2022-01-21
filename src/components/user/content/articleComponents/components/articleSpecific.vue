@@ -588,7 +588,7 @@ export default {
 
             postUserId,
             questionId,
-            receiveComments = null,
+            receiveComments = [],
           }
         ) =>
           arr.concat([
