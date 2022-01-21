@@ -7,7 +7,7 @@
             <div class="ui large feed">
               <div class="event">
                 <div class="label">
-                  <el-skeleton-item variant="circle image" />
+                  <el-skeleton-item variant="circle image"/>
                 </div>
                 <div class="content">
                   <div class="summary"></div>
@@ -15,17 +15,17 @@
               </div>
             </div>
             <h3 class="title">
-              <el-skeleton-item variant="text" />
+              <el-skeleton-item variant="text"/>
             </h3>
             <div class="ui divider"></div>
             <el-skeleton-item
               variant="image"
               style="width: 80%; height: 400px; margin: auto"
             />
-            <br />
-            <el-skeleton-item variant="text" />
-            <el-skeleton-item variant="text" />
-            <el-skeleton-item variant="text" />
+            <br/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
             <el-row>
               <el-col :span="20">
                 <div class="grid-content bg-purple-dark"></div>
@@ -39,7 +39,7 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="template.avatar" alt="" />
+            <img :src="template.avatar" alt=""/>
           </div>
           <div class="content">
             <div class="summary">
@@ -47,7 +47,7 @@
                 <router-link
                   v-if="$store.state.me.id == postUserId"
                   to="/BreakingTheBarrier/mine/contents/questionFiles"
-                  >{{ template.nickname }}
+                >{{ template.nickname }}
                 </router-link>
                 <router-link
                   v-else
@@ -55,7 +55,7 @@
                     path: '/BreakingTheBarrier/visitor/questions',
                     query: { userId: postUserId },
                   }"
-                  >{{ template.nickname }}
+                >{{ template.nickname }}
                 </router-link>
               </a>
               <div
@@ -78,7 +78,7 @@
       <h3 class="title">{{ template.title }}</h3>
       <div class="ui divider"></div>
       <div v-html="articleContent">{{ articleContent }}</div>
-      <br />
+      <br/>
       <el-row>
         <el-col :span="7">
           <div style="height: 1px"></div>
@@ -136,7 +136,7 @@
         <i class="trash icon"></i>删除
       </div>
     </div>
-    <br />
+    <br/>
     <div>
       <div class="ui segment">
         <div>
@@ -157,11 +157,11 @@
                 <div class="ui large feed">
                   <div class="event">
                     <div class="label">
-                      <el-skeleton-item variant="circle image" />
+                      <el-skeleton-item variant="circle image"/>
                     </div>
                     <div class="content">
                       <div class="summary">
-                        <el-skeleton-item variant="text" />
+                        <el-skeleton-item variant="text"/>
                       </div>
                     </div>
                   </div>
@@ -170,7 +170,7 @@
             </el-skeleton>
             <div class="comment" v-for="item in selectedComments">
               <a class="avatar">
-                <img :src="item.avatar" alt="" />
+                <img :src="item.avatar" alt=""/>
               </a>
               <div class="content">
                 <a class="author">
@@ -179,14 +179,15 @@
                       path: '/BreakingTheBarrier/visitor',
                       query: { userId: item.postUserId },
                     }"
-                    >{{ item.nickname }}
-                  </router-link> </a
+                  >{{ item.nickname }}
+                  </router-link>
+                </a
                 ><a
-                  class="ui mini basic blue label"
-                  style="margin-left: 5px"
-                  v-if="item.postUserId == postUserId"
-                  >发布者</a
-                >
+                class="ui mini basic blue label"
+                style="margin-left: 5px"
+                v-if="item.postUserId == postUserId"
+              >发布者</a
+              >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini teal label">精选评论</a>
@@ -213,7 +214,7 @@
             <div class="ui divider" v-if="!selectedComments.length == 0"></div>
             <div class="comment" v-for="item in bestComments">
               <a class="avatar">
-                <img :src="item.avatar" alt="" />
+                <img :src="item.avatar" alt=""/>
               </a>
               <div class="content">
                 <a class="author">
@@ -222,14 +223,15 @@
                       path: '/BreakingTheBarrier/visitor',
                       query: { userId: item.postUserId },
                     }"
-                    >{{ item.nickname }}
-                  </router-link> </a
+                  >{{ item.nickname }}
+                  </router-link>
+                </a
                 ><a
-                  class="ui mini basic blue label"
-                  style="margin-left: 5px"
-                  v-if="item.postUserId == postUserId"
-                  >发布者</a
-                >
+                class="ui mini basic blue label"
+                style="margin-left: 5px"
+                v-if="item.postUserId == postUserId"
+              >发布者</a
+              >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini red label">优质评论</a>
@@ -255,11 +257,11 @@
             </div>
             <div class="ui divider" v-if="!bestComments.length == 0"></div>
             <div
-              :class="item.parentCommentId == -1 ? parent : child"
+              :class="item.parentCommentId == null ? parent : child"
               v-for="item in commentList"
             >
               <a class="avatar">
-                <img :src="item.avatar" alt="" />
+                <img :src="item.avatar" alt=""/>
               </a>
               <div class="content">
                 <a class="author">
@@ -268,38 +270,39 @@
                       path: '/BreakingTheBarrier/visitor',
                       query: { userId: item.postUserId },
                     }"
-                    >{{ item.nickname }}
-                  </router-link> </a
+                  >{{ item.nickname }}
+                  </router-link>
+                </a
                 ><a
-                  class="ui mini basic blue label"
-                  style="margin-left: 5px"
-                  v-if="item.postUserId == postUserId"
-                  >发布者</a
-                >
+                class="ui mini basic blue label"
+                style="margin-left: 5px"
+                v-if="item.postUserId == postUserId"
+              >发布者</a
+              >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span>
                 </div>
                 <div class="text" v-html="item.content"></div>
                 <div class="actions">
                   <a
-                    class="reply"
+                    :class="item.approved==true?redReply:reply"
                     @click="likeComment(item.id)"
                     v-model="likeNumber"
-                    >赞( {{ item.likesNum }})</a
-                  ><a class="reply" @click="dislikeComment(item.id)"
-                    >踩({{ item.disLikesNum }})</a
-                  ><a class="reply" @click="replyComment(item.id)">回复</a
-                  ><a
-                    class="reply"
-                    v-if="postUserId == $store.state.me.id"
-                    @click="setSelectedComment(item.id)"
-                    >设为精选评论</a
-                  ><a
-                    class="reply"
-                    @click="deleteComment(item.id)"
-                    v-if="item.postUserId == $store.state.me.id"
-                    >删除</a
-                  >
+                  >赞( {{ item.likesNum }})</a
+                  ><a :class="item.disapproved==true?'blueReply':'reply'" @click="dislikeComment(item.id)"
+                >踩({{ item.disLikesNum }})</a
+                ><a class="reply" @click="replyComment(item.id)">回复</a
+                ><a
+                  class="reply"
+                  v-if="postUserId == $store.state.me.id"
+                  @click="setSelectedComment(item.id)"
+                >设为精选评论</a
+                ><a
+                  class="reply"
+                  @click="deleteComment(item.id)"
+                  v-if="item.postUserId == $store.state.me.id"
+                >删除</a
+                >
                 </div>
               </div>
               <div
@@ -327,7 +330,7 @@
         <div class="ui basic segment">
           <el-container v-for="(item, index) in favoriteList" :key="index">
             <el-aside width="70px"
-              ><i class="huge yellow folder icon"></i
+            ><i class="huge yellow folder icon"></i
             ></el-aside>
             <el-main>
               <el-row :gutter="24">
@@ -343,14 +346,14 @@
                     v-if="item.open == false"
                     class="ui small blue label"
                     style="margin-left: 10px"
-                    >私密</a
+                  >私密</a
                   >
                 </el-col>
                 <el-col :span="3"
-                  ><i
-                    :class="item.id == favoriteId ? selected : unselected"
-                    style="margin-top: 2px"
-                  ></i>
+                ><i
+                  :class="item.id == favoriteId ? selected : unselected"
+                  style="margin-top: 2px"
+                ></i>
                 </el-col>
               </el-row>
             </el-main>
@@ -405,9 +408,12 @@ export default {
       commentList: "",
       bestComments: "",
       selectedComments: "",
+      reply: "reply",
+      redReply: "redReply reply",
+      blueReply: "blueReply reply",
       parent: "comment",
       child: "child comment",
-      parentId: "-1",
+      parentId: null,
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
@@ -565,7 +571,8 @@ export default {
           console.log(error);
         });
     },
-    flatten(data) {var that=this;
+    flatten(data) {
+      var that = this;
       return data.reduce(
         (
           arr,
@@ -585,34 +592,34 @@ export default {
             likesNum,
             looked,
             nickname,
-
+            parentCommentId,
             postUserId,
             questionId,
             receiveComments = [],
           }
         ) =>
           arr.concat([
-              {
-                adminComment,
-                answer,
-                blogId,
-                commentsNum,
-                id,
-                approved,
-                avatar,
-                content,
-                createTime,
-                disLikesNum,
-                disapproved,
-                hidden,
-                likesNum,
-                looked,
-                nickname,
-
-                postUserId,
-                questionId,
-              },
-            ],that.flatten(receiveComments)), []);
+            {
+              adminComment,
+              answer,
+              blogId,
+              commentsNum,
+              id,
+              approved,
+              avatar,
+              content,
+              createTime,
+              disLikesNum,
+              disapproved,
+              hidden,
+              likesNum,
+              looked,
+              nickname,
+              parentCommentId,
+              postUserId,
+              questionId,
+            },
+          ], that.flatten(receiveComments)), []);
     },
     getAllComments() {
       var that = this;
@@ -777,7 +784,7 @@ export default {
 
             .then(function (response) {
               console.log(response.data);
-              that.parentId = "-1";
+              that.parentId = null;
               that.$message({
                 message: "评论成功",
                 type: "success",
@@ -818,6 +825,10 @@ export default {
 </script>
 
 <style scoped>
+.redReply {
+   color: red
+}
+
 h3:nth-child(2) {
   text-align: center;
 }
