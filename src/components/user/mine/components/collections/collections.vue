@@ -62,18 +62,18 @@
     </el-container>
     <div class="ui createFavorite modal" style="width: 400px">
       <div class="ui icon header">
-        <i class="teal archive icon"></i>
+        <i class="archive icon"></i>
         创建收藏夹
         <br/>
         <br/>
         <div class="ui labeled input">
-          <div class="ui teal label">名称</div>
+          <div class="ui label">名称</div>
           <input type="text" placeholder="" v-model="fileName"/>
         </div>
       </div>
       <div class="actions">
         <div :class="privateButton" @click="setPrivate()">私密</div>
-        <div class="ui teal ok inverted button" @click="sureCreateFavorites()">
+        <div class="ui teal button" @click="sureCreateFavorites()">
           <i class="checkmark icon"></i>
           确定
         </div>
@@ -101,7 +101,7 @@
         >
           私密
         </div>
-        <div class="ui teal ok inverted button" @click="sureEditFavorites()">
+        <div class="ui teal button" @click="sureEditFavorites()">
           <i class="checkmark icon"></i>
           确定
         </div>
@@ -181,7 +181,6 @@ export default {
         open: !that.isPrivate,
       }
       that.$api.personalFavorite.createFavorite(data)
-
         .then(function (response) {
           console.log(response.data);
           that.favoriteList.push(response.data.data.favorite);
@@ -205,7 +204,6 @@ export default {
         id: that.nowFavoriteId,
       }
       that.$api.personalFavorite.editFavorite(data)
-
         .then(function (response) {
           console.log(response.data);
           that.$message({
@@ -228,7 +226,6 @@ export default {
     deleteFavorite(id) {
       var that = this;
       that.$api.personalFavorite.deleteFavorite(id)
-
         .then(function (response) {
           console.log(response.data);
           for (var i = 0; i < that.favoriteList.length; i++) {
@@ -251,10 +248,4 @@ export default {
 </script>
 
 <style scoped>
-/*.cards {
-  border: none;
-}
-.first {
-  margin-left: 27px;
-}*/
 </style>

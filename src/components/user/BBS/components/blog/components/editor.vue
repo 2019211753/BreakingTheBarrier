@@ -161,7 +161,6 @@ export default {
               transferStatement: that.statement,
             };
             that.$api.userBlog.postBlog(data)
-
               .then(function (response) {
                 console.log(response);
                 if (response.data.code == 403) {
@@ -204,10 +203,5 @@ export default {
 
 .button {
   margin-top: 20px;
-}
-
-.el-switch {
-  margin-left: 10px;
-  margin-top: 30px;
 }
 </style>

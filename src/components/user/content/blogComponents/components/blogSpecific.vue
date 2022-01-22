@@ -89,7 +89,7 @@
       </p>
       <br/>
       <el-row>
-        <el-col :span="7">
+        <el-col :span="6">
           <div style="height: 1px"></div>
         </el-col>
         <el-col :span="12">
@@ -108,8 +108,13 @@
             <i class="star icon"></i>
             {{ articleCollectNumber }}
           </div>
-          <div class="ui icon blue button" @click="replyArticle()">
+          <div :class="template.commentAllowed==true?'ui icon blue button':'ui icon disabled blue button'"
+               @click="replyArticle()">
             <i class="comment icon"></i>
+          </div>
+          <div
+            :class="template.appreciation==true?'ui icon teal button':'ui icon disabled teal button'"data-content="接受赞赏">
+            <i class="hand spock icon"></i>
           </div>
         </el-col>
         <el-col :span="5">
@@ -141,14 +146,12 @@
         <i class="trash icon"></i>删除
       </div>
     </div>
-
     <br/>
-    <div>
+    <div v-if="template.commentAllowed==true">
       <div class="ui segment">
         <div>
           <div class="ui comments">
             <h3>全部评论</h3>
-
             <el-empty
               :image-size="100"
               v-if="commentList.length == 0 && commentLoading == false"

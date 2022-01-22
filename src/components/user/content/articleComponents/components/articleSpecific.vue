@@ -257,7 +257,7 @@
             </div>
             <div class="ui divider" v-if="!bestComments.length == 0"></div>
             <div
-              :class="item.parentCommentId == null ? parent : child"
+              :class="item.parentCommentId == '0' ? parent : child"
               v-for="item in commentList"
             >
               <a class="avatar">
@@ -284,19 +284,19 @@
                 </div>
                 <div class="text" v-html="item.content"></div>
                 <div class="actions">
-                  <a :style="item.approved==true?'color:red':''"
+                  <a :style="item.approved==true?'color:RGB(219,40,40)':''"
                      class="reply"
                      @click="likeComment(item.id)"
                      v-model="likeNumber"
                   >赞( {{ item.likesNum }})</a
-                  ><a :style="item.disapproved==true?'color:blue':''"
+                  ><a :style="item.disapproved==true?'color:RGB(65,131,196)':''"
                       class="reply" @click="dislikeComment(item.id)"
                 >踩({{ item.disLikesNum }})</a
                 ><a class="reply" @click="replyComment(item.id)">回复</a
-                ><a
-                  class="reply"
-                  v-if="postUserId == $store.state.me.id"
-                  @click="setSelectedComment(item.id)"
+                ><a :style="item.selected==true?'color:RGB(0,181,173)':''"
+                    class="reply"
+                    v-if="postUserId == $store.state.me.id"
+                    @click="setSelectedComment(item.id)"
                 >设为精选评论</a
                 ><a
                   class="reply"
@@ -320,6 +320,14 @@
         </div>
       </div>
       <div class="ui collect modal" style="width: 400px">
+        <el-empty
+          :image-size="100"
+          v-if="
+            favoriteList.length == 0 &&
+                collectLoading == false
+              "
+          description="暂无收藏夹"
+        ></el-empty>
         <el-skeleton :loading="collectLoading" animated :count="1">
           <template slot="template">
             <el-skeleton-item
@@ -360,8 +368,11 @@
             </el-main>
           </el-container>
         </div>
-        <div class="actions">
-          <div class="ui teal ok inverted button" @click="collectArticle()">
+        <div class="actions"   v-if="
+            !favoriteList.length == 0 &&
+                collectLoading == false
+              ">
+          <div class="ui teal button" @click="collectArticle()">
             <i class="checkmark icon"></i>
             确定
           </div>
@@ -410,10 +421,9 @@ export default {
       bestComments: "",
       selectedComments: "",
       reply: "reply",
-
       parent: "comment",
       child: "child comment",
-      parentId: "-1",
+      parentId: "0",
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
@@ -588,14 +598,14 @@ export default {
             createTime,
             disLikesNum,
             disapproved,
-            hidden,
             likesNum,
             looked,
             nickname,
             parentCommentId,
             postUserId,
             questionId,
-            receiveComments = [],
+            selected,
+            receiveComments = []
           }
         ) =>
           arr.concat([
@@ -611,13 +621,13 @@ export default {
               createTime,
               disLikesNum,
               disapproved,
-              hidden,
               likesNum,
               looked,
               nickname,
               parentCommentId,
               postUserId,
               questionId,
+              selected
             },
           ], that.flatten(receiveComments)), []);
     },
@@ -641,7 +651,6 @@ export default {
       var that = this;
       that.$api.userComment
         .getChildComments(id)
-
         .then(function (response) {
           console.log(response.data);
         })
@@ -649,14 +658,14 @@ export default {
           console.log(error);
         });
     },
-    getCommentLikesAndDislikes(commentId, likesNum, dislikesNum,approved,disapproved) {
+    getCommentLikesAndDislikes(commentId, likesNum, dislikesNum, approved, disapproved) {
       var that = this;
       for (var i in that.commentList) {
         if (that.commentList[i].id == commentId) {
           that.commentList[i].likesNum = likesNum;
           that.commentList[i].disLikesNum = dislikesNum;
-          that.commentList[i].approved=approved;
-          that.commentList[i].disapproved=disapproved;
+          that.commentList[i].approved = approved;
+          that.commentList[i].disapproved = disapproved;
           break;
         }
       }
@@ -687,13 +696,14 @@ export default {
       var that = this;
       that.$api.userLike
         .dislikeComment(id)
-
         .then(function (response) {
           console.log(response.data);
           that.getCommentLikesAndDislikes(
             id,
             response.data.data.likesNum,
-            response.data.data.disLikesNum
+            response.data.data.disLikesNum,
+            response.data.data.approved,
+            response.data.data.disapproved
           );
           that.$message({
             message: "点踩成功",
@@ -784,10 +794,9 @@ export default {
           };
           that.$api.userComment
             .postQuestionComment(that.$route.query.articleId, data)
-
             .then(function (response) {
               console.log(response.data);
-              that.parentId = null;
+              that.parentId = "0";
               that.$message({
                 message: "评论成功",
                 type: "success",
@@ -807,7 +816,6 @@ export default {
       var p2 = new Promise((resolve, reject) => {
         that.$api.userArticle
           .showQuestion(that.$store.state.articleId)
-
           .then(function (response) {
             console.log(that.flatten(response.data.data.comments2));
             that.commentList = that.flatten(response.data.data.comments2);
