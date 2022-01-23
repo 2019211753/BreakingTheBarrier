@@ -839,6 +839,7 @@ export default {
         that.$api.userArticle
           .showQuestion(that.$store.state.articleId)
           .then(function (response) {
+            alert("sdf");
             console.log(that.flatten(response.data.data.comments2));
             that.commentList = that.flatten(response.data.data.comments2);
           })
