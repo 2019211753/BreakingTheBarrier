@@ -303,18 +303,15 @@
                   @click="deleteComment(item.id)"
                   v-if="item.postUserId == $store.state.me.id"
                 >删除</a
+                ><a
+                  class="reply"
+                  v-if="item.commentsNum > 3"
+                  @click="getMoreComments(item.id)"
+                >加载全部评论</a
                 >
                 </div>
               </div>
-              <div
-                style="background-color: white"
-                class="ui mini icon fluid button"
-                v-if="item.commentsNum > 3"
-                @click="getMoreComments(item.id)"
-              >
-                <i class="ui angle double down icon"></i>
-                展开更多
-              </div>
+
             </div>
           </div>
         </div>
@@ -368,7 +365,7 @@
             </el-main>
           </el-container>
         </div>
-        <div class="actions"   v-if="
+        <div class="actions" v-if="
             !favoriteList.length == 0 &&
                 collectLoading == false
               ">
@@ -423,11 +420,12 @@ export default {
       reply: "reply",
       parent: "comment",
       child: "child comment",
-      parentId: "0",
+      parentId: "-1",
       content: "",
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
       postUserId: this.$route.query.postUserId,
+      flag: false
     };
   },
   created() {
@@ -631,7 +629,7 @@ export default {
             },
           ], that.flatten(receiveComments)), []);
     },
-    getAllComments() {
+    getAllComments(flag, id, recieveComments) {
       var that = this;
       that.$api.userComment
         .getAllQuestionComments(that.$route.query.articleId)
@@ -639,7 +637,16 @@ export default {
           that.commentLoading = false;
           console.log(response.data.data.comments2);
           console.log(that.flatten(response.data.data.comments2));
-          that.commentList = that.flatten(response.data.data.comments2);
+          that.commentList =  response.data.data.comments2;
+          if (flag == true) {
+            for (var i = 0; i < that.commentList.length; i++) {
+              if(that.commentList[i].id==id){
+                that.commentList[i].recieveComments=recieveComments;
+                break;
+              }
+            }
+          }
+          that.commentList = that.flatten(that.commentList);
           that.bestComments = response.data.data.bestComments;
           that.selectedComments = response.data.data.selectedComments;
         })
@@ -649,10 +656,24 @@ export default {
     },
     getMoreComments(id) {
       var that = this;
+      that.flag=true;
       that.$api.userComment
         .getChildComments(id)
         .then(function (response) {
-          console.log(response.data);
+
+          that.getAllComments(flag, id, response.data.data.receiveComments);
+          that.flag=false;console.log(response.data);
+          /*var tag = 0;
+          for (var i = 0; i < that.commentList.length; i++) {
+            if (that.commentList[i].id == id) {
+              tag = i;
+              break;
+            }
+          }
+          for (var j = 0; j < response.data.data.receiveComments.length; j++) {
+            that.commentList[tag] = response.data.data.receiveComments[j];
+            tag = tag + 1;
+          }*/
         })
         .catch(function (error) {
           console.log(error);
@@ -727,7 +748,7 @@ export default {
         .then(function (response) {
           console.log(response.data);
           that.template.solved = response.data.data.solved;
-          that.getAllComments();
+          that.getAllComments(flag,"","");
           that.$message({
             message: response.data.msg,
             type: "success",
@@ -745,7 +766,7 @@ export default {
 
           .then(function (response) {
             console.log(response.data);
-            setTimeout(that.getAllComments(), 100);
+            setTimeout(that.getAllComments(flag,"",""), 100);
             that.$message({
               message: "删除成功",
               type: "success",
@@ -757,7 +778,7 @@ export default {
       });
 
       var p2 = new Promise((resolve, reject) => {
-        that.getAllComments();
+        that.getAllComments(flag,"","");
       });
 
       Promise.all([p1, p2]).then((res) => {
@@ -796,7 +817,7 @@ export default {
             .postQuestionComment(that.$route.query.articleId, data)
             .then(function (response) {
               console.log(response.data);
-              that.parentId = "0";
+              that.parentId = "-1";
               that.$message({
                 message: "评论成功",
                 type: "success",
