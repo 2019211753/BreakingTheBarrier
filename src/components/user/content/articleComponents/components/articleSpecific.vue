@@ -836,16 +836,7 @@ export default {
       });
 
       var p2 = new Promise((resolve, reject) => {
-        that.$api.userArticle
-          .showQuestion(that.$store.state.articleId)
-          .then(function (response) {
-            alert("sdf");
-            console.log(that.flatten(response.data.data.comments2));
-            that.commentList = that.flatten(response.data.data.comments2);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        that.getAllComments(that.flag, "", "");
       });
 
       Promise.all([p1, p2]).then((res) => {
