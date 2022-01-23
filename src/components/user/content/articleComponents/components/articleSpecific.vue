@@ -60,7 +60,7 @@
               </a>
               <div
                 v-if="template.solved == true"
-                class="ui green top right attached label"
+                class="ui teal top right attached label"
               >
                 已解决
               </div>
@@ -451,7 +451,7 @@ export default {
         });
     });
     var p2 = new Promise((resolve, reject) => {
-      that.getAllComments();
+      that.getAllComments(that.flag,"","");
     });
     Promise.all([p1, p2]).then((res) => {
       console.log(res);
@@ -637,16 +637,17 @@ export default {
           that.commentLoading = false;
           console.log(response.data.data.comments2);
           console.log(that.flatten(response.data.data.comments2));
-          that.commentList =  response.data.data.comments2;
-          if (flag == true) {
-            for (var i = 0; i < that.commentList.length; i++) {
-              if(that.commentList[i].id==id){
-                that.commentList[i].recieveComments=recieveComments;
+          var data=response.data.data.comments2;
+          if (that.flag == true) {alert("h")
+            for (var i = 0; i < data.length; i++) {
+              if (data[i].id == id) {
+                data[i].recieveComments = recieveComments;
+
                 break;
               }
             }
           }
-          that.commentList = that.flatten(that.commentList);
+          that.commentList = that.flatten(data);
           that.bestComments = response.data.data.bestComments;
           that.selectedComments = response.data.data.selectedComments;
         })
@@ -656,13 +657,13 @@ export default {
     },
     getMoreComments(id) {
       var that = this;
-      that.flag=true;
+      that.flag = true;
       that.$api.userComment
         .getChildComments(id)
         .then(function (response) {
-
-          that.getAllComments(flag, id, response.data.data.receiveComments);
-          that.flag=false;console.log(response.data);
+          that.getAllComments(that.flag, id, response.data.data.receiveComments);
+          that.flag = false;
+          console.log(response.data);
           /*var tag = 0;
           for (var i = 0; i < that.commentList.length; i++) {
             if (that.commentList[i].id == id) {
@@ -748,7 +749,7 @@ export default {
         .then(function (response) {
           console.log(response.data);
           that.template.solved = response.data.data.solved;
-          that.getAllComments(flag,"","");
+          that.getAllComments(that.flag, "", "");
           that.$message({
             message: response.data.msg,
             type: "success",
@@ -763,10 +764,10 @@ export default {
       var p1 = new Promise((resolve, reject) => {
         that.$api.userComment
           .deleteQuestionComment(this.$route.query.articleId, id)
-
           .then(function (response) {
             console.log(response.data);
-            setTimeout(that.getAllComments(flag,"",""), 100);
+            that.solved = response.data.data.solved;
+            setTimeout(that.getAllComments(that.flag, "", ""), 100);
             that.$message({
               message: "删除成功",
               type: "success",
@@ -778,7 +779,7 @@ export default {
       });
 
       var p2 = new Promise((resolve, reject) => {
-        that.getAllComments(flag,"","");
+        that.getAllComments(that.flag, "", "");
       });
 
       Promise.all([p1, p2]).then((res) => {
