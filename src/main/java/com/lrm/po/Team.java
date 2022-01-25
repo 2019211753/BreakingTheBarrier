@@ -2,6 +2,7 @@ package com.lrm.po;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,7 +28,30 @@ public class Team {
      * 小组成员
      */
     @ManyToMany
-    private List<User> members;
+    private List<User> members = new ArrayList<>();
+
+    /**
+     * 已经加入的人数
+     */
+    private Integer size;
+
+    /**
+     * 希望创建的团队人数
+     */
+    private Integer capacity;
+
+    public boolean isFull() {
+        return isFull;
+    }
+
+    public void setFull(boolean full) {
+        isFull = full;
+    }
+
+    /**
+     * 是否满员
+     */
+    private boolean isFull;
 
     public Long getId() {
         return id;
@@ -61,4 +85,19 @@ public class Team {
         this.members = members;
     }
 
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
 }

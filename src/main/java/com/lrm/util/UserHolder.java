@@ -15,6 +15,7 @@ public class UserHolder {
     public static User getLocalUser() {
         return localUser.get();
     }
+
     public static void clear() {
         localUser.remove();
     }

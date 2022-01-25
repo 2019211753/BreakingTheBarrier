@@ -24,7 +24,20 @@ public class WebAspect {
     @Autowired
     private UserRepository userRepository;
 
-    @Pointcut("execution(* com.lrm.web..*.*(..)) ")
+    @Pointcut("execution(* com.lrm.web.FileController.*(..))")
+    public void fileCut() {
+    }
+
+    @Pointcut("execution(* com.lrm.web.InfoEntryController.*(..))")
+    public void infoCut() {
+    }
+
+    @Pointcut("execution(* com.lrm.web.TeamController.*(..))")
+    public void teamCut() {
+    }
+
+
+    @Pointcut("infoCut() || fileCut() || teamCut()")
     public void pointCut() {
     }
 

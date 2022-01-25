@@ -11,4 +11,5 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     List<Team> findAllByNickname(String name);
 
+//    List<Team> findAllByFullIsFalse();
 }
