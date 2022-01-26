@@ -103,7 +103,7 @@ export default {
           that.$store.commit("getOthersFile", response.data.data);
           that.$router.push({
             path: "/BreakingTheBarrier/visitor/questions",
-            query: { userId0: id },
+            query: { userId: id },
           });
         })
         .catch(function (error) {

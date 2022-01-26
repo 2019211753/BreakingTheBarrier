@@ -7,7 +7,7 @@
             <div class="ui large feed">
               <div class="event">
                 <div class="label">
-                  <el-skeleton-item variant="circle image"/>
+                  <el-skeleton-item variant="circle image" />
                 </div>
                 <div class="content">
                   <div class="summary"></div>
@@ -15,17 +15,17 @@
               </div>
             </div>
             <h3 class="title">
-              <el-skeleton-item variant="text"/>
+              <el-skeleton-item variant="text" />
             </h3>
             <div class="ui divider"></div>
             <el-skeleton-item
               variant="image"
               style="width: 80%; height: 400px; margin: auto"
             />
-            <br/>
-            <el-skeleton-item variant="text"/>
-            <el-skeleton-item variant="text"/>
-            <el-skeleton-item variant="text"/>
+            <br />
+            <el-skeleton-item variant="text" />
+            <el-skeleton-item variant="text" />
+            <el-skeleton-item variant="text" />
             <el-row>
               <el-col :span="20">
                 <div class="grid-content bg-purple-dark"></div>
@@ -39,7 +39,7 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="template.avatar" alt=""/>
+            <img :src="template.avatar" alt="" />
           </div>
           <div class="content">
             <div class="summary">
@@ -47,7 +47,7 @@
                 <router-link
                   v-if="$store.state.me.id == postUserId"
                   to="/BreakingTheBarrier/mine/contents/questionFiles"
-                >{{ template.nickname }}
+                  >{{ template.nickname }}
                 </router-link>
                 <router-link
                   v-else
@@ -55,7 +55,7 @@
                     path: '/BreakingTheBarrier/visitor/questions',
                     query: { userId: postUserId },
                   }"
-                >{{ template.nickname }}
+                  >{{ template.nickname }}
                 </router-link>
               </a>
               <div
@@ -78,7 +78,7 @@
       <h3 class="title">{{ template.title }}</h3>
       <div class="ui divider"></div>
       <div v-html="articleContent">{{ articleContent }}</div>
-      <br/>
+      <br />
       <el-row>
         <el-col :span="7">
           <div style="height: 1px"></div>
@@ -136,7 +136,7 @@
         <i class="trash icon"></i>删除
       </div>
     </div>
-    <br/>
+    <br />
     <div>
       <div class="ui segment">
         <div>
@@ -157,11 +157,11 @@
                 <div class="ui large feed">
                   <div class="event">
                     <div class="label">
-                      <el-skeleton-item variant="circle image"/>
+                      <el-skeleton-item variant="circle image" />
                     </div>
                     <div class="content">
                       <div class="summary">
-                        <el-skeleton-item variant="text"/>
+                        <el-skeleton-item variant="text" />
                       </div>
                     </div>
                   </div>
@@ -170,7 +170,7 @@
             </el-skeleton>
             <div class="comment" v-for="item in selectedComments">
               <a class="avatar">
-                <img :src="item.avatar" alt=""/>
+                <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author">
@@ -179,42 +179,25 @@
                       path: '/BreakingTheBarrier/visitor',
                       query: { userId: item.postUserId },
                     }"
-                  >{{ item.nickname }}
-                  </router-link>
-                </a
+                    >{{ item.nickname }}
+                  </router-link> </a
                 ><a
-                class="ui mini basic blue label"
-                style="margin-left: 5px"
-                v-if="item.postUserId == postUserId"
-              >发布者</a
-              >
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId == postUserId"
+                  >发布者</a
+                >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini teal label">精选评论</a>
                 </div>
                 <div class="text" v-html="item.content"></div>
-                <!-- <div class="actions">
-                  <a
-                    class="reply"
-                    @click="likeComment(item.id)"
-                    v-model="likeNumber"
-                    >赞( {{ item.likesNum }})</a
-                  ><a class="reply" @click="dislikeComment(item.id)"
-                    >踩({{ item.disLikesNum }})</a
-                  ><a class="reply" @click="replyComment(item.id)">回复</a
-                  ><a
-                    class="reply"
-                    @click="deleteComment(item.id)"
-                    v-if="item.postUserId == $store.state.me.id"
-                    >删除</a
-                  >
-                </div> -->
               </div>
             </div>
             <div class="ui divider" v-if="!selectedComments.length == 0"></div>
             <div class="comment" v-for="item in bestComments">
               <a class="avatar">
-                <img :src="item.avatar" alt=""/>
+                <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author">
@@ -223,36 +206,19 @@
                       path: '/BreakingTheBarrier/visitor',
                       query: { userId: item.postUserId },
                     }"
-                  >{{ item.nickname }}
-                  </router-link>
-                </a
+                    >{{ item.nickname }}
+                  </router-link> </a
                 ><a
-                class="ui mini basic blue label"
-                style="margin-left: 5px"
-                v-if="item.postUserId == postUserId"
-              >发布者</a
-              >
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId == postUserId"
+                  >发布者</a
+                >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini red label">优质评论</a>
                 </div>
                 <div class="text" v-html="item.content"></div>
-                <!-- <div class="actions">
-                  <a
-                    class="reply"
-                    @click="likeComment(item.id)"
-                    v-model="likeNumber"
-                    >赞( {{ item.likesNum }})</a
-                  ><a class="reply" @click="dislikeComment(item.id)"
-                    >踩({{ item.disLikesNum }})</a
-                  >
-                  <a
-                    class="reply"
-                    @click="deleteComment(item.id)"
-                    v-if="item.postUserId == $store.state.me.id"
-                    >删除</a
-                  >
-                </div> -->
               </div>
             </div>
             <div class="ui divider" v-if="!bestComments.length == 0"></div>
@@ -261,7 +227,7 @@
               v-for="item in commentList"
             >
               <a class="avatar">
-                <img :src="item.avatar" alt=""/>
+                <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author">
@@ -270,48 +236,52 @@
                       path: '/BreakingTheBarrier/visitor',
                       query: { userId: item.postUserId },
                     }"
-                  >{{ item.nickname }}
-                  </router-link>
-                </a
+                    >{{ item.nickname }}
+                  </router-link> </a
                 ><a
-                class="ui mini basic blue label"
-                style="margin-left: 5px"
-                v-if="item.postUserId == postUserId"
-              >发布者</a
-              >
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId == postUserId"
+                  >发布者</a
+                >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span>
                 </div>
                 <div class="text" v-html="item.content"></div>
                 <div class="actions">
-                  <a :style="item.approved==true?'color:RGB(219,40,40)':''"
-                     class="reply"
-                     @click="likeComment(item.id)"
-                     v-model="likeNumber"
-                  >赞( {{ item.likesNum }})</a
-                  ><a :style="item.disapproved==true?'color:RGB(65,131,196)':''"
-                      class="reply" @click="dislikeComment(item.id)"
-                >踩({{ item.disLikesNum }})</a
-                ><a class="reply" @click="replyComment(item.id)">回复</a
-                ><a :style="item.selected==true?'color:RGB(0,181,173)':''"
+                  <a
+                    :style="item.approved == true ? 'color:RGB(219,40,40)' : ''"
+                    class="reply"
+                    @click="likeComment(item.id, true)"
+                    v-model="likeNumber"
+                    >赞( {{ item.likesNum }})</a
+                  ><a
+                    :style="
+                      item.disapproved == true ? 'color:RGB(65,131,196)' : ''
+                    "
+                    class="reply"
+                    @click="dislikeComment(item.id, true)"
+                    >踩({{ item.disLikesNum }})</a
+                  ><a class="reply" @click="replyComment(item.id)">回复</a
+                  ><a
+                    :style="item.selected == true ? 'color:RGB(0,181,173)' : ''"
                     class="reply"
                     v-if="postUserId == $store.state.me.id"
-                    @click="setSelectedComment(item.id)"
-                >设为精选评论</a
-                ><a
-                  class="reply"
-                  @click="deleteComment(item.id)"
-                  v-if="item.postUserId == $store.state.me.id"
-                >删除</a
-                ><a
-                  class="reply"
-                  v-if="item.commentsNum > 3"
-                  @click="getMoreComments(item.id)"
-                >加载全部评论</a
-                >
+                    @click="setSelectedComment(item.id, true)"
+                    >设为精选评论</a
+                  ><a
+                    class="reply"
+                    @click="deleteComment(item.id, true)"
+                    v-if="item.postUserId == $store.state.me.id"
+                    >删除</a
+                  ><a
+                    class="reply"
+                    v-if="item.commentsNum > 3"
+                    @click="getMoreComments(item.id)"
+                    >加载全部评论</a
+                  >
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -319,10 +289,7 @@
       <div class="ui collect modal" style="width: 400px">
         <el-empty
           :image-size="100"
-          v-if="
-            favoriteList.length == 0 &&
-                collectLoading == false
-              "
+          v-if="favoriteList.length == 0 && collectLoading == false"
           description="暂无收藏夹"
         ></el-empty>
         <el-skeleton :loading="collectLoading" animated :count="1">
@@ -336,7 +303,7 @@
         <div class="ui basic segment">
           <el-container v-for="(item, index) in favoriteList" :key="index">
             <el-aside width="70px"
-            ><i class="huge yellow folder icon"></i
+              ><i class="huge yellow folder icon"></i
             ></el-aside>
             <el-main>
               <el-row :gutter="24">
@@ -352,23 +319,23 @@
                     v-if="item.open == false"
                     class="ui small blue label"
                     style="margin-left: 10px"
-                  >私密</a
+                    >私密</a
                   >
                 </el-col>
                 <el-col :span="3"
-                ><i
-                  :class="item.id == favoriteId ? selected : unselected"
-                  style="margin-top: 2px"
-                ></i>
+                  ><i
+                    :class="item.id == favoriteId ? selected : unselected"
+                    style="margin-top: 2px"
+                  ></i>
                 </el-col>
               </el-row>
             </el-main>
           </el-container>
         </div>
-        <div class="actions" v-if="
-            !favoriteList.length == 0 &&
-                collectLoading == false
-              ">
+        <div
+          class="actions"
+          v-if="!favoriteList.length == 0 && collectLoading == false"
+        >
           <div class="ui teal button" @click="collectArticle()">
             <i class="checkmark icon"></i>
             确定
@@ -378,11 +345,77 @@
       <div class="ui edit modal" style="width: 400px">
         <div id="websiteEditorElem"></div>
         <div class="actions">
-          <div class="ui teal ok inverted button" @click="sure()">
+          <div class="ui teal button" @click="sure()">
             <i class="checkmark icon"></i>
             确定
           </div>
         </div>
+      </div>
+      <div class="ui moreComments modal" style="width: 700px">
+        <br />
+        <div class="ui basic segment" style="width: 600px; margin: auto">
+          <div class="ui comments">
+            <div class="comment" v-for="item in moreComments">
+              <a class="avatar">
+                <img :src="item.avatar" alt="" />
+              </a>
+              <div class="content">
+                <a class="author">
+                  <router-link
+                    :to="{
+                      path: '/BreakingTheBarrier/visitor',
+                      query: { userId: item.postUserId },
+                    }"
+                    >{{ item.nickname }}
+                  </router-link> </a
+                ><a
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId == postUserId"
+                  >发布者</a
+                >
+                <div class="metadata">
+                  <span class="date">{{ item.createTime }}</span>
+                </div>
+                <div class="text" v-html="item.content"></div>
+                <div class="actions">
+                  <a
+                    :style="item.approved == true ? 'color:RGB(219,40,40)' : ''"
+                    class="reply"
+                    @click="likeComment(item.id, false)"
+                    v-model="likeNumber"
+                    >赞( {{ item.likesNum }})</a
+                  ><a
+                    :style="
+                      item.disapproved == true ? 'color:RGB(65,131,196)' : ''
+                    "
+                    class="reply"
+                    @click="dislikeComment(item.id, false)"
+                    >踩({{ item.disLikesNum }})</a
+                  ><a class="reply" @click="replyComment(item.id)">回复</a
+                  ><a
+                    :style="item.selected == true ? 'color:RGB(0,181,173)' : ''"
+                    class="reply"
+                    v-if="postUserId == $store.state.me.id"
+                    @click="setSelectedComment(item.id, false)"
+                    >设为精选评论</a
+                  ><a
+                    class="reply"
+                    @click="deleteComment(item.id, false)"
+                    v-if="item.postUserId == $store.state.me.id"
+                    >删除</a
+                  ><a
+                    class="reply"
+                    v-if="item.commentsNum > 3"
+                    @click="getMoreComments(item.id)"
+                    >加载全部评论</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
       </div>
     </div>
   </div>
@@ -417,6 +450,7 @@ export default {
       commentList: "",
       bestComments: "",
       selectedComments: "",
+      moreComments: "",
       reply: "reply",
       parent: "comment",
       child: "child comment",
@@ -425,7 +459,7 @@ export default {
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
       postUserId: this.$route.query.postUserId,
-      flag: false
+      nowParentId: "",
     };
   },
   created() {
@@ -435,7 +469,6 @@ export default {
         .showQuestion(that.$route.query.articleId)
         .then(function (response) {
           that.questionLoading = false;
-          console.log(response.data);
           that.template = response.data.data.template;
           that.articleApproved = that.template.approved;
           that.articleDisapproved = that.template.disapproved;
@@ -451,27 +484,16 @@ export default {
         });
     });
     var p2 = new Promise((resolve, reject) => {
-      that.getAllComments(that.flag,"","");
+      that.getAllComments(false, "", "");
     });
-    Promise.all([p1, p2]).then((res) => {
-      console.log(res);
-    });
+    Promise.all([p1, p2]).then((res) => {});
   },
   mounted() {
-    // wangeditor
     this.phoneEditor = new E("#websiteEditorElem");
     this.phoneEditor.config.zIndex = 500;
     this.phoneEditor.config.height = 200;
-    // this.phoneEditor.onchange = function () {
-    //   this.formData.phone = this.$txt.html()
-    // }
-    // 上传图片到服务器，base64形式
     this.phoneEditor.config.uploadImgShowBase64 = true;
-    // 隐藏网络图片
-    //this.phoneEditor.customConfig.showLinkImg = false;
-    // 创建一个富文本编辑器
     this.phoneEditor.create();
-    // 富文本内容
     this.phoneEditor.txt.html();
   },
   methods: {
@@ -480,7 +502,6 @@ export default {
       that.$api.userLike
         .likeQuestion(id)
         .then(function (response) {
-          console.log(response.data);
           that.getArticleLikesAndDislikes(
             response.data.data.approved,
             response.data.data.disapproved,
@@ -500,7 +521,6 @@ export default {
       that.$api.userLike
         .dislikeQuestion(id)
         .then(function (response) {
-          console.log(response.data);
           that.getArticleLikesAndDislikes(
             response.data.data.approved,
             response.data.data.disapproved,
@@ -522,17 +542,16 @@ export default {
       that.articleDisapproved = disapproved;
     },
     replyArticle() {
-      $(".ui.edit.modal").modal("show");
+      $(".edit.modal").modal("show");
     },
     openCollections() {
       var that = this;
-      $(".ui.collect.modal").modal("show");
+      $(".collect.modal").modal("show");
       that.$api.personalFavorite
         .getFavorites()
         .then(function (response) {
           that.collectLoading = false;
           that.favoriteList = response.data.data.favorites;
-          console.log(response.data);
         })
         .catch(function (error) {
           console.log(error);
@@ -551,7 +570,6 @@ export default {
           that.$route.query.articleId
         )
         .then(function (response) {
-          console.log(response.data);
           that.collected = response.data.data.collected;
           that.articleCollectNumber = response.data.data.collectedNum;
           that.$message({
@@ -568,7 +586,6 @@ export default {
       that.$api.userQuestion
         .deleteQuestion(id)
         .then(function (response) {
-          console.log(response.data);
           that.$message({
             message: "删除成功",
             type: "success",
@@ -580,7 +597,7 @@ export default {
         });
     },
     flatten(data) {
-      var that = this;
+      var that=this;
       return data.reduce(
         (
           arr,
@@ -603,50 +620,44 @@ export default {
             postUserId,
             questionId,
             selected,
-            receiveComments = []
+            receiveComments = [],
           }
         ) =>
-          arr.concat([
-            {
-              adminComment,
-              answer,
-              blogId,
-              commentsNum,
-              id,
-              approved,
-              avatar,
-              content,
-              createTime,
-              disLikesNum,
-              disapproved,
-              likesNum,
-              looked,
-              nickname,
-              parentCommentId,
-              postUserId,
-              questionId,
-              selected
-            },
-          ], that.flatten(receiveComments)), []);
+          arr.concat(
+            [
+              {
+                adminComment,
+                answer,
+                blogId,
+                commentsNum,
+                id,
+                approved,
+                avatar,
+                content,
+                createTime,
+                disLikesNum,
+                disapproved,
+                likesNum,
+                looked,
+                nickname,
+                parentCommentId,
+                postUserId,
+                questionId,
+                selected,
+              },
+            ],
+            that.flatten(receiveComments)
+          ),
+        []
+      );
     },
-    getAllComments(flag, id, recieveComments) {
+    getAllComments() {
       var that = this;
       that.$api.userComment
         .getAllQuestionComments(that.$route.query.articleId)
         .then(function (response) {
           that.commentLoading = false;
-          console.log(response.data.data.comments2);
-          console.log(that.flatten(response.data.data.comments2));
-          var data=response.data.data.comments2;
-          if (that.flag == true) {alert("h")
-            for (var i = 0; i < data.length; i++) {
-              if (data[i].id == id) {
-                data[i].recieveComments = recieveComments;
-
-                break;
-              }
-            }
-          }
+          var data = response.data.data.comments2;
           that.commentList = that.flatten(data);
           that.bestComments = response.data.data.bestComments;
           that.selectedComments = response.data.data.selectedComments;
@@ -657,53 +668,60 @@ export default {
     },
     getMoreComments(id) {
       var that = this;
-      that.flag = true;
+      that.nowParentId = id;
       that.$api.userComment
         .getChildComments(id)
         .then(function (response) {
-          that.getAllComments(that.flag, id, response.data.data.receiveComments);
-          that.flag = false;
-          console.log(response.data);
-          /*var tag = 0;
-          for (var i = 0; i < that.commentList.length; i++) {
-            if (that.commentList[i].id == id) {
-              tag = i;
-              break;
-            }
-          }
-          for (var j = 0; j < response.data.data.receiveComments.length; j++) {
-            that.commentList[tag] = response.data.data.receiveComments[j];
-            tag = tag + 1;
-          }*/
+          that.moreComments = response.data.data.receiveComments;
+          $(".moreComments.modal").modal("show");
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    getCommentLikesAndDislikes(commentId, likesNum, dislikesNum, approved, disapproved) {
+    getCommentLikesAndDislikes(
+      commentId,
+      likesNum,
+      dislikesNum,
+      approved,
+      disapproved,
+      flag
+    ) {
       var that = this;
-      for (var i in that.commentList) {
-        if (that.commentList[i].id == commentId) {
-          that.commentList[i].likesNum = likesNum;
-          that.commentList[i].disLikesNum = dislikesNum;
-          that.commentList[i].approved = approved;
-          that.commentList[i].disapproved = disapproved;
-          break;
+      if (flag == true) {
+        for (var i in that.commentList) {
+          if (that.commentList[i].id == commentId) {
+            that.commentList[i].likesNum = likesNum;
+            that.commentList[i].disLikesNum = dislikesNum;
+            that.commentList[i].approved = approved;
+            that.commentList[i].disapproved = disapproved;
+            break;
+          }
+        }
+      } else {
+        for (var i in that.moreComments) {
+          if (that.moreComments[i].id == commentId) {
+            that.moreComments[i].likesNum = likesNum;
+            that.moreComments[i].disLikesNum = dislikesNum;
+            that.moreComments[i].approved = approved;
+            that.moreComments[i].disapproved = disapproved;
+            break;
+          }
         }
       }
     },
-    likeComment(id) {
+    likeComment(id, flag) {
       var that = this;
       that.$api.userLike
         .likeComment(id)
         .then(function (response) {
-          console.log(response.data);
           that.getCommentLikesAndDislikes(
             id,
             response.data.data.likesNum,
             response.data.data.disLikesNum,
             response.data.data.approved,
-            response.data.data.disapproved
+            response.data.data.disapproved,
+            flag
           );
           that.$message({
             message: "点赞成功",
@@ -714,18 +732,18 @@ export default {
           console.log(error);
         });
     },
-    dislikeComment(id) {
+    dislikeComment(id, flag) {
       var that = this;
       that.$api.userLike
         .dislikeComment(id)
         .then(function (response) {
-          console.log(response.data);
           that.getCommentLikesAndDislikes(
             id,
             response.data.data.likesNum,
             response.data.data.disLikesNum,
             response.data.data.approved,
-            response.data.data.disapproved
+            response.data.data.disapproved,
+            flag
           );
           that.$message({
             message: "点踩成功",
@@ -739,17 +757,18 @@ export default {
     replyComment(id) {
       var that = this;
       that.parentId = id;
-      $(".ui.edit.modal").modal("show");
+      $(".edit.modal").modal("show");
     },
-    setSelectedComment(id) {
+    setSelectedComment(id, flag) {
       var that = this;
       that.$api.userComment
         .getCommentSelected(that.$store.state.articleId, id)
-
         .then(function (response) {
-          console.log(response.data);
           that.template.solved = response.data.data.solved;
-          that.getAllComments(that.flag, "", "");
+          if (flag == false) {
+            that.getMoreComments(that.nowParentId);
+          }
+          that.getAllComments("", "");
           that.$message({
             message: response.data.msg,
             type: "success",
@@ -759,15 +778,18 @@ export default {
           console.log(error);
         });
     },
-    deleteComment(id) {
+    deleteComment(id, flag) {
       var that = this;
       var p1 = new Promise((resolve, reject) => {
         that.$api.userComment
           .deleteQuestionComment(this.$route.query.articleId, id)
           .then(function (response) {
-            console.log(response.data);
             that.solved = response.data.data.solved;
-            setTimeout(that.getAllComments(that.flag, "", ""), 100);
+            if (flag == true) {
+              that.getAllComments("", "");
+            } else {
+              that.getMoreComments(that.nowParentId);
+            }
             that.$message({
               message: "删除成功",
               type: "success",
@@ -779,31 +801,10 @@ export default {
       });
 
       var p2 = new Promise((resolve, reject) => {
-        that.getAllComments(that.flag, "", "");
+        that.getAllComments(false, "", "");
       });
 
-      Promise.all([p1, p2]).then((res) => {
-        console.log(res);
-      });
-      /*   axios
-        .get(
-          "/question/" +
-            this.$route.query.articleId +
-            "/comment/" +
-            id +
-            "/delete"
-        )
-        .then(function (response) {
-          console.log(response.data);
-          setTimeout(that.getAllComments(), 100);
-          that.$message({
-            message: "删除成功",
-            type: "success",
-          });
-        })
-        .catch(function (error) {
-          console.log(error);
-        }); */
+      Promise.all([p1, p2]).then((res) => {});
     },
     sure() {
       var that = this;
@@ -817,7 +818,6 @@ export default {
           that.$api.userComment
             .postQuestionComment(that.$route.query.articleId, data)
             .then(function (response) {
-              console.log(response.data);
               that.parentId = "-1";
               that.$message({
                 message: "评论成功",
@@ -836,14 +836,10 @@ export default {
       });
 
       var p2 = new Promise((resolve, reject) => {
-        that.getAllComments(that.flag, "", "");
+        that.getAllComments(false, "", "");
       });
 
-      Promise.all([p1, p2]).then((res) => {
-        console.log(res);
-      });
-
-      /* setTimeout(function () {}, 500); */
+      Promise.all([p1, p2]).then((res) => {});
     },
   },
 };
@@ -852,11 +848,6 @@ export default {
 <style scoped>
 h3:nth-child(2) {
   text-align: center;
-}
-
-.buttons {
-  width: 400px;
-  margin: 0 20%;
 }
 
 .child.comment {

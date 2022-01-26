@@ -8,30 +8,35 @@
       ></el-empty>
       <div class="event" v-if="lookedComments" v-for="item in lookedComments">
         <div class="label">
-          <img :src="item.avatar" alt="" />
+          <img :src="item.avatar" alt=""/>
         </div>
         <div class="content">
           <div class="summary">
             <a class="user"> {{ item.nickname }} </a> 在
-            <a class="user"> {{ item.parentContent }} </a> 中评论了你：
+            <a class="user"> {{ getInnerText(item.parentContent) }} </a> 中评论了你：
             <a href=""
-              ><router-link
+            >
+              <router-link
                 v-if="item.parentType == '博客' || item.parentType == '博客的评论'"
                 :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
                   query: { blogId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
-                {{ getInnerText(item.content) }}</router-link
-              ><router-link
+                {{ getInnerText(item.content) }}
+              </router-link
+              >
+              <router-link
                 v-else
                 :to="{
                   path: '/BreakingTheBarrier/BBS/articleContent',
                   query: { articleId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
-                {{ getInnerText(item.content) }}</router-link
-              ></a
+                {{ getInnerText(item.content) }}
+              </router-link
+              >
+            </a
             >
             <div class="date">{{ item.createTime }}</div>
           </div>
@@ -39,7 +44,7 @@
       </div>
       <div class="event" v-if="lookedLikes" v-for="item in lookedLikes">
         <div class="label">
-          <img :src="item.avatar" alt="" />
+          <img :src="item.avatar" alt=""/>
         </div>
         <div class="content">
           <div class="summary">
@@ -48,23 +53,28 @@
               item.parentType
             }}：
             <a href=""
-              ><router-link
+            >
+              <router-link
                 v-if="item.parentType == '博客' || item.parentType == '博客的评论'"
                 :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
                   query: { blogId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
-                {{ getInnerText(item.parentContent) }}</router-link
-              ><router-link
+                {{ getInnerText(item.parentContent) }}
+              </router-link
+              >
+              <router-link
                 v-else
                 :to="{
                   path: '/BreakingTheBarrier/BBS/articleContent',
                   query: { articleId: item.parentId,postUserId: item.parentUserId, },
                 }"
               >
-                {{ getInnerText(item.parentContent) }}</router-link
-              ></a
+                {{ getInnerText(item.parentContent) }}
+              </router-link
+              >
+            </a
             >
             <div class="date">{{ item.createTime }}</div>
           </div>
@@ -73,14 +83,15 @@
     </div>
     <el-skeleton :loading="loading" animated :count="5">
       <template slot="template"
-        ><div class="ui large feed">
+      >
+        <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <el-skeleton-item variant="circle image" />
+              <el-skeleton-item variant="circle image"/>
             </div>
             <div class="content">
               <div class="summary">
-                <el-skeleton-item variant="text" />
+                <el-skeleton-item variant="text"/>
               </div>
             </div>
           </div>
@@ -95,7 +106,7 @@
 export default {
   name: "read",
   data() {
-    return { loading: true, lookedComments: [], lookedLikes: [] };
+    return {loading: true, lookedComments: [], lookedLikes: []};
   },
   created() {
     var that = this;
