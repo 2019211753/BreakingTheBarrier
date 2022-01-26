@@ -7,7 +7,7 @@
             <div class="ui large feed">
               <div class="event">
                 <div class="label">
-                  <el-skeleton-item variant="circle image"/>
+                  <el-skeleton-item variant="circle image" />
                 </div>
                 <div class="content">
                   <div class="summary"></div>
@@ -15,17 +15,17 @@
               </div>
             </div>
             <h3 class="title">
-              <el-skeleton-item variant="text"/>
+              <el-skeleton-item variant="text" />
             </h3>
             <div class="ui divider"></div>
             <el-skeleton-item
               variant="image"
               style="width: 80%; height: 400px; margin: auto"
             />
-            <br/>
-            <el-skeleton-item variant="text"/>
-            <el-skeleton-item variant="text"/>
-            <el-skeleton-item variant="text"/>
+            <br />
+            <el-skeleton-item variant="text" />
+            <el-skeleton-item variant="text" />
+            <el-skeleton-item variant="text" />
             <el-row>
               <el-col :span="20">
                 <div class="grid-content bg-purple-dark"></div>
@@ -39,7 +39,7 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="template.avatar" alt=""/>
+            <img :src="template.avatar" alt="" />
           </div>
           <div class="content">
             <div class="summary">
@@ -47,7 +47,7 @@
                 <router-link
                   v-if="$store.state.me.id == postUserId"
                   to="/BreakingTheBarrier/mine/contents/questionFiles"
-                >{{ template.nickname }}
+                  >{{ template.nickname }}
                 </router-link>
                 <router-link
                   v-else
@@ -55,7 +55,7 @@
                     path: '/BreakingTheBarrier/visitor/questions',
                     query: { userId: postUserId },
                   }"
-                >{{ template.nickname }}
+                  >{{ template.nickname }}
                 </router-link>
               </a>
               <div
@@ -78,7 +78,7 @@
       <h3 class="title">{{ template.title }}</h3>
       <div class="ui divider"></div>
       <div v-html="articleContent">{{ articleContent }}</div>
-      <br/>
+      <br />
       <el-row>
         <el-col :span="7">
           <div style="height: 1px"></div>
@@ -136,7 +136,7 @@
         <i class="trash icon"></i>删除
       </div>
     </div>
-    <br/>
+    <br />
     <div>
       <div class="ui segment">
         <div>
@@ -157,11 +157,11 @@
                 <div class="ui large feed">
                   <div class="event">
                     <div class="label">
-                      <el-skeleton-item variant="circle image"/>
+                      <el-skeleton-item variant="circle image" />
                     </div>
                     <div class="content">
                       <div class="summary">
-                        <el-skeleton-item variant="text"/>
+                        <el-skeleton-item variant="text" />
                       </div>
                     </div>
                   </div>
@@ -170,7 +170,7 @@
             </el-skeleton>
             <div class="comment" v-for="item in selectedComments">
               <a class="avatar">
-                <img :src="item.avatar" alt=""/>
+                <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author">
@@ -179,15 +179,14 @@
                       path: '/BreakingTheBarrier/visitor',
                       query: { userId: item.postUserId },
                     }"
-                  >{{ item.nickname }}
-                  </router-link>
-                </a
+                    >{{ item.nickname }}
+                  </router-link> </a
                 ><a
-                class="ui mini basic blue label"
-                style="margin-left: 5px"
-                v-if="item.postUserId == postUserId"
-              >发布者</a
-              >
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId == postUserId"
+                  >发布者</a
+                >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini teal label">精选评论</a>
@@ -198,7 +197,7 @@
             <div class="ui divider" v-if="!selectedComments.length == 0"></div>
             <div class="comment" v-for="item in bestComments">
               <a class="avatar">
-                <img :src="item.avatar" alt=""/>
+                <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author">
@@ -207,15 +206,14 @@
                       path: '/BreakingTheBarrier/visitor',
                       query: { userId: item.postUserId },
                     }"
-                  >{{ item.nickname }}
-                  </router-link>
-                </a
+                    >{{ item.nickname }}
+                  </router-link> </a
                 ><a
-                class="ui mini basic blue label"
-                style="margin-left: 5px"
-                v-if="item.postUserId == postUserId"
-              >发布者</a
-              >
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId == postUserId"
+                  >发布者</a
+                >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini red label">优质评论</a>
@@ -229,7 +227,7 @@
               v-for="item in commentList"
             >
               <a class="avatar">
-                <img :src="item.avatar" alt=""/>
+                <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author">
@@ -238,15 +236,14 @@
                       path: '/BreakingTheBarrier/visitor',
                       query: { userId: item.postUserId },
                     }"
-                  >{{ item.nickname }}
-                  </router-link>
-                </a
+                    >{{ item.nickname }}
+                  </router-link> </a
                 ><a
-                class="ui mini basic blue label"
-                style="margin-left: 5px"
-                v-if="item.postUserId == postUserId"
-              >发布者</a
-              >
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId == postUserId"
+                  >发布者</a
+                >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span>
                 </div>
@@ -257,32 +254,32 @@
                     class="reply"
                     @click="likeComment(item.id, true)"
                     v-model="likeNumber"
-                  >赞( {{ item.likesNum }})</a
+                    >赞( {{ item.likesNum }})</a
                   ><a
-                  :style="
+                    :style="
                       item.disapproved == true ? 'color:RGB(65,131,196)' : ''
                     "
-                  class="reply"
-                  @click="dislikeComment(item.id, true)"
-                >踩({{ item.disLikesNum }})</a
-                ><a class="reply" @click="replyComment(item.id)">回复</a
-                ><a
-                  :style="item.selected == true ? 'color:RGB(0,181,173)' : ''"
-                  class="reply"
-                  v-if="postUserId == $store.state.me.id"
-                  @click="setSelectedComment(item.id, true)"
-                >设为精选评论</a
-                ><a
-                  class="reply"
-                  @click="deleteComment(item.id, true)"
-                  v-if="item.postUserId == $store.state.me.id"
-                >删除</a
-                ><a
-                  class="reply"
-                  v-if="item.commentsNum > 3"
-                  @click="getMoreComments(item.id)"
-                >加载全部评论</a
-                >
+                    class="reply"
+                    @click="dislikeComment(item.id, true)"
+                    >踩({{ item.disLikesNum }})</a
+                  ><a class="reply" @click="replyComment(item.id)">回复</a
+                  ><a
+                    :style="item.selected == true ? 'color:RGB(0,181,173)' : ''"
+                    class="reply"
+                    v-if="postUserId == $store.state.me.id"
+                    @click="setSelectedComment(item.id, true)"
+                    >设为精选评论</a
+                  ><a
+                    class="reply"
+                    @click="deleteComment(item.id, true)"
+                    v-if="item.postUserId == $store.state.me.id"
+                    >删除</a
+                  ><a
+                    class="reply"
+                    v-if="item.commentsNum > 3"
+                    @click="getMoreComments(item.id)"
+                    >加载全部评论</a
+                  >
                 </div>
               </div>
             </div>
@@ -306,7 +303,7 @@
         <div class="ui basic segment">
           <el-container v-for="(item, index) in favoriteList" :key="index">
             <el-aside width="70px"
-            ><i class="huge yellow folder icon"></i
+              ><i class="huge yellow folder icon"></i
             ></el-aside>
             <el-main>
               <el-row :gutter="24">
@@ -322,14 +319,14 @@
                     v-if="item.open == false"
                     class="ui small blue label"
                     style="margin-left: 10px"
-                  >私密</a
+                    >私密</a
                   >
                 </el-col>
                 <el-col :span="3"
-                ><i
-                  :class="item.id == favoriteId ? selected : unselected"
-                  style="margin-top: 2px"
-                ></i>
+                  ><i
+                    :class="item.id == favoriteId ? selected : unselected"
+                    style="margin-top: 2px"
+                  ></i>
                 </el-col>
               </el-row>
             </el-main>
@@ -355,12 +352,12 @@
         </div>
       </div>
       <div class="ui moreComments modal" style="width: 700px">
-        <br/>
+        <br />
         <div class="ui basic segment" style="width: 600px; margin: auto">
           <div class="ui comments">
             <div class="comment" v-for="item in moreComments">
               <a class="avatar">
-                <img :src="item.avatar" alt=""/>
+                <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
                 <a class="author">
@@ -369,15 +366,14 @@
                       path: '/BreakingTheBarrier/visitor',
                       query: { userId: item.postUserId },
                     }"
-                  >{{ item.nickname }}
-                  </router-link>
-                </a
+                    >{{ item.nickname }}
+                  </router-link> </a
                 ><a
-                class="ui mini basic blue label"
-                style="margin-left: 5px"
-                v-if="item.postUserId == postUserId"
-              >发布者</a
-              >
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId == postUserId"
+                  >发布者</a
+                >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span>
                 </div>
@@ -388,38 +384,33 @@
                     class="reply"
                     @click="likeComment(item.id, false)"
                     v-model="likeNumber"
-                  >赞( {{ item.likesNum }})</a
+                    >赞( {{ item.likesNum }})</a
                   ><a
-                  :style="
+                    :style="
                       item.disapproved == true ? 'color:RGB(65,131,196)' : ''
                     "
-                  class="reply"
-                  @click="dislikeComment(item.id, false)"
-                >踩({{ item.disLikesNum }})</a
-                ><a class="reply" @click="replyComment(item.id)">回复</a
-                ><a
-                  :style="item.selected == true ? 'color:RGB(0,181,173)' : ''"
-                  class="reply"
-                  v-if="postUserId == $store.state.me.id"
-                  @click="setSelectedComment(item.id, false)"
-                >设为精选评论</a
-                ><a
-                  class="reply"
-                  @click="deleteComment(item.id, false)"
-                  v-if="item.postUserId == $store.state.me.id"
-                >删除</a
-                ><a
-                  class="reply"
-                  v-if="item.commentsNum > 3"
-                  @click="getMoreComments(item.id)"
-                >加载全部评论</a
-                >
+                    class="reply"
+                    @click="dislikeComment(item.id, false)"
+                    >踩({{ item.disLikesNum }})</a
+                  ><a class="reply" @click="replyComment(item.id)">回复</a
+                  ><a
+                    :style="item.selected == true ? 'color:RGB(0,181,173)' : ''"
+                    class="reply"
+                    v-if="postUserId == $store.state.me.id"
+                    @click="setSelectedComment(item.id, false)"
+                    >设为精选评论</a
+                  ><a
+                    class="reply"
+                    @click="deleteComment(item.id, false)"
+                    v-if="item.postUserId == $store.state.me.id"
+                    >删除</a
+                  >
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <br/>
+        <br />
       </div>
     </div>
   </div>
@@ -439,7 +430,7 @@ import {
   getArticleLikesAndDislikes,
   getMoreComments,
   getAllComments,
-  getFavoriteId
+  getFavoriteId,
 } from "../../content";
 
 export default {
@@ -504,8 +495,7 @@ export default {
     var p2 = new Promise((resolve, reject) => {
       that.getAllComments(false, "", "");
     });
-    Promise.all([p1, p2]).then((res) => {
-    });
+    Promise.all([p1, p2]).then((res) => {});
   },
   mounted() {
     this.phoneEditor = new E("#websiteEditorElem");
@@ -561,11 +551,11 @@ export default {
       that.articleDisapproved = disapproved;
     },
     replyArticle() {
-      $(".edit.modal").modal("show");
+      $(".edit").modal("show");
     },
     openCollections() {
       var that = this;
-      $(".collect.modal").modal("show");
+      $(".collect").modal("show");
       that.$api.personalFavorite
         .getFavorites()
         .then(function (response) {
@@ -692,7 +682,7 @@ export default {
         .getChildComments(id)
         .then(function (response) {
           that.moreComments = response.data.data.receiveComments;
-          $(".moreComments.modal").modal("show");
+          $(".moreComments").modal("show");
         })
         .catch(function (error) {
           console.log(error);
@@ -776,7 +766,7 @@ export default {
     replyComment(id) {
       var that = this;
       that.parentId = id;
-      $(".edit.modal").modal("show");
+      $(".edit").modal("show");
     },
     setSelectedComment(id, flag) {
       var that = this;
@@ -823,8 +813,7 @@ export default {
         that.getAllComments(false, "", "");
       });
 
-      Promise.all([p1, p2]).then((res) => {
-      });
+      Promise.all([p1, p2]).then((res) => {});
     },
     sure() {
       var that = this;
@@ -859,8 +848,7 @@ export default {
         that.getAllComments(false, "", "");
       });
 
-      Promise.all([p1, p2]).then((res) => {
-      });
+      Promise.all([p1, p2]).then((res) => {});
     },
   },
 };
