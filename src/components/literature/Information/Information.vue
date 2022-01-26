@@ -109,28 +109,54 @@
     },
     mounted() {
       //请求到的entry对象储存到data里
-      axios('infoEntry/unapprovedEntries',{
-      }).then(res => {
-        let content = res.data.data.entries.content
-        for(let i in content) {
-          this.entry.content.push(content[i])
-        }
-        // console.log(content);
-      })
-      .catch(err => {
-        console.log(err);
-        alert(err)
-      })
+      // axios('infoEntry/unapprovedEntries',{
+      // }).then(res => {
+      //   let content = res.data.data.entries.content
+      //   for(let i in content) {
+      //     this.entry.content.push(content[i])
+      //   }
+      //   // console.log(content);
+      // })
+      // .catch(err => {
+      //   console.log(err);
+      //   alert(err)
+      // })
 
+      let that = this
+      that.$api.infoGetUnapro
+        .infoGetUnapro()
+        .then(res => {
+              let content = res.data.data.entries.content
+              for(let i in content) {
+                this.entry.content.push(content[i])
+              }
+              // console.log(content);
+            })
+        .catch(err => {
+          // console.log(err);
+          alert(err)
+        })
       //把请求到的approvedEntry存储下来
-      axios('infoEntry/show',{
-      }).then(res => {
-        let content = res.data.data.entries.content
-        for(let i in content)
-          this.approvedEntry.content.push(content[i])
-        // this.approvedEntry = res.data.data.entries.content
-        console.log(this.approvedEntry.content);
-      }).catch(err => {
+      // axios('infoEntry/show',{
+      // }).then(res => {
+      //   let content = res.data.data.entries.content
+      //   for(let i in content)
+      //     this.approvedEntry.content.push(content[i])
+      //   // this.approvedEntry = res.data.data.entries.content
+      //   console.log(this.approvedEntry.content);
+      // }).catch(err => {
+      //   alert(err)
+      // })
+
+      that.$api.infoShow
+        .infoShow()
+        .then(res => {
+          let content = res.data.data.entries.content
+          for(let i in content)
+            this.approvedEntry.content.push(content[i])
+          // this.approvedEntry = res.data.data.entries.content
+          console.log(this.approvedEntry.content);
+        }).catch(err => {
         alert(err)
       })
     },
@@ -146,15 +172,30 @@
         ;
       },
       createEntry(title, newContent) {
-        axios.post('infoEntry/create', {
+        // axios.post('infoEntry/create', {
+        //   'title': title,
+        //   'newContent': newContent
+        // }).then(res => {
+        //   console.log(res);
+        //   alert(res.data.msg)
+        // }).catch(err => {
+        //   alert(err)
+        // })
+
+        let data = {
           'title': title,
           'newContent': newContent
-        }).then(res => {
-          console.log(res);
-          alert(res.data.msg)
-        }).catch(err => {
-          alert(err)
-        })
+        }
+        let that = this
+        that.$api.infoCreate
+          .createEntry(data)
+          .then(res => {
+            console.log(res);
+            alert(res.data.msg)
+          })
+          .catch(err => {
+            alert(err)
+          })
       },
       showUpdateInput(id) {
         // console.log('监听到子组件（ShowUnproved）的‘更新’按钮点击');

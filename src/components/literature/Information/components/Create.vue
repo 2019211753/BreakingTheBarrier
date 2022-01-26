@@ -48,15 +48,26 @@
     methods: {
       makeSureUpdate() {
         if (this.newContent) {
-          axios.post('infoEntry/' + this.entryId + '/update', {
-            'newContent': this.newContent,
-          }).then(res => {
-            // console.log(res.data);
-            // console.log(this.newContent);
-            alert(res.data.msg)
-          }).catch(err => {
-            alert(err)
-          })
+          // axios.post('infoEntry/' + this.entryId + '/update', {
+          //   'newContent': this.newContent,
+          // }).then(res => {
+          //   // console.log(res.data);
+          //   // console.log(this.newContent);
+          //   alert(res.data.msg)
+          // }).catch(err => {
+          //   alert(err)
+          // })
+
+          let that = this
+          that.$api.infoUpdate
+            .entryUpdate(that.entryId)
+            .then(res => {
+                // console.log(res.data);
+                // console.log(this.newContent);
+                alert(res.data.msg)
+              }).catch(err => {
+                alert(err)
+              })
         }
         else
           alert('内容不能为空')

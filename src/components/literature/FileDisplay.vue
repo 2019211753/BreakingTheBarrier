@@ -13,7 +13,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import FileDisplayCItem from "./Information/FileDisplayCItem";
   export default {
     name: "FileDisplay",
@@ -31,24 +30,42 @@
     /*10.30 超时应该是由于查询全部文件*/
 
     mounted() {
-      axios('files/find',{
-        params: {
-          query: '',
-          pageIndex: 0
-        }
-      })
+      // axios('files/find',{
+      //   params: {
+      //     query: '',
+      //     pageIndex: 0
+      //   }
+      // })
+      //   .then(res => {
+      //   // console.log(res);
+      //   // console.log('重新渲染');
+      //   let page = res.data.data.page
+      //   this.page.totalElements = page.totalElements
+      //   this.page.totalPages = page.totalPages
+      //   this.page.numberOfElements = page.numberOfElements
+      //   this.$emit('handlePage', this.page)
+      // })
+      // .catch(err => {
+      //   alert(err)
+      // })
+      let data = {
+        query: '',
+        pageIndex: 0
+      }
+      let that = this
+      that.$api.dataFind
+        .findFiles(data)
         .then(res => {
-        // console.log(res);
-        // console.log('重新渲染');
-        let page = res.data.data.page
-        this.page.totalElements = page.totalElements
-        this.page.totalPages = page.totalPages
-        this.page.numberOfElements = page.numberOfElements
-        this.$emit('handlePage', this.page)
-      })
-      .catch(err => {
-        alert(err)
-      })
+          console.log(res);
+          let page = res.data.data.page
+          this.page.totalElements = page.totalElements
+          this.page.totalPages = page.totalPages
+          this.page.numberOfElements = page.numberOfElements
+          this.$emit('handlePage', this.page)
+        })
+        .catch(err => {
+          console.log(err);
+        })
     },
     methods: {
     },

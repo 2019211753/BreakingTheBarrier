@@ -4,35 +4,35 @@
         <div>
 <!--          <menu-link></menu-link>-->
 <!--导航菜单-->
-          <div class="ui basic segment">
-            <div class="header">
-              <div class="logo"></div>
-              <div class="nav">
-                <ul>
-                  <li>
-                    <a href="" @click="turnHome()"
-                    ><i class="sticky note outline icon"></i>全部</a
-                    >
-                  </li>
-                  <li>
-                    <a href="javascript:;" @click="turnDatabase()"
-                    ><i class="server icon"></i>资料库</a
-                    >
-                  </li>
-                  <li>
-                    <a href="" @click="turnTeam()"
-                    ><i class="handshake icon"></i>组队</a
-                    >
-                  </li>
-                  <li>
-                    <a href="javascript:;" @click="turnWikipedia()"
-                    ><i class="paw icon"></i>信息百科</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+<!--          <div class="ui basic segment">-->
+<!--            <div class="header">-->
+<!--              <div class="logo"></div>-->
+<!--              <div class="nav">-->
+<!--                <ul>-->
+<!--                  <li>-->
+<!--                    <a href="" @click="turnHome()"-->
+<!--                    ><i class="sticky note outline icon"></i>全部</a-->
+<!--                    >-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;" @click="turnDatabase()"-->
+<!--                    ><i class="server icon"></i>资料库</a-->
+<!--                    >-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="" @click="turnTeam()"-->
+<!--                    ><i class="handshake icon"></i>组队</a-->
+<!--                    >-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                    <a href="javascript:;" @click="turnWikipedia()"-->
+<!--                    ><i class="paw icon"></i>信息百科</a-->
+<!--                    >-->
+<!--                  </li>-->
+<!--                </ul>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
           <br>
           <!--含输入框-->
           <router-view>

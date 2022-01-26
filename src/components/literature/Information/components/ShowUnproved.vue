@@ -31,17 +31,34 @@
         let domTemp =event.target
         let entryId = $(domTemp).prev('span').text()
         console.log(entryId);
-        axios.post('/infoEntry/' + entryId + '/approve', ).then(res => {
-          console.log(res);
-          if(res.code = 200) {
-            this.flag = 0
-          }
-          else
-            alert('审核失败')
-        }).catch(err => {
-          console.log(err);
-          alert(err)
-        })
+        // axios.post('/infoEntry/' + entryId + '/approve', ).then(res => {
+        //   console.log(res);
+        //   if(res.code = 200) {
+        //     this.flag = 0
+        //   }
+        //   else
+        //     alert('审核失败')
+        // }).catch(err => {
+        //   console.log(err);
+        //   alert(err)
+        // })
+
+        let that = this
+        that.$api.infoApprove
+          .entryApprove(entryId)
+          .then(res => {
+            // console.log('---****');
+            console.log(res);
+            if(res.code = 200) {
+              this.flag = 0
+            }
+            else
+              alert('审核失败')
+          })
+          .catch(err => {
+            // console.log(err);
+            alert(err)
+          })
       },
       update() {
         this.$emit('showUpdateInput', this.id)

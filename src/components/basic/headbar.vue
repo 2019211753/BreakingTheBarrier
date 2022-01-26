@@ -34,7 +34,7 @@
           </li>
           <li>
             <a href="">
-              <router-link to="/BreakingTheBarrier/information">
+              <router-link to="/BreakingTheBarrier/literature/information">
                 <i class="paw icon"></i>信息百科
               </router-link>
             </a>
