@@ -114,16 +114,11 @@ export default {
     var that = this;
     that.$api.userSocial.getOtherFile(that.$route.query.userId)
       .then(function (response) {
-        console.log(response.data);
+
         /* that.loading = false; */
         that.contentList = response.data.data.questions;
         that.loading = false;
-        /* for (var i = 0; i < that.contentList.length; i++) {
-          var url = require("../../../../assets/cover/cover (" +
-            Math.floor(Math.random() * 10) +
-            ").jpg");
-          that.cover.push(url);
-        } */
+
       })
       .catch(function (error) {
         console.log(error);

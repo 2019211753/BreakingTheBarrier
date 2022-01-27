@@ -234,7 +234,7 @@ export default {
     var that = this;
     that.$api.personalFavorite.showFavoriteContents(that.$route.query.favoriteId)
       .then(function (response) {
-        console.log(response.data);
+
         that.loading = false;
         that.questions = response.data.data.questions.content;
         that.blogs = response.data.data.blogs.content;

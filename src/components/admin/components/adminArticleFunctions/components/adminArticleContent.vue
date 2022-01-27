@@ -54,7 +54,7 @@ export default {
       .then(function (response) {
         that.template = response.data.data.template;
         that.articleContent = that.template.details;
-        console.log(that.template);
+
       })
       .catch(function (error) {
         console.log(error);

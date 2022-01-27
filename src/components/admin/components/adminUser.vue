@@ -135,7 +135,7 @@ export default {
         var data = {nickname: that.searchContent};
         that.$api.adminUser.serchUser(data)
           .then(function (response) {
-            console.log(response.data);
+
             that.nowUser = response.data.data.user;
             that.loading = false;
           })
@@ -153,7 +153,7 @@ export default {
       var that = this;
       that.$api.adminUser.controlSpeak(id)
         .then(function (response) {
-          console.log(response.data);
+
           that.nowUser.canSpeak = response.data.data.canSpeak;
         })
         .catch(function (error) {
@@ -165,7 +165,7 @@ export default {
       axios
         .get("/admin/searchUser")
         .then(function (response) {
-          console.log(response.data);
+
         })
         .catch(function (error) {
           console.log(error);

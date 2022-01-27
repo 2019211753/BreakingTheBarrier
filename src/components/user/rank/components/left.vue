@@ -131,7 +131,7 @@ export default {
 
       .then(function (response) {
         that.loading = false;
-        console.log(response.data);
+
         that.userList = response.data.data.users;
       })
       .catch(function (error) {
@@ -144,7 +144,7 @@ export default {
       axios
         .get("/follow/" + id)
         .then(function (response) {
-          console.log(response.data);
+
         })
         .catch(function (error) {
           console.log(error);

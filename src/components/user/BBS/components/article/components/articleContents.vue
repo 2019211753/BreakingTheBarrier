@@ -259,12 +259,15 @@
       :hide-on-single-page="true"
     >
     </el-pagination>
+
   </div>
 </template>
 
 <script>
+
 export default {
   name: "articleContents",
+
   data() {
     return { loading: true, contentList: [], pageSize: 0, cover: [] };
   },
@@ -274,11 +277,11 @@ export default {
       .getQuestions(0)
       .then(function (response) {
         that.loading = false;
-        console.log(response.data);
+
         that.contentList = response.data.data.pages.content;
         that.pageSize = response.data.data.pages.totalPages;
 
-        console.log(that.cover);
+
       })
       .catch(function (error) {
         console.log(error);
@@ -291,7 +294,7 @@ export default {
       that.$api.userArticle
         .getQuestions(nowPage)
         .then(function (response) {
-          console.log(response.data);
+
           that.contentList = response.data.data.pages.content;
           that.pageSize = response.data.data.pages.totalPages;
         })
@@ -305,7 +308,6 @@ export default {
 
 <style scoped>
 .framework {
-  /* background-color: bisque; */
   margin-top: 20px;
   height: 240px;
 }

@@ -99,7 +99,7 @@
             <i class="star icon"></i>
             {{ articleCollectNumber }}
           </div>
-          <div class="ui icon blue button" @click="replyArticle()">
+          <div class="ui icon blue button" @click="dialogFormVisible1 = true">
             <i class="comment icon"></i>
           </div>
         </el-col>
@@ -262,7 +262,13 @@
                     class="reply"
                     @click="dislikeComment(item.id, true)"
                     >踩({{ item.disLikesNum }})</a
-                  ><a class="reply" @click="replyComment(item.id)">回复</a
+                  ><a
+                    class="reply"
+                    @click="
+                      dialogFormVisible1 = true;
+                      parentId = item.id;
+                    "
+                    >回复</a
                   ><a
                     :style="item.selected == true ? 'color:RGB(0,181,173)' : ''"
                     class="reply"
@@ -286,7 +292,96 @@
           </div>
         </div>
       </div>
-      <div class="ui collect modal" style="width: 400px">
+      <el-dialog
+        width="400px"
+        title="输入回复内容"
+        :visible.sync="dialogFormVisible1"
+      >
+        <el-input
+          type="textarea"
+          :rows="2"
+          placeholder="请输入内容"
+          v-model="textarea"
+        >
+        </el-input>
+        <div style="margin-top: 20px">
+          <div class="ui right floated teal button" @click="sure()">
+            <i class="checkmark icon"></i>
+            确定
+          </div>
+          <div class="ui blue icon button">
+            <i class="image icon"></i>
+          </div>
+        </div>
+      </el-dialog>
+      <el-dialog
+        width="600px"
+        title="全部评论"
+        :visible.sync="dialogFormVisible2"
+      >
+        <div class="ui comments">
+          <div class="comment" v-for="item in moreComments">
+            <a class="avatar">
+              <img :src="item.avatar" alt="" />
+            </a>
+            <div class="content">
+              <a class="author">
+                <router-link
+                  :to="{
+                    path: '/BreakingTheBarrier/visitor',
+                    query: { userId: item.postUserId },
+                  }"
+                  >{{ item.nickname }}
+                </router-link> </a
+              ><a
+                class="ui mini basic blue label"
+                style="margin-left: 5px"
+                v-if="item.postUserId == postUserId"
+                >发布者</a
+              >
+              <div class="metadata">
+                <span class="date">{{ item.createTime }}</span>
+              </div>
+              <div class="text" v-html="item.content"></div>
+              <div class="actions">
+                <a
+                  :style="item.approved == true ? 'color:RGB(219,40,40)' : ''"
+                  class="reply"
+                  @click="likeComment(item.id, false)"
+                  v-model="likeNumber"
+                  >赞( {{ item.likesNum }})</a
+                ><a
+                  :style="
+                    item.disapproved == true ? 'color:RGB(65,131,196)' : ''
+                  "
+                  class="reply"
+                  @click="dislikeComment(item.id, false)"
+                  >踩({{ item.disLikesNum }})</a
+                ><a
+                  class="reply"
+                  @click="
+                    dialogFormVisible1 = true;
+                    parentId = item.id;
+                  "
+                  >回复</a
+                ><a
+                  :style="item.selected == true ? 'color:RGB(0,181,173)' : ''"
+                  class="reply"
+                  v-if="postUserId == $store.state.me.id"
+                  @click="setSelectedComment(item.id, false)"
+                  >设为精选评论</a
+                ><a
+                  class="reply"
+                  @click="deleteComment(item.id, false)"
+                  v-if="item.postUserId == $store.state.me.id"
+                  >删除</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-dialog>
+      <el-dialog width="400px" title="收藏" :visible.sync="dialogFormVisible3">
         <el-empty
           :image-size="100"
           v-if="favoriteList.length == 0 && collectLoading == false"
@@ -300,143 +395,63 @@
             />
           </template>
         </el-skeleton>
-        <div class="ui basic segment">
-          <el-container v-for="(item, index) in favoriteList" :key="index">
-            <el-aside width="70px"
-              ><i class="huge yellow folder icon"></i
-            ></el-aside>
-            <el-main>
-              <el-row :gutter="24">
-                <el-col :span="21">
-                  <div
-                    class="ui button"
-                    style="margin-top: -30px; background-color: white"
-                    @click="getFavoriteId(item.id)"
-                  >
-                    <h4>{{ item.title }}</h4>
-                  </div>
-                  <a
-                    v-if="item.open == false"
-                    class="ui small blue label"
-                    style="margin-left: 10px"
-                    >私密</a
-                  >
-                </el-col>
-                <el-col :span="3"
-                  ><i
-                    :class="item.id == favoriteId ? selected : unselected"
-                    style="margin-top: 2px"
-                  ></i>
-                </el-col>
-              </el-row>
-            </el-main>
-          </el-container>
-        </div>
+        <el-container v-for="(item, index) in favoriteList" :key="index">
+          <el-aside width="70px"
+            ><i class="huge yellow folder icon"></i
+          ></el-aside>
+          <el-main>
+            <el-row :gutter="24">
+              <el-col :span="21">
+                <div
+                  class="ui button"
+                  style="margin-top: -30px; background-color: white"
+                  @click="getFavoriteId(item.id)"
+                >
+                  <h4>{{ item.title }}</h4>
+                </div>
+                <a
+                  v-if="item.open == false"
+                  class="ui small blue label"
+                  style="margin-left: 10px"
+                  >私密</a
+                >
+              </el-col>
+              <el-col :span="3"
+                ><i
+                  :class="item.id == favoriteId ? selected : unselected"
+                  style="margin-top: 2px"
+                ></i>
+              </el-col>
+            </el-row>
+          </el-main>
+        </el-container>
         <div
           class="actions"
           v-if="!favoriteList.length == 0 && collectLoading == false"
         >
-          <div class="ui teal button" @click="collectArticle()">
+          <div
+            class="ui teal button"
+            @click="collectArticle()"
+            style="margin-left: 260px"
+          >
             <i class="checkmark icon"></i>
             确定
           </div>
         </div>
-      </div>
-      <div class="ui edit modal" style="width: 400px">
-        <div id="websiteEditorElem"></div>
-        <div class="actions">
-          <div class="ui teal button" @click="sure()">
-            <i class="checkmark icon"></i>
-            确定
-          </div>
-        </div>
-      </div>
-      <div class="ui moreComments modal" style="width: 700px">
-        <br />
-        <div class="ui basic segment" style="width: 600px; margin: auto">
-          <div class="ui comments">
-            <div class="comment" v-for="item in moreComments">
-              <a class="avatar">
-                <img :src="item.avatar" alt="" />
-              </a>
-              <div class="content">
-                <a class="author">
-                  <router-link
-                    :to="{
-                      path: '/BreakingTheBarrier/visitor',
-                      query: { userId: item.postUserId },
-                    }"
-                    >{{ item.nickname }}
-                  </router-link> </a
-                ><a
-                  class="ui mini basic blue label"
-                  style="margin-left: 5px"
-                  v-if="item.postUserId == postUserId"
-                  >发布者</a
-                >
-                <div class="metadata">
-                  <span class="date">{{ item.createTime }}</span>
-                </div>
-                <div class="text" v-html="item.content"></div>
-                <div class="actions">
-                  <a
-                    :style="item.approved == true ? 'color:RGB(219,40,40)' : ''"
-                    class="reply"
-                    @click="likeComment(item.id, false)"
-                    v-model="likeNumber"
-                    >赞( {{ item.likesNum }})</a
-                  ><a
-                    :style="
-                      item.disapproved == true ? 'color:RGB(65,131,196)' : ''
-                    "
-                    class="reply"
-                    @click="dislikeComment(item.id, false)"
-                    >踩({{ item.disLikesNum }})</a
-                  ><a class="reply" @click="replyComment(item.id)">回复</a
-                  ><a
-                    :style="item.selected == true ? 'color:RGB(0,181,173)' : ''"
-                    class="reply"
-                    v-if="postUserId == $store.state.me.id"
-                    @click="setSelectedComment(item.id, false)"
-                    >设为精选评论</a
-                  ><a
-                    class="reply"
-                    @click="deleteComment(item.id, false)"
-                    v-if="item.postUserId == $store.state.me.id"
-                    >删除</a
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br />
-      </div>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import E from "wangeditor";
-import {
-  likeComment,
-  likeArticle,
-  sure,
-  dislikeArticle,
-  dislikeComment,
-  deleteComment,
-  deleteArticle,
-  getCommentLikesAndDislikes,
-  getArticleLikesAndDislikes,
-  getMoreComments,
-  getAllComments,
-  getFavoriteId,
-} from "../../content";
-
 export default {
   name: "articleSpecific",
   data() {
     return {
+      textarea: "",
+      dialogFormVisible1: false,
+      dialogFormVisible2: false,
+      dialogFormVisible3: false,
       questionLoading: true,
       commentLoading: true,
       collectLoading: true,
@@ -497,14 +512,6 @@ export default {
     });
     Promise.all([p1, p2]).then((res) => {});
   },
-  mounted() {
-    this.phoneEditor = new E("#websiteEditorElem");
-    this.phoneEditor.config.zIndex = 500;
-    this.phoneEditor.config.height = 200;
-    this.phoneEditor.config.uploadImgShowBase64 = true;
-    this.phoneEditor.create();
-    this.phoneEditor.txt.html();
-  },
   methods: {
     likeArticle(id) {
       var that = this;
@@ -550,17 +557,14 @@ export default {
       that.articleLikeNumber = likesNum;
       that.articleDisapproved = disapproved;
     },
-    replyArticle() {
-      $(".edit").modal("show");
-    },
     openCollections() {
       var that = this;
-      $(".collect").modal("show");
       that.$api.personalFavorite
         .getFavorites()
         .then(function (response) {
           that.collectLoading = false;
           that.favoriteList = response.data.data.favorites;
+          that.dialogFormVisible3 = true;
         })
         .catch(function (error) {
           console.log(error);
@@ -682,7 +686,7 @@ export default {
         .getChildComments(id)
         .then(function (response) {
           that.moreComments = response.data.data.receiveComments;
-          $(".moreComments").modal("show");
+          that.dialogFormVisible2 = true;
         })
         .catch(function (error) {
           console.log(error);
@@ -763,11 +767,6 @@ export default {
           console.log(error);
         });
     },
-    replyComment(id) {
-      var that = this;
-      that.parentId = id;
-      $(".edit").modal("show");
-    },
     setSelectedComment(id, flag) {
       var that = this;
       that.$api.userComment
@@ -818,9 +817,9 @@ export default {
     sure() {
       var that = this;
       var p1 = new Promise((resolve, reject) => {
-        if (that.phoneEditor.txt.html()) {
+        if (that.textarea) {
           var data = {
-            content: that.phoneEditor.txt.html(),
+            content: that.textarea,
             answer: true,
             parentCommentId0: that.parentId,
           };
@@ -828,6 +827,7 @@ export default {
             .postQuestionComment(that.$route.query.articleId, data)
             .then(function (response) {
               that.parentId = "-1";
+              that.dialogFormVisible1 = false;
               that.$message({
                 message: "评论成功",
                 type: "success",
@@ -845,6 +845,11 @@ export default {
       });
 
       var p2 = new Promise((resolve, reject) => {
+        /* if (that.parentId == "-1") {
+          that.getAllComments(false, "", "");
+        } else {
+          that.getAllComments(true, "", "");
+        } */
         that.getAllComments(false, "", "");
       });
 

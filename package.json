@@ -10,19 +10,21 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@wangeditor/editor": "^0.13.6",
-    "@wangeditor/editor-for-vue": "^5.1.8-6",
+    "@kangc/v-md-editor": "^1.7.8",
+    "@wangeditor/editor": "^0.13.7",
+    "@wangeditor/editor-for-vue": "^5.1.8-7",
     "axios": "^0.21.4",
+    "babel-plugin-prismjs": "^2.1.0",
     "editor.md": "^1.5.0",
     "element-ui": "^2.15.5",
     "image-conversion": "^2.1.1",
     "jwt-decode": "^3.1.2",
+    "scriptjs": "^2.5.9",
     "semantic-ui-css": "^2.4.1",
     "vue": "^2.5.2",
     "vue-elementui-skeleton": "^1.0.2",
     "vue-router": "^3.0.1",
-    "vuex": "^3.6.2",
-    "wangeditor": "^4.7.8"
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

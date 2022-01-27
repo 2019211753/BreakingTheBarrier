@@ -164,7 +164,7 @@ export default {
 
       .then(function (response) {
         that.loading = false;
-        console.log(response.data);
+
         that.count = response.data.data.count;
         for (var year = 2022; year <= 2025; year++) {
           for (var month = 1; month <= 12; month++) {
@@ -185,7 +185,7 @@ export default {
       });
     window.addEventListener("setItem", (e) => {
       if (e.key == "avatar") {
-        console.log(e.newValue);
+
         that.avatar = e.newValue;
       }
       /* var decode = jwtDecode(e.newValue);

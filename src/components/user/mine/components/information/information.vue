@@ -193,7 +193,7 @@ export default {
   },
   created() {
     this.academyList = this.$store.state.me.academies;
-    console.log(this.academyList);
+
     /* eventBus.$on("pushMsg", (headbarMsg) => {
       this.academyList = headbarMsg;
       console.log(this.academyList);
@@ -217,7 +217,7 @@ export default {
       for (var item in that.academyList) {
         if (selected == item) {
           that.majorList = that.academyList[item];
-          console.log(that.academyList[item]);
+
           break;
         }
       }
@@ -295,7 +295,7 @@ export default {
                 type: "warning",
               });
             }
-            console.log(response.data);
+
           })
           .catch(function (error) {
             console.log(error);

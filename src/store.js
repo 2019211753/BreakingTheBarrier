@@ -1,9 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
+        text: "",
         articleId: "",
         blogId: "",
         me: {
@@ -33,11 +34,14 @@ export default new Vuex.Store({
             blogsNum: "",
             commentsNum: "",
             followingUserNum: "",
-            followedUserNum: "",
+            followedUserNum: ""
         },
         readFlag: true
     },
     mutations: {
+        getText(state, text) {
+            state.text = text;
+        },
         getArticleId(state, articleId) {
             state.articleId = articleId;
         },
@@ -45,20 +49,24 @@ export default new Vuex.Store({
             state.blogId = blogId;
         },
         /*getToken(state, token) {
-            state.me.token = token;
-            console.log(state.me.token)
-        },*/
+                state.me.token = token;
+                console.log(state.me.token)
+            },*/
         /* getCanSpeak(state, CanSpeak) {
-            state.me.avatar = avatar;
-        }, */
+                state.me.avatar = avatar;
+            }, */
         getMyAvatar(state, avatar) {
             state.me.avatar = avatar;
         },
         getMyNickname(state, nickname) {
             state.me.nickname = nickname;
         },
-        getMyFollowingNum(state, followingNum) { state.me.followingUserNum = followingNum },
-        getOtherFollowedNum(state, followedNum) { state.others.followedUserNum = followedNum },
+        getMyFollowingNum(state, followingNum) {
+            state.me.followingUserNum = followingNum;
+        },
+        getOtherFollowedNum(state, followedNum) {
+            state.others.followedUserNum = followedNum;
+        },
         getMySex(state, sex) {
             state.me.sex = sex;
         },
@@ -93,7 +101,7 @@ export default new Vuex.Store({
             state.me.academies = data.ACADEMIES;
             state.me.donation = data.user.donation;
             state.me.followedUserNum = data.user.followedUserNum;
-            state.me.followingUserNum = data.user.followingUserNum
+            state.me.followingUserNum = data.user.followingUserNum;
         },
         getOthersFile(state, data) {
             state.others.nickname = data.userInfo.nickname;
@@ -103,14 +111,14 @@ export default new Vuex.Store({
             state.others.blogsNum = data.blogs.length;
             state.others.commentsNum = data.comments.length;
             state.others.followingUserNum = data.userInfo.followingUserNum;
-            state.others.followedUserNum = data.userInfo.followedUserNum
+            state.others.followedUserNum = data.userInfo.followedUserNum;
         },
         turnRead(state) {
             state.readFlag = true;
         }, //效果相反了，我也不知道为啥
         turnUnread(state) {
             state.readFlag = false;
-        },
+        }
     },
     actions: {}
-})
+});

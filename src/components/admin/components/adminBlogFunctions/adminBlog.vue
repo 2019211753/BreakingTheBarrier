@@ -226,7 +226,7 @@ export default {
       var that = this;
       that.$api.userBlog.deleteBlog(id)
         .then(function (response) {
-          console.log(response.data);
+
           for (var i = 0; i < that.contentList.length; i++) {
             if (that.contentList[i].id == id) {
               that.contentList.splice(i, 1);

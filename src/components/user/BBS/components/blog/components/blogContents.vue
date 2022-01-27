@@ -143,7 +143,7 @@ export default {
       .getBlogs(0)
       .then(function (response) {
         that.loading = false;
-        console.log(response.data);
+
         that.contentList = response.data.data.pages.content;
         that.pageSize = response.data.data.pages.totalPages;
       })
@@ -158,7 +158,7 @@ export default {
       that.$api.userArticle
         .getBlogs(nowPage)
         .then(function (response) {
-          console.log(response.data);
+
           that.contentList = response.data.data.pages.content;
           that.pageSize = response.data.data.pages.totalPages;
         })

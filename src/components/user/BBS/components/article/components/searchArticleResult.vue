@@ -135,7 +135,7 @@ export default {
     that.$api.userQuestion
       .serchQuestions(data)
       .then(function (response) {
-        console.log(response.data)
+
         that.loading = false;
         that.contentList = response.data.data.pages.content;
       })

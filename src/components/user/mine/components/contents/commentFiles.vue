@@ -68,7 +68,7 @@ export default {
     that.$api.personalArchive.archiveComment()
 
       .then(function (response) {
-        console.log(response.data);
+
         that.contentList = response.data.data.postComments;
         that.loading = false;
       })
@@ -80,7 +80,7 @@ export default {
     getInnerText(content) {
       var oDiv = document.createElement("div");
       oDiv.innerHTML = content;
-      console.log(oDiv.innerHTML);
+
       return oDiv.innerText;
     },
   },

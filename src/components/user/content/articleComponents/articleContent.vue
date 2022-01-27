@@ -1,10 +1,14 @@
 <template>
   <div class="body">
     <div class="main">
-      <div class="specific"><articleSpecific></articleSpecific></div>
+      <div class="specific">
+        <articleSpecific></articleSpecific>
+      </div>
     </div>
     <div class="side">
-      <div class="writer"><articleWriter></articleWriter></div>
+      <div class="writer">
+        <articleWriter></articleWriter>
+      </div>
     </div>
   </div>
 </template>
@@ -12,8 +16,10 @@
 <script>
 import articleWriter from "./components/articleWriter";
 import articleSpecific from "./components/articleSpecific";
+
 export default {
   name: "articleContent",
+
   components: { articleSpecific, articleWriter },
 };
 </script>
@@ -22,20 +28,20 @@ export default {
 .body {
   width: 80%;
   margin: auto;
-
 }
 
 .main {
   margin-top: 20px;
-  width: 64%;
+  width: 70%;
   float: left;
 }
+
 .side {
   margin-top: 20px;
-  width: 35%;
+  width: 30%;
   float: left;
-  margin-left: 1%;
 }
+
 .specific {
   width: 90%;
   margin: auto;

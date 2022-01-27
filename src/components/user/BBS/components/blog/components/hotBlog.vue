@@ -66,7 +66,7 @@ export default {
       .then(function (response) {
         that.loading = false;
         that.impactList = response.data.data.impacts;
-        console.log(that.impactList);
+
       })
       .catch(function (error) {
         console.log(error);

@@ -125,7 +125,7 @@ export default {
         that.loading = false;
         that.unLookedComments = response.data.data.unLookedComments;
         that.unLookedLikes = response.data.data.unLookedLikes;
-        console.log(response.data);
+
       })
       .catch(function (error) {
         console.log(error);
@@ -135,14 +135,14 @@ export default {
     getInnerText(content) {
       var oDiv = document.createElement("div");
       oDiv.innerHTML = content;
-      console.log(oDiv.innerHTML);
+
       return oDiv.innerText;
     },
     readLike(id) {
       var that = this;
       that.$api.personalMessage.readLike(id)
         .then(function (response) {
-          console.log(response.data);
+
         })
         .catch(function (error) {
           console.log(error);
@@ -152,7 +152,7 @@ export default {
       var that = this;
       that.$api.personalMessage.readComment(id)
         .then(function (response) {
-          console.log(response.data);
+
         })
         .catch(function (error) {
           console.log(error);

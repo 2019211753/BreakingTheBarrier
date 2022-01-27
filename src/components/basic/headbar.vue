@@ -68,7 +68,7 @@
 </template>
 
 <script>
- 
+
 /* import eventBus from "../eventBus"; */
 /* import jwtDecode from "jwt-decode"; */
 export default {
@@ -90,7 +90,7 @@ export default {
     that.$api.personalInformation
       .getPersonalInformation()
       .then(function (response) {
-        console.log(response.data);
+
         that.loading = false;
         that.$store.commit("getMyAvatar", response.data.data.user.avatar);
         that.$store.commit("getMyFile1", response.data.data.user);

@@ -60,7 +60,7 @@ export default {
     sure() {
       var that = this;
       if (that.userName && that.passWord && that.surePassWord) {
-        console.log(that.userName);
+
         if (that.passWord === that.surePassWord) {
           var data = {
             username: that.userName,
@@ -70,7 +70,7 @@ export default {
           that.$api.register
             .register(data)
             .then(function (response) {
-              console.log(response);
+
               if (response.data.code == 200) {
                 that.$message({
                   message: "注册成功",

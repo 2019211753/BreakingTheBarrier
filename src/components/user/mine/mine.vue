@@ -143,11 +143,11 @@ export default {
         this.$message.error("上传头像图片只能是 JPG 或 PNG 格式!");
         return false;
       }
-      console.log(file);
+
       return new Promise((resolve) => {
         // 压缩到100KB,这里的100就是要压缩的大小,可自定义
         imageConversion.compressAccurately(file, 100).then((res) => {
-          console.log(res);
+
           resolve(res);
         });
         //compressAccurately有多个参数时传入对象
@@ -176,7 +176,7 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             var that = this;
-            console.log(res.data);
+
             that.$message.success("上传头像成功!");
             that.$store.commit("getMyAvatar", res.data.data.avatar);
           }

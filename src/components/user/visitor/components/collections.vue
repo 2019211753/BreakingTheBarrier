@@ -51,8 +51,7 @@ export default {
     var that = this;
     that.$api.userSocial.getOtherFile(that.$route.query.userId)
       .then(function (response) {
-        console.log(response.data);
-        /* that.loading = false; */
+
         that.favoriteList = response.data.data.favorites;
         that.loading = false;
       })

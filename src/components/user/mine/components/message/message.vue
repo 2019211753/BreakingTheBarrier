@@ -79,7 +79,7 @@ export default {
 
       // 调用Promise.all().then(res=>{})
       Promise.all([p1, p2]).then((res) => {
-        console.log(res);
+
       });
     },
   },

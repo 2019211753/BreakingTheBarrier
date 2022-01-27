@@ -124,7 +124,7 @@ export default {
     getInnerText(content) {
       var oDiv = document.createElement("div");
       oDiv.innerHTML = content;
-      console.log(oDiv.innerHTML);
+
       return oDiv.innerText;
     },
   },

@@ -58,7 +58,7 @@ export default {
 
       .then(function (response) {
         that.loading = false;
-        console.log(response.data);
+
         that.list = response.data.data.followedUsers;
       })
       .catch(function (error) {
@@ -71,7 +71,7 @@ export default {
       that.$api.userSocial.followOther(id)
 
         .then(function (response) {
-          console.log(response.data);
+
           that.$store.commit(
             "getMyFollowingNum",
             response.data.data.myFollowingNum
@@ -90,7 +90,7 @@ export default {
       that.$api.userSocial.getOtherFile(id)
 
         .then(function (response) {
-          console.log(response.data);
+
           that.$store.commit("getOthersFile", response.data.data);
           that.$router.push({
             path: "/BreakingTheBarrier/visitor/questions",

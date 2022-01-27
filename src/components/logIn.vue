@@ -51,7 +51,7 @@ export default {
         that.$api.logIn
           .logIn(data)
           .then(function (response) {
-            console.log(response);
+
             if (response.data.code == 200) {
               that.$message({
                 message: "登陆成功",

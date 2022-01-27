@@ -219,9 +219,9 @@ export default {
         };
         that.$api.adminQuestion.searchQuestions(data)
           .then(function (response) {
-            console.log(response.data)
+
             that.contentList = response.data.data.pages.content;
-            console.log(that.contentList);
+
             for (var i = 0; i < that.contentList.length; i++) {
               var newTag = {id: that.contentList[i].id, state: "1"};
               that.tag.push(newTag);
@@ -247,7 +247,7 @@ export default {
       var that = this;
       that.$api.userQuestion.deleteQuestion(id)
         .then(function (response) {
-          console.log(response.data);
+
           for (var i = 0; i < that.contentList.length; i++) {
             if (that.contentList[i].id == id) {
               that.contentList.splice(i, 1);

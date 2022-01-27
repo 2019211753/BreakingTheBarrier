@@ -140,7 +140,7 @@ export default {
     that.$api.userSocial
       .getOtherFile(that.$route.query.postUserId)
       .then(function (response) {
-        console.log(response.data);
+
         that.loading = false;
         /* that.avatar = response.data.data.userInfo.avatar;
         that.nickname = response.data.data.userInfo.nickname;
@@ -163,7 +163,7 @@ export default {
       that.$api.userSocial
         .followOther(this.$route.query.postUserId)
         .then(function (response) {
-          console.log(response.data);
+
           if (response.data.code == 406) {
             that.$message({
               message: response.data.msg,
