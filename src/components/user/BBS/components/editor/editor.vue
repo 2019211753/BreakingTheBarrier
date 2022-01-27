@@ -1,7 +1,7 @@
 <template>
   <v-md-editor
     v-model="text"
-    left-toolbar="undo redo clear | h bold italic strikethrough quote | ul ol table hr | link image code | save | emoji"
+    left-toolbar="undo redo | todo-list clear | h bold italic strikethrough quote | ul ol table hr | link image code | save | emoji"
     :disabled-menus="[]"
     @change="reformText"
     @upload-image="handleUploadImage"
