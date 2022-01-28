@@ -22,21 +22,17 @@ export default {
 .body {
   width: 80%;
   margin: auto;
-
 }
 
 .main {
   margin-top: 20px;
   width: 60%;
   float: left;
-
 }
 .side {
   margin-top: 20px;
   width: 35%;
   float: left;
   margin-left: 5%;
-
 }
-
 </style>

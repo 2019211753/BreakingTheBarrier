@@ -49,12 +49,12 @@ export default new Vuex.Store({
             state.blogId = blogId;
         },
         /*getToken(state, token) {
-                state.me.token = token;
-                console.log(state.me.token)
-            },*/
+                    state.me.token = token;
+                    console.log(state.me.token)
+                },*/
         /* getCanSpeak(state, CanSpeak) {
-                state.me.avatar = avatar;
-            }, */
+                    state.me.avatar = avatar;
+                }, */
         getMyAvatar(state, avatar) {
             state.me.avatar = avatar;
         },

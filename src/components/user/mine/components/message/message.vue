@@ -2,8 +2,7 @@
   <div>
     <div class="ui segment">
       <el-row>
-        <el-col :span="24"
-        >
+        <el-col :span="24">
           <div class="header">
             <div class="nav">
               <ul>
@@ -29,8 +28,7 @@
               </ul>
             </div>
           </div>
-        </el-col
-        >
+        </el-col>
       </el-row>
     </div>
     <div>
@@ -40,11 +38,10 @@
 </template>
 
 <script>
-
 export default {
   name: "message",
   data() {
-    return {flag: true};
+    return { flag: true };
   },
   methods: {
     turnRead() {
@@ -58,7 +55,8 @@ export default {
     readAll() {
       var that = this;
       var p1 = new Promise((resolve, reject) => {
-        that.$api.personalMessage.readAllComments()
+        that.$api.personalMessage
+          .readAllComments()
           .then((res) => {
             resolve(res);
           })
@@ -68,7 +66,8 @@ export default {
       });
 
       var p2 = new Promise((resolve, reject) => {
-        that.$api.personalMessage.readAllLikes()
+        that.$api.personalMessage
+          .readAllLikes()
           .then((res) => {
             resolve(res);
           })
@@ -77,10 +76,7 @@ export default {
           });
       });
 
-      // 调用Promise.all().then(res=>{})
-      Promise.all([p1, p2]).then((res) => {
-
-      });
+      Promise.all([p1, p2]).then((res) => {});
     },
   },
 };

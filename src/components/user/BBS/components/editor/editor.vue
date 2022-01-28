@@ -24,7 +24,6 @@ export default {
     reformText(text, html) {
       var that = this;
       that.$store.commit("getText", html);
-
     },
     handleUploadImage(event, insertImage, file) {
       // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
@@ -42,14 +41,13 @@ export default {
 
       return new Promise((resolve) => {
         imageConversion.compressAccurately(file[0], 300).then((res) => {
-
+          console.log(res);
           const formData = new FormData();
           formData.append("files", res);
           var that = this;
           that.$api.userArticle
             .uploadPicture(formData)
             .then((res) => {
-
               insertImage({
                 url: res.data.data.fileUrls[0],
                 desc: "image",
@@ -57,7 +55,9 @@ export default {
                 height: "auto",
               });
             })
-            .catch((err) => {});
+            .catch((err) => {
+              console.log(err);
+            });
         });
       });
     },

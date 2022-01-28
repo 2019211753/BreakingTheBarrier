@@ -533,6 +533,7 @@ export default {
         .then(function (response) {
           that.collected = response.data.data.collected;
           that.articleCollectNumber = response.data.data.collectedNum;
+          that.dialogFormVisible3 = false;
           that.$message({
             message: response.data.msg,
             type: "success",

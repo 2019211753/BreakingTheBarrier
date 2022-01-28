@@ -18,7 +18,6 @@ import bottom from "../basic/bottom";
 import instance from "../../request/http";
 
 window.addEventListener("setItem", (e) => {
-
   if (e.key == "token") {
     instance.defaults.headers["token"] = e.newValue;
   }

@@ -4,7 +4,7 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="  template.avatar" alt="" />
+            <img :src="template.avatar" alt="" />
           </div>
           <div class="content">
             <div class="summary">
@@ -54,7 +54,6 @@ export default {
       .then(function (response) {
         that.template = response.data.data.template;
         that.blogContent = that.template.details;
-
       })
       .catch(function (error) {
         console.log(error);

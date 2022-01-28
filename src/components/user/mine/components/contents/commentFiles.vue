@@ -9,23 +9,31 @@
           <div class="summary">
             我在 <a>{{ getInnerText(item.parentContent) }}</a> 中添加了评论：
             <a href=""
-            ><router-link
-              v-if="item.parentType == '博客' || item.parentType == '博客的评论'"
-              :to="{
+              ><router-link
+                v-if="
+                  item.parentType == '博客' || item.parentType == '博客的评论'
+                "
+                :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
-                  query: { blogId: item.parentId,postUserId: item.parentUserId, },
+                  query: {
+                    blogId: item.parentId,
+                    postUserId: item.parentUserId,
+                  },
                 }"
-            >
-              {{ getInnerText(item.content) }}</router-link
-            ><router-link
-              v-else
-              :to="{
+              >
+                {{ getInnerText(item.content) }}</router-link
+              ><router-link
+                v-else
+                :to="{
                   path: '/BreakingTheBarrier/BBS/articleContent',
-                  query: { articleId: item.parentId,postUserId: item.parentUserId, },
+                  query: {
+                    articleId: item.parentId,
+                    postUserId: item.parentUserId,
+                  },
                 }"
-            >
-              {{ getInnerText(item.content) }}</router-link
-            ></a
+              >
+                {{ getInnerText(item.content) }}</router-link
+              ></a
             >
             <div class="date">{{ item.createTime }}</div>
           </div>
@@ -57,7 +65,6 @@
 
 
 <script>
-
 export default {
   name: "commentFiles",
   data() {
@@ -65,10 +72,10 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.personalArchive.archiveComment()
+    that.$api.personalArchive
+      .archiveComment()
 
       .then(function (response) {
-
         that.contentList = response.data.data.postComments;
         that.loading = false;
       })

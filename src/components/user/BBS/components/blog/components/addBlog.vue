@@ -89,8 +89,6 @@ export default {
     },
     sure() {
       var that = this;
-      /*      alert(that.chooseTagIdList); */
-      /* if(that.original==false){} */
       if (that.original == false) {
         if (
           that.title &&
@@ -119,7 +117,6 @@ export default {
               .postBlog(data)
 
               .then(function (response) {
-
                 if (response.data.code == 403) {
                   that.$message({
                     message: response.data.msg,
@@ -165,7 +162,6 @@ export default {
             that.$api.userBlog
               .postBlog(data)
               .then(function (response) {
-
                 if (response.data.code == 403) {
                   that.$message({
                     message: response.data.msg,

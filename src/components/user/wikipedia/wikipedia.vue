@@ -14,8 +14,7 @@
   </div>
 </template>
 
-<script>import axios from "axios";
-/* axios.defaults.headers["token"] = sessionStorage.getItem("token"); */
+<script>
 export default {
   name: "wikipedia",
 };

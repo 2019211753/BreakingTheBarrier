@@ -137,7 +137,6 @@ export default {
       .then(function (response) {
         that.loading = false;
         that.favoriteList = response.data.data.favorites;
-
       })
       .catch(function (error) {
         console.log(error);
@@ -178,7 +177,6 @@ export default {
       that.$api.personalFavorite
         .createFavorite(data)
         .then(function (response) {
-
           that.favoriteList.push(response.data.data.favorite);
           that.$message({
             message: response.data.msg,
@@ -202,7 +200,6 @@ export default {
       that.$api.personalFavorite
         .editFavorite(data)
         .then(function (response) {
-
           that.$message({
             message: "修改成功",
             type: "success",
@@ -225,7 +222,6 @@ export default {
       that.$api.personalFavorite
         .deleteFavorite(id)
         .then(function (response) {
-
           for (var i = 0; i < that.favoriteList.length; i++) {
             if (that.favoriteList[i].id == id) {
               that.favoriteList.splice(i, 1);

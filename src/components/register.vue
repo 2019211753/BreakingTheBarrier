@@ -60,7 +60,6 @@ export default {
     sure() {
       var that = this;
       if (that.userName && that.passWord && that.surePassWord) {
-
         if (that.passWord === that.surePassWord) {
           var data = {
             username: that.userName,
@@ -70,7 +69,6 @@ export default {
           that.$api.register
             .register(data)
             .then(function (response) {
-
               if (response.data.code == 200) {
                 that.$message({
                   message: "注册成功",
@@ -105,22 +103,11 @@ export default {
 </script>
 
 <style scoped>
-/* .ui.segment {
-  width: 40%;
-  margin: auto;
-}
-.ui.input {
-  margin-top: 20px;
-}
-.ui.button {
-  margin-top: 20px;
-} */
 .background {
   width: 100%;
   height: 100%;
   z-index: -1;
   position: absolute;
-  /* background-image: linear-gradient(to left, #9c88ff, #3cadeb); */
   display: flex;
   justify-content: center;
 }
@@ -138,7 +125,6 @@ export default {
 .b {
   width: 800px;
   height: 550px;
-
   background-size: cover;
 }
 

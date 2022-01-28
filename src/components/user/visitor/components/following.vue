@@ -46,7 +46,6 @@
 </template>
 
 <script>
-
 export default {
   name: "following",
   data() {
@@ -54,9 +53,9 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.userSocial.getOtherFile(that.$route.query.userId)
+    that.$api.userSocial
+      .getOtherFile(that.$route.query.userId)
       .then(function (response) {
-
         that.list = response.data.data.followingUsers;
         that.loading = false;
       })
@@ -67,10 +66,9 @@ export default {
   methods: {
     follow(id) {
       var that = this;
-      that.$api.userSocial.followOther(id)
-
+      that.$api.userSocial
+        .followOther(id)
         .then(function (response) {
-
           if (response.data.code == 406) {
             that.$message({
               message: response.data.msg,
@@ -96,9 +94,10 @@ export default {
       axios
         .get("/visit/" + id)
         .then(function (response) {
-
           if (id == that.$store.state.me.id) {
-            that.$router.push("/BreakingTheBarrier/mine/contents/questionFiles");
+            that.$router.push(
+              "/BreakingTheBarrier/mine/contents/questionFiles"
+            );
           } else {
             that.$store.commit("getOthersFile", response.data.data);
             that.$router.push({

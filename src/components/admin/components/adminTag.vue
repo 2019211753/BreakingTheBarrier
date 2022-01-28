@@ -68,7 +68,6 @@ export default {
       that.$api.userTag
         .getTags()
         .then(function (response) {
-
           that.tagList = response.data.data.tags;
           that.loading = false;
         })
@@ -100,7 +99,6 @@ export default {
         that.$api.adminTag
           .addTag(data)
           .then(function (response) {
-
             that.$message({
               message: "添加成功",
               type: "success",
@@ -115,9 +113,7 @@ export default {
       var p2 = new Promise((resolve, reject) => {
         that.getTags();
       });
-      Promise.all([p1, p2]).then((res) => {
-
-      });
+      Promise.all([p1, p2]).then((res) => {});
     },
     removeTag(node, data) {
       var that = this;
@@ -125,11 +121,6 @@ export default {
         that.$api.adminTag
           .deleteTag(data.id)
           .then(function (response) {
-
-            /* const parent = node.parent;
-          const children = parent.data.children || parent.data;
-          const index = children.findIndex((d) => d.id === data.id);
-          children.splice(index, 1); */
             if (response.data.code == 200) {
               that.$message({
                 message: "删除成功",
@@ -149,12 +140,9 @@ export default {
       var p2 = new Promise((resolve, reject) => {
         that.getTags();
       });
-      Promise.all([p1, p2]).then((res) => {
-
-      });
+      Promise.all([p1, p2]).then((res) => {});
     },
     renderContent(h, { node, data, store }) {
-
       return (
         <span class="custom-tree-node">
           <i class="tag icon"></i>

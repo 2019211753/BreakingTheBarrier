@@ -143,7 +143,6 @@ export default {
       .getOtherFile(that.$route.query.postUserId)
 
       .then(function (response) {
-
         that.loading = false;
         that.questions = response.data.data.questions;
         that.following = response.data.data.following;
@@ -160,7 +159,6 @@ export default {
         .followOther(this.$route.query.postUserId)
 
         .then(function (response) {
-
           if (response.data.code == 406) {
             that.$message({
               message: response.data.msg,

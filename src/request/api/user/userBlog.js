@@ -8,16 +8,14 @@ import instance from "../../http";
 
 const userBlog = {
     serchBlogs(data) {
-        return instance.post("/searchBlogs/", data)
+        return instance.post("/searchBlogs/", data);
     },
     postBlog(data) {
-        return instance
-            .post("/customer/blog/post", data)
+        return instance.post("/customer/blog/post", data);
     },
     deleteBlog(data) {
-        return instance
-            .get("/customer/blog/" + data + "/delete")
+        return instance.get("/customer/blog/" + data + "/delete");
     }
-}
+};
 
 export default userBlog;

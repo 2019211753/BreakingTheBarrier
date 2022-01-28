@@ -59,7 +59,6 @@ export default {
             .postQuestion(data)
 
             .then(function (response) {
-
               if (response.data.code == 403) {
                 that.$message({
                   message: response.data.msg,
@@ -93,10 +92,6 @@ export default {
   margin-top: 20px;
 }
 
-/*#websiteEditorElem {
-  margin-top: 20px;
-}*/
-
 .button {
   margin-top: 20px;
 }
@@ -105,22 +100,4 @@ export default {
   margin: auto;
   width: 80%;
 }
-
-/* .main {
-  margin-top: 20px;
-  width: 64%;
-  float: left;
-}
-
-.side {
-  margin-top: 20px;
-  width: 35%;
-  float: left;
-  margin-left: 1%;
-}
-
-.tags {
-  width: 90%;
-  margin: auto;
-}  */
 </style>

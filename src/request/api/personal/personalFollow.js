@@ -5,11 +5,10 @@
 import base from "../../base";
 import instance from "../../http";
 
-
 const personalFollow = {
     getFollowInfo() {
-        return instance.get("/customer/followInfo")
+        return instance.get("/customer/followInfo");
     }
-}
+};
 
 export default personalFollow;

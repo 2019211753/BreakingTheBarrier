@@ -23,27 +23,26 @@ import userTag from "./api/user/userTag";
 import logIn from "./api/logIn";
 import register from "./api/register";
 
-
 // 导出接口
 export default {
-  adminBlog,
-  adminQuestion,
-  adminTag,
-  adminUser,
-  personalArchive,
-  userBlog,
-  personalFavorite,
-  personalFollow,
-  personalInformation,
-  personalMessage,
-  userQuestion,
-  userArticle,
-  userComment,
-  userFavorite,
-  userLike,
-  userRank,
-  userSocial,
-  userTag,
-  logIn,
-  register
-}
+    adminBlog,
+    adminQuestion,
+    adminTag,
+    adminUser,
+    personalArchive,
+    userBlog,
+    personalFavorite,
+    personalFollow,
+    personalInformation,
+    personalMessage,
+    userQuestion,
+    userArticle,
+    userComment,
+    userFavorite,
+    userLike,
+    userRank,
+    userSocial,
+    userTag,
+    logIn,
+    register
+};

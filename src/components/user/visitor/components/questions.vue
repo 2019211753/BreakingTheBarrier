@@ -6,11 +6,8 @@
     <div class="ui segment" v-for="(item, index) in contentList">
       <el-container>
         <el-aside width="45px"
-          ><img
-            class="ui circular image"
-            :src="  $store.state.others.avatar"
+          ><img class="ui circular image" :src="$store.state.others.avatar"
         /></el-aside>
-
         <el-main>
           <h4 style="margin-top: -13px">{{ $store.state.others.nickname }}</h4>
           <p style="margin-top: -13px; color: grey; font-size: 13px">
@@ -37,9 +34,6 @@
         >
       </el-row>
       <el-row :gutter="24" style="margin-top: 5px">
-        <!-- <el-col :span="8"
-          ><img class="ui rounded fluid image" :src="cover[index]"
-        /></el-col> -->
         <el-col :span="24"
           ><h5 style="color: grey">
             {{ item.description }}
@@ -99,26 +93,22 @@
   </div>
 </template>
 <script>
-
 export default {
   name: "questions",
 
   data() {
     return {
       loading: true,
-      cover: [],
       contentList: [],
     };
   },
   created() {
     var that = this;
-    that.$api.userSocial.getOtherFile(that.$route.query.userId)
+    that.$api.userSocial
+      .getOtherFile(that.$route.query.userId)
       .then(function (response) {
-
-        /* that.loading = false; */
         that.contentList = response.data.data.questions;
         that.loading = false;
-
       })
       .catch(function (error) {
         console.log(error);

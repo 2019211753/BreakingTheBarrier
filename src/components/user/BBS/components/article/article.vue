@@ -55,7 +55,6 @@ export default {
 
   margin: auto;
   margin-top: 20px;
-
 }
 
 .main {
@@ -64,7 +63,6 @@ export default {
 }
 
 .hot {
-
   width: 35%;
   float: left;
   margin-left: 1%;

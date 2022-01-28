@@ -74,7 +74,6 @@ export default {
       that.$api.userSocial
         .followOther(id)
         .then(function (response) {
-
           /* for (var i = 0; i < that.list.length; i++) {
             if (that.list[i].id == id) {
               that.list.splice(that.list[i], 1);
@@ -99,7 +98,6 @@ export default {
       that.$api.userSocial
         .getOtherFile(id)
         .then(function (response) {
-
           that.$store.commit("getOthersFile", response.data.data);
           that.$router.push({
             path: "/BreakingTheBarrier/visitor/questions",

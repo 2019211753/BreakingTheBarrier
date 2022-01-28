@@ -51,7 +51,6 @@ export default {
     that.$api.userTag
       .getTags()
       .then(function (response) {
-
         that.tagList = response.data.data.tags;
       })
       .catch(function (error) {
@@ -62,7 +61,6 @@ export default {
     handleNodeClick(data) {
       var that = this;
       var tagFlag = 0;
-
       for (var i = 0; i < that.chooseTagList.length; i++) {
         if (that.chooseTagList[i].id === data.id) {
           tagFlag = 1;
@@ -71,7 +69,6 @@ export default {
       if (tagFlag === 0) {
         that.chooseTagList.push(data);
         that.chooseTagIdList.push(data.id);
-
         sessionStorage["chooseTagIdList"] = that.chooseTagIdList;
       }
     },
@@ -85,7 +82,6 @@ export default {
           that.chooseTagIdList.splice(i, 1);
         }
       }
-
       sessionStorage["chooseTagIdList"] = that.chooseTagIdList;
     },
   },

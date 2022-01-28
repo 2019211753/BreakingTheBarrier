@@ -68,9 +68,6 @@
 </template>
 
 <script>
-
-/* import eventBus from "../eventBus"; */
-/* import jwtDecode from "jwt-decode"; */
 export default {
   name: "headbar",
   data() {
@@ -90,24 +87,14 @@ export default {
     that.$api.personalInformation
       .getPersonalInformation()
       .then(function (response) {
-
         that.loading = false;
         that.$store.commit("getMyAvatar", response.data.data.user.avatar);
         that.$store.commit("getMyFile1", response.data.data.user);
         that.$store.commit("getMyFile2", response.data.data);
-        /* eventBus.$emit("pushMsg", ); */
       })
       .catch(function (error) {
         console.log(error);
       });
-    /* window.addEventListener("setItem", (e) => {
-      if (e.key == "avatar") {
-        console.log(e.newValue);
-        that.imgSrc = e.newValue;
-      }
-    var decode = jwtDecode(e.newValue);
-      console.log(decode);
-    }); */
   },
 };
 </script>
@@ -136,7 +123,6 @@ export default {
 
 .nav ul a:hover {
   border-bottom: 3px solid orange;
-  /* color: white; */
 }
 
 a {
@@ -146,7 +132,6 @@ a {
 .header {
   width: 100%;
   height: 40px;
-  /* background-color: rgb(100, 133, 208); */
   margin: 0px auto;
 }
 

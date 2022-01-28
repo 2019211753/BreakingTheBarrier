@@ -66,15 +66,7 @@
               </div>
             </div>
           </div>
-          <div class="ui grid">
-            <!-- <div class="right aligned five wide column">
-              <a
-                href="/types/2"
-                class="ui teal basic label m-padded-tb-tiny m-text-thin"
-                >JavaSE</a
-              >
-            </div> -->
-          </div>
+          <div class="ui grid"></div>
         </div>
         <div class="six wide column">
           <a href="/blog/120" target="_blank">
@@ -112,14 +104,6 @@
         </div>
       </template>
     </el-skeleton>
-<!--    <el-pagination
-      class="el-pagination"
-      layout="prev, pager, next"
-      @current-change="handleCurrentChange"
-      :page-count="pageSize"
-      :hide-on-single-page="true"
-    >
-    </el-pagination>-->
   </div>
 </template>
 
@@ -135,7 +119,6 @@ export default {
     that.$api.userQuestion
       .serchQuestions(data)
       .then(function (response) {
-
         that.loading = false;
         that.contentList = response.data.data.pages.content;
       })
@@ -143,28 +126,11 @@ export default {
         console.log(error);
       });
   },
-  /*methods: {
-    handleCurrentChange(val) {
-      var that = this;
-      var nowPage = val - 1;
-      axios
-        .get("/listBlogs/?page=" + nowPage)
-        .then(function (response) {
-          console.log(response.data);
-          that.contentList = response.data.data.pages.content;
-          that.pageSize = response.data.data.pages.totalPages;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-  },*/
 };
 </script>
 
 <style scoped>
 .framework {
-  /* background-color: bisque; */
   margin-top: 20px;
   height: 260px;
 }
