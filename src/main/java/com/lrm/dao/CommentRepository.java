@@ -79,8 +79,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     /**
      * 查询最高赞数的n个答案
      */
-    @Query("select c from #{#entityName} c where c.question.id = ?1 and c.answer = true and c.selected = false")
-    List<Comment> findTopByQuestionIdAndAnswer(Pageable pageable, Long questionId);
+    @Query("select c from #{#entityName} c where c.question.id = ?1 and c.answer = true and c.selected = false and c.likesNum >= 3")
+    List<Comment> findTopByQuestionIdAndAnswer(Pageable pageable, Long questionId, Integer likesNum);
 
 
 }

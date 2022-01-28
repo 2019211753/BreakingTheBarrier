@@ -75,7 +75,6 @@ public class CommentServiceImpl implements CommentService {
             comment.setAnswer(parentComment.getAnswer());
 
             //如果评论发布者也是上一级评论发布者 设为已读
-
             if (postUser.equals(parentComment.getPostUser())) {
                 samePerson = true;
             }
@@ -87,8 +86,9 @@ public class CommentServiceImpl implements CommentService {
             comment.setParentComment(null);
             comment.setReceiveUser(t.getUser());
 
-            if (t instanceof Question) {
-                comment.setQuestion((Question) t);
+            //如果评论发布者为问题发布者 设为已读
+            if (postUser.equals(t.getUser())) {
+                samePerson = true;
             }
         }
 
@@ -100,6 +100,12 @@ public class CommentServiceImpl implements CommentService {
         t.setCommentsNum(t.getCommentsNum() + 1);
         //影响力
         t.setImpact(t.getImpact() + ImpactGrow.COMMENTED.getGrow());
+        if (t instanceof Question) {
+            comment.setQuestion((Question) t);
+        }
+        if (t instanceof Blog) {
+            comment.setBlog((Blog) t);
+        }
         comment.setCreateTime(new Date());
         comment.setLikesNum(0);
         comment.setDisLikesNum(0);
@@ -107,15 +113,6 @@ public class CommentServiceImpl implements CommentService {
         comment.setHidden(false);
         comment.setPostUser(postUser);
         comment.setSelected(false);
-
-        if (t instanceof Blog) {
-            comment.setBlog((Blog) t);
-        }
-
-        //如果评论发布者为问题发布者 设为已读
-        if (postUser.equals(t.getUser())) {
-            samePerson = true;
-        }
 
         //如果是有效回答 回答者贡献+ 问题影响力+ 否则仅仅问题影响力+
         if (comment.getAnswer()) {
@@ -191,7 +188,7 @@ public class CommentServiceImpl implements CommentService {
         Sort sort = Sort.by(Sort.Direction.DESC, "likesNum");
         Pageable pageable = PageRequest.of(0, Magic.BEST_COMMENTS_SIZE, sort);
 
-        return commentRepository.findTopByQuestionIdAndAnswer(pageable, questionId);
+        return commentRepository.findTopByQuestionIdAndAnswer(pageable, questionId, Magic.BEST_COMMENT_MIN_LIKES);
     }
 
     /**

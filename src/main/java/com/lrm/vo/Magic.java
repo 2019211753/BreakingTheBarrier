@@ -18,6 +18,7 @@ public class Magic {
     public static final int CHILD_COMMENTS_PAGE_SIZE = 3;
     public static final int FAVORITE_CONTENT_PAGE_SIZE = 7;
     public static final int BEST_COMMENTS_SIZE = 3;
+    public static final int BEST_COMMENT_MIN_LIKES = 3;
     public static final int RECOMMENDED_SIZE = 6;
     public static final int RANK_SIZE = 10;
     public static final int MAX_FAVORITE_CONTENT_SIZE = 25;

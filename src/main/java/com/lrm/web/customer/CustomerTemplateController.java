@@ -149,7 +149,7 @@ public class CustomerTemplateController {
             throw new NoPermissionException("你无权删除该问题");
         }
 
-        return deleteTemplate(request, question, questionServiceImpl);
+        return deleteTemplate(question, questionServiceImpl);
     }
 
     /**
@@ -172,10 +172,10 @@ public class CustomerTemplateController {
             throw new NoPermissionException("你无权删除该博客");
         }
 
-        return deleteTemplate(request, blog, blogServiceImpl);
+        return deleteTemplate(blog, blogServiceImpl);
     }
 
-    public <T extends Template> Result deleteTemplate(HttpServletRequest request, T t, TemplateServiceImpl<T> templateServiceImpl) {
+    public <T extends Template> Result deleteTemplate(T t, TemplateServiceImpl<T> templateServiceImpl) {
 
         Long id = t.getId();
 
@@ -197,10 +197,14 @@ public class CustomerTemplateController {
      * @return 该博客对象和所有标签
      */
     @GetMapping("/blog/{blogId}/edit")
-    public Result editBlog(@PathVariable Long blogId) {
+    public Result editBlog(@PathVariable Long blogId, HttpServletRequest request) {
+        Long userId = TokenInfo.getCustomUserId(request);
         Blog blog = blogServiceImpl.getById(blogId);
         if (blog == null) {
             throw new NotFoundException("未查询到该博客");
+        }
+        if (!blog.getUser().getId().equals(userId)) {
+            throw new NoPermissionException("你无权获取该博客");
         }
         Map<String, Object> hashMap = new HashMap<>(2);
         blog = editTemplate(blog);
@@ -280,7 +284,7 @@ public class CustomerTemplateController {
         for (T t0 : ts.getContent()) {
             //得到发布问题的人
             User postUser = t0.getUser();
-
+            t0.setAvatar(postUser.getAvatar());
             t0.setNickname(postUser.getNickname());
         }
         return ts;

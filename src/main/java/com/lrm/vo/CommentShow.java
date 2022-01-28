@@ -20,8 +20,6 @@ public class CommentShow {
 
     public Long id;
 
-    public Long parentCommentId;
-
     @JsonSerialize(using = ContentSerializerUtils.class)
     public String content;
 
@@ -41,6 +39,8 @@ public class CommentShow {
 
     public Long blogId;
 
+    public Long parentCommentId;
+
     public Date createTime;
 
     public String avatar;
@@ -55,30 +55,7 @@ public class CommentShow {
 
     public Boolean disapproved;
 
-    public List<Comment> receiveComments;
-
-    public CommentShow() {
-    }
-
-    public CommentShow(Comment comment) {
-        MyBeanUtils.copyVo(Comment.class, comment, CommentShow.class, this);
-        if (comment.getQuestion() != null) {
-            this.questionId = comment.getQuestion().getId();
-        } else if (comment.getBlog() != null)
-        {
-            this.blogId = comment.getBlog().getId();
-        }
-        this.postUserId = comment.getPostUser().getId();
-    }
-
-    public static List<CommentShow> getCommentsShow(List<Comment> comments) {
-        List<CommentShow> showList = new ArrayList<>(comments.size());
-        for (Comment comment : comments) {
-            CommentShow show = new CommentShow(comment);
-            showList.add(show);
-        }
-        return showList;
-    }
+    public List<CommentShow> receiveComments;
 
     public void setId(Long id) {
         this.id = id;
@@ -132,17 +109,42 @@ public class CommentShow {
         this.disapproved = disapproved;
     }
 
-    public void setReceiveComments(List<Comment> receiveComments) {
-        this.receiveComments = receiveComments;
-    }
-
-    public void setParentCommentId(Long parentCommentId) {
-        this.parentCommentId = parentCommentId;
+    public CommentShow() {
     }
 
     public void setParentCommentName(String parentCommentName) {
         this.parentCommentName = parentCommentName;
     }
+
+    public CommentShow(Comment comment) {
+        MyBeanUtils.copyVo(Comment.class, comment, CommentShow.class, this);
+        if (comment.getQuestion() != null) {
+            this.questionId = comment.getQuestion().getId();
+        } else if (comment.getBlog() != null)
+        {
+            this.blogId = comment.getBlog().getId();
+        }
+        this.postUserId = comment.getPostUser().getId();
+        if (comment.getParentComment() != null) {
+            this.parentCommentId = comment.getParentComment().getId();
+        } else {
+            this.parentCommentId = 0L;
+        }
+    }
+
+    public static List<CommentShow> getCommentsShow(List<Comment> comments) {
+        List<CommentShow> showList = new ArrayList<>(comments.size());
+        for (Comment comment : comments) {
+            CommentShow show = new CommentShow(comment);
+            showList.add(show);
+        }
+        return showList;
+    }
+
+    public void setReceiveComments(List<Comment> receiveComments) {
+        this.receiveComments = getCommentsShow(receiveComments);
+    }
+
 
 
 }

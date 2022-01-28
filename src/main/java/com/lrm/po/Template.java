@@ -29,7 +29,6 @@ public class Template {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     /**
@@ -48,16 +47,13 @@ public class Template {
     private String description;
 
     /**
-     * 懒加载 只有getContent了才加载
-     * 但是前端序列化的时候默认会getContent，所以在json层面还要忽略
-     * 内容
+     * 懒加载 只有getContent了才加载 但是前端序列化的时候默认会getContent，所以在json输出层面还要忽略
+     * 问题内容
      * 前端必填
      */
-    @Basic(fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Lob
     @NotBlank(message = "请输入内容")
-    @JsonSerialize(using = ContentSerializerUtils.class)
     private String content;
 
     /**
@@ -132,6 +128,7 @@ public class Template {
      * 前端展示的内容 只在需要具体展示内容的时候才展示
      */
     @Transient
+    @JsonSerialize(using = ContentSerializerUtils.class)
     private String details;
 
     /**

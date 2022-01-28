@@ -1,8 +1,7 @@
 package com.lrm.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lrm.po.Blog;
-import com.lrm.util.ContentSerializerUtils;
+import com.lrm.po.Tag;
 import com.lrm.util.MyBeanUtils;
 
 import java.util.ArrayList;
@@ -17,18 +16,11 @@ import java.util.List;
  * @date 2022-01-19
  */
 public class BlogShow {
-    public Integer solvedNum;
-
-    public Boolean solved;
-
     public Long id;
 
     public String title;
 
     public String description;
-
-    @JsonSerialize(using = ContentSerializerUtils.class)
-    public String content;
 
     public String tagIds;
 
@@ -64,6 +56,32 @@ public class BlogShow {
 
     public String favoriteIds;
 
+    public Boolean origin;
+
+    public String transferStatement;
+
+    public Boolean appreciation;
+
+    public Boolean commentAllowed;
+
+    public Boolean open;
+
+    public Date updateTime;
+
+    public List<Tag> tags = new ArrayList<>();
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public BlogShow() {
     }
 
@@ -81,20 +99,16 @@ public class BlogShow {
         return showList;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setOrigin(Boolean origin) {
+        this.origin = origin;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTransferStatement(String transferStatement) {
+        this.transferStatement = transferStatement;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+    public void setAppreciation(Boolean appreciation) {
+        this.appreciation = appreciation;
     }
 
     public void setTagIds(String tagIds) {
@@ -161,11 +175,19 @@ public class BlogShow {
         this.favoriteIds = favoriteIds;
     }
 
-    public void setSolvedNum(Integer solvedNum) {
-        this.solvedNum = solvedNum;
+    public void setCommentAllowed(Boolean commentAllowed) {
+        this.commentAllowed = commentAllowed;
     }
 
-    public void setSolved(Boolean solved) {
-        this.solved = solved;
+    public void setOpen(Boolean open) {
+        this.open = open;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

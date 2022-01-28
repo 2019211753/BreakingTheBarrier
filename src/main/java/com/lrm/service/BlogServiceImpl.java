@@ -3,6 +3,7 @@ package com.lrm.service;
 import com.lrm.dao.BlogRepository;
 import com.lrm.dao.TemplateRepository;
 import com.lrm.po.Blog;
+import com.lrm.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,5 +35,11 @@ public class BlogServiceImpl extends TemplateServiceImpl<Blog> implements BlogSe
         List<Predicate> listAnd = new ArrayList<>(1);
         listAnd.add(cb.equal(root.get("open"), true));
         return listAnd;
+    }
+
+    @Override
+    public Blog save(Blog blog, User user) {
+        blog.setUpdateTime(new Date());
+        return super.save(blog, user);
     }
 }

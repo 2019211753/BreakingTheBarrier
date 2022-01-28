@@ -2,6 +2,7 @@ package com.lrm.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lrm.po.Question;
+import com.lrm.po.Tag;
 import com.lrm.util.ContentSerializerUtils;
 import com.lrm.util.MyBeanUtils;
 
@@ -22,9 +23,6 @@ public class QuestionShow {
     public String title;
 
     public String description;
-
-    @JsonSerialize(using = ContentSerializerUtils.class)
-    public String content;
 
     public String tagIds;
 
@@ -50,6 +48,7 @@ public class QuestionShow {
 
     public Date newCommentedTime;
 
+    @JsonSerialize(using = ContentSerializerUtils.class)
     public String details;
 
     public String avatar;
@@ -63,6 +62,8 @@ public class QuestionShow {
     public Boolean collected;
 
     public String favoriteIds;
+
+    public List<Tag> tags = new ArrayList<>();
 
     public QuestionShow() {
     }
@@ -91,10 +92,6 @@ public class QuestionShow {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public void setTagIds(String tagIds) {
@@ -167,5 +164,9 @@ public class QuestionShow {
 
     public void setSolved(Boolean solved) {
         this.solved = solved;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

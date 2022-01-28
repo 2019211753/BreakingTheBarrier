@@ -31,7 +31,7 @@ public class Archive {
     public Date createTime;
 
     /**
-     * 消息的内容 如果是点赞消息的话为null
+     * 评论消息的内容 如果是点赞消息的话为null
      */
     @JsonSerialize(using = ContentSerializerUtils.class)
     public String content;
@@ -67,17 +67,15 @@ public class Archive {
      */
     public String nickname;
 
-    public Archive() {
-    }
-
     public Archive(Comment comment) {
         Blog blog;
         Question question;
         Comment parentComment;
 
         MyBeanUtils.copyVo(Comment.class, comment, Archive.class, this);
+        this.nickname = comment.getPostUser().getNickname();
+        this.avatar = comment.getPostUser().getAvatar();
 
-        this.content = comment.getContent();
         if ((parentComment = comment.getParentComment()) != null) {
             this.parentContent = parentComment.getContent();
             if ((blog = comment.getBlog()) != null) {
@@ -107,8 +105,8 @@ public class Archive {
         Question question;
         Comment parentComment;
 
-        this.id = likes.getId();
-        this.createTime = likes.getCreateTime();
+        MyBeanUtils.copyVo(Likes.class, likes, Archive.class, this);
+
         this.avatar = likes.getPostUser().getAvatar();
         this.nickname = likes.getPostUser().getNickname();
 
@@ -144,16 +142,19 @@ public class Archive {
         this.createTime = createTime;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
+    public Archive() {
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public static List<Archive> getCommentMessages(List<Comment> comments) {

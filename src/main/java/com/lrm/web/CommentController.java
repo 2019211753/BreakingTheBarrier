@@ -105,7 +105,6 @@ public class CommentController
             if (bindingResult.hasErrors()) {
                 throw new IllegalParameterException(IllegalParameterException.getMessage(bindingResult));
             }
-
             //保存
             commentServiceImpl.saveComment(comment, t, postUser);
 
@@ -131,14 +130,48 @@ public class CommentController
      */
     @GetMapping("/question/{questionId}/comment/{commentId}/delete")
     public Result deleteQuestionComment(@PathVariable Long questionId, @PathVariable Long commentId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(2);
         Question question = questionServiceImpl.getById(questionId);
         if (question == null) {
             throw new NotFoundException("未查询到该问题");
         }
         Comment comment = commentServiceImpl.getComment(commentId);
+        if (comment == null || comment.getQuestion() != question) {
+            throw new NotFoundException("未查询到该评论");
+        }
         deleteComment(comment, question, questionServiceImpl, request);
 
-        return new Result(null, "删除成功");
+        int selected = 0;
+        if (comment.getSelected()) {
+            selected = 1;
+        }
+
+        question.setSolvedNum(question.getSolvedNum() - selected - getSolvedAnswerNumsByParentComment(comment));
+        if (question.getSolvedNum() == 0) {
+            question.setSolved(false);
+        }
+        questionServiceImpl.save(question);
+
+        hashMap.put("solvedNum", question.getSolvedNum());
+        hashMap.put("solved", question.getSolved());
+        return new Result(hashMap, "删除成功");
+    }
+
+    Integer getSolvedAnswerNumsByParentComment(Comment comment) {
+        int nums = 0;
+        commentServiceImpl.listReceivedComments(comment);
+        for (Comment comment1 : comment.getReceiveComments()) {
+            if (comment1.getSelected()) {
+                nums += 1;
+            }
+            for (Comment comment2 : comment1.getReceiveComments()) {
+                if (comment2.getSelected())
+                {
+                    nums += 1;
+                }
+            }
+        }
+        return nums;
     }
 
     /**
@@ -151,6 +184,10 @@ public class CommentController
             throw new NotFoundException("未查询到该博客");
         }
         Comment comment = commentServiceImpl.getComment(commentId);
+        if (comment == null || comment.getBlog() != blog) {
+            throw new NotFoundException("未查询到该评论");
+        }
+
         deleteComment(comment, blog, blogServiceImpl, request);
 
         return new Result(null, "删除成功");
@@ -161,11 +198,6 @@ public class CommentController
         User customUser = userServiceImpl.getUser(TokenInfo.getCustomUserId(request));
         Boolean admin = TokenInfo.isAdmin(request);
 
-
-        //如果评论不存在&没权限删除评论报错
-        if (comment == null) {
-            throw new NotFoundException("未查询到该评论");
-        }
         if ((comment.getPostUser() != customUser) & (!admin)) {
             throw new NoPermissionException("你无权删除该评论");
         }
@@ -323,7 +355,7 @@ public class CommentController
         }
 
         Comment comment = commentServiceImpl.getComment(commentId);
-        if (comment == null) {
+        if (comment == null || comment.getQuestion() != question) {
             throw new NotFoundException("未查询到该评论");
         }
 

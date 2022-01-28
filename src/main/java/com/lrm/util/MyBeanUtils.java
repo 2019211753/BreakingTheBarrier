@@ -68,15 +68,11 @@ public class MyBeanUtils {
                 Method setMethod = cls.getDeclaredMethod(setMethodName, paramTypes);
 
                 //得到source中对应属性
-                Object args[] = new Object[1];
+                Object[] args = new Object[1];
                 args[0] = getMethod.invoke(source);
-                ArrayList arg = new ArrayList(1);
-                arg.add(new Object());
-                if (args[0] instanceof ArrayList) {
-                    arg = (ArrayList) args[0];
-                }
                 //如果source中不为空 拷贝进去
-                if (args[0] != null && arg.size() != 0) {
+                //允许返回后端的集合是[] 而不是null
+                if (args[0] != null) {
                     setMethod.invoke(dest, args);
                 }
             } catch (Exception e){
@@ -113,16 +109,13 @@ public class MyBeanUtils {
                 Method getMethod = cls.getMethod(getMethodName);
                 //得到source中对应属性
                 Object[] args = new Object[1];
+                //得到返回值
                 args[0] = getMethod.invoke(source);
-                ArrayList arg = new ArrayList(1);
-                arg.add(new Object());
                 Method setMethod = cls1.getDeclaredMethod(setMethodName, paramTypes);
                 //如果是集合
-                if (args[0] instanceof ArrayList) {
-                    arg = (ArrayList) args[0];
-                }
                 //如果source中不为空 拷贝进去
-                if (args[0] != null && arg.size() != 0) {
+                //允许返回后端的集合是[] 而不是null
+                if (args[0] != null) {
                     setMethod.invoke(dest, args);
                 }
             } catch (Exception e) {

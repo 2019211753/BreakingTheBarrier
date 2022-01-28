@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author 山水夜止
@@ -50,15 +53,14 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     /**
+     * 将博客/问题加入收藏夹
+     *
      * @param favorite 收藏夹
      * @return 新收藏夹
      */
     @Transactional
     @Override
     public <T extends Template> Favorite add(Favorite favorite, T t) {
-        if (t.getFavorites() == null) {
-            t.setFavorites(new ArrayList<>());
-        }
         t.getFavorites().add(favorite);
         t.setCollectedNum(t.getCollectedNum() + 1);
 

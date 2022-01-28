@@ -151,7 +151,7 @@ public class Comment {
      * 作为传回前端评论区的Comments集合 评论的子评论
      */
     @Transient
-    private List<Comment> receiveComments = new ArrayList<>();
+    private List<Comment> receiveComments = new ArrayList<>();;
 
 
     /**
@@ -187,14 +187,14 @@ public class Comment {
      */
     @JsonIgnore
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    private List<Likes> likes;
+    private List<Likes> likes = new ArrayList<>();;
 
     /**
      * 评论收到的点踩
      */
     @JsonIgnore
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    private List<DisLikes> dislikes;
+    private List<DisLikes> dislikes = new ArrayList<>();;
 
     /**
      * 消息的接收者

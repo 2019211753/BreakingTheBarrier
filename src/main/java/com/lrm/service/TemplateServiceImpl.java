@@ -189,11 +189,12 @@ public abstract class TemplateServiceImpl<T extends Template>  {
                 listAnd.add(cb.like(root.get("tagIds"), "%" + newTagIds + "%"));
             }
 
-            listAnd.addAll(setMoreCriteria(cb, root));
-
-            if (root.get("open") != null) {
-                listAnd.add(cb.equal(root.get("open"), false));
+            if (setMoreCriteria(cb, root) != null) {
+                listAnd.addAll(setMoreCriteria(cb, root));
             }
+
+            listAnd.add(cb.equal(root.get("hidden"), false));
+
             //and查询加入查询条件
             Predicate predicateAnd = cb.and(listAnd.toArray(new Predicate[0]));
 
@@ -201,39 +202,45 @@ public abstract class TemplateServiceImpl<T extends Template>  {
             return null;
         }, pageable);
 
-        //TODO: 待测试
         //不合法的数据：如需要查询的tagIds为1,2,3 但上面会把 11,2,31也查询出来
         //特殊数据 1 会出现21 12 就查询每个id 如果包含1就合法
-        ArrayList<T> contents = new ArrayList<>(pages.getContent());
-label:  for (T t : contents)
-        {
-            //需要查询的tagIds的第一个和最后一个,出现的位置
-            int firstCom = tagIds.indexOf(",");
-            int lastCom = tagIds.lastIndexOf(",");
+        if (pages.getContent().size() != 0) {
+            ArrayList<T> contents = new ArrayList<>(pages.getContent());
+            Iterator<T> it = contents.iterator();
+            label:  while (it.hasNext())
+            {
+                T t = it.next();
+                //需要查询的tagIds的第一个和最后一个,出现的位置
+                int firstCom = tagIds.indexOf(",");
+                int lastCom = tagIds.lastIndexOf(",");
 
-            //如果没有, 对查询结果的tagIds进行遍历 如果没有要查询的id 则为不合法的数据 移除 如果有 保留
-            if (firstCom == lastCom && firstCom == -1) {
-                String[] ids = tagIds.split(",");
-                for (String id : ids) {
-                    if (tagIds.equals(id)) {
-                        continue label;
+                //如果没有, 对查询结果的tagIds进行遍历 如果没有要查询的id 则为不合法的数据 移除 如果有 保留
+                if (firstCom == lastCom && firstCom == -1) {
+                    String[] ids = tagIds.split(",");
+                    for (String id : ids) {
+                        if (tagIds.equals(id)) {
+                            continue label;
+                        }
+                    }
+                    pages.getContent().remove(t);
+                } else {
+                    String firstTagId = tagIds.substring(0, firstCom);
+                    String lastTagId = tagIds.substring(lastCom + 1);
+
+                    int firstCom_ = t.getTagIds().indexOf(",");
+                    String firstTagId_ = t.getTagIds().substring(0, firstCom_);
+                    int lastCom_ = t.getTagIds().lastIndexOf(",");
+                    String lastTagId_ = t.getTagIds().substring(lastCom_ + 1);
+                    //如果第一个标签和最后一个标签是类似于11,2,31之于1,2,3 删除
+                    if ((!firstTagId_.equals(firstTagId) && firstTagId_.contains(firstTagId))||
+                            (!lastTagId_.equals(lastTagId) && lastTagId_.contains(lastTagId))) {
+                        it.remove();
                     }
                 }
-                pages.getContent().remove(t);
-            } else {
-                String firstTagId = tagIds.substring(0, firstCom);
-                String lastTagId = tagIds.substring(lastCom + 1);
-                int firstCom_ = t.getTagIds().indexOf(",");
-                String firstTagId_ = t.getTagIds().substring(0, firstCom_);
-                int lastCom_ = t.getTagIds().lastIndexOf(",");
-                String lastTagId_ = t.getTagIds().substring(lastCom_ + 1);
-
-                //如果第一个标签和最后一个标签与被查询的标签对不上号 删去
-                if (!firstTagId.equals(firstTagId_) || !lastTagId.equals(lastTagId_)) {
-                    pages.getContent().remove(t);
-                }
             }
+            return DataStructureUtils.listConvertToPage(contents, pageable);
         }
+
 
         return pages;
     }

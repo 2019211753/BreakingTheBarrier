@@ -69,14 +69,14 @@ public class Blog extends Template
      */
     @JsonIgnore
     @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE)
-    private List<Likes> likes;
+    private List<Likes> likes = new ArrayList<>();;
 
     /**
      * 博客拥有的踩 不返回前端
      */
     @JsonIgnore
     @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE)
-    private List<DisLikes> dislikes;
+    private List<DisLikes> dislikes = new ArrayList<>();;
 
     /**
      * 博客的子评论 不返回前端

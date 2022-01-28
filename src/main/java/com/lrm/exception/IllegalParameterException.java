@@ -47,7 +47,7 @@ public class IllegalParameterException extends CommonException {
         List<FieldError> errors = result.getFieldErrors();
         StringBuilder buffer = new StringBuilder(64);
         for (ObjectError error : errors) {
-            buffer.append(error.getDefaultMessage()).append("；");
+            buffer.append(error.getDefaultMessage()).append("；\n");
         }
         return buffer.toString();
     }

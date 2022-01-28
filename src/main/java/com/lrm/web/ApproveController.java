@@ -299,7 +299,7 @@ public class ApproveController {
             }
 
             DisLikes disLikes1 = new DisLikes();
-
+            disLikes1.setComment(comment);
             if (comment.getQuestion() != null) {
                 dislikesServiceImpl.save(comment.getQuestion(), disLikes1, postUser);
             } else if (comment.getBlog() != null) {

@@ -36,14 +36,14 @@ public class Question extends Template {
      */
     @JsonIgnore
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
-    private List<Likes> likes;
+    private List<Likes> likes = new ArrayList<>();;
 
     /**
      * 问题拥有的踩
      */
     @JsonIgnore
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
-    private List<DisLikes> dislikes;
+    private List<DisLikes> dislikes = new ArrayList<>();;
 
     /**
      * 问题的子评论

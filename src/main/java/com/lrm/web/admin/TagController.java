@@ -83,7 +83,8 @@ public class TagController {
             throw new NotFoundException("未查询到该标签");
         }
 
-        if (tag.getQuestions() != null || tag.getBlogs() != null) {
+        //初始化默认不是null 而是容量为空的集合
+        if (tag.getQuestions().size() != 0 || tag.getBlogs().size() != 0) {
             throw new FailedOperationException("有博客或问题使用了该标签，无法删除");
         }
         tagServiceImpl.deleteTag(tagId);
