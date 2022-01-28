@@ -238,8 +238,9 @@ public class User {
 
     /**
      * 领导的小组
-     * 通过new Team().leader.set(thisUser)设置
+     * 通过new Team().setLeader(thisUser)设置
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "leader")
     private List<Team> leadingTeams;
 
@@ -247,6 +248,7 @@ public class User {
      * 加入的小组
      * 通过new Team().members.add(thisUser)添加
      */
+    @JsonIgnore
     @ManyToMany(mappedBy = "members")
     private List<Team> joinedTeams;
 
