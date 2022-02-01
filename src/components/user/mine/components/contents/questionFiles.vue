@@ -3,52 +3,6 @@
     <div class="ui segment" v-if="loading == false && count == 0">
       <el-empty image-size="200" description="暂无内容"></el-empty>
     </div>
-      <template slot="template"
-        ><div class="ui segment">
-          <el-container>
-            <el-aside width="45px"
-              ><el-skeleton-item
-                variant="circle image"
-                style="width: 45px; height: 45px; margin-top: 15px"
-              />
-            </el-aside>
-            <el-main
-              ><el-skeleton-item variant="text" />
-              <el-skeleton-item variant="text" />
-            </el-main>
-          </el-container>
-          <el-row :gutter="20">
-            <el-col :span="20"><el-skeleton-item variant="text" /></el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="8"
-              ><el-skeleton-item variant="image" style="height: 100px" />
-            </el-col>
-            <el-col :span="16"
-              ><el-skeleton-item variant="text" /><el-skeleton-item
-                variant="text" /><el-skeleton-item
-                variant="text" /><el-skeleton-item
-                variant="text" /><el-skeleton-item variant="text"
-            /></el-col> </el-row
-          ><el-row :gutter="20" style="margin-top: 5px">
-            <el-col :span="20"> <el-skeleton-item variant="text" /></el-col>
-          </el-row>
-          <div class="ui divider"></div>
-          <el-row :gutter="20">
-            <el-col :span="5">
-              <el-skeleton-item variant="text" style="width: 40px"
-            /></el-col>
-            <el-col :span="5">
-              <el-skeleton-item variant="text" style="width: 40px"
-            /></el-col>
-            <el-col :span="5">
-              <el-skeleton-item variant="text" style="width: 40px"
-            /></el-col>
-            <el-col :span="5"></el-col>
-          </el-row>
-        </div>
-      </template>
-    </el-skeleton> -->
     <el-skeleton :loading="loading" v-if="loading == true" animated :count="5">
       <template slot="template"
         ><div class="ui segment">
@@ -115,7 +69,7 @@
         >
       </el-row>
       <el-row :gutter="24" style="margin-top: 5px">
- 
+
         <el-col :span="24"
           ><h5 style="color: grey">
             {{ item.description }}
