@@ -2,16 +2,12 @@ package com.lrm.web;
 
 import com.lrm.dao.FileRepository;
 import com.lrm.dao.FileTagRepository;
-import com.lrm.dao.UserRepository;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.FileTag;
-import com.lrm.po.User;
 import com.lrm.service.AysncService;
 import com.lrm.service.FileServiceImpl;
-import com.lrm.util.FileUtils;
-import com.lrm.util.OSSUtils;
-import com.lrm.util.TokenInfo;
-import com.lrm.util.UserHolder;
+import com.lrm.service.SearchService;
+import com.lrm.util.*;
 import com.lrm.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +43,14 @@ public class FileController {
     @Value("${oss.accessKeySecret}")
     private String accessKeySecret;
 
+    @Value("${hotfile_queries}")
+    private String hotFileQueries;
 
-    @Autowired
-    private UserRepository userRepository;
+    @Value("${hotfile_downloads}")
+    private String hotFileDownloads;
+
+    @Value("${hotfile_nums}")
+    private int hotFileNums;
 
     @Autowired
     private FileRepository fileRepository;
@@ -62,6 +63,9 @@ public class FileController {
 
     @Autowired
     private AysncService aysncService;
+
+    @Autowired
+    SearchService searchService;
 
     @GetMapping
     public String index() {
@@ -91,12 +95,34 @@ public class FileController {
     @ResponseBody
     public Result find(@RequestParam("query") String query,
                        @RequestParam("pageIndex") Short pageIndex) {
+        Long rank = searchService.rank(hotFileQueries, query);
+        if (rank == null) {
+            searchService.zadd(hotFileQueries, query, 1d);
+        } else {
+            int score = (int) searchService.zscore(hotFileQueries, query);
+            searchService.zadd(hotFileQueries, query, score + 1);
+        }
         Page<com.lrm.po.File> filePage = fileServiceImpl.findFile(query, pageIndex);
-
         HashMap<String, Object> hashMap = new HashMap<>(2);
-
+        logger.error(query);
         hashMap.put("page", filePage);
         return new Result(hashMap, "文件查询成功");
+    }
+
+    @ResponseBody
+    @GetMapping("/hotSearch")
+    public Result hotSearch() {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("hotQueries", searchService.reverseRange(hotFileQueries, 0, hotFileNums));
+        return new Result(hashMap, "热搜数据");
+    }
+
+    @ResponseBody
+    @GetMapping("/hotDownload")
+    public Result hotDownload() {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("hotDownloads", searchService.reverseRange(hotFileDownloads, 0, hotFileNums));
+        return new Result(hashMap, "热下载文件");
     }
 
     /**
@@ -146,6 +172,8 @@ public class FileController {
     public Result fileDownload(@RequestParam("fileId") Long fileId,
                                HttpServletResponse response,
                                HttpServletRequest request) throws IOException {
+
+
         //通过id查询唯一的文件
         Optional<com.lrm.po.File> found = fileRepository.findById(fileId);
 
@@ -153,19 +181,26 @@ public class FileController {
             throw new NotFoundException("无对应此id的文件");
         }
         String fileName = found.get().getName();
-
+        System.out.println("the filename: " + fileName);
+        String originName = found.get().getOriginName();
         //直接在这里判断文件存不存在,如果不存在会抛异常的
         fileServiceImpl.downloadFile(found.get());
-/*
+
+        Long rank = searchService.rank(hotFileDownloads, originName);
+        if (rank == null) {
+            searchService.zadd(hotFileDownloads, originName, 1d);
+        } else {
+            searchService.zadd(hotFileDownloads, originName,
+                    searchService.zscore(hotFileDownloads, originName) + 1d);
+        }
+
         response.reset();
         response.setContentType("application/octet-stream");
-        response.setContentLength((int)file.length());
-*/
         response.setCharacterEncoding("utf-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
 //        OSSUtils.downloadFile(response.getOutputStream(), fileName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
-        aysncService.executeAysnc(response, fileName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
+        aysncService.executeAysnc(response, "" + fileName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("name", fileName);
 

@@ -1,4 +1,4 @@
-package com.config;
+package com.lrm.config;
 
 import com.lrm.util.VisibleThreadPoolTaskExecutor;
 import org.slf4j.Logger;
