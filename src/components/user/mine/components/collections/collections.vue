@@ -2,33 +2,27 @@
   <div class="ui segment">
     <el-container v-for="(item, index) in favoriteList" :key="index">
       <el-aside width="70px"><i class="huge yellow folder icon"></i></el-aside>
-      <el-main
-      >
+      <el-main>
         <el-row :gutter="20">
           <el-col :span="19">
             <h4>
-              <a class="header"
-              >
+              <a class="header">
                 <router-link
                   :to="{
                     path: '/BreakingTheBarrier/mine/collections/favorite',
                     query: { favoriteId: item.id },
                   }"
-                >{{ item.title }}
-                </router-link
-                >
-              </a
+                  >{{ item.title }}
+                </router-link> </a
               ><a
-              v-if="item.open == false"
-              class="ui small blue label"
-              style="margin-left: 20px"
-            >私密</a
-            >
+                v-if="item.open == false"
+                class="ui small blue label"
+                style="margin-left: 20px"
+                >私密</a
+              >
             </h4>
-          </el-col
-          >
-          <el-col :span="5"
-          >
+          </el-col>
+          <el-col :span="5">
             <div
               class="ui mini icon button"
               style="background-color: white"
@@ -41,13 +35,12 @@
               style="background-color: white"
               @click="deleteFavorite(item.id)"
             >
-              <i class="ui trash icon"></i></div
-            >
+              <i class="ui trash icon"></i>
+            </div>
           </el-col>
         </el-row>
       </el-main>
-    </el-container
-    >
+    </el-container>
     <el-container v-if="loading == false">
       <el-aside width="70px"><i class="huge yellow folder icon"></i></el-aside>
       <el-main>
@@ -60,31 +53,31 @@
         </div>
       </el-main>
     </el-container>
-    <div class="ui createFavorite modal" style="width: 400px">
-      <div class="ui icon header">
+    <el-dialog width="400px" :visible.sync="dialogFormVisible1"
+      ><div class="ui icon header">
         <i class="archive icon"></i>
         创建收藏夹
-        <br/>
-        <br/>
+        <br />
+        <br />
         <div class="ui labeled input">
-          <div class="ui label">名称</div>
-          <input type="text" placeholder="" v-model="fileName"/>
+          <div class="ui label">收藏夹名称</div>
+          <input type="text" placeholder="" v-model="fileName" />
         </div>
       </div>
-      <div class="actions">
+      <div class="actions" style="width: 172px; margin: auto">
         <div :class="privateButton" @click="setPrivate()">私密</div>
         <div class="ui teal button" @click="sureCreateFavorites()">
           <i class="checkmark icon"></i>
           确定
         </div>
-      </div>
-    </div>
-    <div class="ui editFavorite modal" style="width: 400px">
-      <div class="ui icon header">
+      </div></el-dialog
+    >
+    <el-dialog width="400px" :visible.sync="dialogFormVisible2"
+      ><div class="ui icon header">
         <i class="archive icon"></i>
         修改信息
-        <br/>
-        <br/>
+        <br />
+        <br />
         <div class="ui labeled input">
           <div class="ui label">收藏夹名称</div>
           <input
@@ -94,7 +87,7 @@
           />
         </div>
       </div>
-      <div class="actions">
+      <div class="actions" style="width: 172px; margin: auto">
         <div
           :class="nowPrivate == false ? publicButton : privateButton"
           @click="editPrivate()"
@@ -105,11 +98,10 @@
           <i class="checkmark icon"></i>
           确定
         </div>
-      </div>
-    </div>
+      </div></el-dialog
+    >
     <el-skeleton :loading="loading" animated :count="5">
-      <template slot="template"
-      >
+      <template slot="template">
         <el-skeleton-item
           variant="text"
           style="height: 50px; margin-top: 15px"
@@ -120,11 +112,12 @@
 </template>
 
 <script>
-
 export default {
   name: "collections",
   data() {
     return {
+      dialogFormVisible1: false,
+      dialogFormVisible2: false,
       open: false,
       isPrivate: false,
       privateButton: "ui button",
@@ -139,11 +132,11 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.personalFavorite.getFavorites()
+    that.$api.personalFavorite
+      .getFavorites()
       .then(function (response) {
         that.loading = false;
         that.favoriteList = response.data.data.favorites;
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -151,14 +144,15 @@ export default {
   },
   methods: {
     createFavorites() {
-      $(".ui.createFavorite.modal").modal("show");
+      var that = this;
+      that.dialogFormVisible1 = true;
     },
     editFavorite(id, name, open) {
       var that = this;
       that.nowFavoriteId = id;
       that.nowFavoriteName = name;
       that.nowPrivate = open;
-      $(".ui.editFavorite.modal").modal("show");
+      that.dialogFormVisible2 = true;
     },
     editPrivate() {
       var that = this;
@@ -179,10 +173,10 @@ export default {
       var data = {
         title: that.fileName,
         open: !that.isPrivate,
-      }
-      that.$api.personalFavorite.createFavorite(data)
+      };
+      that.$api.personalFavorite
+        .createFavorite(data)
         .then(function (response) {
-          console.log(response.data);
           that.favoriteList.push(response.data.data.favorite);
           that.$message({
             message: response.data.msg,
@@ -202,10 +196,10 @@ export default {
         title: that.fileName,
         open: that.nowPrivate,
         id: that.nowFavoriteId,
-      }
-      that.$api.personalFavorite.editFavorite(data)
+      };
+      that.$api.personalFavorite
+        .editFavorite(data)
         .then(function (response) {
-          console.log(response.data);
           that.$message({
             message: "修改成功",
             type: "success",
@@ -225,9 +219,9 @@ export default {
     },
     deleteFavorite(id) {
       var that = this;
-      that.$api.personalFavorite.deleteFavorite(id)
+      that.$api.personalFavorite
+        .deleteFavorite(id)
         .then(function (response) {
-          console.log(response.data);
           for (var i = 0; i < that.favoriteList.length; i++) {
             if (that.favoriteList[i].id == id) {
               that.favoriteList.splice(i, 1);

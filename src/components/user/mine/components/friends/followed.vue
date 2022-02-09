@@ -46,7 +46,6 @@
 </template>
 
 <script>
-
 export default {
   name: "followed",
   data() {
@@ -54,11 +53,12 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.personalFollow.getFollowInfo()
+    that.$api.personalFollow
+      .getFollowInfo()
 
       .then(function (response) {
         that.loading = false;
-        console.log(response.data);
+
         that.list = response.data.data.followedUsers;
       })
       .catch(function (error) {
@@ -68,10 +68,10 @@ export default {
   methods: {
     follow(id) {
       var that = this;
-      that.$api.userSocial.followOther(id)
+      that.$api.userSocial
+        .followOther(id)
 
         .then(function (response) {
-          console.log(response.data);
           that.$store.commit(
             "getMyFollowingNum",
             response.data.data.myFollowingNum
@@ -87,14 +87,14 @@ export default {
     },
     turnToOthers(id) {
       var that = this;
-      that.$api.userSocial.getOtherFile(id)
+      that.$api.userSocial
+        .getOtherFile(id)
 
         .then(function (response) {
-          console.log(response.data);
           that.$store.commit("getOthersFile", response.data.data);
           that.$router.push({
             path: "/BreakingTheBarrier/visitor/questions",
-            query: { userId0: id },
+            query: { userId: id },
           });
         })
         .catch(function (error) {

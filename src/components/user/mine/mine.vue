@@ -2,38 +2,8 @@
   <div class="body">
     <div class="main">
       <div class="ui segment">
-        <!-- <el-skeleton :loading="loading" animated v-if="loading == true">
-          <template slot="template">
-            <el-row :gutter="24">
-              <el-col :span="6">
-                <el-skeleton-item
-                  style="
-                    width: 130px;
-                    height: 130px;
-                    margin-left: 20px;
-                    margin-top: 10px;
-                  "
-                  variant="circle image"
-                /> </el-col
-              ><el-col :span="1" style="height: 1px"> </el-col>
-              <el-col :span="17">
-                <el-skeleton-item
-                  style="height: 30px; margin-top: 20px"
-                  variant="text"
-                />
-                <el-skeleton-item variant="text" style="margin-top: 5px" />
-                <el-skeleton-item
-                  style="height: 20px; margin-top: 5px"
-                  variant="text"
-                />
-                <el-skeleton-item style="height: 20px" variant="text" />
-              </el-col>
-            </el-row>
-          </template>
-        </el-skeleton> -->
         <el-row :gutter="20">
-          <el-col :span="6"
-          >
+          <el-col :span="6">
             <div class="avatar" style="margin-left: 20px; margin-top: 10px">
               <div class="ui inverted dimmer">
                 <div class="content">
@@ -50,7 +20,6 @@
                   </el-upload>
                 </div>
               </div>
-              <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" /> -->
               <img
                 :src="$store.state.me.avatar"
                 alt=""
@@ -106,19 +75,11 @@
 <script>
 const imageConversion = require("image-conversion");
 import recommend from "./components/recommend";
-
 import $ from "jquery";
-/* import jwtDecode from "jwt-decode"; */
+
 export default {
-  components: {recommend},
+  components: { recommend },
   name: "mine",
-  /*computed: {
-    headers() {
-      return {
-        Authorization: sessionStorage.getItem("token"), // 直接从本地获取token就行
-      };
-    },
-  },*/
   data() {
     return {
       loading: true,
@@ -143,11 +104,8 @@ export default {
         this.$message.error("上传头像图片只能是 JPG 或 PNG 格式!");
         return false;
       }
-      console.log(file);
       return new Promise((resolve) => {
-        // 压缩到100KB,这里的100就是要压缩的大小,可自定义
         imageConversion.compressAccurately(file, 100).then((res) => {
-          console.log(res);
           resolve(res);
         });
         //compressAccurately有多个参数时传入对象
@@ -172,11 +130,12 @@ export default {
       const formData = new FormData();
       formData.append("file", file.file);
       var that = this;
-      that.$api.personalInformation.uploadAvatar(formData)
+      that.$api.personalInformation
+        .uploadAvatar(formData)
         .then((res) => {
           if (res.status === 200) {
             var that = this;
-            console.log(res.data);
+
             that.$message.success("上传头像成功!");
             that.$store.commit("getMyAvatar", res.data.data.avatar);
           }
@@ -198,15 +157,12 @@ export default {
   width: 80%;
   margin: auto;
   height: 760px;
-  /* background-color: aqua; */
 }
 
 .main {
   margin-top: 20px;
   width: 64%;
   float: left;
-  /* height: 600px; */
-  /* background-color: bisque; */
 }
 
 .side {
@@ -215,13 +171,10 @@ export default {
   float: left;
   margin-left: 1%;
   height: 380px;
-  /* background-color: bisque; */
 }
 
 .avatar {
   width: 95%;
-  /* height: 150px; */
-  /* background-color: rgb(82, 168, 168); */
   float: left;
 }
 
@@ -229,7 +182,6 @@ export default {
   width: 400px;
   height: 150px;
   margin-left: 20px;
-  /* background-color: rgb(50, 236, 236); */
   float: left;
 }
 

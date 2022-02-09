@@ -5,11 +5,10 @@
 import base from "../../base";
 import instance from "../../http";
 
-
 const userRank = {
     getRank() {
-        return instance.get("/rank")
+        return instance.get("/rank");
     }
-}
+};
 
 export default userRank;

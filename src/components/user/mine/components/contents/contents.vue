@@ -8,28 +8,36 @@
               <ul>
                 <li>
                   <a>
-                    <router-link to="/BreakingTheBarrier/mine/contents/questionFiles">
+                    <router-link
+                      to="/BreakingTheBarrier/mine/contents/questionFiles"
+                    >
                       <i class="archive icon"></i> 提问
                     </router-link>
                   </a>
                 </li>
                 <li>
                   <a>
-                    <router-link to="/BreakingTheBarrier/mine/contents/blogFiles">
+                    <router-link
+                      to="/BreakingTheBarrier/mine/contents/blogFiles"
+                    >
                       <i class="archive icon"></i> 博客
                     </router-link>
                   </a>
                 </li>
                 <li>
                   <a>
-                    <router-link to="/BreakingTheBarrier/mine/contents/likeFiles">
+                    <router-link
+                      to="/BreakingTheBarrier/mine/contents/likeFiles"
+                    >
                       <i class="archive icon"></i> 点赞
                     </router-link>
                   </a>
                 </li>
                 <li>
                   <a>
-                    <router-link to="/BreakingTheBarrier/mine/contents/commentFiles">
+                    <router-link
+                      to="/BreakingTheBarrier/mine/contents/commentFiles"
+                    >
                       <i class="archive icon"></i> 评论
                     </router-link>
                   </a>
@@ -68,7 +76,6 @@ export default {
 
 .nav ul a:hover {
   border-bottom: 4px solid orange;
-  /*   color: black; */
 }
 
 a {
@@ -78,7 +85,6 @@ a {
 .header {
   width: 100%;
   height: 30px;
-  /* background-color: rgb(100, 133, 208); */
   float: left;
 }
 

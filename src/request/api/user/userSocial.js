@@ -5,16 +5,13 @@
 import base from "../../base";
 import instance from "../../http";
 
-
 const userSocial = {
     getOtherFile(data) {
-        return instance
-            .get("/visit/" + data)
+        return instance.get("/visit/" + data);
     },
     followOther(data) {
-        return instance
-            .get("/follow/" + data)
+        return instance.get("/follow/" + data);
     }
-}
+};
 
 export default userSocial;

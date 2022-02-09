@@ -17,13 +17,11 @@
                 query: { searchContent: this.searchContent },
               }"
             >
-              <button class="ui teal button" v-if="searchContent">
-                搜索
-              </button>
+              <button class="ui teal button" v-if="searchContent">搜索</button>
             </router-link>
           </div>
           <br />
-          <div class="ui teal fluid button"  @click="turnToAddBlog()">
+          <div class="ui teal fluid button" @click="turnToAddBlog()">
             发布内容
           </div>
         </div>
@@ -55,7 +53,6 @@ export default {
 
   margin: auto;
   margin-top: 20px;
-
 }
 
 .main {
@@ -64,7 +61,7 @@ export default {
 }
 
 .hot {
-    width: 35%;
+  width: 35%;
   float: left;
   margin-left: 1%;
 }

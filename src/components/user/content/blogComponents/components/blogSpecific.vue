@@ -1,14 +1,13 @@
 <template>
   <div>
     <el-skeleton :loading="blogLoading" animated style="margin-top: 14px">
-      <template slot="template"
-      >
+      <template slot="template">
         <div>
           <div class="ui segment">
             <div class="ui large feed">
               <div class="event">
                 <div class="label">
-                  <el-skeleton-item variant="circle image"/>
+                  <el-skeleton-item variant="circle image" />
                 </div>
                 <div class="content">
                   <div class="summary"></div>
@@ -16,24 +15,20 @@
               </div>
             </div>
             <h3 class="title">
-              <el-skeleton-item variant="text"/>
+              <el-skeleton-item variant="text" />
             </h3>
             <div class="ui divider"></div>
             <el-skeleton-item
               variant="image"
               style="width: 80%; height: 400px; margin: auto"
             />
-            <br/>
-            <el-skeleton-item variant="text"/>
-            <el-skeleton-item
-              variant="text"
-            />
-            <el-skeleton-item variant="text"/>
+            <br />
+            <el-skeleton-item variant="text" />
+            <el-skeleton-item variant="text" />
+            <el-skeleton-item variant="text" />
             <el-row>
-              <el-col :span="20"
-              >
-                <div class="grid-content bg-purple-dark"></div
-                >
+              <el-col :span="20">
+                <div class="grid-content bg-purple-dark"></div>
               </el-col>
             </el-row>
           </div>
@@ -44,7 +39,7 @@
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="template.avatar" alt=""/>
+            <img :src="template.avatar" alt="" />
           </div>
           <div class="content">
             <div class="summary">
@@ -52,26 +47,23 @@
                 <router-link
                   v-if="$store.state.me.id == postUserId"
                   to="/BreakingTheBarrier/mine/contents/questionFiles"
-                >{{ template.nickname }}
-                </router-link
-                >
+                  >{{ template.nickname }}
+                </router-link>
                 <router-link
                   v-else
                   :to="{
                     path: '/BreakingTheBarrier/visitor/questions',
-                    query: { userId: postUserId},
+                    query: { userId: postUserId },
                   }"
-                >{{ template.nickname }}
+                  >{{ template.nickname }}
                 </router-link>
               </a>
               <div class="date">
                 {{ template.createTime }}
               </div>
             </div>
-            <a
-              v-if="template.origin == true"
-              class="ui green right ribbon label"
-            >原创</a
+            <a v-if="template.origin == true" class="ui teal right ribbon label"
+              >原创</a
             >
             <a v-else class="ui blue right ribbon label">转载</a>
           </div>
@@ -80,14 +72,14 @@
       <h3 class="title" style="margin-top: -20px">{{ template.title }}</h3>
       <div class="ui divider"></div>
       <div v-html="articleContent">{{ articleContent }}</div>
-      <br/>
+      <br />
       <p
         style="color: grey"
         v-if="template.origin == false && template.transferStatement"
       >
         转载声明： {{ template.transferStatement }}
       </p>
-      <br/>
+      <br />
       <el-row>
         <el-col :span="6">
           <div style="height: 1px"></div>
@@ -95,7 +87,7 @@
         <el-col :span="12">
           <div
             @click="likeArticle(template.id)"
-            :class="approved == true ? articleLikeIsActive : button"
+            :class="articleApproved == true ? articleLikeIsActive : button"
           >
             <i class="heart icon"></i>
             {{ articleLikeNumber }}
@@ -108,12 +100,24 @@
             <i class="star icon"></i>
             {{ articleCollectNumber }}
           </div>
-          <div :class="template.commentAllowed==true?'ui icon blue button':'ui icon disabled blue button'"
-               @click="replyArticle()">
+          <div
+            :class="
+              template.commentAllowed == true
+                ? 'ui icon blue button'
+                : 'ui icon disabled blue button'
+            "
+            @click="dialogFormVisible1 = true"
+          >
             <i class="comment icon"></i>
           </div>
           <div
-            :class="template.appreciation==true?'ui icon teal button':'ui icon disabled teal button'"data-content="接受赞赏">
+            :class="
+              template.appreciation == true
+                ? 'ui icon teal button'
+                : 'ui icon disabled teal button'
+            "
+            data-content="接受赞赏"
+          >
             <i class="hand spock icon"></i>
           </div>
         </el-col>
@@ -146,8 +150,8 @@
         <i class="trash icon"></i>删除
       </div>
     </div>
-    <br/>
-    <div v-if="template.commentAllowed==true">
+    <br />
+    <div v-if="template.commentAllowed == true">
       <div class="ui segment">
         <div>
           <div class="ui comments">
@@ -158,16 +162,15 @@
               description="暂无评论"
             ></el-empty>
             <el-skeleton :loading="commentLoading" animated :count="5">
-              <template slot="template"
-              >
+              <template slot="template">
                 <div class="ui large feed">
                   <div class="event">
                     <div class="label">
-                      <el-skeleton-item variant="circle image"/>
+                      <el-skeleton-item variant="circle image" />
                     </div>
                     <div class="content">
                       <div class="summary">
-                        <el-skeleton-item variant="text"/>
+                        <el-skeleton-item variant="text" />
                       </div>
                     </div>
                   </div>
@@ -175,115 +178,231 @@
               </template>
             </el-skeleton>
             <div
-              :class="item.parentCommentId0 == -1 ? parent : child"
+              :class="item.parentCommentId == '0' ? parent : child"
               v-for="item in commentList"
             >
               <a class="avatar">
-                <img :src="item.avatar" alt=""/>
+                <img :src="item.avatar" alt="" />
               </a>
               <div class="content">
-                <a class="author">{{ item.nickname }}</a>
+                <a class="author">
+                  <router-link
+                    :to="{
+                      path: '/BreakingTheBarrier/visitor',
+                      query: { userId: item.postUserId },
+                    }"
+                    >{{ item.nickname }}
+                  </router-link> </a
+                ><a
+                  class="ui mini basic blue label"
+                  style="margin-left: 5px"
+                  v-if="item.postUserId == postUserId"
+                  >发布者</a
+                >
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span>
                 </div>
                 <div class="text" v-html="item.content"></div>
                 <div class="actions">
                   <a
+                    :style="item.approved == true ? 'color:RGB(219,40,40)' : ''"
                     class="reply"
-                    @click="likeComment(item.id)"
+                    @click="likeComment(item.id, true)"
                     v-model="likeNumber"
-                  >赞( {{ item.likesNum }})</a
-                  ><a class="reply" @click="dislikeComment(item.id)"
-                >踩({{ item.disLikesNum }})</a
-                ><a class="reply" @click="replyComment(item.id)">回复</a
-                ><a
-                  class="reply"
-                  @click="deleteComment(item.id)"
-                  v-if="item.postUserId == $store.state.me.id"
-                >删除</a
-                >
+                    >赞( {{ item.likesNum }})</a
+                  ><a
+                    :style="
+                      item.disapproved == true ? 'color:RGB(65,131,196)' : ''
+                    "
+                    class="reply"
+                    @click="dislikeComment(item.id, true)"
+                    >踩({{ item.disLikesNum }})</a
+                  ><a
+                    class="reply"
+                    @click="
+                      dialogFormVisible1 = true;
+                      parentId = item.id;
+                    "
+                    >回复</a
+                  >
+                  <a
+                    class="reply"
+                    @click="deleteComment(item.id, true)"
+                    v-if="item.postUserId == $store.state.me.id"
+                    >删除</a
+                  ><a
+                    class="reply"
+                    v-if="item.commentsNum > 3"
+                    @click="getMoreComments(item.id)"
+                    >加载全部评论</a
+                  >
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="ui collect modal" style="width: 400px">
+      <el-dialog
+        width="400px"
+        title="输入回复内容"
+        :visible.sync="dialogFormVisible1"
+      >
+        <el-input
+          type="textarea"
+          :rows="2"
+          placeholder="请输入内容"
+          v-model="textarea"
+        >
+        </el-input>
+        <div style="margin-top: 20px">
+          <div class="ui right floated teal button" @click="sure()">
+            <i class="checkmark icon"></i>
+            确定
+          </div>
+          <div class="ui blue icon button">
+            <i class="image icon"></i>
+          </div>
+        </div>
+      </el-dialog>
+      <el-dialog
+        width="600px"
+        title="全部评论"
+        :visible.sync="dialogFormVisible2"
+      >
+        <div class="ui comments">
+          <div class="comment" v-for="item in moreComments">
+            <a class="avatar">
+              <img :src="item.avatar" alt="" />
+            </a>
+            <div class="content">
+              <a class="author">
+                <router-link
+                  :to="{
+                    path: '/BreakingTheBarrier/visitor',
+                    query: { userId: item.postUserId },
+                  }"
+                  >{{ item.nickname }}
+                </router-link> </a
+              ><a
+                class="ui mini basic blue label"
+                style="margin-left: 5px"
+                v-if="item.postUserId == postUserId"
+                >发布者</a
+              >
+              <div class="metadata">
+                <span class="date">{{ item.createTime }}</span>
+              </div>
+              <div class="text" v-html="item.content"></div>
+              <div class="actions">
+                <a
+                  :style="item.approved == true ? 'color:RGB(219,40,40)' : ''"
+                  class="reply"
+                  @click="likeComment(item.id, false)"
+                  v-model="likeNumber"
+                  >赞( {{ item.likesNum }})</a
+                ><a
+                  :style="
+                    item.disapproved == true ? 'color:RGB(65,131,196)' : ''
+                  "
+                  class="reply"
+                  @click="dislikeComment(item.id, false)"
+                  >踩({{ item.disLikesNum }})</a
+                ><a
+                  class="reply"
+                  @click="
+                    dialogFormVisible1 = true;
+                    parentId = item.id;
+                  "
+                  >回复</a
+                >
+                <a
+                  class="reply"
+                  @click="deleteComment(item.id, false)"
+                  v-if="item.postUserId == $store.state.me.id"
+                  >删除</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-dialog>
+      <el-dialog width="400px" title="收藏" :visible.sync="dialogFormVisible3">
+        <el-empty
+          :image-size="100"
+          v-if="favoriteList.length == 0 && collectLoading == false"
+          description="暂无收藏夹"
+        ></el-empty>
         <el-skeleton :loading="collectLoading" animated :count="1">
-          <template slot="template"
-          >
+          <template slot="template">
             <el-skeleton-item
               variant="text"
               style="height: 50px; margin-top: 15px"
             />
           </template>
         </el-skeleton>
-        <div class="ui basic segment">
-          <el-container v-for="(item, index) in favoriteList" :key="index">
-            <el-aside width="70px"
+        <el-container v-for="(item, index) in favoriteList" :key="index">
+          <el-aside width="70px"
             ><i class="huge yellow folder icon"></i
-            ></el-aside>
-            <el-main>
-              <el-row :gutter="24">
-                <el-col :span="21">
-                  <div
-                    class="ui button"
-                    style="margin-top: -30px; background-color: white"
-                    @click="getFavoriteId(item.id)"
-                  >
-                    <h4>{{ item.title }}</h4>
-                  </div>
-                  <a
-                    v-if="item.open == false"
-                    class="ui small blue label"
-                    style="margin-left: 10px"
+          ></el-aside>
+          <el-main>
+            <el-row :gutter="24">
+              <el-col :span="21">
+                <div
+                  class="ui button"
+                  style="margin-top: -30px; background-color: white"
+                  @click="getFavoriteId(item.id)"
+                >
+                  <h4>{{ item.title }}</h4>
+                </div>
+                <a
+                  v-if="item.open == false"
+                  class="ui small blue label"
+                  style="margin-left: 10px"
                   >私密</a
-                  >
-                </el-col>
-                <el-col :span="3"
+                >
+              </el-col>
+              <el-col :span="3"
                 ><i
                   :class="item.id == favoriteId ? selected : unselected"
                   style="margin-top: 2px"
                 ></i>
-                </el-col>
-              </el-row>
-            </el-main>
-          </el-container>
-        </div>
-        <div class="actions">
-          <div class="ui teal ok inverted button" @click="collectArticle()">
+              </el-col>
+            </el-row>
+          </el-main>
+        </el-container>
+        <div
+          class="actions"
+          v-if="!favoriteList.length == 0 && collectLoading == false"
+        >
+          <div
+            class="ui teal button"
+            @click="collectArticle()"
+            style="margin-left: 260px"
+          >
             <i class="checkmark icon"></i>
             确定
           </div>
         </div>
-      </div>
-      <div class="ui edit modal" style="width: 400px">
-        <div id="websiteEditorElem"></div>
-        <div class="actions">
-          <div class="ui teal ok inverted button" @click="sure()">
-            <i class="checkmark icon"></i>
-            确定
-          </div>
-        </div>
-      </div>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import E from "wangeditor";
-
 export default {
   name: "blogSpecific",
   data() {
     return {
+      textarea: "",
+      dialogFormVisible1: false,
+      dialogFormVisible2: false,
+      dialogFormVisible3: false,
       blogLoading: true,
       commentLoading: true,
       collectLoading: true,
       template: "",
-      approved: "",
-      disapproved: "",
+      articleApproved: "",
+      articleDisapproved: "",
       collected: "",
       articleContent: "",
       articleLikeNumber: "",
@@ -293,11 +412,13 @@ export default {
       articleLikeIsActive: "ui red button",
       articleDislikeIsActive: "ui blue button",
       articleCollectIsActive: "ui yellow button",
-      favoriteId: "",
+      favoriteId: sessionStorage["favoriteId"],
       favoriteList: [],
       likeNumber: "",
       dislikeNumber: "",
       commentList: "",
+      moreComments: "",
+      reply: "reply",
       parent: "comment",
       child: "child comment",
       parentId: "-1",
@@ -305,11 +426,13 @@ export default {
       selected: "ui green check circle icon",
       unselected: "ui check circle icon",
       postUserId: this.$route.query.postUserId,
+      nowParentId: "",
     };
   },
   created() {
     var that = this;
-    that.$api.userArticle.showBlog(that.$route.query.blogId)
+    that.$api.userArticle
+      .showBlog(that.$route.query.blogId)
       .then(function (response) {
         that.blogLoading = false;
         that.template = response.data.data.template;
@@ -325,10 +448,11 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
-    that.$api.userComment.getAllBlogComments(that.$route.query.blogId)
+    that.$api.userComment
+      .getAllBlogComments(that.$route.query.blogId)
       .then(function (response) {
         that.commentLoading = false;
-        console.log(that.flatten(response.data.data.comments2));
+
         that.commentList = that.flatten(response.data.data.comments2);
       })
       .catch(function (error) {
@@ -336,31 +460,17 @@ export default {
       });
     var that = this;
   },
-  mounted() {
-    // wangeditor
-    this.phoneEditor = new E("#websiteEditorElem");
-    this.phoneEditor.config.zIndex = 500;
-    this.phoneEditor.config.height = 200;
-    // this.phoneEditor.onchange = function () {
-    //   this.formData.phone = this.$txt.html()
-    // }
-    // 上传图片到服务器，base64形式
-    this.phoneEditor.config.uploadImgShowBase64 = true;
-    // 隐藏网络图片
-    //this.phoneEditor.customConfig.showLinkImg = false;
-    // 创建一个富文本编辑器
-    this.phoneEditor.create();
-    // 富文本内容
-    this.phoneEditor.txt.html();
-  },
   methods: {
     likeArticle(id) {
       var that = this;
-      that.$api.userLike.likeBlog(id)
+      that.$api.userLike
+        .likeBlog(id)
         .then(function (response) {
-          console.log(response.data);
-          that.approved = response.data.data.approved;
-          that.articleLikeNumber = response.data.data.likesNum;
+          that.getArticleLikesAndDislikes(
+            response.data.data.approved,
+            response.data.data.disapproved,
+            response.data.data.likesNum
+          );
           that.$message({
             message: response.data.msg,
             type: "success",
@@ -372,12 +482,14 @@ export default {
     },
     dislikeArticle(id) {
       var that = this;
-      that.$api.userLike.dislikeBlog(id)
-
+      that.$api.userLike
+        .dislikeBlog(id)
         .then(function (response) {
-          console.log(response.data);
-          that.disapproved = response.data.data.disapproved;
-          that.articleDislikeNumber = response.data.data.disLikesNum;
+          that.getArticleLikesAndDislikes(
+            response.data.data.approved,
+            response.data.data.disapproved,
+            response.data.data.likesNum
+          );
           that.$message({
             message: response.data.msg,
             type: "success",
@@ -387,21 +499,24 @@ export default {
           console.log(error);
         });
     },
+    getArticleLikesAndDislikes(approved, disapproved, likesNum) {
+      var that = this;
+      that.articleApproved = approved;
+      that.articleLikeNumber = likesNum;
+      that.articleDisapproved = disapproved;
+    },
     openCollections() {
       var that = this;
-      /* if (collected == false) { */
-      $(".ui.collect.modal").modal("show");
-      that.$api.personalFavorite.getFavorites()
-
+      that.$api.personalFavorite
+        .getFavorites()
         .then(function (response) {
           that.collectLoading = false;
           that.favoriteList = response.data.data.favorites;
-          console.log(response.data);
+          that.dialogFormVisible3 = true;
         })
         .catch(function (error) {
           console.log(error);
         });
-      /*  } */
     },
     getFavoriteId(id) {
       var that = this;
@@ -410,11 +525,15 @@ export default {
     },
     collectArticle() {
       var that = this;
-      that.$api.userFavorite.collectBlog(sessionStorage.getItem("favoriteId"), that.$route.query.blogId)
+      that.$api.userFavorite
+        .collectBlog(
+          sessionStorage.getItem("favoriteId"),
+          that.$route.query.blogId
+        )
         .then(function (response) {
-          console.log(response.data);
           that.collected = response.data.data.collected;
           that.articleCollectNumber = response.data.data.collectedNum;
+          that.dialogFormVisible3 = false;
           that.$message({
             message: response.data.msg,
             type: "success",
@@ -426,9 +545,9 @@ export default {
     },
     deleteArticle(id) {
       var that = this;
-      that.$api.userBlog.deleteBlog(id)
+      that.$api.userBlog
+        .deleteBlog(id)
         .then(function (response) {
-          console.log(response.data);
           that.$message({
             message: "删除成功",
             type: "success",
@@ -439,15 +558,15 @@ export default {
           console.log(error);
         });
     },
-    /* ---------------------------------- */
     flatten(data) {
+      var that = this;
       return data.reduce(
         (
           arr,
           {
             adminComment,
             answer,
-            blogId0,
+            blogId,
             commentsNum,
             id,
             approved,
@@ -456,13 +575,13 @@ export default {
             createTime,
             disLikesNum,
             disapproved,
-            hidden,
             likesNum,
             looked,
             nickname,
-            parentCommentId0,
+            parentCommentId,
             postUserId,
             questionId,
+            selected,
             receiveComments = [],
           }
         ) =>
@@ -471,7 +590,7 @@ export default {
               {
                 adminComment,
                 answer,
-                blogId0,
+                blogId,
                 commentsNum,
                 id,
                 approved,
@@ -480,27 +599,90 @@ export default {
                 createTime,
                 disLikesNum,
                 disapproved,
-                hidden,
                 likesNum,
                 looked,
                 nickname,
-                parentCommentId0,
+                parentCommentId,
                 postUserId,
                 questionId,
+                selected,
               },
             ],
-            this.flatten(receiveComments, id)
+            that.flatten(receiveComments)
           ),
         []
       );
     },
-    likeComment(id) {
+    getAllComments() {
       var that = this;
-      that.$api;
-      axios
-        .get("/comment/" + id + "/approve")
+      that.$api.userComment
+        .getAllBlogComments(that.$route.query.blogId)
         .then(function (response) {
-          console.log(response.data);
+          that.commentLoading = false;
+          var data = response.data.data.comments2;
+          that.commentList = that.flatten(data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    getMoreComments(id) {
+      var that = this;
+      that.nowParentId = id;
+      that.$api.userComment
+        .getChildComments(id)
+        .then(function (response) {
+          that.moreComments = response.data.data.receiveComments;
+          that.dialogFormVisible2 = true;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    getCommentLikesAndDislikes(
+      commentId,
+      likesNum,
+      dislikesNum,
+      approved,
+      disapproved,
+      flag
+    ) {
+      var that = this;
+      if (flag == true) {
+        for (var i in that.commentList) {
+          if (that.commentList[i].id == commentId) {
+            that.commentList[i].likesNum = likesNum;
+            that.commentList[i].disLikesNum = dislikesNum;
+            that.commentList[i].approved = approved;
+            that.commentList[i].disapproved = disapproved;
+            break;
+          }
+        }
+      } else {
+        for (var i in that.moreComments) {
+          if (that.moreComments[i].id == commentId) {
+            that.moreComments[i].likesNum = likesNum;
+            that.moreComments[i].disLikesNum = dislikesNum;
+            that.moreComments[i].approved = approved;
+            that.moreComments[i].disapproved = disapproved;
+            break;
+          }
+        }
+      }
+    },
+    likeComment(id, flag) {
+      var that = this;
+      that.$api.userLike
+        .likeComment(id)
+        .then(function (response) {
+          that.getCommentLikesAndDislikes(
+            id,
+            response.data.data.likesNum,
+            response.data.data.disLikesNum,
+            response.data.data.approved,
+            response.data.data.disapproved,
+            flag
+          );
           that.$message({
             message: "点赞成功",
             type: "success",
@@ -510,13 +692,19 @@ export default {
           console.log(error);
         });
     },
-    dislikeComment(id) {
+    dislikeComment(id, flag) {
       var that = this;
-      that.$api;
-      axios
-        .get("/comment/" + id + "/disapprove")
+      that.$api.userLike
+        .dislikeComment(id)
         .then(function (response) {
-          console.log(response.data);
+          that.getCommentLikesAndDislikes(
+            id,
+            response.data.data.likesNum,
+            response.data.data.disLikesNum,
+            response.data.data.approved,
+            response.data.data.disapproved,
+            flag
+          );
           that.$message({
             message: "点踩成功",
             type: "success",
@@ -526,65 +714,68 @@ export default {
           console.log(error);
         });
     },
-    replyArticle() {
-      $(".ui.edit.modal").modal("show");
-    },
-    replyComment(id) {
+    deleteComment(id, flag) {
       var that = this;
-      that.parentId = id;
-      $(".ui.edit.modal").modal("show");
-    },
-    deleteComment(id) {
-      var that = this;
-      that.$api;
-      axios
-        .get(
-          "/blog/" +
-          sessionStorage.getItem("articleId") +
-          "/comment/" +
-          id +
-          "/delete"
-        )
-        .then(function (response) {
-          console.log(response.data);
-          that.commentList = that.flatten(response.data.data.comments);
-          that.$message({
-            message: "删除成功",
-            type: "success",
-          });
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    /* ------------------------------------------ */
-    sure() {
-      var that = this;
-      if (that.phoneEditor.txt.html()) {
-        var data = {
-          content: that.phoneEditor.txt.html(),
-          answer: true,
-          parentCommentId0: this.parentId,
-        };
-        that.$api.userComment.postBlogComment(data)
+      var p1 = new Promise((resolve, reject) => {
+        that.$api.userComment
+          .deleteQuestionComment(this.$route.query.articleId, id)
           .then(function (response) {
-            console.log(response.data);
-            that.commentList = that.flatten(response.data.data.comments);
-            that.parentId = "-1";
+            that.solved = response.data.data.solved;
+            if (flag == true) {
+              that.getAllComments("", "");
+            } else {
+              that.getMoreComments(that.nowParentId);
+            }
             that.$message({
-              message: "评论成功",
+              message: "删除成功",
               type: "success",
             });
           })
           .catch(function (error) {
             console.log(error);
           });
-      } else {
-        this.$message({
-          message: "请填写评论内容",
-          type: "warning",
-        });
-      }
+      });
+
+      var p2 = new Promise((resolve, reject) => {
+        that.getAllComments(false, "", "");
+      });
+
+      Promise.all([p1, p2]).then((res) => {});
+    },
+    sure() {
+      var that = this;
+      var p1 = new Promise((resolve, reject) => {
+        if (that.textarea) {
+          var data = {
+            content: that.textarea,
+            answer: true,
+            parentCommentId0: that.parentId,
+          };
+          that.$api.userComment
+            .postBlogComment(that.$route.query.blogId, data)
+            .then(function (response) {
+              that.parentId = "-1";
+              that.$message({
+                message: "评论成功",
+                type: "success",
+              });
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        } else {
+          this.$message({
+            message: "请填写评论内容",
+            type: "warning",
+          });
+        }
+      });
+
+      var p2 = new Promise((resolve, reject) => {
+        that.getAllComments(false, "", "");
+      });
+
+      Promise.all([p1, p2]).then((res) => {});
     },
   },
 };
@@ -595,12 +786,6 @@ h3:nth-child(2) {
   text-align: center;
 }
 
-.buttons {
-  width: 400px;
-  margin: 0 20%;
-}
-
-/* --------------------------- */
 .child.comment {
   margin-left: 50px;
 }

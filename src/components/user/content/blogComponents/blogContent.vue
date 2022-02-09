@@ -26,14 +26,13 @@ export default {
 
 .main {
   margin-top: 20px;
-  width: 64%;
+  width: 70%;
   float: left;
 }
 .side {
   margin-top: 20px;
-  width: 35%;
+  width: 30%;
   float: left;
-  margin-left: 1%;
 }
 .specific {
   width: 90%;

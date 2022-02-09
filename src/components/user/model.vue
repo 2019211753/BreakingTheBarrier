@@ -10,16 +10,14 @@
 </template>
 
 <script>
-
 import headbar from "../basic/headbar";
 import home from "./home/home";
-import BBS from "./BBS/BBS";
+import BBS from "./BBS/BBS.vue";
 import wikipedia from "./wikipedia/wikipedia";
 import bottom from "../basic/bottom";
 import instance from "../../request/http";
 
- window.addEventListener("setItem", (e) => {
-  console.log(e);
+window.addEventListener("setItem", (e) => {
   if (e.key == "token") {
     instance.defaults.headers["token"] = e.newValue;
   }

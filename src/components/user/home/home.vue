@@ -71,7 +71,6 @@ export default {
 </script>
 
 <style scoped>
-
 .carousel {
   height: 300px;
   margin: auto;
@@ -98,7 +97,6 @@ export default {
 
 .nav ul a:hover {
   border-bottom: 4px solid orange;
-
 }
 
 a {
@@ -110,7 +108,6 @@ a {
 
   width: 50%;
   margin: auto;
-
 }
 
 .logo {
@@ -132,7 +129,5 @@ li {
   width: 80%;
   margin: auto;
   margin-top: -50px;
-
 }
-
 </style>

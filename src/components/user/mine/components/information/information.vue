@@ -155,25 +155,10 @@
 </template>
 
 <script>
-
-/* import eventBus from "../../../../eventBus"; */
 import $ from "jquery";
-
-/* var token = sessionStorage.getItem("token");
-window.addEventListener("setItem", (e) => {
-  console.log(e);
-  token = e.newValue;
-}); */
 
 export default {
   name: "information",
-  /* computed: {
-    headers() {
-      return {
-        Authorization: sessionStorage.getItem("token"), // 直接从本地获取token就行
-      };
-    },
-  }, */
   data() {
     return {
       nickname: "",
@@ -193,11 +178,6 @@ export default {
   },
   created() {
     this.academyList = this.$store.state.me.academies;
-    console.log(this.academyList);
-    /* eventBus.$on("pushMsg", (headbarMsg) => {
-      this.academyList = headbarMsg;
-      console.log(this.academyList);
-    }); */
     $(function () {
       $(".ui.dropdown").dropdown();
     });
@@ -217,7 +197,6 @@ export default {
       for (var item in that.academyList) {
         if (selected == item) {
           that.majorList = that.academyList[item];
-          console.log(that.academyList[item]);
           break;
         }
       }
@@ -236,7 +215,7 @@ export default {
     sure() {
       var that = this;
       if (that.passWord === that.surePassWord) {
-        var data= {
+        var data = {
           nickname: that.nickname,
           personalSignature: that.personalSignature,
           sex: that.sex,
@@ -247,8 +226,8 @@ export default {
           password: that.passWord,
           wechatId: "",
         };
-        that.$api.personalInformation.modifyAllInformation(data)
-
+        that.$api.personalInformation
+          .modifyAllInformation(data)
           .then(function (response) {
             if (response.data.code == 200) {
               if (that.passWord && that.surePassWord) {
@@ -263,7 +242,6 @@ export default {
                   type: "success",
                 });
                 that.resetSetItem("token", response.data.data.token);
-                /* sessionStorage["avatar"] = response.data.data.user.avatar; */
                 if (that.nickname) {
                   that.$store.commit("getMyNickname", that.nickname);
                 }
@@ -295,7 +273,6 @@ export default {
                 type: "warning",
               });
             }
-            console.log(response.data);
           })
           .catch(function (error) {
             console.log(error);

@@ -1,6 +1,5 @@
 <template>
   <div class="ui basic segment">
-    <!-- <div class="ui segment"></div> -->
     <div class="ui segment" v-if="loading == false && !contentList.length">
       <el-empty image-size="200" description="暂无内容"></el-empty>
     </div>
@@ -14,7 +13,7 @@
                   path: '/BreakingTheBarrier/BBS/blogContent',
                   query: { blogId: item.id, postUserId: item.postUserId },
                 }"
-              >{{ item.title }}
+                >{{ item.title }}
               </router-link>
             </a>
           </h3>
@@ -23,10 +22,10 @@
             <div class="eleven wide column">
               <div class="ui mini horizontal link list">
                 <div class="item">
-                  <img :src="item.avatar" alt="" class="ui avatar image"/>
+                  <img :src="item.avatar" alt="" class="ui avatar image" />
                   <div class="content">
                     <a class="header">
-                     {{ item.nickname }}
+                      {{ item.nickname }}
                     </a>
                   </div>
                 </div>
@@ -56,25 +55,17 @@
               <div class="ui mini horizontal link list">
                 <div class="item">
                   <a class="ui teal basic label" v-for="tags in item.tags">{{
-                      tags.name
-                    }}</a>
+                    tags.name
+                  }}</a>
                   <a class="ui teal basic label" v-if="item.origin == true"
-                  >原创</a
+                    >原创</a
                   >
                   <a class="ui blue basic label" v-else>转载</a>
                 </div>
               </div>
             </div>
           </div>
-          <div class="ui grid">
-            <!-- <div class="right aligned five wide column">
-              <a
-                href="/types/2"
-                class="ui teal basic label m-padded-tb-tiny m-text-thin"
-                >JavaSE</a
-              >
-            </div> -->
-          </div>
+          <div class="ui grid"></div>
         </div>
         <div class="six wide column">
           <a target="_blank">
@@ -92,22 +83,14 @@
         <div class="ui segment">
           <div class="ui middle aligned grid">
             <div class="ten wide column">
-              <el-skeleton-item variant="text"/>
-              <el-skeleton-item
-                variant="text"
-              />
-              <el-skeleton-item variant="text"/>
-              <el-skeleton-item
-                variant="text"
-              />
-              <el-skeleton-item variant="text"/>
-              <el-skeleton-item
-                variant="text"
-              />
-              <el-skeleton-item variant="text"/>
-              <el-skeleton-item
-                variant="text"
-              />
+              <el-skeleton-item variant="text" />
+              <el-skeleton-item variant="text" />
+              <el-skeleton-item variant="text" />
+              <el-skeleton-item variant="text" />
+              <el-skeleton-item variant="text" />
+              <el-skeleton-item variant="text" />
+              <el-skeleton-item variant="text" />
+              <el-skeleton-item variant="text" />
             </div>
             <div class="six wide column">
               <el-skeleton-item
@@ -135,7 +118,7 @@
 export default {
   name: "blogContents",
   data() {
-    return {loading: true, contentList: [], pageSize: 0, cover: []};
+    return { loading: true, contentList: [], pageSize: 0, cover: [] };
   },
   created() {
     var that = this;
@@ -143,7 +126,7 @@ export default {
       .getBlogs(0)
       .then(function (response) {
         that.loading = false;
-        console.log(response.data);
+
         that.contentList = response.data.data.pages.content;
         that.pageSize = response.data.data.pages.totalPages;
       })
@@ -158,7 +141,6 @@ export default {
       that.$api.userArticle
         .getBlogs(nowPage)
         .then(function (response) {
-          console.log(response.data);
           that.contentList = response.data.data.pages.content;
           that.pageSize = response.data.data.pages.totalPages;
         })
@@ -172,7 +154,6 @@ export default {
 
 <style scoped>
 .framework {
-  /* background-color: bisque; */
   margin-top: 20px;
   height: 260px;
 }

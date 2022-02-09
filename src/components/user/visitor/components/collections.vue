@@ -36,7 +36,6 @@
 </template>
 
 <script>
-
 export default {
   name: "visitorCollections",
 
@@ -49,10 +48,9 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.userSocial.getOtherFile(that.$route.query.userId)
+    that.$api.userSocial
+      .getOtherFile(that.$route.query.userId)
       .then(function (response) {
-        console.log(response.data);
-        /* that.loading = false; */
         that.favoriteList = response.data.data.favorites;
         that.loading = false;
       })

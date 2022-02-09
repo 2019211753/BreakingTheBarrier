@@ -3,7 +3,7 @@
     <div class="background"></div>
     <div class="a">
       <div class="b">
-        <img :src="imgSrc" height="100%" alt=""/>
+        <img :src="imgSrc" height="100%" alt="" />
       </div>
       <div class="c">
         <div class="d">
@@ -38,7 +38,7 @@
 export default {
   name: "logIn",
   data() {
-    return {userName: "", passWord: "", imgSrc: require("../assets/bg.jpg")};
+    return { userName: "", passWord: "", imgSrc: require("../assets/bg.jpg") };
   },
   methods: {
     sure() {
@@ -51,7 +51,6 @@ export default {
         that.$api.logIn
           .logIn(data)
           .then(function (response) {
-            console.log(response);
             if (response.data.code == 200) {
               that.$message({
                 message: "登陆成功",
@@ -91,7 +90,6 @@ export default {
   height: 100%;
   z-index: -1;
   position: absolute;
-  /* background-image: linear-gradient(to left, #9c88ff, #3cadeb); */
   display: flex;
   justify-content: center;
 }
@@ -109,7 +107,6 @@ export default {
 .b {
   width: 800px;
   height: 550px;
-
   background-size: cover;
 }
 

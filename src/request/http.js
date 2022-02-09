@@ -2,10 +2,9 @@
  * axios封装
  * 请求拦截、响应拦截、错误统一处理
  */
-import axios from 'axios';
-import router from '../router';
+import axios from "axios";
+import router from "../router";
 import store from "../store";
-
 
 /**
  * 跳转登录页
@@ -25,70 +24,68 @@ import store from "../store";
  * @param {Number} status 请求失败的状态码
  */
 const errorHandle = (status, msg, other) => {
-  // 状态码判断
-  switch (status) {
-    case 400:
-      this.$message({
-        message: msg,
-        type: "error",
-      });
-      break;
-    case 401:
-      this.$message({
-        message: msg,
-        type: "error",
-      });
-      break;
-    case 402:
-      this.$message({
-        message: msg,
-        type: "error",
-      });
-      break;
-    case 403:
-      this.$message({
-        message: msg,
-        type: "error",
-      });
-      break;
-    case 404:
-      this.$message({
-        message: msg,
-        type: "error",
-      });
-      break;
-    case 405:
-      this.$message({
-        message: msg,
-        type: "error",
-      });
-      break;
-    case 406:
-      this.$message({
-        message: msg,
-        type: "error",
-      });
-      break;
+    // 状态码判断
+    switch (status) {
+        case 400:
+            this.$message({
+                message: msg,
+                type: "error"
+            });
+            break;
+        case 401:
+            this.$message({
+                message: msg,
+                type: "error"
+            });
+            break;
+        case 402:
+            this.$message({
+                message: msg,
+                type: "error"
+            });
+            break;
+        case 403:
+            this.$message({
+                message: msg,
+                type: "error"
+            });
+            break;
+        case 404:
+            this.$message({
+                message: msg,
+                type: "error"
+            });
+            break;
+        case 405:
+            this.$message({
+                message: msg,
+                type: "error"
+            });
+            break;
+        case 406:
+            this.$message({
+                message: msg,
+                type: "error"
+            });
+            break;
 
-    case 407:
-      this.$message({
-        message: msg,
-        type: "error",
-      });
-      break;
-    default:
-      console.log(other);
-  }
-}
+        case 407:
+            this.$message({
+                message: msg,
+                type: "error"
+            });
+            break;
+        default:
+            console.log(other);
+    }
+};
 // 创建axios实例
 var instance = axios.create({
-  headers: {
-    /* "Access-Control-Allow-Origin": true, */
-    'token':  sessionStorage.getItem('token')
-  }
+    headers: {
+        /* "Access-Control-Allow-Origin": true, */
+        token: sessionStorage.getItem("token")
+    }
 });
-
-
 
 /**
  * 请求拦截器
@@ -107,11 +104,9 @@ var instance = axios.create({
     error => Promise.error(error))
  */
 // 响应拦截器
- instance.interceptors.response.use(
+instance.interceptors.response.use(
     // 请求成功
-    res =>
-
-      res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
+    res => (res.status === 200 ? Promise.resolve(res) : Promise.reject(res)),
     // 请求失败
     error => {
         const { response } = error;
@@ -126,6 +121,7 @@ var instance = axios.create({
             // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
             /*store.commit('changeNetwork', false);*/
         }
-    });
+    }
+);
 
 export default instance;

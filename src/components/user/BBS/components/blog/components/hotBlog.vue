@@ -31,7 +31,6 @@
                 <img :src="item.avatar" alt="" />
               </div>
               <div class="content">
-                <!-- <div class="date">{{ item.createTime }}</div> -->
                 <div class="summary">
                   <router-link
                     :to="{
@@ -66,7 +65,6 @@ export default {
       .then(function (response) {
         that.loading = false;
         that.impactList = response.data.data.impacts;
-        console.log(that.impactList);
       })
       .catch(function (error) {
         console.log(error);
@@ -76,14 +74,8 @@ export default {
 </script>
 
 <style scoped>
-/*.framework {
-  width: 100%;
-  !*  height: 200px; *!
-  !* background-color: bisque; *!
-}*/
 .frameworkBody {
   width: 90%;
-  /* height: 200px; */
   margin: auto;
 }
 </style>

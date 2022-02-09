@@ -3,53 +3,6 @@
     <div class="ui segment" v-if="loading == false && count == 0">
       <el-empty image-size="200" description="暂无内容"></el-empty>
     </div>
-    <!-- <el-skeleton :loading="loading" animated :count="3">
-      <template slot="template"
-        ><div class="ui segment">
-          <el-container>
-            <el-aside width="45px"
-              ><el-skeleton-item
-                variant="circle image"
-                style="width: 45px; height: 45px; margin-top: 15px"
-              />
-            </el-aside>
-            <el-main
-              ><el-skeleton-item variant="text" />
-              <el-skeleton-item variant="text" />
-            </el-main>
-          </el-container>
-          <el-row :gutter="20">
-            <el-col :span="20"><el-skeleton-item variant="text" /></el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="8"
-              ><el-skeleton-item variant="image" style="height: 100px" />
-            </el-col>
-            <el-col :span="16"
-              ><el-skeleton-item variant="text" /><el-skeleton-item
-                variant="text" /><el-skeleton-item
-                variant="text" /><el-skeleton-item
-                variant="text" /><el-skeleton-item variant="text"
-            /></el-col> </el-row
-          ><el-row :gutter="20" style="margin-top: 5px">
-            <el-col :span="20"> <el-skeleton-item variant="text" /></el-col>
-          </el-row>
-          <div class="ui divider"></div>
-          <el-row :gutter="20">
-            <el-col :span="5">
-              <el-skeleton-item variant="text" style="width: 40px"
-            /></el-col>
-            <el-col :span="5">
-              <el-skeleton-item variant="text" style="width: 40px"
-            /></el-col>
-            <el-col :span="5">
-              <el-skeleton-item variant="text" style="width: 40px"
-            /></el-col>
-            <el-col :span="5"></el-col>
-          </el-row>
-        </div>
-      </template>
-    </el-skeleton> -->
     <el-skeleton :loading="loading" v-if="loading == true" animated :count="5">
       <template slot="template"
         ><div class="ui segment">
@@ -116,58 +69,34 @@
         >
       </el-row>
       <el-row :gutter="24" style="margin-top: 5px">
-        <!-- <el-col :span="8"
-          ><img class="ui rounded fluid image" :src="cover[index]"
-        /></el-col> -->
+
         <el-col :span="24"
           ><h5 style="color: grey">
             {{ item.description }}
           </h5></el-col
         >
       </el-row>
-      <!-- <div class="ui divider"></div>
-      <div class="ui mini button" style="background-color: white">
-        <i class="thumbs up icon"></i>{{ item.likesNum }}
-      </div>
-      <div
-        class="ui mini button"
-        style="margin-left: 40px; background-color: white"
-      >
-        <i class="comment icon"></i>{{ item.commentsNum }}
-      </div>
-      <div
-        class="ui mini button"
-        style="margin-left: 40px; background-color: white"
-      >
-        <i class="share icon"></i>33
-      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "questionFiles",
   data() {
     return {
       loading: true,
-      avatar: sessionStorage.getItem("avatar"),
-      nickname: sessionStorage.getItem("nickname"),
-      personalSignature: sessionStorage.getItem("personalSignature"),
-      cover: [],
+
       contentList: [],
       count: 0,
     };
   },
-
   created() {
     var that = this;
-    that.$api.personalArchive.archiveQuestion()
-
+    that.$api.personalArchive
+      .archiveQuestion()
       .then(function (response) {
         that.loading = false;
-        console.log(response.data);
         that.count = response.data.data.count;
         for (var year = 2022; year <= 2025; year++) {
           for (var month = 1; month <= 12; month++) {
@@ -176,24 +105,14 @@ export default {
             }
           }
         }
-        /* for (var i = 0; i < that.contentList[0].length; i++) {
-          var url = require("../../../../../../../assets/cover/cover (" +
-            Math.floor(Math.random() * 10) +
-            ").jpg");
-          that.cover.push(url);
-        }
-        console.log(that.cover); */
       })
       .catch(function (error) {
         console.log(error);
       });
     window.addEventListener("setItem", (e) => {
       if (e.key == "avatar") {
-        console.log(e.newValue);
         that.avatar = e.newValue;
       }
-      /* var decode = jwtDecode(e.newValue);
-      console.log(decode); */
     });
   },
 };

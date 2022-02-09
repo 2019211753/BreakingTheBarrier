@@ -7,17 +7,14 @@ import instance from "../../http";
 
 const userQuestion = {
     serchQuestions(data) {
-        return instance
-            .post("/searchQuestions/", data)
+        return instance.post("/searchQuestions/", data);
     },
     postQuestion(data) {
-        return instance
-            .post("/customer/question/post", data)
+        return instance.post("/customer/question/post", data);
     },
     deleteQuestion(data) {
-        return instance
-            .get("/customer/question/" + data + "/delete")
+        return instance.get("/customer/question/" + data + "/delete");
     }
-}
+};
 
 export default userQuestion;

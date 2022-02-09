@@ -6,7 +6,7 @@
           <img
             style="width: 120px"
             class="ui centered circular image"
-            :src="  $store.state.me.avatar"
+            :src="$store.state.me.avatar"
           />
           <h2>{{ $store.state.me.nickname }}</h2>
           <h5>{{ $store.state.me.personalSignature }}</h5>
@@ -107,13 +107,8 @@ h5 {
   background-color: white;
 }
 
-.el-header {
-  background-color: rgb(100, 133, 208);
-}
-
 .admin {
   width: 80%;
   margin: auto;
 }
-
 </style>

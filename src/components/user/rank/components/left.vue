@@ -1,16 +1,4 @@
 <template>
-  <!-- <div class="ui one cards">
-    <div class="ui basic segment">
-      <div class="content">
-        <div class="header">{{ item.nickname }}</div>
-        <div class="description">{{ item.personalSignature }}</div>
-      </div>
-      <div class="ui bottom attached button">
-        <i class="add icon"></i>
-        关注
-      </div>
-    </div>
-  </div> -->
   <div>
     <el-skeleton :loading="loading" animated :count="10">
       <template slot="template">
@@ -66,16 +54,6 @@
                       {{ item.personalSignature }}
                     </div>
                   </div>
-                  <!-- <div class="meta">
-                    <a class="like">
-                      <i class="like icon"></i
-                      ><font style="vertical-align: inherit"
-                        ><font style="vertical-align: inherit">
-                          4个赞
-                        </font></font
-                      ></a
-                    >
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -85,35 +63,6 @@
           >
         </el-row>
       </div>
-      <!-- <el-aside width="500px">
-        <div class="ui small five statistics">
-          <div class="statistic">
-            <div class="value">5</div>
-            <div class="label">内容</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.donation }}</div>
-            <div class="label">贡献度</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.followedUserNum }}</div>
-            <div class="label">粉丝</div>
-          </div>
-          <div class="statistic">
-            <div class="value">{{ item.followingUserNum }}</div>
-            <div class="label">关注</div>
-          </div>
-        </div>
-      </el-aside>
-      <el-main>
-        <button
-          style="margin-top: -10px"
-          class="ui circular red icon button"
-          @click="follow(item.id)"
-        >
-          <i class="heart icon"></i>
-        </button>
-      </el-main> -->
     </el-container>
   </div>
 </template>
@@ -128,10 +77,8 @@ export default {
     var that = this;
     that.$api.userRank
       .getRank()
-
       .then(function (response) {
         that.loading = false;
-        console.log(response.data);
         that.userList = response.data.data.users;
       })
       .catch(function (error) {
@@ -143,9 +90,7 @@ export default {
       var that = this;
       axios
         .get("/follow/" + id)
-        .then(function (response) {
-          console.log(response.data);
-        })
+        .then(function (response) {})
         .catch(function (error) {
           console.log(error);
         });

@@ -140,15 +140,7 @@ export default {
     that.$api.userSocial
       .getOtherFile(that.$route.query.postUserId)
       .then(function (response) {
-        console.log(response.data);
         that.loading = false;
-        /* that.avatar = response.data.data.userInfo.avatar;
-        that.nickname = response.data.data.userInfo.nickname;
-        that.personalSignature = response.data.data.userInfo.personalSignature;
-        that.contentsNum =
-          response.data.data.blogs.length + response.data.data.questions.length;
-        that.followedNum = response.data.data.userInfo.followedUserNum;
-        that.followingNum = response.data.data.userInfo.followingUserNum; */
         that.blogs = response.data.data.blogs;
         that.following = response.data.data.following;
         that.$store.commit("getOthersFile", response.data.data);
@@ -163,7 +155,6 @@ export default {
       that.$api.userSocial
         .followOther(this.$route.query.postUserId)
         .then(function (response) {
-          console.log(response.data);
           if (response.data.code == 406) {
             that.$message({
               message: response.data.msg,

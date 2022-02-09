@@ -5,12 +5,10 @@
 import base from "../../base";
 import instance from "../../http";
 
-
 const userTag = {
     getTags() {
-        return instance
-            .get("/tags/")
-    },
-}
+        return instance.get("/tags/");
+    }
+};
 
 export default userTag;

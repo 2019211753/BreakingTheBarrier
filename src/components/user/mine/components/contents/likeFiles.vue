@@ -9,23 +9,31 @@
           <div class="summary">
             我赞了{{ item.parentType }}：
             <a href=""
-            ><router-link
-              v-if="item.parentType == '博客' || item.parentType == '博客的评论'"
-              :to="{
+              ><router-link
+                v-if="
+                  item.parentType == '博客' || item.parentType == '博客的评论'
+                "
+                :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
-                  query: { blogId: item.parentId,postUserId: item.parentUserId, },
+                  query: {
+                    blogId: item.parentId,
+                    postUserId: item.parentUserId,
+                  },
                 }"
-            >
-              {{ getInnerText(item.parentContent) }}</router-link
-            ><router-link
-              v-else
-              :to="{
+              >
+                {{ getInnerText(item.parentContent) }}</router-link
+              ><router-link
+                v-else
+                :to="{
                   path: '/BreakingTheBarrier/BBS/articleContent',
-                  query: { articleId: item.parentId,postUserId: item.parentUserId, },
+                  query: {
+                    articleId: item.parentId,
+                    postUserId: item.parentUserId,
+                  },
                 }"
-            >
-              {{ getInnerText(item.parentContent) }}</router-link
-            ></a
+              >
+                {{ getInnerText(item.parentContent) }}</router-link
+              ></a
             >
             <div class="date">{{ item.createTime }}</div>
           </div>
@@ -56,7 +64,6 @@
 </template>
 
 <script>
-
 export default {
   name: "likeFiles",
   data() {
@@ -67,10 +74,9 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.personalArchive.archiveLike()
-
+    that.$api.personalArchive
+      .archiveLike()
       .then(function (response) {
-        console.log(response.data);
         that.contentList = response.data.data.postLikes;
         that.loading = false;
       })
@@ -82,7 +88,7 @@ export default {
     getInnerText(content) {
       var oDiv = document.createElement("div");
       oDiv.innerHTML = content;
-      console.log(oDiv.innerHTML);
+
       return oDiv.innerText;
     },
   },

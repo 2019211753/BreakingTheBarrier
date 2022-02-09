@@ -2,35 +2,6 @@
   <div class="body">
     <div class="main">
       <div class="ui segment">
-        <!-- <el-skeleton :loading="loading" animated v-if="loading == true">
-          <template slot="template">
-            <el-row :gutter="24">
-              <el-col :span="6">
-                <el-skeleton-item
-                  style="
-                    width: 130px;
-                    height: 130px;
-                    margin-left: 20px;
-                    margin-top: 10px;
-                  "
-                  variant="circle image"
-                /> </el-col
-              ><el-col :span="1" style="height: 1px"> </el-col>
-              <el-col :span="17">
-                <el-skeleton-item
-                  style="height: 30px; margin-top: 20px"
-                  variant="text"
-                />
-                <el-skeleton-item variant="text" style="margin-top: 5px" />
-                <el-skeleton-item
-                  style="height: 20px; margin-top: 5px"
-                  variant="text"
-                />
-                <el-skeleton-item style="height: 20px" variant="text" />
-              </el-col>
-            </el-row>
-          </template>
-        </el-skeleton> -->
         <el-row :gutter="24">
           <el-col :span="6">
             <div class="avatar" style="margin-left: 20px; margin-top: 10px">
@@ -153,16 +124,9 @@ export default {
   components: { recommend },
   data() {
     return {
-      /*   loading: true, */
       userId: this.$route.query.userId,
     };
   },
-  /*   created() {
-    var that = this;
-    setTimeout(() => {
-      that.loading = false;
-    }, 1000);
-  }, */
 };
 </script>
 
@@ -171,15 +135,12 @@ export default {
   width: 80%;
   margin: auto;
   height: 760px;
-  /* background-color: aqua; */
 }
 
 .main {
   margin-top: 20px;
   width: 64%;
   float: left;
-  /* height: 600px; */
-  /* background-color: bisque; */
 }
 
 .side {
@@ -188,7 +149,6 @@ export default {
   float: left;
   margin-left: 1%;
   height: 380px;
-  /* background-color: bisque; */
 }
 
 .avatar {
@@ -199,7 +159,6 @@ export default {
   width: 400px;
   height: 150px;
   margin-left: 20px;
-  /* background-color: rgb(50, 236, 236); */
   float: left;
 }
 
@@ -233,7 +192,6 @@ p {
 
 .nav ul a:hover {
   border-bottom: 4px solid orange;
-  /*   color: black; */
 }
 
 a {
@@ -243,7 +201,6 @@ a {
 .header {
   width: 100%;
   height: 40px;
-  /* background-color: rgb(100, 133, 208); */
   float: left;
   margin-top: 10px;
 }

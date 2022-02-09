@@ -23,7 +23,6 @@
         class="ui small right floated circular image"
         src="../../assets/avatar (1).jpg"
       />
-      <!-- <img class="ui mini image" src="../../assets/wechat.png" /> -->
       <h3 class="ui header">联系我们</h3>
       <div class="ui hidden divider">
         扫描右边二维码提出您的宝贵意见，么么哒

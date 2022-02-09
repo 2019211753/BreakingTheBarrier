@@ -33,7 +33,6 @@
 </template>
 
 <script>
-
 export default {
   name: "BBS",
 };
@@ -62,7 +61,6 @@ export default {
 
 .nav ul a:hover {
   border-bottom: 4px solid orange;
-  /* color: white; */
 }
 
 a {
@@ -71,7 +69,6 @@ a {
 
 .header {
   height: 40px;
-  /*  background-color: rgb(100, 133, 208); */
   width: 40%;
   margin: auto;
   margin-top: 20px;

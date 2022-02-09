@@ -1,37 +1,37 @@
 <template>
   <div class="ui basic segment">
-    <div class="ui modal" style="width: 400px">
+    <el-dialog width="400px" :visible.sync="dialogFormVisible">
       <div class="ui icon header">
         <i class="tags icon"></i>
         新增标签
-        <br/>
-        <br/>
+        <br />
+        <br />
         <div class="ui labeled input">
-          <div class="ui label">标签名称</div>
-          <input type="text" placeholder="请输入标签名" v-model="tagName"/>
+          <div class="ui label">新标签名称</div>
+          <input type="text" placeholder="请输入标签名" v-model="tagName" />
         </div>
       </div>
       <div class="actions">
-        <div class="ui teal ok inverted button" @click="sure()">
+        <div class="ui teal button" @click="sure()" style="margin-left: 130px">
           <i class="checkmark icon"></i>
           确定
         </div>
       </div>
-    </div>
+    </el-dialog>
     <el-skeleton :loading="loading" animated :count="3">
       <template slot="template">
-        <el-skeleton-item variant="text"/>
-        <el-skeleton-item variant="text"/>
-        <el-skeleton-item variant="text"/>
-
+        <el-skeleton-item variant="text" />
+        <el-skeleton-item variant="text" />
+        <el-skeleton-item variant="text" />
       </template>
     </el-skeleton>
-    <el-tree v-if="loading==false"
-             :data="tagList"
-             :render-content="renderContent"
-             :default-expand-all="true"
-             :expand-on-click-node="false"
-             :props="defaultProps"
+    <el-tree
+      v-if="loading == false"
+      :data="tagList"
+      :render-content="renderContent"
+      :default-expand-all="true"
+      :expand-on-click-node="false"
+      :props="defaultProps"
     >
     </el-tree>
     <div
@@ -48,13 +48,14 @@ export default {
   name: "adminTag",
   data() {
     return {
+      dialogFormVisible: false,
       loading: true,
       id: "",
       tagName: "",
       tagList: [],
       chooseTagList: [],
       chooseTagIdList: [],
-      defaultProps: {id: "id", children: "childTags", label: "name"},
+      defaultProps: { id: "id", children: "childTags", label: "name" },
     };
   },
   created() {
@@ -67,22 +68,21 @@ export default {
       that.$api.userTag
         .getTags()
         .then(function (response) {
-          console.log(response);
           that.tagList = response.data.data.tags;
-          that.loading=false;
+          that.loading = false;
         })
         .catch(function (error) {
           console.log(error);
         });
     },
     createParentTag() {
-      $(".ui.modal").modal("show");
       var that = this;
+      that.dialogFormVisible = true;
       that.id = "-1";
     },
     appendTag(data) {
-      $(".ui.modal").modal("show");
       var that = this;
+      that.dialogFormVisible = true;
       that.id = data.id;
     },
     sure() {
@@ -99,7 +99,6 @@ export default {
         that.$api.adminTag
           .addTag(data)
           .then(function (response) {
-            console.log(response.data);
             that.$message({
               message: "添加成功",
               type: "success",
@@ -114,9 +113,7 @@ export default {
       var p2 = new Promise((resolve, reject) => {
         that.getTags();
       });
-      Promise.all([p1, p2]).then((res) => {
-        console.log(res);
-      });
+      Promise.all([p1, p2]).then((res) => {});
     },
     removeTag(node, data) {
       var that = this;
@@ -124,11 +121,6 @@ export default {
         that.$api.adminTag
           .deleteTag(data.id)
           .then(function (response) {
-            console.log(response.data);
-            /* const parent = node.parent;
-          const children = parent.data.children || parent.data;
-          const index = children.findIndex((d) => d.id === data.id);
-          children.splice(index, 1); */
             if (response.data.code == 200) {
               that.$message({
                 message: "删除成功",
@@ -148,12 +140,9 @@ export default {
       var p2 = new Promise((resolve, reject) => {
         that.getTags();
       });
-      Promise.all([p1, p2]).then((res) => {
-        console.log(res);
-      });
+      Promise.all([p1, p2]).then((res) => {});
     },
-    renderContent(h, {node, data, store}) {
-      console.log(data);
+    renderContent(h, { node, data, store }) {
       return (
         <span class="custom-tree-node">
           <i class="tag icon"></i>

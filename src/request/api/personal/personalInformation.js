@@ -8,17 +8,14 @@ import instance from "../../http";
 
 const personalInformation = {
     uploadAvatar(data) {
-        return instance
-            .post("/customer/uploadAvatar", data)
+        return instance.post("/customer/uploadAvatar", data);
     },
     modifyAllInformation(data) {
-        return instance
-            .post("/customer/modifyAll", data)
+        return instance.post("/customer/modifyAll", data);
     },
     getPersonalInformation() {
-        return instance
-            .get("/customer/personal")
+        return instance.get("/customer/personal");
     }
-}
+};
 
 export default personalInformation;

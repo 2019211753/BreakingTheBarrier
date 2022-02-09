@@ -59,7 +59,7 @@
           ><img
             class="ui medium circular image"
             style="width: 45px"
-            :src=" item.avatar"
+            :src="item.avatar"
         /></el-aside>
 
         <el-main>
@@ -88,7 +88,6 @@
         >
       </el-row>
       <el-row :gutter="24" style="margin-top: 5px">
-
         <el-col :span="24"
           ><h5 style="color: grey">
             {{ item.description }}
@@ -125,7 +124,7 @@
           ><img
             class="ui medium circular image"
             style="width: 45px"
-            :src=" item.avatar"
+            :src="item.avatar"
         /></el-aside>
 
         <el-main>
@@ -154,7 +153,6 @@
         >
       </el-row>
       <el-row :gutter="24" style="margin-top: 5px">
-
         <el-col :span="24"
           ><h5 style="color: grey">
             {{ item.description }}
@@ -189,8 +187,6 @@
 </template>
 
 <script>
-
-
 export default {
   name: "favorite",
   data() {
@@ -205,20 +201,18 @@ export default {
   },
   created() {
     var that = this;
-    that.$api.personalFavorite.showFavoriteContents(that.$route.query.favoriteId)
+    that.$api.personalFavorite
+      .showFavoriteContents(that.$route.query.favoriteId)
 
       .then(function (response) {
-        console.log(response.data);
         that.loading = false;
         that.questions = response.data.data.questions.content;
         that.blogs = response.data.data.blogs.content;
-
       })
       .catch(function (error) {
         console.log(error);
       });
   },
-
 };
 </script>
 

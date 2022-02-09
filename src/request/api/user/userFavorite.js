@@ -5,16 +5,17 @@
 import base from "../../base";
 import instance from "../../http";
 
-
 const userFavorite = {
     collectQuestion(data1, data2) {
-        return instance
-            .get("/customer/favorite/" + data1 + "/modify/question/" + data2)
+        return instance.get(
+            "/customer/favorite/" + data1 + "/modify/question/" + data2
+        );
     },
     collectBlog(data1, data2) {
-        return instance
-            .get("/customer/favorite/" + data1 + "/modify/blog/" + data2)
+        return instance.get(
+            "/customer/favorite/" + data1 + "/modify/blog/" + data2
+        );
     }
-}
+};
 
 export default userFavorite;

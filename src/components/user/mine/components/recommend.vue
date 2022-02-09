@@ -2,7 +2,9 @@
   <div class="user ui segment">
     <div class="ui vertical fluid buttons">
       <div class="ui button" style="background-color: white">
-        <router-link to="/BreakingTheBarrier/mine/information"> 个人资料 </router-link>
+        <router-link to="/BreakingTheBarrier/mine/information">
+          个人资料
+        </router-link>
       </div>
       <div class="ui button" style="background-color: white">
         <router-link to="/BreakingTheBarrier/mine/message/unread">
@@ -10,7 +12,9 @@
         </router-link>
       </div>
       <div class="ui button" style="background-color: white">
-        <router-link to="/BreakingTheBarrier/mine/collections"> 我的收藏 </router-link>
+        <router-link to="/BreakingTheBarrier/mine/collections">
+          我的收藏
+        </router-link>
       </div>
       <div class="ui button" style="background-color: white">
         <router-link to="/BreakingTheBarrier/mine/friends/following">
@@ -32,7 +36,9 @@
         v-if="$store.state.me.admin == true"
         style="background-color: white"
       >
-        <router-link to="/BreakingTheBarrier/admin/adminTag"> 后台管理 </router-link>
+        <router-link to="/BreakingTheBarrier/admin/adminTag">
+          后台管理
+        </router-link>
       </div>
       <div class="ui disabled button" style="background-color: white">
         浏览历史
@@ -51,6 +57,5 @@ export default {
 .user {
   width: 90%;
   margin: auto;
-
 }
 </style>

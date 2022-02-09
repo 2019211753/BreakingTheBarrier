@@ -5,12 +5,10 @@
 import base from "../base";
 import axios from "axios";
 
-
 const logIn = {
     logIn(data) {
-        return axios
-            .post(base.base1 + "/login", data)
+        return axios.post(base.base1 + "/login", data);
     }
-}
+};
 
 export default logIn;

@@ -51,7 +51,7 @@
   axios.defaults.headers["token"] = sessionStorage.getItem("token");
   axios.defaults.timeout = 5000
   window.addEventListener("setItem", (e) => {
-    console.log(e);
+
     axios.defaults.headers["token"] = e.newValue;
   });
 
