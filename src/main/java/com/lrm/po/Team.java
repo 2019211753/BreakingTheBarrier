@@ -2,8 +2,7 @@ package com.lrm.po;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "t_team")
@@ -28,7 +27,7 @@ public class Team {
      * 小组成员
      */
     @ManyToMany
-    private List<User> members = new ArrayList<>();
+    private Set<User> members = new HashSet<>();
 
     /**
      * 已经加入的人数
@@ -77,11 +76,11 @@ public class Team {
         this.leader = leader;
     }
 
-    public List<User> getMembers() {
+    public Set<User> getMembers() {
         return members;
     }
 
-    public void setMembers(List<User> members) {
+    public void setMembers(Set<User> members) {
         this.members = members;
     }
 

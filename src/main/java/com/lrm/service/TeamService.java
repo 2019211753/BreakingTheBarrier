@@ -5,16 +5,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface TeamService {
-    public void addMember();
+    public Team addMember(Long teamId, Long userId);
 
-    public void delMember();
+    public Team delMember(Long teamId, Long userId);
 
-    public Team createTeam(String name);
+    public Team createTeam(String name, int capacity);
 
-    public void changeTeamName();
+    public Team changeTeamName(Long teamId, String name);
 
-    public void transferLeader();
+    public Team transferLeader(Long teamId, Long userId);
 
-    public void delTeam();
+    public boolean delTeam(Long teamId);
 
 }

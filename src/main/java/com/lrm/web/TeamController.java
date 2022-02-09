@@ -19,10 +19,31 @@ public class TeamController {
     private TeamService teamService;
 
     @PostMapping("/create")
-    public Result create(@RequestParam("teamName") String name) {
-        Team newTeam = teamService.createTeam(name);
+    public Result create(@RequestParam("teamName") String name, @RequestParam("teamCapacity") int capacity) {
+        Team newTeam = teamService.createTeam(name, capacity);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("team", newTeam);
         return new Result(hashMap, "队伍创建成功");
     }
+
+
+    @PostMapping("/addMember")
+    public Result addMember(@RequestParam("teamId") Long teamId, @RequestParam("userId") Long userId) {
+        Team team = teamService.addMember(teamId, userId);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("team", team);
+        return new Result(hashMap, "成功添加队员");
+    }
+
+    @PostMapping("/delMember")
+    public Result delMember(@RequestParam("teamId") Long teamId, @RequestParam("userId") Long userId) {
+        Team team = teamService.delMember(teamId, userId);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("team", team);
+        return new Result(hashMap, "成功删除队员");
+    }
+
+
+
+
 }
