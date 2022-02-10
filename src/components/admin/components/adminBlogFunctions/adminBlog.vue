@@ -59,7 +59,7 @@
             <router-link
               :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
-                  query: { blogId: item.id,postUserId:item.posterUserId0 },
+                  query: { blogId: item.id,postUserId:item.postUserId  },
                 }"
             >{{ item.title }}
             </router-link>

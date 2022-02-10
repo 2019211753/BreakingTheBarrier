@@ -11,7 +11,6 @@
               <a class="user">
                 {{ template.nickname }}
               </a>
-
               <div class="date">{{ template.createTime }}</div>
             </div>
           </div>

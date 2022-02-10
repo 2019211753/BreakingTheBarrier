@@ -48,7 +48,7 @@
         /></h4
         ></el-col>
         <el-col :span="6"
-        ><h4>发布者id：{{ item.posterUserId0 }}</h4></el-col
+        ><h4>发布者id：{{ item.postUserId }}</h4></el-col
         >
       </el-row>
       <br/>
@@ -59,7 +59,7 @@
             <router-link
               :to="{
                   path: '/BreakingTheBarrier/BBS/articleContent',
-                  query: { articleId: item.id,postUserId:item.posterUserId0 },
+                  query: { articleId: item.id,postUserId:item.postUserId },
                 }"
             >{{ item.title }}
             </router-link>
