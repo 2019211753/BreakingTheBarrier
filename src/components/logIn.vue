@@ -35,6 +35,13 @@
 
 
 <script>
+import instance from "../request/http";
+
+window.addEventListener("setItem", (e) => {
+  if (e.key == "token") {
+    instance.defaults.headers["token"] = e.newValue;
+  }
+});
 export default {
   name: "logIn",
   data() {

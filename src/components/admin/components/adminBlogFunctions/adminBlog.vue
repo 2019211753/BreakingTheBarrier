@@ -157,7 +157,7 @@
       </button>
     </div>
     <div class="ui adminBlogContent modal" style="width: 600px">
-      <!--      <adminBlogContent></adminBlogContent>-->
+       <adminBlogContent :key=$store.state.blogId></adminBlogContent>
     </div>
   </div>
 </template>
@@ -204,8 +204,8 @@ export default {
     },
     viewBlog(id) {
       var that = this;
-      sessionStorage.setItem("blogId", id);
-      $(".adminBlogContent.modal").modal("show");
+      that.$store.commit("getBlogId", id);
+      that.dialogFormVisible = true;
     },
     deleteBlog(id) {
       var that = this;

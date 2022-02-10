@@ -13,7 +13,7 @@
                     postUserId: item.postUserId,
                   },
                 }"
-                >{{ item.title }}
+              >{{ item.title }}
               </router-link>
             </a>
           </h3>
@@ -22,7 +22,7 @@
             <div class="eleven wide column">
               <div class="ui mini horizontal link list">
                 <div class="item">
-                  <img :src="item.avatar" alt="" class="ui avatar image" />
+                  <img :src="item.avatar" alt="" class="ui avatar image"/>
                   <div class="content">
                     <a class="header">
                       {{ item.nickname }}
@@ -55,10 +55,10 @@
               <div class="ui mini horizontal link list">
                 <div class="item">
                   <a class="ui teal basic label" v-for="tags in item.tags">{{
-                    tags.name
-                  }}</a>
+                      tags.name
+                    }}</a>
                   <a class="ui teal basic label" v-if="item.solved == true"
-                    >已解决</a
+                  >已解决</a
                   >
                   <a class="ui red basic label" v-else>未解决</a>
                 </div>
@@ -78,7 +78,7 @@
         <div class="six wide column">
           <a target="_blank">
             <img
-              src="https://picsum.photos/800/450/?random=5"
+              :src='getImgUrl(index)'
               alt=""
               class="ui rounded image"
             />
@@ -95,13 +95,20 @@
         <div class="ui segment">
           <div class="ui middle aligned grid">
             <div class="ten wide column">
-              <el-skeleton-item variant="text" /><el-skeleton-item
+              <el-skeleton-item variant="text"/>
+              <el-skeleton-item
                 variant="text"
-              /><el-skeleton-item variant="text" /><el-skeleton-item
+              />
+              <el-skeleton-item variant="text"/>
+              <el-skeleton-item
                 variant="text"
-              /><el-skeleton-item variant="text" /><el-skeleton-item
+              />
+              <el-skeleton-item variant="text"/>
+              <el-skeleton-item
                 variant="text"
-              /><el-skeleton-item variant="text" /><el-skeleton-item
+              />
+              <el-skeleton-item variant="text"/>
+              <el-skeleton-item
                 variant="text"
               />
             </div>
@@ -130,7 +137,7 @@
 export default {
   name: "articleContents",
   data() {
-    return { loading: true, contentList: [], pageSize: 0, cover: [] };
+    return {loading: true, contentList: [], pageSize: 0, cover: []};
   },
   created() {
     var that = this;
@@ -146,6 +153,10 @@ export default {
       });
   },
   methods: {
+    getImgUrl(index) {
+      var url = 'https://picsum.photos/800/450/?random=' + index;
+      return url
+    },
     handleCurrentChange(val) {
       var that = this;
       var nowPage = val - 1;
