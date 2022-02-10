@@ -57,7 +57,6 @@ export default {
           };
           that.$api.userQuestion
             .postQuestion(data)
-
             .then(function (response) {
               if (response.data.code == 403) {
                 that.$message({

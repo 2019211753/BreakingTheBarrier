@@ -115,7 +115,6 @@ export default {
             };
             that.$api.userBlog
               .postBlog(data)
-
               .then(function (response) {
                 if (response.data.code == 403) {
                   that.$message({
