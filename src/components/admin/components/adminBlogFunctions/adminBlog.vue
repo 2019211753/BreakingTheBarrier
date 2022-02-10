@@ -7,6 +7,23 @@
         v-model="searchContent"
       /><i class="inverted circular search link icon" @click="search()"></i>
     </div>
+    <div style="margin-top: 15px">
+      <el-skeleton :loading="loading" animated :count="3">
+        <template slot="template">
+          <div class="ui segment">
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+            <el-skeleton-item variant="text"/>
+          </div>
+        </template>
+      </el-skeleton>
+    </div>
     <div
       class="ui segment"
       style="height: 350px"
@@ -14,129 +31,112 @@
     >
       <el-empty :image-size="150" description="暂无结果"></el-empty>
     </div>
-    <div style="margin-top: 15px">
-      <el-skeleton :loading="loading" animated :count="3">
-        <template slot="template">
-          <div class="ui segment">
-            <el-skeleton-item variant="text" />
-            <el-skeleton-item variant="text" />
-            <el-skeleton-item variant="text" />
-            <el-skeleton-item variant="text" />
-            <el-skeleton-item variant="text" />
-            <el-skeleton-item variant="text" />
-            <el-skeleton-item variant="text" />
-            <el-skeleton-item variant="text" />
-            <el-skeleton-item variant="text" />
-          </div>
-        </template>
-      </el-skeleton>
-    </div>
     <div class="ui segment" v-for="item in contentList" :key="item.id">
       <el-row :gutter="24">
         <el-col :span="4"
-          ><h4>id：{{ item.id }}</h4></el-col
+        ><h4>id：{{ item.id }}</h4></el-col
         >
         <el-col :span="9"
-          ><h4>发布者：{{ item.nickname }}</h4></el-col
+        ><h4>发布者：{{ item.nickname }}</h4></el-col
         >
         <el-col :span="5"
-          ><h4>
-            头像：<img
-              class="ui mini right floated circular image"
-              :src="item.avatar"
-              alt=""
-            /></h4
+        ><h4>
+          头像：<img
+          class="ui mini right floated circular image"
+          :src="item.avatar"
+          alt=""
+        /></h4
         ></el-col>
         <el-col :span="6"
-          ><h4>发布者id：{{ item.postUserId }}</h4></el-col
+        ><h4>发布者id：{{ item.postUserId }}</h4></el-col
         >
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="24">
           <h4>
             标题：<a href="">
-              <router-link
-                :to="{
+            <router-link
+              :to="{
                   path: '/BreakingTheBarrier/BBS/blogContent',
-                  query: { blogId: item.id },
+                  query: { blogId: item.id,postUserId:item.posterUserId0 },
                 }"
-                >{{ item.title }}
-              </router-link>
-            </a>
+            >{{ item.title }}
+            </router-link>
+          </a>
           </h4>
         </el-col>
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="24"
-          ><h4>描述：{{ item.description }}</h4></el-col
+        ><h4>描述：{{ item.description }}</h4></el-col
         >
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="24"
-          ><h4>标签：{{ item.tagIds }}</h4></el-col
+        ><h4>标签：{{ item.tagIds }}</h4></el-col
         >
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="4"
-          ><h4>浏览：{{ item.view }}</h4></el-col
+        ><h4>浏览：{{ item.view }}</h4></el-col
         >
         <el-col :span="4"
-          ><h4>点赞：{{ item.likesNum }}</h4></el-col
+        ><h4>点赞：{{ item.likesNum }}</h4></el-col
         >
         <el-col :span="4"
-          ><h4>评论：{{ item.commentsNum }}</h4></el-col
+        ><h4>评论：{{ item.commentsNum }}</h4></el-col
         >
         <el-col :span="4"
-          ><h4>点踩：{{ item.disLikesNum }}</h4></el-col
+        ><h4>点踩：{{ item.disLikesNum }}</h4></el-col
         >
         <el-col :span="4"
-          ><h4>收藏：{{ item.collectedNum }}</h4></el-col
+        ><h4>收藏：{{ item.collectedNum }}</h4></el-col
         >
         <el-col :span="4"
-          ><h4>影响：{{ item.impact }}</h4></el-col
+        ><h4>影响：{{ item.impact }}</h4></el-col
         >
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="12"
-          ><h4>发布时间：{{ item.createTime }}</h4></el-col
+        ><h4>发布时间：{{ item.createTime }}</h4></el-col
         >
         <el-col :span="12"
-          ><h4>最新评论时间：{{ item.newCommentedTime }}</h4></el-col
+        ><h4>最新评论时间：{{ item.newCommentedTime }}</h4></el-col
         >
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="8"
-          ><h4>原创：{{ item.origin }}</h4></el-col
+        ><h4>原创：{{ item.origin }}</h4></el-col
         >
         <el-col :span="8"
-          ><h4>接受赞赏：{{ item.appreciation }}</h4></el-col
+        ><h4>接受赞赏：{{ item.appreciation }}</h4></el-col
         >
         <el-col :span="8"
-          ><h4>是否隐藏：{{ item.hidden }}</h4></el-col
+        ><h4>是否隐藏：{{ item.hidden }}</h4></el-col
         >
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="8"
-          ><h4>允许评论：{{ item.commentAllowed }}</h4></el-col
+        ><h4>允许评论：{{ item.commentAllowed }}</h4></el-col
         >
         <el-col :span="8"
-          ><h4>公开：{{ item.open }}</h4></el-col
+        ><h4>公开：{{ item.open }}</h4></el-col
         >
         <el-col :span="8"
-          ><h4>更新时间：{{ item.updateTime }}</h4></el-col
+        ><h4>更新时间：{{ item.updateTime }}</h4></el-col
         >
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="24"
-          ><h4>转载说明：{{ item.transferStatement }}</h4></el-col
+        ><h4>转载说明：{{ item.transferStatement }}</h4></el-col
         >
       </el-row>
       <div class="ui divider"></div>
@@ -156,25 +156,31 @@
         <i class="trash icon"></i>
       </button>
     </div>
-    <div class="ui adminBlogContent modal" style="width: 600px">
-       <adminBlogContent :key=$store.state.blogId></adminBlogContent>
-    </div>
+    <el-dialog :visible.sync="dialogFormVisible">
+      <adminBlogContent :key=$store.state.blogId></adminBlogContent>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-/*import adminBlogContent from "./components/adminBlogContent";*/
+import adminBlogContent from "./components/adminBlogContent";
+
 export default {
-  /* components: {adminBlogContent},*/
+  components: {adminBlogContent},
   name: "adminBlog",
   data() {
-    return { loading: false, searchContent: "", contentList: [], tag: [] };
+    return {
+      dialogFormVisible: false,
+      loading: false,
+      searchContent: "",
+      contentList: [],
+      tag: []
+    };
   },
 
   methods: {
     search() {
       var that = this;
-
       if (that.searchContent) {
         that.loading = true;
         var data = {
@@ -187,7 +193,7 @@ export default {
           .then(function (response) {
             that.contentList = response.data.data.pages.content;
             for (var i = 0; i < that.contentList.length; i++) {
-              var newTag = { id: that.contentList[i].id, state: "1" };
+              var newTag = {id: that.contentList[i].id, state: "1"};
               that.tag.push(newTag);
             }
             that.loading = false;

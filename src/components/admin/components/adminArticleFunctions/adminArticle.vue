@@ -24,114 +24,6 @@
         </template>
       </el-skeleton>
     </div>
-    <div class="ui segment" v-for="(item, index) in contentList" :key="index">
-      <el-row :gutter="24">
-        <el-col :span="4"
-        ><h4>id：{{ item.id }}</h4></el-col
-        >
-        <el-col :span="9"
-        ><h4>发布者：{{ item.nickname }}</h4></el-col
-        >
-        <el-col :span="5"
-        ><h4>
-          头像：<img
-          class="ui mini right floated circular image"
-          :src="item.avatar"
-          alt=""
-        /></h4
-        ></el-col>
-        <el-col :span="6"
-        ><h4>发布者id：{{ item.postUserId }}</h4></el-col
-        >
-      </el-row>
-      <br/>
-      <el-row :gutter="24">
-        <el-col :span="24">
-          <h4>
-            标题：<a href="">
-            <router-link
-              :to="{
-                  path: '/BreakingTheBarrier/BBS/articleContent',
-                  query: { articleId: item.id },
-                }"
-            >{{ item.title }}
-            </router-link>
-          </a>
-          </h4>
-        </el-col>
-      </el-row>
-      <br/>
-      <el-row :gutter="24">
-        <el-col :span="24"
-        ><h4>描述：{{ item.description }}</h4></el-col
-        >
-      </el-row>
-      <br/>
-      <el-row :gutter="24">
-        <el-col :span="24"
-        ><h4>标签：{{ item.tagIds }}</h4></el-col
-        >
-      </el-row>
-      <br/>
-      <el-row :gutter="24">
-        <el-col :span="4"
-        ><h4>浏览：{{ item.view }}</h4></el-col
-        >
-        <el-col :span="4"
-        ><h4>点赞：{{ item.likesNum }}</h4></el-col
-        >
-        <el-col :span="4"
-        ><h4>评论：{{ item.commentsNum }}</h4></el-col
-        >
-        <el-col :span="4"
-        ><h4>点踩：{{ item.disLikesNum }}</h4></el-col
-        >
-        <el-col :span="4"
-        ><h4>收藏：{{ item.collectedNum }}</h4></el-col
-        >
-        <el-col :span="4"
-        ><h4>影响：{{ item.impact }}</h4></el-col
-        >
-      </el-row>
-      <br/>
-      <el-row :gutter="24">
-        <el-col :span="12"
-        ><h4>发布时间：{{ item.createTime }}</h4></el-col
-        >
-        <el-col :span="12"
-        ><h4>最新评论时间：{{ item.newCommentedTime }}</h4></el-col
-        >
-      </el-row>
-      <br/>
-      <el-row :gutter="24">
-        <el-col :span="8"
-        ><h4>solvedNum：{{ item.solvedNum }}</h4></el-col
-        >
-        <el-col :span="8"
-        ><h4>solved：{{ item.solved }}</h4></el-col
-        >
-        <el-col :span="8"
-        ><h4>是否隐藏：{{ item.hidden }}</h4></el-col
-        >
-      </el-row>
-      <br/>
-      <div class="ui divider"></div>
-      <button
-        class="ui right floated blue icon button"
-        @click="viewArticle(item.id)"
-      >
-        <i class="eye icon"></i>
-      </button>
-      <button
-        class="ui right floated blue icon button"
-        @click="editArticle(item.id)"
-      >
-        <i class="edit icon"></i>
-      </button>
-      <button class="ui blue icon button" @click="deleteArticle(item.id)">
-        <i class="trash icon"></i>
-      </button>
-    </div>
     <div
       class="ui segment"
       style="height: 350px"
@@ -167,7 +59,7 @@
             <router-link
               :to="{
                   path: '/BreakingTheBarrier/BBS/articleContent',
-                  query: { articleId: item.id },
+                  query: { articleId: item.id,postUserId:item.posterUserId0 },
                 }"
             >{{ item.title }}
             </router-link>
@@ -247,8 +139,7 @@
         <i class="trash icon"></i>
       </button>
     </div>
-    <el-dialog :visible.sync="dialogFormVisible"
-    >
+    <el-dialog :visible.sync="dialogFormVisible">
       <adminArticleContent :key=$store.state.articleId></adminArticleContent>
     </el-dialog>
   </div>
@@ -262,7 +153,6 @@ export default {
   name: "adminArticle",
   data() {
     return {
-
       dialogFormVisible: false,
       loading: false,
       searchContent: "",

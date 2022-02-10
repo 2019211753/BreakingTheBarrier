@@ -73,7 +73,6 @@ export default {
   data() {
     return {
       /*loading: true,*/
-      id: this.$store.state.articleId,
       template: "",
       articleContent: "",
       nowUser: "",
@@ -97,9 +96,7 @@ export default {
   created() {
     var that = this;
     that.getArticle();
-
   },
-  watch: {id: "getArticle"},
 };
 </script>
 
