@@ -1,5 +1,16 @@
 <template>
   <div style="text-align: center;margin: 20px 0;min-width: 200px">
+    <h2>{{contentItem}}</h2>
+    <router-link
+      :to="{
+      path: '/BreakingTheBarrier/literature/information/EntryItem',
+       query: {
+        id: contentItem.id,
+        title: contentItem.title,
+        currentContent: contentItem.currentContent,
+       }
+
+    }">详情</router-link>
     <a href="javascript:;">
       <h2 @click="itemClick">{{contentItem.title}}</h2>
       <span>{{contentItem.currentContent}}</span>

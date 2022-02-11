@@ -1,5 +1,7 @@
 <template>
   <div class="ui container">
+<!--    <router-link to="/BreakingTheBarrier/literature/information/EntryDisplay">词条展示</router-link>-->
+    <router-link to=""></router-link>
     <div style="margin-bottom: 30px;">
       <sec-menu>
         <h3 slot="titleH3" style="letter-spacing: 5px;">信息百科</h3>
@@ -7,7 +9,10 @@
         <span slot="space">&nbsp;&nbsp;</span>
         <span slot="search" style="position: relative;top: -6px;height: 20px;">
           <div class="ui container" style="width: fit-content; margin: 5px;">
-          <button class="ui button" @click="showInput">创建词条</button>
+<!--          <button class="ui button" @click="showInput">创建词条</button>-->
+          <button class="ui button">
+            <router-link to="/BreakingTheBarrier/literature/information/EntryCreate">创建词条</router-link>
+          </button>
         </div>
         </span>
       </sec-menu>
@@ -18,6 +23,7 @@
     <div style="width: fit-content;margin: -20px auto 25px auto;">
     </div>
 
+<!--词条展示-->
     <div class="ui container" style="display: inline-block">
       <entry-display
         id=""
@@ -34,23 +40,6 @@
           <span slot="upFile"></span>
         </hot-file>
     </div>
-<!--&lt;!&ndash;测试侧边栏&ndash;&gt;-->
-<!--    <div class="ui right sidebar inverted vertical menu">-->
-<!--      <h3>近期竞赛</h3>-->
-<!--      <a class="item">-->
-<!--        <p>ACM国际大学生程序设计竞赛世界总决赛</p>-->
-<!--      </a>-->
-<!--      <a class="item">-->
-<!--        <p>全国大学生电子设计竞赛</p>-->
-<!--      </a>-->
-<!--      <a class="item">-->
-<!--        <p>全国大学生数学竞赛总决赛</p>-->
-<!--      </a>-->
-<!--    </div>-->
-<!--    <div class="pusher">-->
-<!--      &lt;!&ndash; Site content !&ndash;&gt;-->
-<!--    </div>-->
-<!--    <button @click="btnClick" class="ui button">按钮</button>-->
 
 <!--展示未审核-->
     <div class="ui container">

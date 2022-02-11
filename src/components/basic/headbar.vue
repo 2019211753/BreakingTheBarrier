@@ -71,7 +71,10 @@
 export default {
   name: "headbar",
   data() {
-    return { loading: true };
+    return {
+      loading: true,
+      isActive: false
+    };
   },
   methods: {
     logOut() {
@@ -81,6 +84,9 @@ export default {
         history.pushState(null, null, document.URL);
       });
     },
+    itemClass() {
+      console.log(event.target);
+    }
   },
   created() {
     var that = this;

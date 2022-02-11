@@ -318,16 +318,44 @@ export default new Router({
                     path: "/BreakingTheBarrier/literature",
                     redirect: "/BreakingTheBarrier/literature/data",
                     component: literature,
-                    children: [{
-                            path: "/BreakingTheBarrier/literature/data",
-                            component: data
-                        },
-                        {
-                            path: "/BreakingTheBarrier/literature/information",
-                            component: information
-                        }
+                    children: [
+                      {
+                      path: "/BreakingTheBarrier/literature/data",
+                      component: data
+                      },
+                      {
+                        path: "/BreakingTheBarrier/literature/information",
+                        component: information,
+                        // children: [
+                        //   {
+                        //     path: "/BreakingTheBarrier/literature/information/EntryCreate",
+                        //     component: () => import("../components/literature/Information/EntryCreate")
+                        //   },
+                        //   {
+                        //     path: "/BreakingTheBarrier/literature/information/EntryUnapproved",
+                        //     component: () => import("../components/literature/Information/components/ShowUnproved")
+                        //   },
+                        //   {
+                        //     path: "/BreakingTheBarrier/literature/information/EntryDisplay",
+                        //     component: () => import("../components/literature/Information/components/EntryDisplay")
+                        //   }
+                        //   // {
+                        //   //    path: "/BreakingTheBarrier/literature/information/EntryUnapproved",
+                        //   //    component: () => import("../components/literature/Information/components/ShowUnproved")
+                        //   // }
+                        // ]
+                      },
+                      {
+                        path: "/BreakingTheBarrier/literature/information/EntryCreate",
+                        component: () => import("../components/literature/Information/EntryCreate")
+                      },
+                      {
+                        path: "/BreakingTheBarrier/literature/information/EntryItem",
+                        component: () => import("../components/literature/Information/EntryItem")
+                      }
+
                     ]
-                }
+                },
             ]
         }
     ]
