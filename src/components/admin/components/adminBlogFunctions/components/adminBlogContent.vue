@@ -1,28 +1,16 @@
 <template>
   <div>
-    <div class="ui segment">
+    <div class="ui basic segment">
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="template.avatar" alt="" />
+            <img :src="template.avatar" alt=""/>
           </div>
           <div class="content">
             <div class="summary">
               <a class="user">
                 {{ template.nickname }}
               </a>
-              <div
-                v-if="template.solved == true"
-                class="ui green top right attached label"
-              >
-                已解决
-              </div>
-              <div
-                v-if="template.solved == false"
-                class="ui red top right attached label"
-              >
-                未解决
-              </div>
               <div class="date">{{ template.createTime }}</div>
             </div>
           </div>
@@ -36,8 +24,7 @@
 </template>
 
 <script>
-import axios from "axios";
-axios.defaults.headers["token"] = sessionStorage.getItem("token");
+
 export default {
   name: "adminBlogContent",
   data() {
@@ -46,18 +33,24 @@ export default {
       blogContent: "",
       nowUser: "",
     };
+  }, methods: {
+    getblog() {
+      var that = this;
+      that.$api.userArticle
+        .showBlog(that.$store.state.blogId)
+        .then(function (response) {
+          that.template = response.data.data.template;
+          that.blogContent = that.template.details;
+          /*that.loading = false;*/
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
   },
   created() {
     var that = this;
-    axios
-      .get("/question/" + sessionStorage.getItem("blogId"))
-      .then(function (response) {
-        that.template = response.data.data.template;
-        that.blogContent = that.template.details;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    that.getblog();
   },
 };
 </script>

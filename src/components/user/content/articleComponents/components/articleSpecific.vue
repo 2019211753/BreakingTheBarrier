@@ -77,7 +77,7 @@
       </div>
       <h3 class="title">{{ template.title }}</h3>
       <div class="ui divider"></div>
-      <div v-html="articleContent">{{ articleContent }}</div>
+      <v-md-preview-html :html="articleContent" preview-class="vuepress-markdown-body"></v-md-preview-html>
       <br />
       <el-row>
         <el-col :span="7">

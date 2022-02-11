@@ -70,7 +70,7 @@
         <div class="six wide column">
           <a target="_blank">
             <img
-              src="https://picsum.photos/800/450/?random=108"
+              :src='getImgUrl(index)'
               alt=""
               class="ui rounded image"
             />
@@ -126,7 +126,6 @@ export default {
       .getBlogs(0)
       .then(function (response) {
         that.loading = false;
-
         that.contentList = response.data.data.pages.content;
         that.pageSize = response.data.data.pages.totalPages;
       })
@@ -135,6 +134,10 @@ export default {
       });
   },
   methods: {
+    getImgUrl(index) {
+      var url = 'https://picsum.photos/800/450/?random=' + index;
+      return url
+    },
     handleCurrentChange(val) {
       var that = this;
       var nowPage = val - 1;

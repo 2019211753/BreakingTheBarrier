@@ -6,25 +6,29 @@
           <div class="ui segment" style="width: 100%">
             <el-row :gutter="24">
               <el-col :span="3"
-                ><el-skeleton-item variant="text" style="margin-top: 10px"
-              /></el-col>
+              >
+                <el-skeleton-item variant="text" style="margin-top: 10px"
+                />
+              </el-col>
               <el-col :span="16">
                 <div class="ui large feed">
                   <div class="event">
                     <div class="label">
-                      <el-skeleton-item variant="circle image" />
+                      <el-skeleton-item variant="circle image"/>
                     </div>
                     <div class="content">
                       <div class="summary">
-                        <el-skeleton-item variant="text" />
+                        <el-skeleton-item variant="text"/>
                       </div>
                     </div>
                   </div>
                 </div>
               </el-col>
               <el-col :span="5"
-                ><el-skeleton-item variant="text" style="margin-top: 10px"
-              /></el-col>
+              >
+                <el-skeleton-item variant="text" style="margin-top: 10px"
+                />
+              </el-col>
             </el-row>
           </div>
         </el-container>
@@ -34,16 +38,15 @@
       v-for="(item, index) in userList"
       :key="index"
       style="margin-top: 20px"
-      ><div class="ui segment" style="width: 100%">
+    >
+      <div class="ui segment" style="width: 100%">
         <el-row :gutter="24">
-          <el-col :span="3"
-            ><h1>{{ index + 1 }}</h1></el-col
-          >
+
           <el-col :span="16">
             <div class="ui large feed">
               <div class="event">
                 <div class="label">
-                  <img :src="item.avatar" />
+                  <img :src="item.avatar"/>
                 </div>
                 <div class="content">
                   <div class="summary">
@@ -59,7 +62,42 @@
             </div>
           </el-col>
           <el-col :span="5"
-            ><h1>{{ item.donation }}</h1></el-col
+          >
+            <div class="ui tiny green statistic">
+              <div class="value">
+                {{ item.donation }}
+              </div>
+              <div class="label">贡献</div>
+            </div>
+          </el-col
+          >
+          <el-col :span="3"
+          >
+            <div v-if="index+1===1" class="ui red tiny  statistic">
+              <div class="value">
+                {{ index + 1 }}
+              </div>
+              <div class="label">排名</div>
+            </div>
+            <div v-else-if="index+1===2" class="ui blue tiny  statistic">
+              <div class="value">
+                {{ index + 1 }}
+              </div>
+              <div class="label">排名</div>
+            </div>
+            <div v-else-if="index+1===3" class="ui yellow tiny  statistic">
+              <div class="value">
+                {{ index + 1 }}
+              </div>
+              <div class="label">排名</div>
+            </div>
+            <div v-else class="ui tiny  statistic">
+              <div class="value">
+                {{ index + 1 }}
+              </div>
+              <div class="label">排名</div>
+            </div>
+          </el-col
           >
         </el-row>
       </div>
@@ -71,7 +109,7 @@
 export default {
   name: "left",
   data() {
-    return { loading: true, userList: [] };
+    return {loading: true, userList: []};
   },
   created() {
     var that = this;
@@ -90,7 +128,8 @@ export default {
       var that = this;
       axios
         .get("/follow/" + id)
-        .then(function (response) {})
+        .then(function (response) {
+        })
         .catch(function (error) {
           console.log(error);
         });

@@ -42,6 +42,7 @@ Vue.prototype.resetSetItem = function(key, newVal) {
 };
 
 //创建编辑器
+import VMdPreviewHtml from '@kangc/v-md-editor/lib/preview-html';
 import VueMarkdownEditor from "@kangc/v-md-editor";
 import "@kangc/v-md-editor/lib/style/base-editor.css";
 import vuepressTheme from "@kangc/v-md-editor/lib/theme/vuepress.js";
@@ -59,7 +60,7 @@ import json from "highlight.js/lib/languages/json";
 import createCopyCodePlugin from "@kangc/v-md-editor/lib/plugins/copy-code/index";
 import "@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css";
 import createAlignPlugin from "@kangc/v-md-editor/lib/plugins/align";
-
+Vue.use(VMdPreviewHtml);
 hljs.registerLanguage("json", json);
 VueMarkdownEditor.use(createAlignPlugin());
 VueMarkdownEditor.use(createCopyCodePlugin());
