@@ -70,7 +70,6 @@
   import Headbar from "../../basic/headbar";
   import Bottom from "../../basic/bottom";
   import Create from "./components/Create";
-  import Update from "./components/Update";
   import SearchFile from "../components/SearchFile";
   import $ from 'jquery'
   import axios from "axios";
@@ -98,19 +97,6 @@
     },
     mounted() {
       //请求到的entry对象储存到data里
-      // axios('infoEntry/unapprovedEntries',{
-      // }).then(res => {
-      //   let content = res.data.data.entries.content
-      //   for(let i in content) {
-      //     this.entry.content.push(content[i])
-      //   }
-      //   // console.log(content);
-      // })
-      // .catch(err => {
-      //   console.log(err);
-      //   alert(err)
-      // })
-
       let that = this
       that.$api.infoGetUnapro
         .infoGetUnapro()
@@ -126,17 +112,6 @@
           alert(err)
         })
       //把请求到的approvedEntry存储下来
-      // axios('infoEntry/show',{
-      // }).then(res => {
-      //   let content = res.data.data.entries.content
-      //   for(let i in content)
-      //     this.approvedEntry.content.push(content[i])
-      //   // this.approvedEntry = res.data.data.entries.content
-      //   console.log(this.approvedEntry.content);
-      // }).catch(err => {
-      //   alert(err)
-      // })
-
       that.$api.infoShow
         .infoShow()
         .then(res => {
@@ -161,16 +136,6 @@
         ;
       },
       createEntry(title, newContent) {
-        // axios.post('infoEntry/create', {
-        //   'title': title,
-        //   'newContent': newContent
-        // }).then(res => {
-        //   console.log(res);
-        //   alert(res.data.msg)
-        // }).catch(err => {
-        //   alert(err)
-        // })
-
         let data = {
           'title': title,
           'newContent': newContent
@@ -189,7 +154,7 @@
       showUpdateInput(id) {
         // console.log('监听到子组件（ShowUnproved）的‘更新’按钮点击');
         this.showUpdateFlag = !this.showUpdateFlag
-        console.log(id);
+        // console.log(id);
         this.entry.id = id
       },
       btnClick() {
@@ -206,7 +171,6 @@
       FileDisplayCItem,
       HotFile,
       Create,
-      Update,
       SearchFile,
       ShowUnproved,
       UpdateEntry,

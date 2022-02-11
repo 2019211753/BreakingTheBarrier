@@ -6,13 +6,23 @@
       </div>
     </div>
 
-    <h2 class="ui header">数学物理方法</h2>
-    <button class="ui button mini">修改词条</button>
+    <h5 class="ui header">{{title}}</h5>
+<!--    <button class="ui button mini">修改词条</button>-->
+    <router-link
+      :to="{
+        path: '/BreakingTheBarrier/literature/information/EntryCreate',
+        query: {
+          id: this.id,
+          title: this.title,
+          currentContent: this.currentContent
+        }
+    }" class="ui button blue mini">修改词条</router-link>
     <br>
     <br>
     <div>
-      <p>至于计算方法，因为计算机是离散的，无法直接处理非离散的数学问题，将两者联系起来就是计算方法要研究的，简单说就是运用电子计算机处理数学
-      问题的方法。</p>
+<!--      <p>至于计算方法，因为计算机是离散的，无法直接处理非离散的数学问题，将两者联系起来就是计算方法要研究的，简单说就是运用电子计算机处理数学-->
+<!--      问题的方法。</p>-->
+      {{currentContent}}
     </div>
 
     <h3 class="ui horizontal divider header">
@@ -32,7 +42,19 @@
 
 <script>
   export default {
-    name: "EntryItem"
+    name: "EntryItem",
+    data() {
+      return {
+        id: '',
+        title: '',
+        currentContent: ''
+      }
+    },
+    created() {
+      this.id = this.$route.query.id
+      this.title = this.$route.query.title
+      this.currentContent = this.$route.query.currentContent
+    }
   }
 </script>
 

@@ -24,12 +24,12 @@
         <h3 class="ui header">词条</h3>
         <span class=" ">义项名: </span>
         <div class="ui input" >
-          <input type="text" placeholder="相同含义的名词或别名" v-model="title" :key="key1" id="key1">
+          <input type="text" placeholder="相同含义的名词或别名" v-model="title">
         </div>
         <br>
         <br>
         <div class="ui input " style="min-height: 200px;width: 470px" >
-          <input type="text" placeholder="请输入词条简介......" v-model="newContent" :key="key2" id="key2">
+          <input type="text" placeholder="请输入词条简介......" v-model="newContent">
         </div>
 
         <br>
@@ -66,41 +66,62 @@
     name: "EntryCreate",
     data() {
       return {
+        id: '',
         title: "",
         newContent: '',
         submitMsg: '',
-        key1: 0,
-        key2: 10,
       }
+    },
+    created() {
+      // console.log(this.$route.query);
+      // if(!this.$route.query) {
+      this.id = this.$route.query.id
+      this.title = this.$route.query.title
+      this.newContent = this.$route.query.currentContent
+      // }
     },
     methods: {
       createEntry(title, newContent) {
-        //若两个都不为空
-        if(newContent && title) {
+        if (this.id == '') { //为空 -》 是创建
+          // console.log('进来');
+          //若两个都不为空
+          if (newContent && title) {
+            let data = {
+              'title': title,
+              'newContent': newContent
+            }
+            let that = this
+            that.$api.infoCreate
+              .createEntry(data)
+              .then(res => {
+                this.submitMsg = res.data.msg
+                if (res.data.code == 200) {
+                  this.title = ""
+                  this.newContent = ""
+                }
+              })
+              .catch(err => {
+                this.submitMsg = err
+              })
+          } else
+            this.submitMsg = '标题或简介不能为空'
+        }
+        else { //更新词条
+          console.log(this.id);
           let data = {
-            'title': title,
-            'newContent': newContent
+            id: this.id,
+            title: this.title,
+            newContent: this.newContent
           }
           let that = this
-          that.$api.infoCreate
-            .createEntry(data)
-            .then(res => {
-              // console.log(res);
-              // alert(res.data.msg)
-              this.title = ""
-              this.newContent = ""
-              // this.forceUpdate()
-              this.submitMsg = res.data.msg
-              // if(res.data.code == 200)
-              //   this.forceUpdate()
+          that.$api.infoUpdate.entryUpdate(data)
+            .then((res) => {
+              this.submitMsg =res.data.msg
             })
-            .catch(err => {
-              // alert(err)
-              this.submitMsg = err
-            })
+          .catch(err => {
+            this.submitMsg = err
+          })
         }
-        else
-          this.submitMsg = '标题或简介不能为空'
       },
       btnClick() {
         this.createEntry(this.title, this.newContent)

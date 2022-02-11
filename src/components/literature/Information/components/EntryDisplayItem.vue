@@ -1,6 +1,6 @@
 <template>
   <div style="text-align: center;margin: 20px 0;min-width: 200px">
-    <h2>{{contentItem}}</h2>
+<!--    <span>{{contentItem}}</span>-->
     <router-link
       :to="{
       path: '/BreakingTheBarrier/literature/information/EntryItem',
@@ -10,7 +10,7 @@
         currentContent: contentItem.currentContent,
        }
 
-    }">详情</router-link>
+    }" style="display: none" @click="linkClick" id="link">详情</router-link>
     <a href="javascript:;">
       <h2 @click="itemClick">{{contentItem.title}}</h2>
       <span>{{contentItem.currentContent}}</span>
@@ -36,7 +36,11 @@
     },
     methods: {
       itemClick() {
-        this.showUpdateFlag = !this.showUpdateFlag
+        // this.showUpdateFlag = !this.showUpdateFlag
+        document.getElementById('link').click()
+      },
+      linkClick() {
+        document.getElementById('link').click()
       }
     },
     components: {

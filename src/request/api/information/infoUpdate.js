@@ -9,7 +9,7 @@ import instance from "../../http";
 const infoUpdate = {
   entryUpdate(data) {
     return instance
-      .post("/infoEntry/" + data + "/update")
+      .post("/infoEntry/" + data.id + "/update", {"title": data.title, newContent: data.newContent})
   }
 }
 
