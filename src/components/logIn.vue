@@ -1,36 +1,66 @@
 <template>
   <div>
-    <div class="background"></div>
-    <div class="a">
-      <div class="b">
-        <img :src="imgSrc" height="100%" alt="" />
-      </div>
-      <div class="c">
-        <div class="d">
-          <h1>登录</h1>
-          <input
-            type="text"
-            class="e"
-            placeholder="用户名"
-            v-model="userName"
-          />
-          <input
-            type="password"
-            class="e"
-            placeholder="密码"
-            v-model="passWord"
-          />
-          <button
-            class="ui big teal button"
-            style="margin-left: 18%; margin-top: 195px; width: 150px"
-            @click="sure()"
-          >
-            确定
-          </button>
+    <div class="ui basic segment">
+      <img
+        class="ui centered medium circular image"
+        src="../assets/logo.jpg"
+        alt=""
+      />
+      <div class="ui fluid labeled input">
+        <div class="ui teal label">
+          用户名
         </div>
+        <input
+          type="text"
+          placeholder="请输入用户名"
+          v-model="userName"
+        />
       </div>
+      <div class="ui fluid labeled input"style="margin-top: 20px">
+        <div class="ui teal label">
+          密码
+        </div>
+        <input
+          type="password"
+          placeholder="请输入密码"
+          v-model="passWord"
+        />
+      </div>
+      <div class="ui teal fluid button" @click="sure()">确定</div>
     </div>
   </div>
+  <!--  <div>
+      <div class="background"></div>
+      <div class="a">
+        <div class="b">
+          <img :src="imgSrc" height="100%" alt="" />
+        </div>
+        <div class="c">
+          <div class="d">
+            <h1>登录</h1>
+            <input
+              type="text"
+              class="e"
+              placeholder="用户名"
+              v-model="userName"
+            />
+            <input
+              type="password"
+              class="e"
+              placeholder="密码"
+              v-model="passWord"
+            />
+            <button
+              class="ui big teal button"
+              style="margin-left: 18%; margin-top: 195px; width: 150px"
+              @click="sure()"
+            >
+              确定
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>-->
 </template>
 
 
@@ -45,7 +75,7 @@ window.addEventListener("setItem", (e) => {
 export default {
   name: "logIn",
   data() {
-    return { userName: "", passWord: "", imgSrc: require("../assets/bg.jpg") };
+    return {userName: "", passWord: "", imgSrc: require("../assets/bg.jpg")};
   },
   methods: {
     sure() {
@@ -92,7 +122,17 @@ export default {
 </script>
 
 <style scoped>
-.background {
+.ui.segment {
+  width: 350px;
+  margin: auto;
+  margin-top: 200px;
+}
+
+.ui.button {
+  margin-top: 20px;
+}
+
+/*.background {
   width: 100%;
   height: 100%;
   z-index: -1;
@@ -163,5 +203,5 @@ export default {
   border-radius: 30px;
   background-image: linear-gradient(to left, #9c88ff, #3cadeb);
   text-align: center;
-}
+}*/
 </style>

@@ -1,5 +1,55 @@
 <template>
   <div>
+    <div class="ui basic segment">
+      <img
+        class="ui centered medium circular image"
+        src="../assets/logo.jpg"
+        alt=""
+      />
+      <div class="ui fluid labeled input">
+        <div class="ui teal label">
+          设置用户名
+        </div>
+        <input
+          type="text"
+          placeholder="英文与数字组合"
+          v-model="userName"
+        />
+      </div>
+      <div class="ui fluid labeled input"style="margin-top: 20px">
+        <div class="ui teal label">
+          设置密码
+        </div>
+        <input
+          type="password"
+          placeholder="须含有数字与英文，长度为7-11"
+          v-model="passWord"
+        />
+      </div>
+      <div class="ui fluid labeled input"style="margin-top: 20px">
+        <div class="ui teal label">
+          确认密码
+        </div>
+        <input
+          type="password"
+          placeholder="请再次输入密码"
+          v-model="surePassWord"
+        />
+      </div>
+      <div class="ui fluid labeled input"style="margin-top: 20px">
+        <div class="ui teal label">
+          设置昵称
+        </div>
+        <input
+          type="text"
+          placeholder="请输入昵称"
+          v-model="nickName"
+        />
+      </div>
+      <div class="ui teal fluid button" @click="sure()">确定</div>
+    </div>
+  </div>
+<!--  <div>
     <div class="background"></div>
     <div class="a">
       <div class="b">
@@ -41,7 +91,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script>
@@ -103,7 +153,16 @@ export default {
 </script>
 
 <style scoped>
-.background {
+.ui.segment {
+  width: 350px;
+  margin: auto;
+  margin-top: 200px;
+}
+
+.ui.button {
+  margin-top: 20px;
+}
+/*.background {
   width: 100%;
   height: 100%;
   z-index: -1;
@@ -174,5 +233,5 @@ export default {
   border-radius: 30px;
   background-image: linear-gradient(to left, #9c88ff, #3cadeb);
   text-align: center;
-}
+}*/
 </style>
