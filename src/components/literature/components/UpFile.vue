@@ -122,31 +122,55 @@
         formData.append("uploadUser",'')
          // console.log(formData);
          if (formData) {
-           axios({
-             url: 'files/upload',
-             method: "post",
-             headers: {
-               'Content-Type': 'multipart/form-data'
-             },
-             data: formData,
-           })
-             .then(res => {
-               // console.log(res);
-               // console.log(res.data);
-               // console.log(res.data.msg);
-               // console.log('--------------'+fileObj)
-               if(res.data.code == 200 && tagSelected) {
-                 alert(res.data.msg)
-                 document.getElementById('file').value = ''
-                 this.fileName = ''
-                 this.flagFileInfo = false
-                 this.flag = false //flag用于决定输入标签的输入框是否显示
-               }
-               else if(tagSelected.length == 0)
-                 alert('请填写文件标签')
-               else
-                 alert('上传失败\n' + res.data.msg)
-             })
+           // axios({
+           //   url: 'files/upload',
+           //   method: "post",
+           //   headers: {
+           //     'Content-Type': 'multipart/form-data'
+           //   },
+           //   data: formData,
+           // })
+           //   .then(res => {
+           //     // console.log(res);
+           //     // console.log(res.data);
+           //     // console.log(res.data.msg);
+           //     // console.log('--------------'+fileObj)
+           //     if(res.data.code == 200 && tagSelected) {
+           //       alert(res.data.msg)
+           //       document.getElementById('file').value = ''
+           //       this.fileName = ''
+           //       this.flagFileInfo = false
+           //       this.flag = false //flag用于决定输入标签的输入框是否显示
+           //     }
+           //     else if(tagSelected.length == 0)
+           //       alert('请填写文件标签')
+           //     else
+           //       alert('上传失败\n' + res.data.msg)
+           //   })
+           //   .catch(err => {
+           //     console.log(err);
+           //   })
+
+           let that = this
+           that.$api.dataUpload
+              .upFile(formData)
+              .then(res => {
+                 console.log(res);
+                // console.log(res.data);
+                // console.log(res.data.msg);
+                // console.log('--------------'+fileObj)
+                if(res.data.code == 200 && tagSelected) {
+                  alert(res.data.msg)
+                  document.getElementById('file').value = ''
+                  this.fileName = ''
+                  this.flagFileInfo = false
+                  this.flag = false //flag用于决定输入标签的输入框是否显示
+                }
+                else if(tagSelected.length == 0)
+                  alert('请填写文件标签')
+                else
+                  alert('上传失败\n' + res.data.msg)
+              })
              .catch(err => {
                console.log(err);
              })

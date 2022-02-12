@@ -1,5 +1,7 @@
 <template>
   <div class="ui container">
+<!--    <router-link to="/BreakingTheBarrier/literature/information/EntryDisplay">词条展示</router-link>-->
+    <router-link to=""></router-link>
     <div style="margin-bottom: 30px;">
       <sec-menu>
         <h3 slot="titleH3" style="letter-spacing: 5px;">信息百科</h3>
@@ -7,7 +9,10 @@
         <span slot="space">&nbsp;&nbsp;</span>
         <span slot="search" style="position: relative;top: -6px;height: 20px;">
           <div class="ui container" style="width: fit-content; margin: 5px;">
-          <button class="ui button" @click="showInput">创建词条</button>
+<!--          <button class="ui button" @click="showInput">创建词条</button>-->
+          <button class="ui button">
+            <router-link to="/BreakingTheBarrier/literature/information/EntryCreate">创建词条</router-link>
+          </button>
         </div>
         </span>
       </sec-menu>
@@ -18,6 +23,7 @@
     <div style="width: fit-content;margin: -20px auto 25px auto;">
     </div>
 
+<!--词条展示-->
     <div class="ui container" style="display: inline-block">
       <entry-display
         id=""
@@ -34,23 +40,6 @@
           <span slot="upFile"></span>
         </hot-file>
     </div>
-<!--&lt;!&ndash;测试侧边栏&ndash;&gt;-->
-<!--    <div class="ui right sidebar inverted vertical menu">-->
-<!--      <h3>近期竞赛</h3>-->
-<!--      <a class="item">-->
-<!--        <p>ACM国际大学生程序设计竞赛世界总决赛</p>-->
-<!--      </a>-->
-<!--      <a class="item">-->
-<!--        <p>全国大学生电子设计竞赛</p>-->
-<!--      </a>-->
-<!--      <a class="item">-->
-<!--        <p>全国大学生数学竞赛总决赛</p>-->
-<!--      </a>-->
-<!--    </div>-->
-<!--    <div class="pusher">-->
-<!--      &lt;!&ndash; Site content !&ndash;&gt;-->
-<!--    </div>-->
-<!--    <button @click="btnClick" class="ui button">按钮</button>-->
 
 <!--展示未审核-->
     <div class="ui container">
@@ -81,7 +70,6 @@
   import Headbar from "../../basic/headbar";
   import Bottom from "../../basic/bottom";
   import Create from "./components/Create";
-  import Update from "./components/Update";
   import SearchFile from "../components/SearchFile";
   import $ from 'jquery'
   import axios from "axios";
@@ -109,28 +97,30 @@
     },
     mounted() {
       //请求到的entry对象储存到data里
-      axios('infoEntry/unapprovedEntries',{
-      }).then(res => {
-        let content = res.data.data.entries.content
-        for(let i in content) {
-          this.entry.content.push(content[i])
-        }
-        // console.log(content);
-      })
-      .catch(err => {
-        console.log(err);
-        alert(err)
-      })
-
+      let that = this
+      that.$api.infoGetUnapro
+        .infoGetUnapro()
+        .then(res => {
+              let content = res.data.data.entries.content
+              for(let i in content) {
+                this.entry.content.push(content[i])
+              }
+              // console.log(content);
+            })
+        .catch(err => {
+          // console.log(err);
+          alert(err)
+        })
       //把请求到的approvedEntry存储下来
-      axios('infoEntry/show',{
-      }).then(res => {
-        let content = res.data.data.entries.content
-        for(let i in content)
-          this.approvedEntry.content.push(content[i])
-        // this.approvedEntry = res.data.data.entries.content
-        console.log(this.approvedEntry.content);
-      }).catch(err => {
+      that.$api.infoShow
+        .infoShow()
+        .then(res => {
+          let content = res.data.data.entries.content
+          for(let i in content)
+            this.approvedEntry.content.push(content[i])
+          // this.approvedEntry = res.data.data.entries.content
+          console.log(this.approvedEntry.content);
+        }).catch(err => {
         alert(err)
       })
     },
@@ -146,20 +136,25 @@
         ;
       },
       createEntry(title, newContent) {
-        axios.post('infoEntry/create', {
+        let data = {
           'title': title,
           'newContent': newContent
-        }).then(res => {
-          console.log(res);
-          alert(res.data.msg)
-        }).catch(err => {
-          alert(err)
-        })
+        }
+        let that = this
+        that.$api.infoCreate
+          .createEntry(data)
+          .then(res => {
+            console.log(res);
+            alert(res.data.msg)
+          })
+          .catch(err => {
+            alert(err)
+          })
       },
       showUpdateInput(id) {
         // console.log('监听到子组件（ShowUnproved）的‘更新’按钮点击');
         this.showUpdateFlag = !this.showUpdateFlag
-        console.log(id);
+        // console.log(id);
         this.entry.id = id
       },
       btnClick() {
@@ -176,7 +171,6 @@
       FileDisplayCItem,
       HotFile,
       Create,
-      Update,
       SearchFile,
       ShowUnproved,
       UpdateEntry,

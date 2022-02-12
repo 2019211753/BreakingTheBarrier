@@ -79,19 +79,36 @@
         this.page.currentPage = val
         // console.log(this.page.currentPage);
         {
-          axios('files/find',{
-            params: {
-              query: '',
-              pageIndex: this.page.currentPage - 1
-            }
-          })
-          .then(res => {
-            // console.log(res.data.data.page.numberOfElements);
-            this.files.content = res.data.data.page.content
-            this.page.numberOfElements = res.data.data.page.numberOfElements
-          }).catch(err => {
-            alert(err)
-          })
+          // axios('files/find',{
+          //   params: {
+          //     query: '',
+          //     pageIndex: this.page.currentPage - 1
+          //   }
+          // })
+          // .then(res => {
+          //   // console.log(res.data.data.page.numberOfElements);
+          //   this.files.content = res.data.data.page.content
+          //   this.page.numberOfElements = res.data.data.page.numberOfElements
+          // }).catch(err => {
+          //   alert(err)
+          // })
+
+          let params = {
+            query: '',
+            pageIndex: this.page.currentPage - 1
+          }
+          let that = this
+          that.$api.dataFind
+            .findFiles(params)
+            .then(res=> {
+              // console.log(res.data.data.page.numberOfElements);
+              // console.log(res);
+              this.files.content = res.data.data.page.content
+              this.page.numberOfElements = res.data.data.page.numberOfElements
+            })
+            .catch(err => {
+              console.log(err);
+            })
         }
       },
       // downFile() {
@@ -120,27 +137,48 @@
       //   })
       // },
       searchF(keyword) {
-        axios({
-          url: '/files/find',
-          params:{
-            query: this.keyword,
-            pageIndex: 0
-          }
-        }).then(res => {
-          // console.log("函数被执行");
-          console.log(res);
-          // console.log(res.data.msg);
-          // console.log(res.data.data.page);
-          console.log(res.data.data.page.content);
-          // console.log(res.data.data.page.content[0]);
-        })
+        // axios({
+        //   url: '/files/find',
+        //   params:{
+        //     query: this.keyword,
+        //     pageIndex: 0
+        //   }
+        // }).then(res => {
+        //   // console.log("函数被执行");
+        //   console.log(res);
+        //   // console.log(res.data.msg);
+        //   // console.log(res.data.data.page);
+        //   console.log(res.data.data.page.content);
+        //   // console.log(res.data.data.page.content[0]);
+        // })
+        //   .catch(err => {
+        //     // console.log("拦截函数被执行");
+        //     alert(err);
+        //   })
+
+        let that = this
+        let params = {
+          query: this.keyword,
+          pageIndex: 0
+        }
+        console.log(params);
+        that.$api.dataFind
+          .findFiles(params)
+          .then(res => {
+            // console.log("函数被执行");
+            // console.log(res);
+            // console.log(res.data.msg);
+            // console.log(res.data.data.page);
+            console.log(res.data.data.page.content);
+            // console.log(res.data.data.page.content[0]);
+          })
           .catch(err => {
-            // console.log("拦截函数被执行");
-            alert(err);
+            console.log(err);
+            // alert(err);
           })
       },
       search(searchFileContent) {
-        console.log("这是父组件data：");
+        // console.log("这是父组件data：");
         console.log(searchFileContent);
         this.files.content = searchFileContent
       }

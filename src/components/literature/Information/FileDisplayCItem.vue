@@ -82,34 +82,58 @@
       },
       downFile() {
         // console.log(this.fileName);
-        axios.get('files/download',{
-          params: {
-            fileId: this.fileId,
-          },
-          headers:{
-            // 'Content-Type': 'application/json; charset=UTF-8',
-          },
-          responseType:'blob',
-        }).then(res => {
-          if (res) {
-            // console.log(res);
-            const data = res.data
-            const url = window.URL.createObjectURL(
-              new Blob([data],
-                {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
-              ))
-            const link1 = document.createElement('a')
-            link1.style.display = 'none'
-            link1.href = url
-            // console.log(this.fileName);
-            link1.setAttribute('download', this.fileName)
-            document.body.appendChild(link1)
-            link1.click()
-            document.body.removeChild(link1)
-          }
-          else
-            alert("下载失败")
-        })
+        // axios.get('files/download',{
+        //   params: {
+        //     fileId: this.fileId,
+        //   },
+        //   headers:{
+        //     // 'Content-Type': 'application/json; charset=UTF-8',
+        //   },
+        //   responseType:'blob',
+        // }).then(res => {
+        //   if (res) {
+        //     // console.log(res);
+        //     const data = res.data
+        //     const url = window.URL.createObjectURL(
+        //       new Blob([data],
+        //         {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+        //       ))
+        //     const link1 = document.createElement('a')
+        //     link1.style.display = 'none'
+        //     link1.href = url
+        //     // console.log(this.fileName);
+        //     link1.setAttribute('download', this.fileName)
+        //     document.body.appendChild(link1)
+        //     link1.click()
+        //     document.body.removeChild(link1)
+        //   }
+        //   else
+        //     alert("下载失败")
+        // })
+
+        let that = this
+        that.$api.dataDown
+          .downFile(this.fileId)
+          .then(res => {
+              if (res) {
+                // console.log(res);
+                const data = res.data
+                const url = window.URL.createObjectURL(
+                  new Blob([data],
+                    {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+                  ))
+                const link1 = document.createElement('a')
+                link1.style.display = 'none'
+                link1.href = url
+                // console.log(this.fileName);
+                link1.setAttribute('download', this.fileName)
+                document.body.appendChild(link1)
+                link1.click()
+                document.body.removeChild(link1)
+              }
+              else
+                alert("下载失败")
+            })
       }
     }
   }

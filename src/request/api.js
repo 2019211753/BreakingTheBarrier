@@ -22,27 +22,44 @@ import userSocial from "./api/user/userSocial";
 import userTag from "./api/user/userTag";
 import logIn from "./api/logIn";
 import register from "./api/register";
+import dataFind from "./api/data/dataFind";
+import dataUpload from "./api/data/dataUpload";
+import dataDown from "./api/data/dataDown";
+import infoGetUnapro from "./api/information/infoGetUnapro";
+import infoShow from "./api/information/infoShow";
+import infoCreate from "./api/information/infoCreate";
+import infoApprove from "./api/information/infoApprove";
+import infoUpdate from "./api/information/infoUpdate";
+
 
 // 导出接口
 export default {
-    adminBlog,
-    adminQuestion,
-    adminTag,
-    adminUser,
-    personalArchive,
-    userBlog,
-    personalFavorite,
-    personalFollow,
-    personalInformation,
-    personalMessage,
-    userQuestion,
-    userArticle,
-    userComment,
-    userFavorite,
-    userLike,
-    userRank,
-    userSocial,
-    userTag,
-    logIn,
-    register
-};
+  adminBlog,
+  adminQuestion,
+  adminTag,
+  adminUser,
+  personalArchive,
+  userBlog,
+  personalFavorite,
+  personalFollow,
+  personalInformation,
+  personalMessage,
+  userQuestion,
+  userArticle,
+  userComment,
+  userFavorite,
+  userLike,
+  userRank,
+  userSocial,
+  userTag,
+  logIn,
+  register,
+  dataFind,
+  dataUpload,
+  dataDown,
+  infoGetUnapro,
+  infoShow,
+  infoCreate,
+  infoApprove,
+  infoUpdate
+}
