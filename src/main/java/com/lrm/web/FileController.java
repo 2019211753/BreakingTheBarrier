@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Controller
 @RequestMapping("/files")
@@ -134,7 +137,7 @@ public class FileController {
     @ResponseBody
     public Result upload(@RequestParam("uploadFile") MultipartFile uploadFile,
                          @RequestParam("fileTagName") String fileTagName,
-                         HttpServletRequest request) throws IOException {
+                         HttpServletRequest request) throws IOException, ExecutionException, InterruptedException {
         //打印上传文件信息
         logFileInfo(uploadFile, uploadFilePath);
 
@@ -148,6 +151,10 @@ public class FileController {
             tagNames[i] = tagNames[i].substring(1, tagNames[i].length() - 1);
         }
 
+
+        Future<String> futureRes = aysncService.asyncUpload(
+                uploadFile, endpoint, accessKeyId, accessKeySecret, "wordverybig", "", fileName);
+
         //上传到oss
         OSSUtils.uploadFile(uploadFile, endpoint, accessKeyId, accessKeySecret, "wordverybig", "", fileName);
 
@@ -159,7 +166,7 @@ public class FileController {
         hashMap.put("fileName", uploadFile.getOriginalFilename());
         //这么写有缺陷，会丢失精度，应该四舍五入使用Decimal类（小问题，待更改-------------
         hashMap.put("fileSize", String.valueOf(uploadFile.getSize() / 1024) + "KB");//单位是B,大写B代表byte，小写b代表bit
-
+        logger.info(futureRes.get());
         Result res = new Result(hashMap, "上传成功");
         return res;
     }
@@ -171,7 +178,7 @@ public class FileController {
     @ResponseBody
     public Result fileDownload(@RequestParam("fileId") Long fileId,
                                HttpServletResponse response,
-                               HttpServletRequest request) throws IOException {
+                               HttpServletRequest request) throws IOException, ExecutionException, InterruptedException {
 
 
         //通过id查询唯一的文件
@@ -186,12 +193,16 @@ public class FileController {
         //直接在这里判断文件存不存在,如果不存在会抛异常的
         fileServiceImpl.downloadFile(found.get());
 
-        Long rank = searchService.rank(hotFileDownloads, originName);
-        if (rank == null) {
-            searchService.zadd(hotFileDownloads, originName, 1d);
-        } else {
-            searchService.zadd(hotFileDownloads, originName,
-                    searchService.zscore(hotFileDownloads, originName) + 1d);
+        try {
+            Long rank = searchService.rank(hotFileDownloads, originName);
+            if (rank == null) {
+                searchService.zadd(hotFileDownloads, originName, 1d);
+            } else {
+                searchService.zadd(hotFileDownloads, originName,
+                        searchService.zscore(hotFileDownloads, originName) + 1d);
+            }
+        } catch (RedisConnectionFailureException ex) {
+            logger.info("redis未连接");
         }
 
         response.reset();
@@ -200,7 +211,9 @@ public class FileController {
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
 
 //        OSSUtils.downloadFile(response.getOutputStream(), fileName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
-        aysncService.executeAysnc(response, "" + fileName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
+        Future<String> futureRes = aysncService.asyncDownload(
+                response, fileName, endpoint, accessKeyId, accessKeySecret, "wordverybig");
+        logger.info(futureRes.get());
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("name", fileName);
 

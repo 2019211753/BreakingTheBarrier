@@ -57,24 +57,21 @@ public class OSSUtils {
     public static void downloadFile(OutputStream os, String objectName,
                              String endpoint, String accessKeyId,
                              String accessKeySecret, String bucketName) throws IOException {
-
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         //通过文件名获取ossObject
         OSSObject ossObject = ossClient.getObject(bucketName, objectName);
 
         BufferedInputStream in = new BufferedInputStream(ossObject.getObjectContent());
         BufferedOutputStream out = new BufferedOutputStream(os);
-        byte[] buffer = new byte[1024];
-        int length = 0;
-        while ((length = in.read(buffer)) != -1) {
-            out.write(buffer, 0, length);
-        }
-
-        if (out != null) {
-            out.flush();
+        try {
+            byte[] buffer = new byte[2048];
+            int length = 0;
+            while ((length = in.read(buffer)) != -1) {
+                out.write(buffer, 0, length);
+            }
+        } finally {
+//            out.flush();
             out.close();
-        }
-        if (in != null) {
             in.close();
         }
     }
