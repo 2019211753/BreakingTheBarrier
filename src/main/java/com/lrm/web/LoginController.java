@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @Validated
 @RestController
-public class LoginController {
+public class  LoginController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 

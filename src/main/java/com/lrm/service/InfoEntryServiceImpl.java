@@ -29,6 +29,20 @@ public class InfoEntryServiceImpl implements InfoEntryService {
     }
 
     @Override
+    public void deleteEntry(Long entryId) {
+        Optional<InfoEntry> entry = infoEntryRepository.findById(entryId);
+        if (!entry.isPresent())
+            throw new NotFoundException("未发现指定词条");
+        infoEntryRepository.delete(entry.get());
+    }
+
+    @Override
+    public Page<InfoEntry> searchEntry(String title) {
+        if (title == null) return null;
+        return infoEntryRepository.findByTitle(title, PageRequest.of(0, 9));
+    }
+
+    @Override
     public Page<InfoEntry> getAllUnapproved() {
         return infoEntryRepository.findUnapproved(PageRequest.of(0, 9));
     }
@@ -56,6 +70,25 @@ public class InfoEntryServiceImpl implements InfoEntryService {
 
     @Override
     @Transactional
+    public InfoEntry disapprove(Long entryId) {
+        Optional<InfoEntry> found = infoEntryRepository.findById(entryId);
+        if (!found.isPresent()) {
+            throw new NotFoundException("此词条不存在");
+        }
+        InfoEntry infoEntry = found.get();
+//        infoEntry.setCurrentContent(infoEntry.getNewContent());
+        infoEntry.setNewContent(null);
+//        infoEntry.setLastApprovedTime(new Timestamp(System.currentTimeMillis()));
+        //未通过，但需要显示，approved
+        infoEntry.setApproved(true);
+        infoEntry.setLocked(false);//解锁
+        return infoEntry;
+    }
+
+
+
+    @Override
+    @Transactional
     public InfoEntry update(InfoEntry newEntry) {
         Optional<InfoEntry> found = infoEntryRepository.findById(newEntry.getId());
         if (!found.isPresent()) {
@@ -76,4 +109,5 @@ public class InfoEntryServiceImpl implements InfoEntryService {
         Optional<InfoEntry> optionalInfoEntry = infoEntryRepository.findById(infoEntryId);
         return optionalInfoEntry.orElse(null);
     }
+
 }

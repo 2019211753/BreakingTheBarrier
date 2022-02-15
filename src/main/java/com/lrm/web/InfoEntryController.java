@@ -95,6 +95,12 @@ public class InfoEntryController {
         return new Result(null, "审核通过");
     }
 
+    @PostMapping("/{entryId}/disapprove")
+    public Result disapproveEntry(@PathVariable Long entryId) {
+        infoEntryServiceImpl.disapprove(entryId);
+        return new Result(null, "审核未通过");
+    }
+
     /**
      * 展示所有审核通过的词条
      * @return 需要展示的词条
@@ -106,4 +112,16 @@ public class InfoEntryController {
         return new Result(hashMap, "需要展示的词条");
     }
 
+    @GetMapping("/search")
+    public Result search(@RequestParam("query") String query) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("entries", infoEntryServiceImpl.searchEntry(query));
+        return new Result(hashMap, "搜索到的词条");
+    }
+
+    @PostMapping("/delete/{entryId}")
+    public Result delete(@PathVariable Long entryId) {
+        infoEntryServiceImpl.deleteEntry(entryId);
+        return new Result(null, "成功删除");
+    }
 }
