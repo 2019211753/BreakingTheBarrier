@@ -11,7 +11,7 @@ const literature = () =>
     import ("../components/literature/literature");
 
 export default new Router({
-    mode: "history",
+    mode: "hash",
     routes: [{
             path: "/",
             name: "BreakingTheBarrier",
