@@ -10,18 +10,18 @@
     </div>
     <div class="ui fluid labeled input">
       <div class="ui teal label">标题</div>
-      <input type="text" placeholder="" v-model="title" />
+      <input type="text" placeholder="" v-model="title"/>
     </div>
     <div class="ui fluid labeled input">
       <div class="ui teal label">概述</div>
-      <input type="text" placeholder="" v-model="description" />
+      <input type="text" placeholder="" v-model="description"/>
     </div>
     <editor></editor>
     <el-dialog width="600px" :visible.sync="dialogFormVisible">
       <tags></tags>
     </el-dialog>
-    <div class="ui teal button" @click="chooseTag()">选择标签</div>
-    <div class="ui teal right floated button" @click="sure()">确定</div>
+    <div class="ui teal button" @click="chooseTag()" style="margin-top: 20px">选择标签</div>
+    <div class="ui teal right floated button" style="margin-top: 20px" @click="sure()">确定</div>
   </div>
 </template>
 
@@ -32,9 +32,9 @@ import editor from "../../editor/editor";
 export default {
   name: "addArticle",
   data() {
-    return { dialogFormVisible: false, title: "", description: "" };
+    return {dialogFormVisible: false, title: "", description: ""};
   },
-  components: { editor, tags },
+  components: {editor, tags},
   methods: {
     chooseTag() {
       var that = this;
@@ -88,10 +88,6 @@ export default {
 
 <style scoped>
 .input {
-  margin-top: 20px;
-}
-
-.button {
   margin-top: 20px;
 }
 

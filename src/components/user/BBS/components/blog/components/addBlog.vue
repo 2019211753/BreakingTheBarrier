@@ -10,11 +10,11 @@
     </div>
     <div class="ui fluid labeled input">
       <div class="ui teal label">标题</div>
-      <input type="text" placeholder="" v-model="title" />
+      <input type="text" placeholder="" v-model="title"/>
     </div>
     <div class="ui fluid labeled input">
       <div class="ui teal label">概述</div>
-      <input type="text" placeholder="" v-model="description" />
+      <input type="text" placeholder="" v-model="description"/>
     </div>
     <editor></editor>
     <el-dialog width="600px" :visible.sync="dialogFormVisible">
@@ -22,21 +22,22 @@
     </el-dialog>
     <div class="ui fluid labeled input" v-if="original == false">
       <div class="ui teal label">转载声明</div>
-      <input type="text" placeholder="" v-model="statement" />
+      <input type="text" placeholder="" v-model="statement"/>
     </div>
-    <div :class="original == true ? Y : N" @click="setOriginal()">转载</div>
-    <div :class="open == true ? Y : N" @click="setOpen()">私密</div>
-    <div :class="commentAllowed == true ? Y : N" @click="setCommentAllowed()">
+    <div :class="original == true ? Y : N" @click="setOriginal()" style="margin-top: 20px">转载</div>
+    <div :class="open == true ? Y : N" @click="setOpen()" style="margin-top: 20px">私密</div>
+    <div :class="commentAllowed == true ? Y : N" @click="setCommentAllowed()" style="margin-top: 20px">
       不允许评论
     </div>
     <div
       :class="appreciationAllowed == true ? Y : N"
       @click="setAppreciationAllowed()"
+      style="margin-top: 20px"
     >
       不接受赞赏
     </div>
-    <div class="ui teal right floated button" @click="sure()">确定</div>
-    <div class="ui right floated teal button" @click="chooseTag()">
+    <div class="ui teal right floated button" @click="sure()" style="margin-top: 20px">确定</div>
+    <div class="ui right floated teal button" @click="chooseTag()" style="margin-top: 20px">
       选择标签
     </div>
   </div>
@@ -48,7 +49,7 @@ import editor from "../../editor/editor";
 
 export default {
   name: "addBlog",
-  components: { editor, tags },
+  components: {editor, tags},
   data() {
     return {
       dialogFormVisible: false,
@@ -195,11 +196,8 @@ export default {
   margin: auto;
   width: 80%;
 }
-.input {
-  margin-top: 20px;
-}
 
-.button {
+.input {
   margin-top: 20px;
 }
 </style>
