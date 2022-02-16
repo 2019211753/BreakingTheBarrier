@@ -40,10 +40,9 @@ export default {
       } */
 
       return new Promise((resolve) => {
-        imageConversion.compressAccurately(file[0], 300).then((res) => {
-          console.log(res);
+        imageConversion.compressAccurately(file[0], 290).then((res) => {
           const formData = new FormData();
-          formData.append("files", res);
+          formData.append("files", res,"blob.jpg");
           var that = this;
           that.$api.userArticle
             .uploadPicture(formData)
