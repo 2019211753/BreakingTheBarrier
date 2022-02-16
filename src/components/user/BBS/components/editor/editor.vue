@@ -48,6 +48,7 @@ export default {
           that.$api.userArticle
             .uploadPicture(formData)
             .then((res) => {
+              console.log(res)
               insertImage({
                 url: res.data.data.fileUrls[0],
                 desc: "image",
