@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="ui basic segment">
+    <div class="ui basic segment"style="margin-top: 200px;">
       <img
         class="ui centered medium circular image"
         src="../assets/logo.jpg"
@@ -30,7 +30,6 @@ export default {
 .ui.segment {
   width: 350px;
   margin: auto;
-  margin-top: 200px;
 }
 .ui.button {
   margin-top: 20px;
