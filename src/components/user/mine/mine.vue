@@ -28,7 +28,7 @@
             </div>
           </el-col>
           <el-col :span="14">
-            <div class="information" style="margin-top: -5px">
+            <div class="information">
               <h2>{{ $store.state.me.nickname }}</h2>
               <p style="color: grey" v-if="$store.state.me.personalSignature">
                 {{ $store.state.me.personalSignature }}
