@@ -179,6 +179,7 @@
             </el-skeleton>
             <div
               :class="item.parentCommentId == '0' ? parent : child"
+              :style="item.parentCommentId == '0' ? '' : 'margin-left: 50px;'"
               v-for="item in commentList"
             >
               <a class="avatar">
@@ -784,9 +785,5 @@ export default {
 <style scoped>
 h3:nth-child(2) {
   text-align: center;
-}
-
-.child.comment {
-  margin-left: 50px;
 }
 </style>
