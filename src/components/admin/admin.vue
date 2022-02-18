@@ -11,39 +11,39 @@
           <h2>{{ $store.state.me.nickname }}</h2>
           <h5>{{ $store.state.me.personalSignature }}</h5>
           <div class="ui divider"></div>
-          <div class="ui fluid button" @click="turnToTag()">标签管理</div>
-          <div class="ui fluid button" @click="turnToUser()">用户管理</div>
-          <div class="ui fluid button" @click="turnToQuestion()">问题管理</div>
-          <div class="ui fluid button" @click="turnToBlog()">博客管理</div>
+          <div class="ui fluid button" @click="turnToTag()" style="background-color: white;">标签管理</div>
+          <div class="ui fluid button" @click="turnToUser()" style="background-color: white;">用户管理</div>
+          <div class="ui fluid button" @click="turnToQuestion()" style="background-color: white;">问题管理</div>
+          <div class="ui fluid button" @click="turnToBlog()" style="background-color: white;">博客管理</div>
           <div class="ui divider" style="margin-top: 150px"></div>
           <div style="width: 150px; margin: auto">
             <div class="ui icon buttons">
-              <button class="ui button"><i class="align left icon"></i></button>
-              <button class="ui button"><i class="align left icon"></i></button>
-              <button class="ui button">
+              <button class="ui button"style="background-color: white;"><i class="align left icon"></i></button>
+              <button class="ui button"style="background-color: white;"><i class="align left icon"></i></button>
+              <button class="ui button"style="background-color: white;">
                 <i class="align center icon"></i>
               </button>
-              <button class="ui button">
+              <button class="ui button"style="background-color: white;">
                 <i class="align right icon"></i>
               </button>
             </div>
             <div class="ui icon buttons">
-              <button class="ui button"><i class="align left icon"></i></button>
-              <button class="ui button"><i class="align left icon"></i></button>
-              <button class="ui button">
+              <button class="ui button"style="background-color: white;"><i class="align left icon"></i></button>
+              <button class="ui button"style="background-color: white;"><i class="align left icon"></i></button>
+              <button class="ui button"style="background-color: white;">
                 <i class="align center icon"></i>
               </button>
-              <button class="ui button">
+              <button class="ui button"style="background-color: white;">
                 <i class="align right icon"></i>
               </button>
             </div>
             <div class="ui icon buttons">
-              <button class="ui button"><i class="align left icon"></i></button>
-              <button class="ui button"><i class="align left icon"></i></button>
-              <button class="ui button">
+              <button class="ui button"style="background-color: white;"><i class="align left icon"></i></button>
+              <button class="ui button"style="background-color: white;"><i class="align left icon"></i></button>
+              <button class="ui button"style="background-color: white;">
                 <i class="align center icon"></i>
               </button>
-              <button class="ui button">
+              <button class="ui button"style="background-color: white;">
                 <i class="align right icon"></i>
               </button>
             </div>
@@ -65,7 +65,7 @@ import adminBlog from "./components/adminBlogFunctions/adminBlog";
 
 export default {
   name: "admin",
-  components: { adminArticle, adminTag, adminBlog, adminUser },
+  components: {adminArticle, adminTag, adminBlog, adminUser},
   methods: {
     turnToTag() {
       this.$router.push("/BreakingTheBarrier/admin/adminTag");
@@ -101,10 +101,6 @@ h5 {
   text-align: center;
   margin-top: -5px;
   color: grey;
-}
-
-.button {
-  background-color: white;
 }
 
 .admin {
