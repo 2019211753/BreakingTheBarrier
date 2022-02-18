@@ -117,7 +117,6 @@ export default {
         //})
       });
     },
-
     handleTestSuccess(file) {
       if (file.file.type.indexOf("image") == -1) {
         this.$message.error("请上传图片类型的文件");
