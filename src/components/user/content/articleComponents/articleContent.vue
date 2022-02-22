@@ -32,23 +32,21 @@ export default {
 
 .main {
   margin-top: 20px;
-  width: 70%;
+  width: 73%;
   float: left;
 }
-
 .side {
   margin-top: 20px;
-  width: 30%;
+  width: 27%;
   float: left;
 }
-
 .specific {
-  width: 90%;
+  width: 98%;
   margin: auto;
 }
 
 .writer {
   margin: auto;
-  width: 90%;
+  width: 100%;
 }
 </style>
