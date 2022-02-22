@@ -721,7 +721,6 @@ export default {
         that.$api.userComment
           .deleteBlogComment(this.$route.query.blogId, id)
           .then(function (response) {
-            console.log(response)
             if (flag == true) {
               that.getAllComments("", "");
             } else {
