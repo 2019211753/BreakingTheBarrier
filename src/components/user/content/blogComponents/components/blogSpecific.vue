@@ -719,9 +719,9 @@ export default {
       var that = this;
       var p1 = new Promise((resolve, reject) => {
         that.$api.userComment
-          .deleteQuestionComment(this.$route.query.articleId, id)
+          .deleteBlogComment(this.$route.query.blogId, id)
           .then(function (response) {
-            that.solved = response.data.data.solved;
+            console.log(response)
             if (flag == true) {
               that.getAllComments("", "");
             } else {
