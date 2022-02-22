@@ -203,7 +203,13 @@
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span>
                 </div>
-                <div class="text" v-html="item.content"></div>
+                <div class="text" v-html="item.content.split('image/')[0]"></div>
+                <div class="extra images">
+                  <div class="ui small images">
+                    <a><img :src="item.content.split('image/')[1].split('</p')[0]"></a>
+                  </div>
+                </div>
+                <br v-if="item.content.split('image/')[1].split('</p')[0].length>0">
                 <div class="actions">
                   <a
                     :style="item.approved == true ? 'color:RGB(219,40,40)' : ''"
@@ -260,10 +266,27 @@
             <i class="checkmark icon"></i>
             确定
           </div>
-          <div class="ui blue icon button">
-            <i class="image icon"></i>
-          </div>
+          <el-upload
+            action=""
+            :http-request="handleTestSuccess"
+            :show-file-list="false"
+          >
+            <div class="ui blue icon button">
+              <i class="image icon"></i>
+            </div>
+          </el-upload>
         </div>
+        <el-row :gutter="24" style="margin-top: 10px" v-for="(item,index) in imageUrls" :key="index">
+          <el-col :span="16">
+            <div>
+              <img class="ui small rounded image" :src="item">
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div style="margin-top: 30px" class="ui blue icon button"><i class="ui search icon"></i></div>
+            <div style="margin-top: 30px" class="ui red icon button"><i class="ui trash icon"></i></div>
+          </el-col>
+        </el-row>
       </el-dialog>
       <el-dialog
         width="600px"
@@ -293,7 +316,13 @@
               <div class="metadata">
                 <span class="date">{{ item.createTime }}</span>
               </div>
-              <div class="text" v-html="item.content"></div>
+              <div class="text" v-html="item.content.split('image/')[0]"></div>
+              <div class="extra images">
+                <div class="ui small images">
+                  <a><img :src="item.content.split('image/')[1].split('</p')[0]"></a>
+                </div>
+              </div>
+              <br v-if="item.content.split('image/')[1].split('</p')[0].length>0">
               <div class="actions">
                 <a
                   :style="item.approved == true ? 'color:RGB(219,40,40)' : ''"
@@ -390,6 +419,7 @@
 </template>
 
 <script>
+const imageConversion = require("image-conversion");
 export default {
   name: "blogSpecific",
   data() {
@@ -428,6 +458,7 @@ export default {
       unselected: "ui check circle icon",
       postUserId: this.$route.query.postUserId,
       nowParentId: "",
+      imageUrls: []
     };
   },
   created() {
@@ -747,7 +778,7 @@ export default {
       var p1 = new Promise((resolve, reject) => {
         if (that.textarea) {
           var data = {
-            content: that.textarea,
+            content: that.textarea + "image/" + that.imageUrls,
             answer: true,
             parentCommentId0: that.parentId,
           };
@@ -777,6 +808,23 @@ export default {
 
       Promise.all([p1, p2]).then((res) => {});
     },
+    handleTestSuccess(file) {
+      return new Promise((resolve) => {
+        imageConversion.compressAccurately(file.file, 290).then((res) => {
+          const formData = new FormData();
+          formData.append("files", res, "blob.jpg");
+          var that = this;
+          that.$api.userArticle
+            .uploadPicture(formData)
+            .then((res) => {
+              that.imageUrls.push(res.data.data.fileUrls[0])
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+      });
+    }
   },
 };
 </script>
