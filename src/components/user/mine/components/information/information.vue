@@ -3,10 +3,10 @@
     <div class="ui segment">
       <h3>基本资料</h3>
       <div class="ui divider"></div>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="4"
-          ><h4 style="margin-left: 10px; margin-top: 10px">用户昵称</h4></el-col
+        ><h4 style="margin-left: 10px; margin-top: 10px">用户昵称</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid input">
@@ -18,11 +18,11 @@
           </div>
         </el-col>
         <el-col :span="3"
-          ><h4 style="margin-left: 15px; margin-top: 10px">性别</h4></el-col
+        ><h4 style="margin-left: 15px; margin-top: 10px">性别</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid selection dropdown" style="width: 175px">
-            <input type="hidden" name="gender" />
+            <input type="hidden" name="gender"/>
             <i class="dropdown icon"></i>
             <div class="default text" v-if="$store.state.me.sex">
               <div v-if="$store.state.me.sex == 'true'">男</div>
@@ -36,13 +36,14 @@
           </div>
         </el-col>
       </el-row>
-      <br /><el-row :gutter="24">
+      <br/>
+      <el-row :gutter="24">
         <el-col :span="4"
-          ><h4 style="margin-left: 10px; margin-top: 10px">修改密码</h4></el-col
+        ><h4 style="margin-left: 10px; margin-top: 10px">修改密码</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid input">
-            <input type="text" placeholder="长度为7至11" v-model="passWord" />
+            <input type="text" placeholder="长度为7至11" v-model="passWord"/>
           </div>
         </el-col>
         <el-col :span="4"><h4 style="margin-top: 10px">确认密码</h4></el-col>
@@ -56,10 +57,10 @@
           </div>
         </el-col>
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="4"
-          ><h4 style="margin-left: 10px; margin-top: 10px">邮箱</h4></el-col
+        ><h4 style="margin-left: 10px; margin-top: 10px">邮箱</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid input">
@@ -71,7 +72,7 @@
           </div>
         </el-col>
         <el-col :span="3"
-          ><h4 style="margin-left: 15px; margin-top: 10px">QQ</h4></el-col
+        ><h4 style="margin-left: 15px; margin-top: 10px">QQ</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid input">
@@ -84,14 +85,14 @@
           </div>
         </el-col>
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="20">
         <el-col :span="4"
-          ><h4 style="margin-left: 10px; margin-top: 10px">学院</h4></el-col
+        ><h4 style="margin-left: 10px; margin-top: 10px">学院</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid selection dropdown" style="width: 175px">
-            <input type="hidden" name="gender" />
+            <input type="hidden" name="gender"/>
             <i class="dropdown icon"></i>
             <div class="default text" v-if="$store.state.me.academy">
               {{ $store.state.me.academy }}
@@ -109,11 +110,11 @@
           </div>
         </el-col>
         <el-col :span="3"
-          ><h4 style="margin-left: 15px; margin-top: 10px">专业</h4></el-col
+        ><h4 style="margin-left: 15px; margin-top: 10px">专业</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid selection dropdown" style="width: 175px">
-            <input type="hidden" name="gender" />
+            <input type="hidden" name="gender"/>
             <i class="dropdown icon"></i>
             <div class="default text" v-if="$store.state.me.major">
               {{ $store.state.me.major }}
@@ -131,10 +132,10 @@
           </div>
         </el-col>
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="4"
-          ><h4 style="margin-left: 10px; margin-top: 10px">签名</h4></el-col
+        ><h4 style="margin-left: 10px; margin-top: 10px">签名</h4></el-col
         >
         <el-col :span="19">
           <div class="ui fluid input">
@@ -146,7 +147,7 @@
           </div>
         </el-col>
       </el-row>
-      <br />
+      <br/>
       <div style="margin-left: 83%" class="ui teal button" @click="sure()">
         确定
       </div>
@@ -155,7 +156,7 @@
 </template>
 
 <script>
-import $ from "jquery";
+
 
 export default {
   name: "information",
@@ -178,8 +179,8 @@ export default {
   },
   created() {
     this.academyList = this.$store.state.me.academies;
-    $(function () {
-      $(".ui.dropdown").dropdown();
+    jQuery(function () {
+      jQuery(".ui.dropdown").dropdown();
     });
   },
   methods: {
@@ -286,20 +287,4 @@ export default {
 </script>
 
 <style scoped>
-.leftSide {
-  width: 60%;
-  float: left;
-}
-
-.rightSide {
-  width: 40%;
-  height: 416px;
-  float: left;
-}
-
-.framework {
-  width: 80%;
-  height: 220px;
-  margin: auto;
-}
 </style>

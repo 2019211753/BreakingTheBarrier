@@ -2,8 +2,8 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 import store from "./store";
-import axios from "axios";
 
+//import $ from 'jquery';
 // 使用semanticUI
 import semantic from "../node_modules/semantic-ui-css/semantic.min.js";
 import "../node_modules/semantic-ui-css/semantic.min.css";

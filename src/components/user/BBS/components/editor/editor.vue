@@ -38,7 +38,6 @@ export default {
         this.$message.error("上传头像图片只能是 JPG 或 PNG 格式!");
         return false;
       } */
-
       return new Promise((resolve) => {
         imageConversion.compressAccurately(file[0], 290).then((res) => {
           const formData = new FormData();
