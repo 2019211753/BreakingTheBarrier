@@ -26,7 +26,7 @@ const userComment = {
     },
     deleteBlogComment(data1, data2) {
         return instance.get(
-            "/blog/ " + data1 + " / comment / " + data2 + " / delete "
+            "/blog/" + data1 + "/comment/" + data2 + "/delete"
         );
     },
     getCommentSelected(data1, data2) {
