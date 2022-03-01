@@ -8,11 +8,11 @@ public interface InfoEntryService {
 
     void deleteEntry(Long entryId);
 
-    Page<InfoEntry> searchEntry(String query);
+    Page<InfoEntry> searchEntry(int pageIndex, String query);
 
-    Page<InfoEntry> getAllUnapproved();
+    Page<InfoEntry> getUnapproved(int pageIndex);
 
-    Page<InfoEntry> getApprovedByTime();
+    Page<InfoEntry> getApprovedByTime(int pageIndex);
 
     InfoEntry approve(Long entryId);
 

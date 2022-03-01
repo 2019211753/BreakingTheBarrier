@@ -48,7 +48,14 @@ public class TeamController {
         return new Result(hashMap, "成功删除队员");
     }
 
+    @PostMapping("/joinTeam")
+    public Result join() {
+        return null;
+    }
 
-
+    @PostMapping("/leaveTeam")
+    public Result leave() {
+        return null;
+    }
 
 }

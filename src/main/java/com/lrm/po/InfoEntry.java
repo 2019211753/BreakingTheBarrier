@@ -27,6 +27,15 @@ public class InfoEntry {
     @NotBlank(message = "请输入标题")
     private String title;
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private String discription;
+
+    /**
+     * 词条对应标签
+     */
+    @ManyToMany
+    private List<EntryTag> entryTags;
     /**
      * 懒加载
      * 内容

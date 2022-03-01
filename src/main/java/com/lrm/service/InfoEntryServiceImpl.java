@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.Deque;
 import java.util.Optional;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Service
 public class InfoEntryServiceImpl implements InfoEntryService {
@@ -37,19 +39,19 @@ public class InfoEntryServiceImpl implements InfoEntryService {
     }
 
     @Override
-    public Page<InfoEntry> searchEntry(String title) {
+    public Page<InfoEntry> searchEntry(int pageIndex, String title) {
         if (title == null) return null;
-        return infoEntryRepository.findByTitle(title, PageRequest.of(0, 9));
+        return infoEntryRepository.findByTitle(title, PageRequest.of(pageIndex, 9));
     }
 
     @Override
-    public Page<InfoEntry> getAllUnapproved() {
-        return infoEntryRepository.findUnapproved(PageRequest.of(0, 9));
+    public Page<InfoEntry> getUnapproved(int pageIndex) {
+        return infoEntryRepository.findUnapproved(PageRequest.of(pageIndex, 9));
     }
 
     @Override
-    public Page<InfoEntry> getApprovedByTime() {
-        return infoEntryRepository.findTop5ByisApprovedOrderByLastApprovedTimeDesc(true, PageRequest.of(0, 5));
+    public Page<InfoEntry> getApprovedByTime(int pageIndex) {
+        return infoEntryRepository.findTop5ByisApprovedOrderByLastApprovedTimeDesc(true, PageRequest.of(pageIndex, 5));
     }
 
     @Override
@@ -71,6 +73,7 @@ public class InfoEntryServiceImpl implements InfoEntryService {
     @Override
     @Transactional
     public InfoEntry disapprove(Long entryId) {
+        
         Optional<InfoEntry> found = infoEntryRepository.findById(entryId);
         if (!found.isPresent()) {
             throw new NotFoundException("此词条不存在");

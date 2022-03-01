@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -22,11 +24,10 @@ import java.util.concurrent.locks.ReentrantLock;
 @RequestMapping("/infoEntry")
 public class InfoEntryController {
     private final static Logger logger = LoggerFactory.getLogger(InfoEntryController.class);
-    private final static ReentrantLock lock = new ReentrantLock();
+    private final static ReentrantLock lock = new ReentrantLock(true);
     private final static Condition condition = lock.newCondition();
     /** 用来判断不同线程是否修改的是相同的对象，如果相同则对线程上锁执行， */
     private volatile static long volatileId;
-    private final static AtomicLong atomicLong = new AtomicLong();
     @Autowired
     private InfoEntryServiceImpl infoEntryServiceImpl;
 
@@ -37,8 +38,6 @@ public class InfoEntryController {
      */
     @PostMapping("/create")
     public Result create(@RequestBody @Valid InfoEntry infoEntry, BindingResult bindingResult) {
-        Condition condition = lock.newCondition();
-
         if (bindingResult.hasErrors()) {
             throw new IllegalParameterException(IllegalParameterException.getMessage(bindingResult));
         }
@@ -55,16 +54,15 @@ public class InfoEntryController {
     @PostMapping("/{entryId}/update")
     public Result update(@RequestBody InfoEntry infoEntry, @PathVariable("entryId") Long entryId) {
         infoEntry.setId(entryId);
-        if (volatileId == entryId) {// 处理多用户修改同一id的词条时
+        // 处理多用户修改同一id的词条时
+        if (volatileId == entryId) {
             lock.lock();
-//            LockHolder.setLocalLock(lock);
             try {
                 infoEntryServiceImpl.update(infoEntry);
             } catch (FailedOperationException failedOperationException) {
                 throw new FailedOperationException("词条被锁定");
             } finally{
                 lock.unlock();
-//                LockHolder.clear();
             }
         } else {//无冲突
             volatileId = entryId;
@@ -78,9 +76,9 @@ public class InfoEntryController {
      * @return entries
      */
     @GetMapping("/unapprovedEntries")
-    public Result unapprovedEntries() {
+    public Result unapprovedEntries(@RequestParam("pageIndex") int pageIndex) {
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("entries", infoEntryServiceImpl.getAllUnapproved());
+        hashMap.put("entries", infoEntryServiceImpl.getUnapproved(pageIndex));
         return new Result(hashMap, "需要审核的词条");
     }
 
@@ -106,16 +104,16 @@ public class InfoEntryController {
      * @return 需要展示的词条
      */
     @GetMapping("/show")
-    public Result showEntries() {
+    public Result showEntries(@RequestParam("pageIndex") int pageIndex) {
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("entries", infoEntryServiceImpl.getApprovedByTime());
+        hashMap.put("entries", infoEntryServiceImpl.getApprovedByTime(pageIndex));
         return new Result(hashMap, "需要展示的词条");
     }
 
     @GetMapping("/search")
-    public Result search(@RequestParam("query") String query) {
+    public Result search(@RequestParam("pageIndex") int pageIndex, @RequestParam("query") String query) {
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("entries", infoEntryServiceImpl.searchEntry(query));
+        hashMap.put("entries", infoEntryServiceImpl.searchEntry(pageIndex, query));
         return new Result(hashMap, "搜索到的词条");
     }
 

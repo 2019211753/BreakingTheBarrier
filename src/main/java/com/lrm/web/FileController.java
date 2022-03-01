@@ -179,8 +179,6 @@ public class FileController {
     public Result fileDownload(@RequestParam("fileId") Long fileId,
                                HttpServletResponse response,
                                HttpServletRequest request) throws IOException, ExecutionException, InterruptedException {
-
-
         //通过id查询唯一的文件
         Optional<com.lrm.po.File> found = fileRepository.findById(fileId);
 
