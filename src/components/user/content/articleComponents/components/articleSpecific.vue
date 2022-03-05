@@ -175,8 +175,14 @@
               <div class="content">
                 <a class="author">
                   <router-link
+                    v-if="$store.state.me.id == item.postUserId"
+                    to="/BreakingTheBarrier/mine/contents/questionFiles"
+                  >{{ template.nickname }}
+                  </router-link>
+                  <router-link
+                    v-else
                     :to="{
-                      path: '/BreakingTheBarrier/visitor',
+                      path: '/BreakingTheBarrier/visitor/questions',
                       query: { userId: item.postUserId },
                     }"
                   >{{ item.nickname }}
@@ -192,13 +198,9 @@
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini teal label">精选评论</a>
                 </div>
-                <div class="text" v-html="item.content.split('image/')[0]"></div>
-                <div class="extra images">
-                  <div class="ui small images">
-                    <a><img :src="item.content.split('image/')[1].split('</p')[0]"></a>
-                  </div>
+                <div class="text">
+                  <v-md-preview-html :html="item.content" preview-class="vuepress-markdown-body"></v-md-preview-html>
                 </div>
-                <br v-if="item.content.split('image/')[1].split('</p')[0].length>0">
               </div>
             </div>
             <div class="ui divider" v-if="!selectedComments.length == 0"></div>
@@ -209,8 +211,14 @@
               <div class="content">
                 <a class="author">
                   <router-link
+                    v-if="$store.state.me.id == item.postUserId"
+                    to="/BreakingTheBarrier/mine/contents/questionFiles"
+                  >{{ template.nickname }}
+                  </router-link>
+                  <router-link
+                    v-else
                     :to="{
-                      path: '/BreakingTheBarrier/visitor',
+                      path: '/BreakingTheBarrier/visitor/questions',
                       query: { userId: item.postUserId },
                     }"
                   >{{ item.nickname }}
@@ -226,13 +234,9 @@
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini red label">优质评论</a>
                 </div>
-                <div class="text" v-html="item.content.split('image/')[0]"></div>
-                <div class="extra images">
-                  <div class="ui small images">
-                    <a><img :src="item.content.split('image/')[1].split('</p')[0]"></a>
-                  </div>
+                <div class="text">
+                  <v-md-preview-html :html="item.content" preview-class="vuepress-markdown-body"></v-md-preview-html>
                 </div>
-                <br v-if="item.content.split('image/')[1].split('</p')[0].length>0">
               </div>
             </div>
             <div class="ui divider" v-if="!bestComments.length == 0"></div>
@@ -247,8 +251,14 @@
               <div class="content">
                 <a class="author">
                   <router-link
+                    v-if="$store.state.me.id == item.postUserId"
+                    to="/BreakingTheBarrier/mine/contents/questionFiles"
+                  >{{ template.nickname }}
+                  </router-link>
+                  <router-link
+                    v-else
                     :to="{
-                      path: '/BreakingTheBarrier/visitor',
+                      path: '/BreakingTheBarrier/visitor/questions',
                       query: { userId: item.postUserId },
                     }"
                   >{{ item.nickname }}
@@ -264,13 +274,9 @@
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span>
                 </div>
-                <div class="text" v-html="item.content.split('image/')[0]"></div>
-                <div class="extra images">
-                  <div class="ui small images">
-                    <a><img :src="item.content.split('image/')[1].split('</p')[0]"></a>
-                  </div>
+                <div class="text">
+                  <v-md-preview-html :html="item.content" preview-class="vuepress-markdown-body"></v-md-preview-html>
                 </div>
-                <br v-if="item.content.split('image/')[1].split('</p')[0].length>0">
                 <div class="actions">
                   <a
                     :style="item.approved == true ? 'color:RGB(219,40,40)' : ''"
@@ -316,42 +322,43 @@
         </div>
       </div>
       <el-dialog
-        width="400px"
+        width="800px"
         title="输入回复内容"
         :visible.sync="dialogFormVisible1"
       >
-        <el-input
-          type="textarea"
-          placeholder="请输入内容"
-          v-model="textarea">
-        </el-input>
+        <editor></editor>
+        <!--        <el-input
+                  type="textarea"
+                  placeholder="请输入内容"
+                  v-model="textarea">
+                </el-input>-->
         <div style="margin-top: 20px">
-          <div class="ui right floated teal button" @click="sure()">
+          <div class="ui teal button" @click="sure()"style="margin-left: 85%">
             <i class="checkmark icon"></i>
             确定
           </div>
-          <el-upload
-            action=""
-            :http-request="handleTestSuccess"
-            :show-file-list="false"
-          >
-            <div class="ui blue icon button">
-              <i class="image icon"></i>
-            </div>
-          </el-upload>
+          <!--          <el-upload
+                      action=""
+                      :http-request="handleTestSuccess"
+                      :show-file-list="false"
+                    >
+                      <div class="ui blue icon button">
+                        <i class="image icon"></i>
+                      </div>
+                    </el-upload>-->
         </div>
 
-        <el-row :gutter="24" style="margin-top: 10px" v-for="(item,index) in imageUrls" :key="index">
-          <el-col :span="16">
-            <div>
-              <img class="ui small rounded image" :src="item">
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div style="margin-top: 30px" class="ui blue icon button"><i class="ui search icon"></i></div>
-            <div style="margin-top: 30px" class="ui red icon button"><i class="ui trash icon"></i></div>
-          </el-col>
-        </el-row>
+        <!--        <el-row :gutter="24" style="margin-top: 10px" v-for="(item,index) in imageUrls" :key="index">
+                  <el-col :span="16">
+                    <div>
+                      <img class="ui small rounded image" :src="item">
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div style="margin-top: 30px" class="ui blue icon button"><i class="ui search icon"></i></div>
+                    <div style="margin-top: 30px" class="ui red icon button"><i class="ui trash icon"></i></div>
+                  </el-col>
+                </el-row>-->
       </el-dialog>
       <el-dialog
         width="600px"
@@ -366,8 +373,14 @@
             <div class="content">
               <a class="author">
                 <router-link
+                  v-if="$store.state.me.id == item.postUserId"
+                  to="/BreakingTheBarrier/mine/contents/questionFiles"
+                >{{ template.nickname }}
+                </router-link>
+                <router-link
+                  v-else
                   :to="{
-                    path: '/BreakingTheBarrier/visitor',
+                    path: '/BreakingTheBarrier/visitor/questions',
                     query: { userId: item.postUserId },
                   }"
                 >{{ item.nickname }}
@@ -382,13 +395,16 @@
               <div class="metadata">
                 <span class="date">{{ item.createTime }}</span>
               </div>
-              <div class="text" v-html="item.content.split('image/')[0]"></div>
-              <div class="extra images">
-                <div class="ui small images">
-                  <a><img :src="item.content.split('image/')[1].split('</p')[0]"></a>
-                </div>
+              <div class="text">
+                <v-md-preview-html :html="item.content" preview-class="vuepress-markdown-body"></v-md-preview-html>
               </div>
-              <br v-if="item.content.split('image/')[1].split('</p')[0].length>0">
+              <!--              <div class="text" v-html="item.content"></div>-->
+              <!--              <div class="extra images">
+                              <div class="ui small images">
+                                <a><img :src="item.content.split('image/')[1].split('</p')[0]"></a>
+                              </div>
+                            </div>-->
+              <!--              <br v-if="item.content.split('image/')[1].split('</p')[0].length>0">-->
               <div class="actions">
                 <a
                   :style="item.approved == true ? 'color:RGB(219,40,40)' : ''"
@@ -490,12 +506,15 @@
 </template>
 
 <script>
-const imageConversion = require("image-conversion");
+import Editor from "../../../BBS/components/editor/editor";
+
+/*const imageConversion = require("image-conversion");*/
 export default {
   name: "articleSpecific",
+  components: {Editor},
   data() {
     return {
-      textarea: "",
+      /*textarea: "",*/
       dialogFormVisible1: false,
       dialogFormVisible2: false,
       dialogFormVisible3: false,
@@ -531,7 +550,7 @@ export default {
       unselected: "ui check circle icon",
       postUserId: this.$route.query.postUserId,
       nowParentId: "",
-      imageUrls: []
+      /*imageUrls: []*/
     };
   },
   created() {
@@ -868,10 +887,10 @@ export default {
     sure() {
       var that = this;
       var p1 = new Promise((resolve, reject) => {
-        if (that.textarea) {
-          console.log(that.textarea)
+        if (that.$store.state.text.length > 0) {
+          console.log(that.$store.state.text)
           var data = {
-            content: that.textarea + "image/" + that.imageUrls,
+            content: that.$store.state.text,
             answer: true,
             parentCommentId0: that.parentId,
           };
@@ -880,7 +899,8 @@ export default {
             .then(function (response) {
               that.parentId = "-1";
               that.dialogFormVisible1 = false;
-              that.imageUrls = [];
+              /*that.imageUrls = [];*/
+              that.$store.commit("getText", "");
               that.$message({
                 message: "评论成功",
                 type: "success",
@@ -909,7 +929,7 @@ export default {
       Promise.all([p1, p2]).then((res) => {
       });
     },
-    handleTestSuccess(file) {
+    /*handleTestSuccess(file) {
       return new Promise((resolve) => {
         imageConversion.compressAccurately(file.file, 290).then((res) => {
           const formData = new FormData();
@@ -925,7 +945,7 @@ export default {
             });
         });
       });
-    }
+    }*/
   },
 };
 </script>
