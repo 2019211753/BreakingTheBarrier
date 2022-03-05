@@ -333,7 +333,7 @@
                   v-model="textarea">
                 </el-input>-->
         <div style="margin-top: 20px">
-          <div class="ui teal button" @click="sure()"style="margin-left: 85%">
+          <div class="ui teal button" @click="sure()" style="margin-left: 85%">
             <i class="checkmark icon"></i>
             确定
           </div>
