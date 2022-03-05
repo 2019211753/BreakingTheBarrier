@@ -36,7 +36,6 @@ export default new Vuex.Store({
             followingUserNum: "",
             followedUserNum: ""
         },
-        readFlag: true
     },
     mutations: {
         getText(state, text) {
