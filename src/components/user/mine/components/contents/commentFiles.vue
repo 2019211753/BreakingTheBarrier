@@ -7,7 +7,7 @@
         </div>
         <div class="content">
           <div class="summary">
-            我在 <a>{{ getInnerText(item.parentContent) }}</a> 中添加了评论：
+            我添加了评论：
             <a href=""
               ><router-link
                 v-if="
@@ -21,7 +21,7 @@
                   },
                 }"
               >
-                {{ getInnerText(item.content) }}</router-link
+              <v-md-preview-html :html="item.content" preview-class="vuepress-markdown-body"></v-md-preview-html></router-link
               ><router-link
                 v-else
                 :to="{
@@ -32,7 +32,7 @@
                   },
                 }"
               >
-                {{ getInnerText(item.content) }}</router-link
+              <v-md-preview-html :html="item.content" preview-class="vuepress-markdown-body"></v-md-preview-html></router-link
               ></a
             >
             <div class="date">{{ item.createTime }}</div>
@@ -76,6 +76,7 @@ export default {
       .archiveComment()
 
       .then(function (response) {
+        console.log(response)
         that.contentList = response.data.data.postComments;
         that.loading = false;
       })
