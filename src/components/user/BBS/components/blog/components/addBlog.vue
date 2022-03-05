@@ -4,7 +4,7 @@
       <i class="inbox icon"></i>
       <div class="content">
         <div class="header">
-          图片格式为png/bmp/gif/jpg与jpeg，宽度不能超过554px
+          图片格式为png/bmp/gif/jpg与jpeg
         </div>
       </div>
     </div>
