@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * markdown转换
@@ -62,6 +64,29 @@ public class MarkdownUtils {
                 attributes.put("class", "ui celled table");
             }
         }
+    }
+
+    /**
+     * 这个方法遗留的问题就是有时候空格不清楚是用户敲的还是其他原因放上去的，
+     * 在本方法中我将所有空格过去掉了，如果你不需要可以去掉那句代码
+     */
+    public static String htmlToText (String htmlStr) {
+        String regEx_script="<script[^>]*?>[\\s\\S]*?<\\/script>"; //定义script的正则表达式
+        String regEx_style="<style[^>]*?>[\\s\\S]*?<\\/style>"; //定义style的正则表达式
+        String regEx_html="<[^>]+>"; //定义HTML标签的正则表达式
+
+        Pattern p_script=Pattern.compile(regEx_script,Pattern.CASE_INSENSITIVE);
+        Matcher m_script=p_script.matcher(htmlStr);
+        htmlStr=m_script.replaceAll(""); //过滤script标签
+
+        Pattern p_style=Pattern.compile(regEx_style,Pattern.CASE_INSENSITIVE);
+        Matcher m_style=p_style.matcher(htmlStr);
+        htmlStr=m_style.replaceAll(""); //过滤style标签
+
+        Pattern p_html=Pattern.compile(regEx_html,Pattern.CASE_INSENSITIVE);
+        Matcher m_html=p_html.matcher(htmlStr);
+        htmlStr=m_html.replaceAll(""); //过滤html标签
+        return htmlStr.trim();
     }
 
 }

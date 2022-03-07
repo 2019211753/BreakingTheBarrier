@@ -28,19 +28,19 @@ import java.util.Map;
 @RequestMapping("/customer")
 @RestController
 public class ProfileController {
-    @Value("${oss.endpoint_avatar}")
+    @Value("${oss.endpoint_user_info}")
     private String endpoint;
 
-    @Value("${oss.accessKeyId_avatar}")
+    @Value("${oss.accessKeyId_user_info}")
     private String accessKeyId;
 
-    @Value("${oss.accessKeySecret_avatar}")
+    @Value("${oss.accessKeySecret_user_info}")
     private String accessKeySecret;
 
-    @Value("${oss.bucketName_avatar}")
+    @Value("${oss.bucketName_user_info}")
     private String bucketName;
 
-    @Value("${oss.urlPrefix_avatar}")
+    @Value("${oss.urlPrefix_user_info}")
     private String urlPrefix;
 
     @Autowired
@@ -68,7 +68,7 @@ public class ProfileController {
         return new Result(hashMap, "");
     }
 
-    //下面两个资料修改最好分开
+    //下面三个资料修改最好分开
 
     /**
      * 上传头像到oss 获取url返回
@@ -89,7 +89,7 @@ public class ProfileController {
         }
 
         if (file.getOriginalFilename() == null) {
-            throw new IllegalParameterException("请为文件命名");
+            throw new IllegalParameterException("请为图片命名");
         }
 
         String suffix = FileTypeUtils.getFileType(file);
@@ -116,6 +116,55 @@ public class ProfileController {
         userServiceImpl.saveUser(user);
 
         hashMap.put("avatar", avatarURL);
+
+        return new Result(hashMap, "上传成功");
+    }
+
+    /**
+     * 上传头像到oss 获取url返回
+     *
+     * @param req  获取当前用户id
+     * @param file 被上传的文件
+     * @return avatar 头像的url
+     */
+    @PostMapping("/uploadPayCode")
+    public Result uploadPayCode(MultipartFile file, HttpServletRequest req) throws IOException {
+        Map<String, Object> hashMap = new HashMap<>(1);
+        Long userId = TokenInfo.getCustomUserId(req);
+
+        //限制图片大小
+        long size = file.getSize();
+        if (size / 1024 > Magic.MAX_UPLOAD_AVATAR_SIZE_BYTES) {
+            throw new IllegalParameterException("图片大小为：" + size + "KB，超过了" + Magic.MAX_UPLOAD_PAY_CODE_SIZE_BYTES + "KB");
+        }
+
+        if (file.getOriginalFilename() == null) {
+            throw new IllegalParameterException("请为文件命名");
+        }
+
+        String suffix = FileTypeUtils.getFileType(file);
+        if (!"PNG".equalsIgnoreCase(suffix) &&
+            !"JPG".equalsIgnoreCase(suffix) &&
+            !"JPEG".equalsIgnoreCase(suffix) &&
+            !"BMP".equalsIgnoreCase(suffix) &&
+            !"GIF".equalsIgnoreCase(suffix)) {
+            throw new IllegalArgumentException("请上传类型合法的图片");
+        }
+
+        String catalog = userId + "/wechatPayCode/";
+        //先删了，一个用户只需要一个头像
+        OSSUtils.deleteFile(endpoint, accessKeyId, accessKeySecret, bucketName, catalog);
+        //再创建目录
+        String fileName = FileUtils.getFileName(file.getOriginalFilename());
+        OSSUtils.uploadFile(file, endpoint, accessKeyId, accessKeySecret, bucketName,
+                catalog, fileName);
+
+        String url = "https://" + urlPrefix + "/" + catalog + fileName;
+        User user = userServiceImpl.getUser(userId);
+        user.setWechatPayCode(url);
+        userServiceImpl.saveUser(user);
+
+        hashMap.put("payCode", url);
 
         return new Result(hashMap, "上传成功");
     }

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 
 /**
- * user的avatar在序列化时自动转换成base64
+ * 内容在序列化时自动转换成html
  *
  * @author 山水夜止
  * @version 1.0

@@ -60,6 +60,10 @@ public class User {
     private String avatar;
 
     /**
+     * 用户的微信收款码
+     */
+    private String wechatPayCode;
+    /**
      * 用户邮箱 非必填 可以在前端显示默认值
      */
     private String email;
@@ -299,6 +303,14 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getWechatPayCode() {
+        return wechatPayCode;
+    }
+
+    public void setWechatPayCode(String wechatPayCode) {
+        this.wechatPayCode = wechatPayCode;
     }
 
     public String getEmail() {

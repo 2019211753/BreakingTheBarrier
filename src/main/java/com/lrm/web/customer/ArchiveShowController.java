@@ -89,7 +89,7 @@ public class ArchiveShowController {
         List<Comment> postComments = user.getPostComments();
         //本来是按id排的，实际上就是创建时间，为实现创建时间逆序，直接反序
         Collections.reverse(postComments);
-        hashMap.put("postComments", Archive.getCommentMessages(postComments));
+        hashMap.put("postComments", Archive.getCommentMessages(postComments, user));
         return new Result(hashMap, "");
     }
 
@@ -107,7 +107,7 @@ public class ArchiveShowController {
         User user = userServiceImpl.getUser(userId);
         List<Likes> postLikes = user.getPostLikes();
         Collections.reverse(postLikes);
-        hashMap.put("postLikes", Archive.getLikesMessages(postLikes));
+        hashMap.put("postLikes", Archive.getLikesMessages(postLikes, user));
         return new Result(hashMap, "");
     }
 }

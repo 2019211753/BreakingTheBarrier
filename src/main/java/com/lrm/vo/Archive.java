@@ -1,11 +1,9 @@
 package com.lrm.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lrm.po.Blog;
-import com.lrm.po.Comment;
-import com.lrm.po.Likes;
-import com.lrm.po.Question;
+import com.lrm.po.*;
 import com.lrm.util.ContentSerializerUtils;
+import com.lrm.util.MarkdownUtils;
 import com.lrm.util.MyBeanUtils;
 
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 消息处理和评论的归档
+ * 消息处理和评论、点赞的归档
  *
  * @author 山水夜止
  * @version 1.0
@@ -26,59 +24,97 @@ public class Archive {
     public Long id;
 
     /**
-     * 消息的发布时间
+     * 发布时间
      */
     public Date createTime;
 
     /**
-     * 评论消息的内容 如果是点赞消息的话为null
+     * 评论的内容 如果是点赞的话为null
      */
     @JsonSerialize(using = ContentSerializerUtils.class)
     public String content;
 
     /**
-     * 消息的被动接受者的内容 如被点赞或评论的博客标题 或评论的内容
-     * 这里不方便截取一部分，因为如果截断了base64编码的图片的话会出现乱码
+     * 当消息处理时 表示为我被点赞或评论的博客标题 或被点赞或评论的评论的内容
+     * 当归档时 表示为我点赞或评论的博客标题 或我点赞或评论的内容
+     * 如果是评论的内容 会截取一部分
      */
     public String parentContent;
 
     /**
-     * 消息的被动接受者的类型 如博客、问题、评论
+     * 当消息处理时 表示为我被点赞或评论的类型 如博客被点赞了
+     * 当归档时 表示为我点赞或评论的类型 如我点赞了博客
      */
     public String parentType;
 
     /**
-     * 消息的被动接受者（如博客或问题）的id 方便点击跳转
+     * 博客或问题、或评论和点赞对应的博客或问题的id 方便点击跳转
+     * 当消息处理时 如我被点赞的评论对应的博客的id
+     * 当归档时 如我点赞的评论对应的博客的id
      */
     public Long parentId;
 
     /**
-     * 被动接受者的发布者的id
+     * parentId对应的发布者的Id
      */
     public Long parentUserId;
 
     /**
-     * 消息发送者的头像
+     * 用户id
+     * 归档时是动作的被动接受者 消息处理时是发出者 avatar和nickname同理
+     */
+    public Long userId;
+
+    /**
+     * 头像
      */
     public String avatar;
 
     /**
-     * 消息发送者的昵称
+     * 昵称
      */
     public String nickname;
 
-    public Archive(Comment comment) {
+    public Archive() {
+    }
+
+    public Archive(Comment comment, User currentUser) {
         Blog blog;
         Question question;
         Comment parentComment;
 
         MyBeanUtils.copyVo(Comment.class, comment, Archive.class, this);
-        this.nickname = comment.getPostUser().getNickname();
-        this.avatar = comment.getPostUser().getAvatar();
+        User postUser;
+        //如果消息的发出者是不是自己 那么是收到的评论消息
+        if ((postUser = comment.getPostUser()) != currentUser) {
+            this.nickname = postUser.getNickname();
+            this.avatar = postUser.getAvatar();
+            this.userId = comment.getPostUser().getId();
+        //否则是归档自己发出的评论
+        } else  {
+            this.nickname = comment.getReceiveUser().getNickname();
+            this.avatar = comment.getReceiveUser().getAvatar();
+            this.userId = comment.getReceiveUser().getId();
+        }
 
+        if (MarkdownUtils.htmlToText(comment.getContent()).length() > Magic.BRIEF_COMMENT_COMMENT_LENGTH) {
+            this.content = MarkdownUtils.htmlToText(comment.getContent().substring(Magic.BRIEF_COMMENT_COMMENT_LENGTH));
+        } else {
+            this.content = MarkdownUtils.htmlToText(comment.getContent());
+        }
+        this.content += "...";
+
+        //如果是对评论的评论
         if ((parentComment = comment.getParentComment()) != null) {
-            this.parentContent = parentComment.getContent();
-            if ((blog = comment.getBlog()) != null) {
+            //优化父评论的内容
+            if (MarkdownUtils.htmlToText(parentComment.getContent()).length() > Magic.BRIEF_COMMENT_COMMENT_LENGTH) {
+                this.parentContent = MarkdownUtils.htmlToText(parentComment.getContent().substring(Magic.BRIEF_COMMENT_COMMENT_LENGTH));
+            } else {
+                this.parentContent = MarkdownUtils.htmlToText(parentComment.getContent());
+            }
+            this.parentContent += "...";
+
+            if ((blog = parentComment.getBlog()) != null) {
                 this.parentId = blog.getId();
                 this.parentUserId = blog.getUser().getId();
                 this.parentType = "博客的评论";
@@ -100,26 +136,42 @@ public class Archive {
         }
     }
 
-    public Archive(Likes likes) {
+    public Archive(Likes likes, User currentUser) {
         Blog blog;
         Question question;
         Comment parentComment;
 
         MyBeanUtils.copyVo(Likes.class, likes, Archive.class, this);
+        User postUser;
 
-        this.avatar = likes.getPostUser().getAvatar();
-        this.nickname = likes.getPostUser().getNickname();
+        //如果消息的发出者是不是自己 那么是收到的评论消息
+        if ((postUser = likes.getPostUser()) != currentUser) {
+            this.nickname = postUser.getNickname();
+            this.avatar = postUser.getAvatar();
+            this.userId = postUser.getId();
+        //否则是归档自己发出的评论
+        } else  {
+            this.nickname = likes.getReceiveUser().getNickname();
+            this.avatar = likes.getReceiveUser().getAvatar();
+            this.userId = likes.getReceiveUser().getId();
+        }
 
         if ((parentComment = likes.getComment()) != null) {
-            this.parentContent = parentComment.getContent();
+            if (MarkdownUtils.htmlToText(parentComment.getContent()).length() > Magic.BRIEF_COMMENT_COMMENT_LENGTH) {
+                this.parentContent = MarkdownUtils.htmlToText(parentComment.getContent().substring(Magic.BRIEF_COMMENT_COMMENT_LENGTH));
+            } else {
+                this.parentContent = MarkdownUtils.htmlToText(parentComment.getContent());
+            }
+            this.parentContent += "...";
             if ((blog = likes.getBlog()) != null) {
                 this.parentId = blog.getId();
-                this.parentUserId = blog.getUser().getId();
                 this.parentType = "博客的评论";
+                this.parentUserId = blog.getUser().getId();
+
             } else if ((question = likes.getQuestion()) != null) {
                 this.parentId = question.getId();
-                this.parentUserId = question.getUser().getId();
                 this.parentType = "问题的评论";
+                this.parentUserId = question.getUser().getId();
             }
         } else if ((blog = likes.getBlog()) != null) {
             this.parentContent = blog.getTitle();
@@ -134,6 +186,26 @@ public class Archive {
         }
     }
 
+    public static List<Archive> getCommentMessages(List<Comment> comments, User currentUser) {
+        List<Archive> archives = new ArrayList<>(comments.size());
+        Archive archive;
+        for (Comment comment : comments) {
+            archive = new Archive(comment, currentUser);
+            archives.add(archive);
+        }
+        return archives;
+    }
+
+    public static List<Archive> getLikesMessages(List<Likes> likess, User currentUser) {
+        List<Archive> archives = new ArrayList<>(likess.size());
+        Archive archive;
+        for (Likes likes : likess) {
+            archive = new Archive(likes, currentUser);
+            archives.add(archive);
+        }
+        return archives;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -142,38 +214,4 @@ public class Archive {
         this.createTime = createTime;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public Archive() {
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public static List<Archive> getCommentMessages(List<Comment> comments) {
-        List<Archive> archives = new ArrayList<>(comments.size());
-        Archive archive;
-        for (Comment comment : comments) {
-            archive = new Archive(comment);
-            archives.add(archive);
-        }
-        return archives;
-    }
-
-    public static List<Archive> getLikesMessages(List<Likes> likess) {
-        List<Archive> archives = new ArrayList<>(likess.size());
-        Archive archive;
-        for (Likes likes : likess) {
-            archive = new Archive(likes);
-            archives.add(archive);
-        }
-        return archives;
-    }
 }

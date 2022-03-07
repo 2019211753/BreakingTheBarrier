@@ -4,8 +4,10 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.Comment;
 import com.lrm.po.Likes;
+import com.lrm.po.User;
 import com.lrm.service.CommentServiceImpl;
 import com.lrm.service.LikesServiceImpl;
+import com.lrm.service.UserServiceImpl;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Archive;
 import com.lrm.vo.Result;
@@ -38,6 +40,9 @@ public class MessageController {
     @Autowired
     private LikesServiceImpl likesServiceImpl;
 
+    @Autowired
+    private UserServiceImpl userServiceImpl;
+
     /**
      * 返回所有通知
      *
@@ -50,6 +55,7 @@ public class MessageController {
         Map<String, Object> hashMap = new HashMap<>(4);
 
         Long userId = TokenInfo.getCustomUserId(request);
+        User currentUser = userServiceImpl.getUser(userId);
 
         //已读评论
         List<Comment> lookedComments = commentServiceImpl.listComments(userId, true);
@@ -57,23 +63,23 @@ public class MessageController {
         lookedComments.removeIf(comment -> comment.getPostUser() == comment.getReceiveUser());
         //本来是按id排的，实际上就是创建时间，为实现创建时间逆序，直接反序
         Collections.reverse(lookedComments);
-        List<Archive> lookedCommentArchives = Archive.getCommentMessages(lookedComments);
+        List<Archive> lookedCommentArchives = Archive.getCommentMessages(lookedComments, currentUser);
 
         //未读评论
         List<Comment> unLookedComments = commentServiceImpl.listComments(userId, false);
         Collections.reverse(unLookedComments);
-        List<Archive> unLookedCommentArchives = Archive.getCommentMessages(unLookedComments);
+        List<Archive> unLookedCommentArchives = Archive.getCommentMessages(unLookedComments, currentUser);
 
         //已读点赞
         List<Likes> lookedLikes = likesServiceImpl.list(userId, true);
         lookedLikes.removeIf(likes1 -> likes1.getPostUser() == likes1.getReceiveUser());
         Collections.reverse(lookedLikes);
-        List<Archive> lookedLikesArchives = Archive.getLikesMessages(lookedLikes);
+        List<Archive> lookedLikesArchives = Archive.getLikesMessages(lookedLikes, currentUser);
 
         //未读点赞
         List<Likes> unLookedLikes = likesServiceImpl.list(userId, false);
         Collections.reverse(unLookedLikes);
-        List<Archive> unLookedLikesArchives = Archive.getLikesMessages(unLookedLikes);
+        List<Archive> unLookedLikesArchives = Archive.getLikesMessages(unLookedLikes, currentUser);
 
         hashMap.put("lookedComments", lookedCommentArchives);
         hashMap.put("unLookedComments", unLookedCommentArchives);
