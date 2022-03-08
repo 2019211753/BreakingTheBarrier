@@ -93,11 +93,11 @@ export default {
       });
   },
   methods: {
-    getInnerText(content) {
+    /*getInnerText(content) {
       var oDiv = document.createElement("div");
       oDiv.innerHTML = content;
       return oDiv.innerText;
-    },
+    },*/
   },
 };
 </script>

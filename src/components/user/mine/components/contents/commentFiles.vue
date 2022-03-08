@@ -7,7 +7,7 @@
         </div>
         <div class="content">
           <div class="summary">
-            我添加了评论：
+            我评论了 <a>{{item.parentContent}}</a> ：
             <a href=""
               ><router-link
                 v-if="
@@ -20,8 +20,7 @@
                     postUserId: item.parentUserId,
                   },
                 }"
-              >
-              <v-md-preview-html :html="item.content" preview-class="vuepress-markdown-body"></v-md-preview-html></router-link
+              >{{getInnerText(item.content)}}</router-link
               ><router-link
                 v-else
                 :to="{
@@ -32,7 +31,7 @@
                   },
                 }"
               >
-              <v-md-preview-html :html="item.content" preview-class="vuepress-markdown-body"></v-md-preview-html></router-link
+              {{getInnerText(item.content)}}</router-link
               ></a
             >
             <div class="date">{{ item.createTime }}</div>
@@ -88,7 +87,6 @@ export default {
     getInnerText(content) {
       var oDiv = document.createElement("div");
       oDiv.innerHTML = content;
-
       return oDiv.innerText;
     },
   },
