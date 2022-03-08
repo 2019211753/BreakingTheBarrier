@@ -14,7 +14,7 @@
         v-for="item in unLookedComments"
       >
         <div class="label">
-          <img :src="item.avatar" alt="" />
+          <img :src="item.avatar" alt=""/>
         </div>
         <div class="content">
           <div class="summary">
@@ -54,7 +54,7 @@
       </div>
       <div class="event" v-if="unLookedLikes" v-for="item in unLookedLikes">
         <div class="label">
-          <img :src="item.avatar" alt="" />
+          <img :src="item.avatar" alt=""/>
         </div>
         <div class="content">
           <div class="summary">
@@ -93,17 +93,21 @@
           </div>
         </div>
       </div>
+      <div class="ui blue button" v-if=" !(!unLookedLikes.length && !unLookedComments.length )&& loading == false"
+           style="margin-left: 75%"
+           @click="readAll()">已读全部
+      </div>
     </div>
     <el-skeleton :loading="loading" animated :count="5">
       <template slot="template">
         <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <el-skeleton-item variant="circle image" />
+              <el-skeleton-item variant="circle image"/>
             </div>
             <div class="content">
               <div class="summary">
-                <el-skeleton-item variant="text" />
+                <el-skeleton-item variant="text"/>
               </div>
             </div>
           </div>
@@ -117,7 +121,7 @@
 export default {
   name: "unread",
   data() {
-    return { loading: true, unLookedComments: [], unLookedLikes: [] };
+    return {loading: true, unLookedComments: [], unLookedLikes: []};
   },
   created() {
     var that = this;
@@ -136,14 +140,14 @@ export default {
     getInnerText(content) {
       var oDiv = document.createElement("div");
       oDiv.innerHTML = content;
-
       return oDiv.innerText;
     },
     readLike(id) {
       var that = this;
       that.$api.personalMessage
         .readLike(id)
-        .then(function (response) {})
+        .then(function (response) {
+        })
         .catch(function (error) {
           console.log(error);
         });
@@ -152,10 +156,38 @@ export default {
       var that = this;
       that.$api.personalMessage
         .readComment(id)
-        .then(function (response) {})
+        .then(function (response) {
+        })
         .catch(function (error) {
           console.log(error);
         });
+    },
+    readAll() {
+      var that = this;
+      var p1 = new Promise((resolve, reject) => {
+        that.$api.personalMessage
+          .readAllComments()
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+
+      var p2 = new Promise((resolve, reject) => {
+        that.$api.personalMessage
+          .readAllLikes()
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+
+      Promise.all([p1, p2]).then((res) => {
+      });
     },
   },
 };

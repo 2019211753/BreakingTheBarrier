@@ -28,6 +28,7 @@
 <script>
 import tags from "../../editor/tags";
 import editor from "../../editor/editor";
+/*import wx from "weixin-js-sdk";*/
 
 export default {
   name: "addArticle",
@@ -49,6 +50,7 @@ export default {
             type: "warning",
           });
         } else {
+          console.log(that.$store.state.text);
           var data = {
             title: that.title,
             description: that.description,
@@ -70,6 +72,40 @@ export default {
                 });
                 that.$router.push("/BreakingTheBarrier/BBS/questions");
                 that.$store.commit("getText", "");
+
+                /*wx.config({
+                  debug: false, // 开启调试模式,
+                  appId: data.appId, // 必填，企业号的唯一标识，此处填写企业号corpid
+                  timestamp: data.timestamp, // 必填，生成签名的时间戳
+                  nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                  signature: data.signature, // 必填，签名，见附录1
+                  jsApiList: ["chooseImage"], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                });
+                wx.ready(function () {
+                  alert("ready");
+                  // 在这里调用 API
+                  //判断当前客户端版本是否支持指定JS接口
+                  wx.checkJsApi({
+                    jsApiList: [
+                      // 所有要调用的 API 都要加到这个列表中
+                      "chooseImage"
+                    ], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                    success: function (res) {
+                      console.log('checkJsApi成功=====', res);
+                      alert('支持chooseImage');
+                      // 以键值对的形式返回，可用的api值true，不可用为false
+                      // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+                    },
+                    fail:function(e){
+                      alert('不支持');
+                    }
+                  });
+                });
+                wx.error(function (res) {
+                  // wx.config注册失败就会执行
+                  alert("error");
+                });*/
+
               }
             })
             .catch(function (error) {
@@ -83,6 +119,7 @@ export default {
         });
       }
     },
+
   },
 };
 </script>

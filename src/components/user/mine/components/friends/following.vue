@@ -8,7 +8,7 @@
       ></el-empty>
       <div class="event" v-for="item in list">
         <div class="label">
-          <img :src="item.avatar" alt="" />
+          <img :src="item.avatar" alt=""/>
         </div>
         <div class="content">
           <div class="summary">
@@ -31,14 +31,15 @@
     </div>
     <el-skeleton :loading="loading" animated :count="5">
       <template slot="template"
-        ><div class="ui large feed">
+      >
+        <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <el-skeleton-item variant="circle image" />
+              <el-skeleton-item variant="circle image"/>
             </div>
             <div class="content">
               <div class="summary">
-                <el-skeleton-item variant="text" />
+                <el-skeleton-item variant="text"/>
               </div>
             </div>
           </div>
@@ -53,7 +54,7 @@
 export default {
   name: "following",
   data() {
-    return { loading: true, list: [] };
+    return {loading: true, list: []};
   },
   created() {
     var that = this;
@@ -61,7 +62,7 @@ export default {
       .getFollowInfo()
       .then(function (response) {
         that.loading = false;
-
+        console.log(response)
         that.list = response.data.data.followingUsers;
       })
       .catch(function (error) {
@@ -74,6 +75,7 @@ export default {
       that.$api.userSocial
         .followOther(id)
         .then(function (response) {
+          console.log(response)
           /* for (var i = 0; i < that.list.length; i++) {
             if (that.list[i].id == id) {
               that.list.splice(that.list[i], 1);
@@ -101,7 +103,7 @@ export default {
           that.$store.commit("getOthersFile", response.data.data);
           that.$router.push({
             path: "/BreakingTheBarrier/visitor/questions",
-            query: { userId: id },
+            query: {userId: id},
           });
         })
         .catch(function (error) {
@@ -116,9 +118,11 @@ export default {
 .ui.feed {
   margin-top: 10px;
 }
+
 .event {
   margin-top: 10px;
 }
+
 .buttons {
   float: right;
 }
