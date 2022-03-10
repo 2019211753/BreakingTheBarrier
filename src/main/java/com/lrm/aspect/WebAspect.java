@@ -36,6 +36,9 @@ public class WebAspect {
     public void teamCut() {
     }
 
+    @Pointcut("execution(* com.lrm.web.WebsocketController.*(..))")
+    public void socketCut() {
+    }
 
     @Pointcut("infoCut() || fileCut() || teamCut()")
     public void pointCut() {
@@ -55,10 +58,10 @@ public class WebAspect {
             logger.info("即将执行方法" + packName + "." + funcName);
             return;
         }
-        Optional<User> uploader = userRepository.findById(userId);
-        if (!uploader.isPresent()) throw new NotFoundException("上传用户不存在!");
+        Optional<User> localUser = userRepository.findById(userId);
+        if (!localUser.isPresent()) throw new NotFoundException("需要绑定的用户不存在!");
         //提前绑定user到线程中
-        UserHolder.setLocalUser(uploader.get());
+        UserHolder.setLocalUser(localUser.get());
         logger.info("user成功绑定到线程: " + Thread.currentThread());
         logger.info("user信息: " + UserHolder.getLocalUser().toString());
         logger.info("即将执行方法" + packName + "." + funcName);
