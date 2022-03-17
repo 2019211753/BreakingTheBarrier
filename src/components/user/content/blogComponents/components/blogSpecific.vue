@@ -41,6 +41,7 @@
           <div class="label">
             <img :src="template.avatar" alt=""/>
           </div>
+
           <div class="content">
             <div class="summary">
               <a class="user">
@@ -113,12 +114,13 @@
           <div
             :class="
               template.appreciation == true
-                ? 'ui icon teal button'
-                : 'ui icon disabled teal button'
+                ? 'ui icon green inverted button'
+                : 'ui icon disabled green inverted button'
             "
             data-content="接受赞赏"
+            @click="award()"
           >
-            <i class="hand spock icon"></i>
+            <i class="hand spock icon"></i> 赞赏
           </div>
         </el-col>
         <el-col :span="5">
@@ -394,12 +396,18 @@
           </div>
         </div>
       </el-dialog>
-    </div>
+       </div>
+    <el-dialog width="400px" title="" :visible.sync="dialogFormVisible4">
+      <div>
+        <img class="ui tiny centered image" :src="template.avatar">
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Editor from "../../../BBS/components/editor/editor";
+
 export default {
   name: "blogSpecific",
   components: {Editor},
@@ -408,6 +416,7 @@ export default {
       dialogFormVisible1: false,
       dialogFormVisible2: false,
       dialogFormVisible3: false,
+      dialogFormVisible4: false,
       blogLoading: true,
       commentLoading: true,
       collectLoading: true,
@@ -515,6 +524,10 @@ export default {
       that.articleApproved = approved;
       that.articleLikeNumber = likesNum;
       that.articleDisapproved = disapproved;
+    },
+    award() {
+      var that = this;
+      that.dialogFormVisible4 = true;
     },
     openCollections() {
       var that = this;
