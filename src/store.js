@@ -13,6 +13,7 @@ export default new Vuex.Store({
       /* admin: "", */
       canSpeak: "",
       avatar: "",
+      payCode: "",
       nickname: "",
       academy: "",
       email: "",
@@ -56,6 +57,9 @@ export default new Vuex.Store({
             }, */
     getMyAvatar(state, avatar) {
       state.me.avatar = avatar;
+    },
+    getMyPayCode(state, payCode) {
+      state.me.payCode = payCode;
     },
     getMyNickname(state, nickname) {
       state.me.nickname = nickname;

@@ -148,15 +148,26 @@
         </el-col>
       </el-row>
       <br/>
-      <div style="margin-left: 83%" class="ui teal button" @click="sure()">
+      <div class="ui right floated teal button" @click="sure()">
         确定
       </div>
+      <el-upload
+        class="avatar-uploader"
+        action=""
+        :before-upload="beforeAvatarUpload"
+        :http-request="handleTestSuccess"
+        :show-file-list="false"
+      >
+        <div class="ui icon teal button" @click="uploadWX()">
+          <i class="ui plus icon"></i>
+        </div>
+      </el-upload>
     </div>
   </div>
 </template>
 
 <script>
-
+const imageConversion = require("image-conversion");
 
 export default {
   name: "information",
@@ -212,6 +223,61 @@ export default {
       window.addEventListener("popstate", function () {
         history.pushState(null, null, document.URL);
       });
+    },
+    beforeAvatarUpload(file) {
+      const isJpgOrPng =
+        file.type === "image/jpeg" ||
+        file.type === "image/png" ||
+        file.type === "image/bmp" ||
+        file.type === "image/gif" ||
+        file.type === "image/jpg";
+      if (!isJpgOrPng) {
+        this.$message.error("上传头像图片只能是 JPG 或 PNG 格式!");
+        return false;
+      }
+      return new Promise((resolve) => {
+        imageConversion.compressAccurately(file, 100).then((res) => {
+          resolve(res);
+        });
+        //compressAccurately有多个参数时传入对象
+        //imageConversion.compressAccurately(file, {
+        // size: 1024, //图片大小压缩到1024kb
+        // width:1280 //宽度压缩到1280
+        //}).then(res => {
+        //resolve(res)
+        //})
+      });
+    },
+    handleTestSuccess(file) {
+      if (file.file.type.indexOf("image") == -1) {
+        this.$message.error("请上传图片类型的文件");
+        this.$refs.upload_img.uploadFiles =
+          this.$refs.upload_img.uploadFiles.filter((item) => {
+            return file.file.name != item.name;
+          });
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", file.file);
+      var that = this;
+      that.$api.personalInformation
+        .uploadWX(formData)
+        .then((res) => {
+          if (res.status === 200) {
+            var that = this;
+            that.$message.success("上传收款码成功!");
+            that.$store.commit("getMyPayCode", res.data.data.payCode);
+          }
+        })
+        .catch((err) => {
+          /* this.$refs.upload_img.uploadFiles =
+            this.$refs.upload_img.uploadFiles.filter((item) => {
+              return file.file.name != item.name;
+            });
+          this.$message.error("上传失败!"); */
+        });
+    },
+    uploadWX() {
     },
     sure() {
       var that = this;
