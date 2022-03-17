@@ -396,10 +396,12 @@
           </div>
         </div>
       </el-dialog>
-       </div>
+    </div>
     <el-dialog width="400px" title="" :visible.sync="dialogFormVisible4">
       <div>
-        <img class="ui tiny centered image" :src="template.avatar">
+        <img class="ui tiny circular centered image" :src="template.avatar">
+        <h4 style="text-align: center">thanks!</h4>
+        <img class="ui  centered image" :src="template.wechatPayCode">
       </div>
     </el-dialog>
   </div>
