@@ -4,6 +4,7 @@ import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.InfoEntry;
 import com.lrm.service.InfoEntryServiceImpl;
+import com.lrm.util.FileUtils;
 import com.lrm.util.LockHolder;
 import com.lrm.vo.Result;
 import org.slf4j.Logger;
@@ -37,12 +38,17 @@ public class InfoEntryController {
      * @return 带有消息的Result
      */
     @PostMapping("/create")
-    public Result create(@RequestBody @Valid InfoEntry infoEntry, BindingResult bindingResult) {
+    public Result create(@RequestBody @Valid InfoEntry infoEntry, @RequestParam("entryTagName") String entryTagName, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new IllegalParameterException(IllegalParameterException.getMessage(bindingResult));
         }
+        String realTagNames = entryTagName.substring(1, entryTagName.length() - 1);
+        String[] tagNames = realTagNames.split(",");
+        for (int i = 0; i < tagNames.length; i++) {
+            tagNames[i] = tagNames[i].substring(1, tagNames[i].length() - 1);
+        }
         //等待管理员检查
-        infoEntryServiceImpl.saveInfoEntry(infoEntry);
+        infoEntryServiceImpl.saveInfoEntry(infoEntry, tagNames);
         return new Result(null, "已提交，正在审核中");
     }
 

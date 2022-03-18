@@ -156,7 +156,7 @@ public class FileController {
                 uploadFile, endpoint, accessKeyId, accessKeySecret, "wordverybig", "", fileName);
 
         //上传到oss
-        OSSUtils.uploadFile(uploadFile, endpoint, accessKeyId, accessKeySecret, "wordverybig", "", fileName);
+//        OSSUtils.uploadFile(uploadFile, endpoint, accessKeyId, accessKeySecret, "wordverybig", "", fileName);
 
         //调用service 服务，储存到数据库，进行上传相关逻辑的处理
         fileServiceImpl.saveFile(newFile, tagNames, null);

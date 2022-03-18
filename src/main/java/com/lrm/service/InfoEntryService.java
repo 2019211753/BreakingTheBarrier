@@ -4,7 +4,7 @@ import com.lrm.po.InfoEntry;
 import org.springframework.data.domain.Page;
 
 public interface InfoEntryService {
-    InfoEntry saveInfoEntry(InfoEntry infoEntry);
+    InfoEntry saveInfoEntry(InfoEntry infoEntry, String[] tagNames);
 
     void deleteEntry(Long entryId);
 

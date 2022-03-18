@@ -134,5 +134,19 @@ public class InfoEntry {
         this.contributors = contributors;
     }
 
+    public String getDiscription() {
+        return discription;
+    }
 
+    public void setDiscription(String discription) {
+        this.discription = discription;
+    }
+
+    public List<EntryTag> getEntryTags() {
+        return entryTags;
+    }
+
+    public void setEntryTags(List<EntryTag> entryTags) {
+        this.entryTags = entryTags;
+    }
 }

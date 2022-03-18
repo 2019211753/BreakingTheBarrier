@@ -1,8 +1,11 @@
 package com.lrm.service;
 
+import com.lrm.dao.EntryTagRepository;
 import com.lrm.dao.InfoEntryRepository;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.NotFoundException;
+import com.lrm.po.EntryTag;
+import com.lrm.po.FileTag;
 import com.lrm.po.InfoEntry;
 import com.lrm.util.LockHolder;
 import org.slf4j.Logger;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.Deque;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -23,10 +27,22 @@ public class InfoEntryServiceImpl implements InfoEntryService {
     private Logger logger = LoggerFactory.getLogger(InfoEntryServiceImpl.class);
 
     @Autowired
+    private EntryTagRepository entryTagRepository;
+
+    @Autowired
     private InfoEntryRepository infoEntryRepository;
 
     @Override
-    public InfoEntry saveInfoEntry(InfoEntry infoEntry) {
+    public InfoEntry saveInfoEntry(InfoEntry infoEntry, String[] tagNames) {
+        for (int i = 0; i < tagNames.length; i++) {
+            EntryTag found = entryTagRepository.findByName(tagNames[i]);
+            //如果用户输入的tagName不存在，那么创建一个新的tag
+            if (found == null) {
+                found = new EntryTag(tagNames[i]);
+                entryTagRepository.save(found);
+            }
+            infoEntry.getEntryTags().add(found);
+        }
         return infoEntryRepository.save(infoEntry);
     }
 
