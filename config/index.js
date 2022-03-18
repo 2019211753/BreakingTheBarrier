@@ -17,7 +17,15 @@ module.exports = {
         pathRewrite: {
           '^/api': '/'
         },
-      }
+      },
+      /*'/top': {
+        target: "https://qyapi.weixin.qq.com",
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/top': '/'
+        },
+      },*/
     },
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

@@ -87,10 +87,8 @@ import api from "./request/api";
 
 Vue.prototype.$api = api;
 import instance from "./request/http";
-
 instance.defaults.baseURL = "/api";
-import axios from "axios";
-axios.defaults.baseURL="/top"
+
 /*
 Vue.prototype.$axios = Axios
 Axios.defaults.baseURL = '/api'

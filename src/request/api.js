@@ -30,11 +30,13 @@ import infoShow from "./api/information/infoShow";
 import infoCreate from "./api/information/infoCreate";
 import infoApprove from "./api/information/infoApprove";
 import infoUpdate from "./api/information/infoUpdate";
+import adminTop from "./api/admin/adminTop";
 
 
 
 // 导出接口
 export default {
+  adminTop,
   adminBlog,
   adminQuestion,
   adminTag,

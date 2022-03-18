@@ -87,7 +87,7 @@ var instance = axios.create({
     token: sessionStorage.getItem("token")
   }
 });
-
+/*var adminTop = axios.create();*/
 /**
  * 请求拦截器
  * 每次请求前，如果存在token则在请求头中携带token
@@ -126,3 +126,4 @@ instance.interceptors.response.use(
 );
 
 export default instance;
+
