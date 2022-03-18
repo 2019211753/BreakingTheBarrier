@@ -18,7 +18,7 @@ public interface InfoEntryService {
 
     InfoEntry disapprove(Long entryId);
 
-    InfoEntry update(InfoEntry infoEntry);
+    InfoEntry update(InfoEntry newEntry, String[] tagNames);
 
     InfoEntry getInfoEntry(Long entryId);
 }

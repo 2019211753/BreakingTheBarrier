@@ -5,9 +5,7 @@ import com.lrm.dao.InfoEntryRepository;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.EntryTag;
-import com.lrm.po.FileTag;
 import com.lrm.po.InfoEntry;
-import com.lrm.util.LockHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
-import java.util.Deque;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ThreadPoolExecutor;
 
 @Service
 public class InfoEntryServiceImpl implements InfoEntryService {
@@ -108,7 +105,17 @@ public class InfoEntryServiceImpl implements InfoEntryService {
 
     @Override
     @Transactional
-    public InfoEntry update(InfoEntry newEntry) {
+    public InfoEntry update(InfoEntry newEntry, String[] tagNames) {
+        List<EntryTag> list = new ArrayList<>();
+        for (int i = 0; i < tagNames.length; i++) {
+            EntryTag found = entryTagRepository.findByName(tagNames[i]);
+            //如果用户输入的tagName不存在，那么创建一个新的tag
+            if (found == null) {
+                found = new EntryTag(tagNames[i]);
+                entryTagRepository.save(found);
+            }
+            list.add(found);
+        }
         Optional<InfoEntry> found = infoEntryRepository.findById(newEntry.getId());
         if (!found.isPresent()) {
             throw new NotFoundException("此词条不存在");
@@ -120,6 +127,7 @@ public class InfoEntryServiceImpl implements InfoEntryService {
         infoEntry.setNewContent(newEntry.getNewContent());
         infoEntry.setApproved(false);//更新后有待审核
         infoEntry.setLocked(true);//暂时锁住
+        infoEntry.setEntryTags(list);
         return infoEntry;
     }
 
