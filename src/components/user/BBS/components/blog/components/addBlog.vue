@@ -173,6 +173,8 @@ export default {
                     type: "success",
                   });
                   that.$router.push("/BreakingTheBarrier/BBS/blogs");
+                  that.$store.commit("getText", "");
+                  that.$store.commit("sendWXMessage");
                 }
               })
               .catch(function (error) {

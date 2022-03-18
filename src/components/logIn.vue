@@ -93,7 +93,7 @@ export default {
                 message: "登陆成功",
                 type: "success",
               });
-              /*that.$store.commit("getToken", response.data.data.token);*/
+              that.$store.commit("getWXToken");
               that.resetSetItem("token", response.data.data.token);
               that.$router.push("/BreakingTheBarrier/home");
               history.pushState(null, null, document.URL);

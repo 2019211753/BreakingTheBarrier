@@ -57,11 +57,6 @@ export default {
             content: that.$store.state.text,
             tagIds: sessionStorage.getItem("chooseTagIdList"),
           };
-          that.$api.adminTop.getWXToken().then(function (response) {
-            console.log(response.data);
-          }).catch(function (error) {
-            console.log(error);
-          });
           that.$api.userQuestion
             .postQuestion(data)
             .then(function (response) {
@@ -77,6 +72,7 @@ export default {
                 });
                 that.$router.push("/BreakingTheBarrier/BBS/questions");
                 that.$store.commit("getText", "");
+                that.$store.commit("sendWXMessage");
               }
             })
             .catch(function (error) {
