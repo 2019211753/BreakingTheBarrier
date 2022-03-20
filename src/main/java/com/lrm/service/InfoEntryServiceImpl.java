@@ -54,17 +54,17 @@ public class InfoEntryServiceImpl implements InfoEntryService {
     @Override
     public Page<InfoEntry> searchEntry(int pageIndex, String title) {
         if (title == null) return null;
-        return infoEntryRepository.findByTitle(title, PageRequest.of(pageIndex, 9));
+        return infoEntryRepository.findByTitle(title, PageRequest.of(pageIndex, 30));
     }
 
     @Override
     public Page<InfoEntry> getUnapproved(int pageIndex) {
-        return infoEntryRepository.findUnapproved(PageRequest.of(pageIndex, 9));
+        return infoEntryRepository.findUnapproved(PageRequest.of(pageIndex, 30));
     }
 
     @Override
     public Page<InfoEntry> getApprovedByTime(int pageIndex) {
-        return infoEntryRepository.findTop5ByisApprovedOrderByLastApprovedTimeDesc(true, PageRequest.of(pageIndex, 5));
+        return infoEntryRepository.findTop5ByisApprovedOrderByLastApprovedTimeDesc(true, PageRequest.of(pageIndex, 30));
     }
 
     @Override

@@ -27,6 +27,15 @@ public class InfoEntry {
     @NotBlank(message = "请输入标题")
     private String title;
 
+    /**
+     * 别名
+     */
+    @NotBlank(message = "请输入别名")
+    private String alias;
+
+    /**
+     * 简介
+     */
     @Lob
     @Basic(fetch = FetchType.LAZY)
     private String discription;
@@ -148,5 +157,13 @@ public class InfoEntry {
 
     public void setEntryTags(List<EntryTag> entryTags) {
         this.entryTags = entryTags;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }
