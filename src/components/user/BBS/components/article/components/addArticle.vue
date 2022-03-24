@@ -73,7 +73,14 @@ export default {
                 });
                 that.$router.push("/BreakingTheBarrier/BBS/questions");
                 that.$store.commit("getText", "");
-                that.$api.adminTop.sendWXMessage();
+                var msg = {
+                  title: that.title,
+                  writer: that.$store.state.me.nickname,
+                  date:  new Date().toLocaleString(),
+                  description: that.description,
+                  avatar: that.$store.state.me.avatar
+                };
+                that.$api.adminTop.sendWXMessage(msg);
               }
             })
             .catch(function (error) {

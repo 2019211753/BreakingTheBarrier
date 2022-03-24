@@ -9,11 +9,12 @@ const adminTop = {
   getWXToken() {
     return axios.get('top/cgi-bin/gettoken?corpid=' + store.state.CORP_ID + '&corpsecret=' + store.state.CORP_SECRET).then(function (response) {
       store.commit("getWXToken", response.data.access_token);
+      sessionStorage.setItem("wxToken", response.data.access_token)
     }).catch(function (error) {
       console.log(error);
     });
   },
-  sendWXMessage() {
+  sendWXMessage(msg) {
     var data = {
       "touser": '@all',
       "msgtype": "template_card",
@@ -24,25 +25,34 @@ const adminTop = {
           "desc": "好友新文章提醒",
           "desc_color": 0
         },
-        "main_title": {
-          "title": "纸短情长",
-          "desc": "东无神话 2022-12-10"
+       "main_title": {
+          "title": msg.title,
+          "desc": msg.writer+" "+msg.date
         },
-        "card_image": {
+        "image_text_area": {
+          "type": 1,
+          "url": "https://work.weixin.qq.com",
+          "title": msg.title,
+          "desc": msg.description,
+          "image_url": msg.avatar
+        },
+        /*"card_image": {
           "url": "https://wework.qpic.cn/wwpic/354393_4zpkKXd7SrGMvfg_1629280616/0",
           "aspect_ratio": 2.25
-        }, "card_action": {
+        },*/
+        "card_action": {
           "type": 1,
           "url": "https://work.weixin.qq.com/?from=openApi",
           "appid": "APPID",
           "pagepath": "PAGEPATH"
         }
       },
-      "agentid":  store.state.AGENT_ID,
+      "agentid": store.state.AGENT_ID,
       "safe": 0
     };
-    var url = 'top/cgi-bin/message/send?access_token=' +  store.state.wxToken
+    var url = 'top/cgi-bin/message/send?access_token=' + sessionStorage.getItem("wxToken")
     axios.post(url, data = data).then(function (response) {
+      console.log(response.data)
     }).catch(function (error) {
       console.log(error);
     });

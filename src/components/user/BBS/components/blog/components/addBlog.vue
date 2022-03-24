@@ -174,7 +174,14 @@ export default {
                   });
                   that.$router.push("/BreakingTheBarrier/BBS/blogs");
                   that.$store.commit("getText", "");
-                  that.$store.commit("sendWXMessage");
+                  var msg = {
+                    title: that.title,
+                    writer: that.$store.state.me.nickname,
+                    date:  new Date().toLocaleString(),
+                    description: that.description,
+                    avatar: that.$store.state.me.avatar
+                  };
+                  that.$api.adminTop.sendWXMessage(msg);
                 }
               })
               .catch(function (error) {
