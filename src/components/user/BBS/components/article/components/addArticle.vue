@@ -28,6 +28,7 @@
 <script>
 import tags from "../../editor/tags";
 import editor from "../../editor/editor";
+
 /*import wx from "weixin-js-sdk";*/
 
 export default {
@@ -72,7 +73,7 @@ export default {
                 });
                 that.$router.push("/BreakingTheBarrier/BBS/questions");
                 that.$store.commit("getText", "");
-                that.$store.commit("sendWXMessage");
+                that.$api.adminTop.sendWXMessage();
               }
             })
             .catch(function (error) {
