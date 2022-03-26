@@ -7,7 +7,7 @@ const AGENT_ID = 1000003;*/
 var that = this;
 const adminTop = {
   getWXToken() {
-    return axios.get('top/cgi-bin/gettoken?corpid=' + store.state.CORP_ID + '&corpsecret=' + store.state.CORP_SECRET).then(function (response) {
+    return axios.get('/top/cgi-bin/gettoken?corpid=' + store.state.CORP_ID + '&corpsecret=' + store.state.CORP_SECRET).then(function (response) {
       store.commit("getWXToken", response.data.access_token);
       sessionStorage.setItem("wxToken", response.data.access_token)
     }).catch(function (error) {
@@ -50,7 +50,7 @@ const adminTop = {
       "agentid": store.state.AGENT_ID,
       "safe": 0
     };
-    var url = 'top/cgi-bin/message/send?access_token=' + sessionStorage.getItem("wxToken")
+    var url = '/top/cgi-bin/message/send?access_token=' + sessionStorage.getItem("wxToken")
     axios.post(url, data = data).then(function (response) {
       console.log(response.data)
     }).catch(function (error) {
