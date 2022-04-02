@@ -58,6 +58,12 @@ public class InfoEntryServiceImpl implements InfoEntryService {
     }
 
     @Override
+    public InfoEntry searchEntryById(Long id) {
+        if (id == null) return null;
+        return infoEntryRepository.findById(id).get();
+    }
+
+    @Override
     public Page<InfoEntry> getUnapproved(int pageIndex) {
         return infoEntryRepository.findUnapproved(PageRequest.of(pageIndex, 30));
     }

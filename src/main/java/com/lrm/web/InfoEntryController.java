@@ -133,4 +133,11 @@ public class InfoEntryController {
         infoEntryServiceImpl.deleteEntry(entryId);
         return new Result(null, "成功删除");
     }
+
+    @GetMapping("/search/{id}")
+    public Result searchById(@PathVariable("id") Long id) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("entries", infoEntryServiceImpl.searchEntryById(id));
+        return new Result(hashMap, "搜索到的词条");
+    }
 }

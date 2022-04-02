@@ -21,4 +21,6 @@ public interface InfoEntryService {
     InfoEntry update(InfoEntry newEntry, String[] tagNames);
 
     InfoEntry getInfoEntry(Long entryId);
+
+    InfoEntry searchEntryById(Long id);
 }

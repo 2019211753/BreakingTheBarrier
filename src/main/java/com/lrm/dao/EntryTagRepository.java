@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 public interface EntryTagRepository extends JpaRepository<EntryTag, Long> {
     /**
@@ -21,6 +22,6 @@ public interface EntryTagRepository extends JpaRepository<EntryTag, Long> {
      * @param pageable
      * @return
      */
-    @Query("select ft from FileTag ft")
+    @Query("select et from EntryTag et")
     List<EntryTag> findTop(Pageable pageable);
 }
