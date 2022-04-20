@@ -58,4 +58,9 @@ public class TeamController {
         return null;
     }
 
+    @PostMapping("/addPoster")
+    public Result addPoster() {
+        return null;
+    }
+
 }

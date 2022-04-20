@@ -98,16 +98,15 @@ public class FileController {
     @ResponseBody
     public Result find(@RequestParam("query") String query,
                        @RequestParam("pageIndex") Short pageIndex) {
-        Long rank = searchService.rank(hotFileQueries, query);
-        if (rank == null) {
-            searchService.zadd(hotFileQueries, query, 1d);
-        } else {
-            int score = (int) searchService.zscore(hotFileQueries, query);
-            searchService.zadd(hotFileQueries, query, score + 1);
-        }
+//        Long rank = searchService.rank(hotFileQueries, query);
+//        if (rank == null) {
+//            searchService.zadd(hotFileQueries, query, 1d);
+//        } else {
+//            int score = (int) searchService.zscore(hotFileQueries, query);
+//            searchService.zadd(hotFileQueries, query, score + 1);
+//        }
         Page<com.lrm.po.File> filePage = fileServiceImpl.findFile(query, pageIndex);
         HashMap<String, Object> hashMap = new HashMap<>(2);
-        logger.error(query);
         hashMap.put("page", filePage);
         return new Result(hashMap, "文件查询成功");
     }
