@@ -82,5 +82,11 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("select c from #{#entityName} c where c.question.id = ?1 and c.answer = true and c.selected = false and c.likesNum >= 3")
     List<Comment> findTopByQuestionIdAndAnswer(Pageable pageable, Long questionId, Integer likesNum);
 
-
+    /**
+     * 查询某用户当前的未读评论数量
+     *
+     * @param receiveUserId 收信者id
+     * @return 数量
+     */
+    Integer countAllByLookedFalseAndReceiveUserId(Long receiveUserId);
 }

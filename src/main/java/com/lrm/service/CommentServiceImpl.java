@@ -324,4 +324,8 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findByReceiveUserIdAndLooked(userId, looked);
     }
 
+    @Override
+    public Integer countUnLooked(Long receiveUserId) {
+        return commentRepository.countAllByLookedFalseAndReceiveUserId(receiveUserId);
+    }
 }

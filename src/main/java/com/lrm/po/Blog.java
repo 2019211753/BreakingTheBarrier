@@ -63,6 +63,9 @@ public class Blog extends Template
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
+    @Transient
+    private String wechatPayCode;
+
 
     /**
      * 博客拥有的赞 不返回前端
@@ -132,6 +135,14 @@ public class Blog extends Template
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getWechatPayCode() {
+        return wechatPayCode;
+    }
+
+    public void setWechatPayCode(String wechatPayCode) {
+        this.wechatPayCode = wechatPayCode;
     }
 
     @Override

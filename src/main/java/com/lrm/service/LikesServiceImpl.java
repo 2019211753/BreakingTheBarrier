@@ -52,4 +52,9 @@ public class LikesServiceImpl extends EmotionServiceImpl<Likes> implements Likes
     public List<Likes> list(Long userId, Boolean looked) {
         return likesRepository.findByReceiveUserIdAndLooked(userId, looked);
     }
+
+    @Override
+    public Integer countUnLooked(Long receiveUserId) {
+        return likesRepository.countAllByLookedFalseAndReceiveUserId(receiveUserId);
+    }
 }

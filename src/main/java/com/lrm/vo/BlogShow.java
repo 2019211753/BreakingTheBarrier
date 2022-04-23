@@ -46,6 +46,8 @@ public class BlogShow {
 
     public String avatar;
 
+    public String wechatPayCode;
+
     public String nickname;
 
     public Boolean approved;
@@ -70,18 +72,6 @@ public class BlogShow {
 
     public List<Tag> tags = new ArrayList<>();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public BlogShow() {
     }
 
@@ -97,6 +87,18 @@ public class BlogShow {
             showList.add(show);
         }
         return showList;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setOrigin(Boolean origin) {
@@ -189,5 +191,9 @@ public class BlogShow {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public void setWechatPayCode(String wechatPayCode) {
+        this.wechatPayCode = wechatPayCode;
     }
 }

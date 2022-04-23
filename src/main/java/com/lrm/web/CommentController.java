@@ -366,7 +366,7 @@ public class CommentController
         if (userId.equals(question.getUser().getId()) || userServiceImpl.getUser(userId).getAdmin()) {
             //如果该评论是正式评论
             if (comment.getAnswer()) {
-                //如果该评论已经被精选
+                //如果该评论已经被精选z
                 if (comment.getSelected()) {
                     question.setSolvedNum(question.getSolvedNum() - 1);
                     //如果问题精选评论数为0

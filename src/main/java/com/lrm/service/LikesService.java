@@ -16,5 +16,6 @@ public interface LikesService {
 
     List<Likes> list(Long userId, Boolean looked);
 
+    Integer countUnLooked(Long receiveUserId);
 
 }

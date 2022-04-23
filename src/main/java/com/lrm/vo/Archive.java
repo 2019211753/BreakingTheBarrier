@@ -1,8 +1,6 @@
 package com.lrm.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lrm.po.*;
-import com.lrm.util.ContentSerializerUtils;
 import com.lrm.util.MarkdownUtils;
 import com.lrm.util.MyBeanUtils;
 
@@ -30,8 +28,9 @@ public class Archive {
 
     /**
      * 评论的内容 如果是点赞的话为null
+     * 这里不要用@JsonSerialize注释了，因为我想返回的是不含html标签的纯文本
      */
-    @JsonSerialize(using = ContentSerializerUtils.class)
+    //@JsonSerialize(using = ContentSerializerUtils.class)
     public String content;
 
     /**
@@ -97,20 +96,22 @@ public class Archive {
             this.userId = comment.getReceiveUser().getId();
         }
 
-        if (MarkdownUtils.htmlToText(comment.getContent()).length() > Magic.BRIEF_COMMENT_COMMENT_LENGTH) {
-            this.content = MarkdownUtils.htmlToText(comment.getContent().substring(Magic.BRIEF_COMMENT_COMMENT_LENGTH));
+        String text = MarkdownUtils.delHTMLTag(comment.getContent());
+        if (text.length() > Magic.BRIEF_COMMENT_COMMENT_LENGTH) {
+            this.content = text.substring(0, Magic.BRIEF_COMMENT_COMMENT_LENGTH);
         } else {
-            this.content = MarkdownUtils.htmlToText(comment.getContent());
+            this.content = text;
         }
         this.content += "...";
 
         //如果是对评论的评论
         if ((parentComment = comment.getParentComment()) != null) {
             //优化父评论的内容
-            if (MarkdownUtils.htmlToText(parentComment.getContent()).length() > Magic.BRIEF_COMMENT_COMMENT_LENGTH) {
-                this.parentContent = MarkdownUtils.htmlToText(parentComment.getContent().substring(Magic.BRIEF_COMMENT_COMMENT_LENGTH));
+            text = MarkdownUtils.delHTMLTag(parentComment.getContent());
+            if (text.length() > Magic.BRIEF_COMMENT_COMMENT_LENGTH) {
+                this.parentContent = text.substring(0, Magic.BRIEF_COMMENT_COMMENT_LENGTH);
             } else {
-                this.parentContent = MarkdownUtils.htmlToText(parentComment.getContent());
+                this.parentContent = text;
             }
             this.parentContent += "...";
 
@@ -157,10 +158,11 @@ public class Archive {
         }
 
         if ((parentComment = likes.getComment()) != null) {
-            if (MarkdownUtils.htmlToText(parentComment.getContent()).length() > Magic.BRIEF_COMMENT_COMMENT_LENGTH) {
-                this.parentContent = MarkdownUtils.htmlToText(parentComment.getContent().substring(Magic.BRIEF_COMMENT_COMMENT_LENGTH));
+            String text = MarkdownUtils.delHTMLTag(parentComment.getContent());
+            if (text.length() > Magic.BRIEF_COMMENT_COMMENT_LENGTH) {
+                this.parentContent = text.substring(0, Magic.BRIEF_COMMENT_COMMENT_LENGTH);
             } else {
-                this.parentContent = MarkdownUtils.htmlToText(parentComment.getContent());
+                this.parentContent = text;
             }
             this.parentContent += "...";
             if ((blog = likes.getBlog()) != null) {
