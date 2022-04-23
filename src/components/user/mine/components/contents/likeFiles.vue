@@ -3,13 +3,14 @@
     <div class="ui feed">
       <div class="event" v-for="item in contentList">
         <div class="label">
-          <img :src="$store.state.me.avatar" alt="" />
+          <img :src="$store.state.me.avatar" alt=""/>
         </div>
         <div class="content">
           <div class="summary">
             我赞了{{ item.parentType }}：
             <a href=""
-              ><router-link
+            >
+              <router-link
                 v-if="
                   item.parentType == '博客' || item.parentType == '博客的评论'
                 "
@@ -20,9 +21,10 @@
                     postUserId: item.parentUserId,
                   },
                 }"
+              > {{ item.parentContent}}
+              </router-link
               >
-                {{ getInnerText(item.parentContent) }}</router-link
-              ><router-link
+              <router-link
                 v-else
                 :to="{
                   path: '/BreakingTheBarrier/BBS/articleContent',
@@ -32,8 +34,10 @@
                   },
                 }"
               >
-                {{ getInnerText(item.parentContent) }}</router-link
-              ></a
+                {{ item.parentContent}}
+              </router-link
+              >
+            </a
             >
             <div class="date">{{ item.createTime }}</div>
           </div>
@@ -42,20 +46,23 @@
     </div>
     <el-skeleton :loading="loading" animated :count="5">
       <template slot="template"
-        ><div class="ui large feed">
+      >
+        <div class="ui large feed">
           <div class="event">
             <div class="label">
-              <el-skeleton-item variant="circle image" />
+              <el-skeleton-item variant="circle image"/>
             </div>
             <div class="content">
               <div class="summary">
-                <el-skeleton-item variant="text" />
+                <el-skeleton-item variant="text"/>
               </div>
             </div>
           </div>
         </div>
-      </template> </el-skeleton
-    ><el-empty
+      </template>
+    </el-skeleton
+    >
+    <el-empty
       :image-size="100"
       v-if="!contentList.length && loading == false"
       description="还没有赞过任何内容"
@@ -77,6 +84,7 @@ export default {
     that.$api.personalArchive
       .archiveLike()
       .then(function (response) {
+        console.log(response)
         that.contentList = response.data.data.postLikes;
         that.loading = false;
       })
@@ -85,12 +93,11 @@ export default {
       });
   },
   methods: {
-    getInnerText(content) {
+    /*getInnerText(content) {
       var oDiv = document.createElement("div");
       oDiv.innerHTML = content;
-
       return oDiv.innerText;
-    },
+    },*/
   },
 };
 </script>

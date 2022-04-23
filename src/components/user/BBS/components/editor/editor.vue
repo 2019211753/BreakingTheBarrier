@@ -12,6 +12,7 @@
 </template>
 
 <script>
+/*import VueMarkdownEditor, {xss} from '@kangc/v-md-editor';*/
 const imageConversion = require("image-conversion");
 export default {
   name: "editor",
@@ -24,6 +25,7 @@ export default {
     reformText(text, html) {
       var that = this;
       that.$store.commit("getText", html);
+      /*console.log(xss.process(VueMarkdownEditor.themeConfig.markdownParser.render(html)))*/
     },
     handleUploadImage(event, insertImage, file) {
       // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
@@ -38,16 +40,15 @@ export default {
         this.$message.error("上传头像图片只能是 JPG 或 PNG 格式!");
         return false;
       } */
-
       return new Promise((resolve) => {
-        imageConversion.compressAccurately(file[0], 300).then((res) => {
-          console.log(res);
+        imageConversion.compressAccurately(file[0], 290).then((res) => {
           const formData = new FormData();
-          formData.append("files", res);
+          formData.append("files", res, "blob.jpg");
           var that = this;
           that.$api.userArticle
             .uploadPicture(formData)
             .then((res) => {
+              console.log(res)
               insertImage({
                 url: res.data.data.fileUrls[0],
                 desc: "image",

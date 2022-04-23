@@ -4,24 +4,24 @@
       <i class="inbox icon"></i>
       <div class="content">
         <div class="header">
-          图片格式为png/bmp/gif/jpg与jpeg，宽度不能超过554px
+          图片格式为png/bmp/gif/jpg与jpeg
         </div>
       </div>
     </div>
     <div class="ui fluid labeled input">
       <div class="ui teal label">标题</div>
-      <input type="text" placeholder="" v-model="title" />
+      <input type="text" placeholder="" v-model="title"/>
     </div>
     <div class="ui fluid labeled input">
       <div class="ui teal label">概述</div>
-      <input type="text" placeholder="" v-model="description" />
+      <input type="text" placeholder="" v-model="description"/>
     </div>
     <editor></editor>
     <el-dialog width="600px" :visible.sync="dialogFormVisible">
       <tags></tags>
     </el-dialog>
-    <div class="ui teal button" @click="chooseTag()">选择标签</div>
-    <div class="ui teal right floated button" @click="sure()">确定</div>
+    <div class="ui teal button" @click="chooseTag()" style="margin-top: 20px">选择标签</div>
+    <div class="ui teal right floated button" style="margin-top: 20px" @click="sure()">确定</div>
   </div>
 </template>
 
@@ -29,12 +29,14 @@
 import tags from "../../editor/tags";
 import editor from "../../editor/editor";
 
+/*import wx from "weixin-js-sdk";*/
+
 export default {
   name: "addArticle",
   data() {
-    return { dialogFormVisible: false, title: "", description: "" };
+    return {dialogFormVisible: false, title: "", description: ""};
   },
-  components: { editor, tags },
+  components: {editor, tags},
   methods: {
     chooseTag() {
       var that = this;
@@ -49,6 +51,7 @@ export default {
             type: "warning",
           });
         } else {
+          console.log(that.$store.state.text);
           var data = {
             title: that.title,
             description: that.description,
@@ -69,6 +72,15 @@ export default {
                   type: "success",
                 });
                 that.$router.push("/BreakingTheBarrier/BBS/questions");
+                that.$store.commit("getText", "");
+                var msg = {
+                  title: that.title,
+                  writer: that.$store.state.me.nickname,
+                  date:  new Date().toLocaleString(),
+                  description: that.description,
+                  avatar: that.$store.state.me.avatar
+                };
+                that.$api.adminTop.sendWXMessage(msg);
               }
             })
             .catch(function (error) {
@@ -82,16 +94,13 @@ export default {
         });
       }
     },
+
   },
 };
 </script>
 
 <style scoped>
 .input {
-  margin-top: 20px;
-}
-
-.button {
   margin-top: 20px;
 }
 

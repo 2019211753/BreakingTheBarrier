@@ -141,7 +141,6 @@ export default {
     var that = this;
     that.$api.userSocial
       .getOtherFile(that.$route.query.postUserId)
-
       .then(function (response) {
         that.loading = false;
         that.questions = response.data.data.questions;

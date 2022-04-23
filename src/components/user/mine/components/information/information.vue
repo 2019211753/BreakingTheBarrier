@@ -3,10 +3,10 @@
     <div class="ui segment">
       <h3>基本资料</h3>
       <div class="ui divider"></div>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="4"
-          ><h4 style="margin-left: 10px; margin-top: 10px">用户昵称</h4></el-col
+        ><h4 style="margin-left: 10px; margin-top: 10px">用户昵称</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid input">
@@ -18,11 +18,11 @@
           </div>
         </el-col>
         <el-col :span="3"
-          ><h4 style="margin-left: 15px; margin-top: 10px">性别</h4></el-col
+        ><h4 style="margin-left: 15px; margin-top: 10px">性别</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid selection dropdown" style="width: 175px">
-            <input type="hidden" name="gender" />
+            <input type="hidden" name="gender"/>
             <i class="dropdown icon"></i>
             <div class="default text" v-if="$store.state.me.sex">
               <div v-if="$store.state.me.sex == 'true'">男</div>
@@ -36,13 +36,14 @@
           </div>
         </el-col>
       </el-row>
-      <br /><el-row :gutter="24">
+      <br/>
+      <el-row :gutter="24">
         <el-col :span="4"
-          ><h4 style="margin-left: 10px; margin-top: 10px">修改密码</h4></el-col
+        ><h4 style="margin-left: 10px; margin-top: 10px">修改密码</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid input">
-            <input type="text" placeholder="长度为7至11" v-model="passWord" />
+            <input type="text" placeholder="长度为7至11" v-model="passWord"/>
           </div>
         </el-col>
         <el-col :span="4"><h4 style="margin-top: 10px">确认密码</h4></el-col>
@@ -56,10 +57,10 @@
           </div>
         </el-col>
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="4"
-          ><h4 style="margin-left: 10px; margin-top: 10px">邮箱</h4></el-col
+        ><h4 style="margin-left: 10px; margin-top: 10px">邮箱</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid input">
@@ -71,7 +72,7 @@
           </div>
         </el-col>
         <el-col :span="3"
-          ><h4 style="margin-left: 15px; margin-top: 10px">QQ</h4></el-col
+        ><h4 style="margin-left: 15px; margin-top: 10px">QQ</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid input">
@@ -84,14 +85,14 @@
           </div>
         </el-col>
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="20">
         <el-col :span="4"
-          ><h4 style="margin-left: 10px; margin-top: 10px">学院</h4></el-col
+        ><h4 style="margin-left: 10px; margin-top: 10px">学院</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid selection dropdown" style="width: 175px">
-            <input type="hidden" name="gender" />
+            <input type="hidden" name="gender"/>
             <i class="dropdown icon"></i>
             <div class="default text" v-if="$store.state.me.academy">
               {{ $store.state.me.academy }}
@@ -109,11 +110,11 @@
           </div>
         </el-col>
         <el-col :span="3"
-          ><h4 style="margin-left: 15px; margin-top: 10px">专业</h4></el-col
+        ><h4 style="margin-left: 15px; margin-top: 10px">专业</h4></el-col
         >
         <el-col :span="8">
           <div class="ui fluid selection dropdown" style="width: 175px">
-            <input type="hidden" name="gender" />
+            <input type="hidden" name="gender"/>
             <i class="dropdown icon"></i>
             <div class="default text" v-if="$store.state.me.major">
               {{ $store.state.me.major }}
@@ -131,10 +132,10 @@
           </div>
         </el-col>
       </el-row>
-      <br />
+      <br/>
       <el-row :gutter="24">
         <el-col :span="4"
-          ><h4 style="margin-left: 10px; margin-top: 10px">签名</h4></el-col
+        ><h4 style="margin-left: 10px; margin-top: 10px">签名</h4></el-col
         >
         <el-col :span="19">
           <div class="ui fluid input">
@@ -146,16 +147,27 @@
           </div>
         </el-col>
       </el-row>
-      <br />
-      <div style="margin-left: 83%" class="ui teal button" @click="sure()">
+      <br/>
+      <div class="ui right floated teal button" @click="sure()">
         确定
       </div>
+      <el-upload
+        class="avatar-uploader"
+        action=""
+        :before-upload="beforeAvatarUpload"
+        :http-request="handleTestSuccess"
+        :show-file-list="false"
+      >
+        <div class="ui icon teal button" @click="uploadWX()">
+          <i class="ui plus icon"></i>
+        </div>
+      </el-upload>
     </div>
   </div>
 </template>
 
 <script>
-import $ from "jquery";
+const imageConversion = require("image-conversion");
 
 export default {
   name: "information",
@@ -178,8 +190,8 @@ export default {
   },
   created() {
     this.academyList = this.$store.state.me.academies;
-    $(function () {
-      $(".ui.dropdown").dropdown();
+    jQuery(function () {
+      jQuery(".ui.dropdown").dropdown();
     });
   },
   methods: {
@@ -211,6 +223,61 @@ export default {
       window.addEventListener("popstate", function () {
         history.pushState(null, null, document.URL);
       });
+    },
+    beforeAvatarUpload(file) {
+      const isJpgOrPng =
+        file.type === "image/jpeg" ||
+        file.type === "image/png" ||
+        file.type === "image/bmp" ||
+        file.type === "image/gif" ||
+        file.type === "image/jpg";
+      if (!isJpgOrPng) {
+        this.$message.error("上传头像图片只能是 JPG 或 PNG 格式!");
+        return false;
+      }
+      return new Promise((resolve) => {
+        imageConversion.compressAccurately(file, 100).then((res) => {
+          resolve(res);
+        });
+        //compressAccurately有多个参数时传入对象
+        //imageConversion.compressAccurately(file, {
+        // size: 1024, //图片大小压缩到1024kb
+        // width:1280 //宽度压缩到1280
+        //}).then(res => {
+        //resolve(res)
+        //})
+      });
+    },
+    handleTestSuccess(file) {
+      if (file.file.type.indexOf("image") == -1) {
+        this.$message.error("请上传图片类型的文件");
+        this.$refs.upload_img.uploadFiles =
+          this.$refs.upload_img.uploadFiles.filter((item) => {
+            return file.file.name != item.name;
+          });
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", file.file);
+      var that = this;
+      that.$api.personalInformation
+        .uploadWX(formData)
+        .then((res) => {
+          if (res.status === 200) {
+            var that = this;
+            that.$message.success("上传收款码成功!");
+            that.$store.commit("getMyPayCode", res.data.data.payCode);
+          }
+        })
+        .catch((err) => {
+          /* this.$refs.upload_img.uploadFiles =
+            this.$refs.upload_img.uploadFiles.filter((item) => {
+              return file.file.name != item.name;
+            });
+          this.$message.error("上传失败!"); */
+        });
+    },
+    uploadWX() {
     },
     sure() {
       var that = this;
@@ -286,20 +353,4 @@ export default {
 </script>
 
 <style scoped>
-.leftSide {
-  width: 60%;
-  float: left;
-}
-
-.rightSide {
-  width: 40%;
-  height: 416px;
-  float: left;
-}
-
-.framework {
-  width: 80%;
-  height: 220px;
-  margin: auto;
-}
 </style>

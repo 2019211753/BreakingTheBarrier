@@ -26,7 +26,7 @@
                   path: '/BreakingTheBarrier/BBS/blogContent',
                   query: {
                     blogId: item.id,
-                    postUserId: item.postUserId,
+                    postUserId: $route.query.userId,
                   },
                 }"
                 >{{ item.title }}

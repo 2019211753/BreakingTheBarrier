@@ -13,7 +13,7 @@
             </div>
           </el-col>
           <el-col :span="18">
-            <div class="information" style="margin-top: -5px">
+            <div class="information">
               <h2>{{ $store.state.others.nickname }}</h2>
               <p
                 style="color: grey"

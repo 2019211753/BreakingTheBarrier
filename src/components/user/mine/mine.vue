@@ -28,7 +28,7 @@
             </div>
           </el-col>
           <el-col :span="14">
-            <div class="information" style="margin-top: -5px">
+            <div class="information" style="margin-top: 10px">
               <h2>{{ $store.state.me.nickname }}</h2>
               <p style="color: grey" v-if="$store.state.me.personalSignature">
                 {{ $store.state.me.personalSignature }}
@@ -78,7 +78,7 @@ import recommend from "./components/recommend";
 import $ from "jquery";
 
 export default {
-  components: { recommend },
+  components: {recommend},
   name: "mine",
   data() {
     return {
@@ -117,7 +117,6 @@ export default {
         //})
       });
     },
-
     handleTestSuccess(file) {
       if (file.file.type.indexOf("image") == -1) {
         this.$message.error("请上传图片类型的文件");

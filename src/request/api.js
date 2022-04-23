@@ -2,6 +2,7 @@
  * api接口的统一出口
  */
 // 文章模块接口
+import adminTop from "./api/admin/adminTop";
 import adminBlog from "./api/admin/adminBlog";
 import adminQuestion from "./api/admin/adminQuestion";
 import adminTag from "./api/admin/adminTag";
@@ -34,6 +35,7 @@ import infoUpdate from "./api/information/infoUpdate";
 
 // 导出接口
 export default {
+  adminTop,
   adminBlog,
   adminQuestion,
   adminTag,

@@ -20,7 +20,7 @@
           <h3>已选择</h3>
           <div class="ui divider"></div>
           <div>
-            <a class="ui label" v-for="item in chooseTagList">
+            <a class="ui label" v-for="item in chooseTagList" style="margin-top: 5px;">
               {{ item.name }}
               <i class="delete icon" @click="deleteTag(item.id)"></i>
             </a>
@@ -89,7 +89,4 @@ export default {
 </script>
 
 <style scoped>
-.label {
-  margin-top: 5px;
-}
 </style>
