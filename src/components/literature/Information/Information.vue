@@ -9,30 +9,24 @@
         <span slot="space">&nbsp;&nbsp;</span>
         <span slot="search" style="position: relative;top: -6px;height: 20px;">
           <div class="ui container" style="width: fit-content; margin: 5px;">
-<!--          <button class="ui button" @click="showInput">创建词条</button>-->
           <button class="ui button">
             <router-link to="/BreakingTheBarrier/literature/information/EntryCreate">创建词条</router-link>
           </button>
         </div>
         </span>
       </sec-menu>
-      <div class="ui container" style="width: fit-content;display: none;margin: 5px 0 10px 0" id="createDiv">
-        <create @create="createEntry"></create>
-      </div>
-    </div>
-    <div style="width: fit-content;margin: -20px auto 25px auto;">
     </div>
 
 <!--词条展示-->
-    <div class="ui container" style="display: inline-block">
+    <div class="main-box">
       <entry-display
+        class="info-box"
         id=""
-        class="column"
         :content="approvedEntry.content">
 
       </entry-display>
 
-      <hot-file class="column">
+      <hot-file class="hot-box">
           <h3 slot="titleH3">近期竞赛</h3>
           <div slot="item" class="ui tall stacked segment" id="recentRace">
             <p>ACM国际大学生程序设计竞赛世界总决赛</p>
@@ -69,12 +63,11 @@
   import HotFile from "../HotFile";
   import Headbar from "../../basic/headbar";
   import Bottom from "../../basic/bottom";
-  import Create from "./components/Create";
   import SearchFile from "../components/SearchFile";
   import $ from 'jquery'
   import axios from "axios";
   import ShowUnproved from "./components/ShowUnproved";
-  import UpdateEntry from "./components/UpdateEntry";
+  // import UpdateEntry from "./components/UpdateEntry";
   import EntryDisplay from "./components/EntryDisplay";
   export default {
     name: "Information",
@@ -108,12 +101,13 @@
               // console.log(content);
             })
         .catch(err => {
-          // console.log(err);
-          alert(err)
+          console.log(err);
+          // alert(err)
         })
       //把请求到的approvedEntry存储下来
+      let pageIndex = 0;
       that.$api.infoShow
-        .infoShow()
+        .infoShow(pageIndex)
         .then(res => {
           let content = res.data.data.entries.content
           for(let i in content)
@@ -121,7 +115,8 @@
           // this.approvedEntry = res.data.data.entries.content
           console.log(this.approvedEntry.content);
         }).catch(err => {
-        alert(err)
+        // alert(err)
+        console.log(err);
       })
     },
     computed: {
@@ -145,10 +140,12 @@
           .createEntry(data)
           .then(res => {
             console.log(res);
-            alert(res.data.msg)
+            // alert(res.data.msg)
+            console.log(res.data.msg);
           })
           .catch(err => {
-            alert(err)
+            // alert(err)
+            console.log(err);
           })
       },
       showUpdateInput(id) {
@@ -170,28 +167,35 @@
       FileDisplay,
       FileDisplayCItem,
       HotFile,
-      Create,
       SearchFile,
       ShowUnproved,
-      UpdateEntry,
+      // UpdateEntry,
       EntryDisplay
     }
   }
 </script>
 
 <style scoped>
-  div.segment p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .main-box {
+    display: flex;
+    width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    justify-content: flex-end;
   }
-  div.segment {
-    max-width: 254px;
+  .info-box {
+    display: flex;
+    width: 775px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    box-sizing: border-box;
+    border: 1px solid #ededed;
+    border-radius: 5px;
   }
-  #recentRace {
-    max-width: 254px;
-  }
-  #x {
-    width: 800px;
+  .hot-box {
+    width: 400px;
+    box-sizing: border-box;
+    border: 1px solid #ededed;
+    border-radius: 5px;
   }
 </style>

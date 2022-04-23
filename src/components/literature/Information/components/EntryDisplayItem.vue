@@ -16,12 +16,12 @@
       <span>{{contentItem.currentContent}}</span>
       <i style="display: none">{{contentItem.id}}</i>
     </a>
-    <update-entry :id="contentItem.id" :show-update-flag="showUpdateFlag"></update-entry>
+<!--    <update-entry :id="contentItem.id" :show-update-flag="showUpdateFlag"></update-entry>-->
   </div>
 </template>
 
 <script>
-  import UpdateEntry from "./UpdateEntry";
+  // import UpdateEntry from "./UpdateEntry";
   export default {
     name: "EntryDisplayItem",
     data() {
@@ -44,7 +44,7 @@
       }
     },
     components: {
-      UpdateEntry
+      // UpdateEntry
     }
   }
 </script>
