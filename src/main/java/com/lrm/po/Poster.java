@@ -1,181 +1,169 @@
 package com.lrm.po;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * 博客
- *
- * @author 山水夜止
- * @version 1.0
- * @date 2021-08-06
- */
 @Entity
 @Table(name = "t_poster")
-public class Poster extends Template
-{
+public class Poster {
     /**
-     * 博客是否原创
+     * 主键
+     */
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    /**
+     * 标题
      * 前端必填
      */
-    @NotNull(message = "请选择是否原创")
-    private Boolean origin;
+    @NotBlank(message = "请输入标题")
+    private String title;
 
     /**
-     * 如果不是原创 在此注明作者
+     * 别名
      */
-    private String transferStatement;
+    @NotBlank(message = "请输入别名")
+    private String alias;
 
     /**
-     * 是否接受赞赏
+     * 简介
+     */
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private String discription;
+
+    /**
+     * 词条对应标签
+     */
+    @ManyToMany
+    private List<EntryTag> entryTags;
+    /**
+     * 懒加载
+     * 内容
      * 前端必填
      */
-    @NotNull(message = "请选择是否接受赞赏")
-    private Boolean appreciation;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private String newContent;
 
     /**
-     * 是否允许评论
-     * 前端必填
+     * 要显示的
      */
-    @NotNull(message = "请选择是否允许评论")
-    private Boolean commentAllowed;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private String currentContent;
 
     /**
-     * 是否公开
-     * 前端必填
+     * 暂时锁住
      */
-    @NotNull(message = "请选择是否公开发表")
-    private Boolean open;
+    private boolean isLocked = false;
 
     /**
-     * 博客更新时间
+     * 管理员是否审批
      */
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updateTime;
-
+    private boolean isApproved = false;
 
     /**
-     * 博客拥有的赞 不返回前端
+     *
      */
-    @JsonIgnore
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE)
-    private List<Likes> likes = new ArrayList<>();;
+    private Timestamp lastApprovedTime;
 
-    /**
-     * 博客拥有的踩 不返回前端
-     */
-    @JsonIgnore
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE)
-    private List<DisLikes> dislikes = new ArrayList<>();;
-
-    /**
-     * 博客的子评论 不返回前端
-     */
-    @JsonIgnore
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private List<Comment> comments = new ArrayList<>();
-
-
-    public Boolean getOrigin() {
-        return origin;
+    public User getTeamLeader() {
+        return teamLeader;
     }
 
-    public void setOrigin(Boolean origin) {
-        this.origin = origin;
+    public void setTeamLeader(User teamLeader) {
+        this.teamLeader = teamLeader;
     }
 
-    public String getTransferStatement() {
-        return transferStatement;
+    @ManyToOne
+    private User teamLeader;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setTransferStatement(String transferStatement) {
-        this.transferStatement = transferStatement;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Boolean getAppreciation() {
-        return appreciation;
+    public String getTitle() {
+        return title;
     }
 
-    public void setAppreciation(Boolean appreciation) {
-        this.appreciation = appreciation;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Boolean getCommentAllowed() {
-        return commentAllowed;
+    public String getNewContent() {
+        return newContent;
     }
 
-    public void setCommentAllowed(Boolean commentAllowed) {
-        this.commentAllowed = commentAllowed;
+    public void setNewContent(String newContent) {
+        this.newContent = newContent;
     }
 
-    public Boolean getOpen() {
-        return open;
+    public String getCurrentContent() {
+        return currentContent;
     }
 
-    public void setOpen(Boolean open) {
-        this.open = open;
+    public void setCurrentContent(String currentContent) {
+        this.currentContent = currentContent;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public boolean isLocked() {
+        return isLocked;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setLocked(boolean locked) {
+        isLocked = locked;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Blog)) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        Blog blog = (Blog) o;
-        return Objects.equals(getOrigin(), blog.getOrigin()) && Objects.equals(getTransferStatement(), blog.getTransferStatement()) && Objects.equals(getAppreciation(), blog.getAppreciation()) && Objects.equals(getCommentAllowed(), blog.getCommentAllowed()) && Objects.equals(getOpen(), blog.getOpen()) && Objects.equals(getUpdateTime(), blog.getUpdateTime()) && Objects.equals(getLikes(), blog.getLikes()) && Objects.equals(getDislikes(), blog.getDislikes()) && Objects.equals(getComments(), blog.getComments());
+    public boolean isApproved() {
+        return isApproved;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getOrigin(), getTransferStatement(), getAppreciation(), getCommentAllowed(), getOpen(), getUpdateTime(), getLikes(), getDislikes(), getComments());
+    public void setApproved(boolean approved) {
+        isApproved = approved;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public Timestamp getLastApprovedTime() {
+        return lastApprovedTime;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public void setLastApprovedTime(Timestamp lastApprovedTime) {
+        this.lastApprovedTime = lastApprovedTime;
     }
 
-    public List<Likes> getLikes() {
-        return likes;
+    public String getDiscription() {
+        return discription;
     }
 
-    public void setLikes(List<Likes> likes) {
-        this.likes = likes;
+    public void setDiscription(String discription) {
+        this.discription = discription;
     }
 
-    public List<DisLikes> getDislikes() {
-        return dislikes;
+    public List<EntryTag> getEntryTags() {
+        return entryTags;
     }
 
-    public void setDislikes(List<DisLikes> dislikes) {
-        this.dislikes = dislikes;
+    public void setEntryTags(List<EntryTag> entryTags) {
+        this.entryTags = entryTags;
     }
 
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 }

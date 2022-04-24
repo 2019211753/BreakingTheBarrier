@@ -256,6 +256,9 @@ public class User {
     @ManyToMany(mappedBy = "members")
     private List<Team> joinedTeams;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "teamLeader")
+    private List<Poster> posters;
 
     public Long getId() {
         return id;
@@ -535,6 +538,14 @@ public class User {
 
     public void setJoinedTeams(List<Team> joinedTeams) {
         this.joinedTeams = joinedTeams;
+    }
+
+    public List<Poster> getPosters() {
+        return posters;
+    }
+
+    public void setPosters(List<Poster> posters) {
+        this.posters = posters;
     }
 }
 
