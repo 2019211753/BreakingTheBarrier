@@ -3,6 +3,8 @@ package com.lrm.web;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.User;
+import com.lrm.service.CommentServiceImpl;
+import com.lrm.service.LikesServiceImpl;
 import com.lrm.service.UserServiceImpl;
 import com.lrm.util.TokenInfo;
 import com.lrm.vo.Result;
@@ -29,6 +31,11 @@ public class  LoginController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
+    @Autowired
+    private CommentServiceImpl commentServiceImpl;
+
+    @Autowired
+    private LikesServiceImpl likesServiceImpl;
     /**
      * 注册
      * 为什么用@Validated就能进入方法被BindingResult“捕获”，@Valid不行？也许是用了自定义校验器
@@ -92,7 +99,10 @@ public class  LoginController {
         User user1 = userServiceImpl.checkUser(username, password);
         if(user1 != null)
         {
-            String token = TokenInfo.postToken(user1);
+            Map<String, Object> infos = new HashMap<>(1);
+            infos.put("unLookedInforms", commentServiceImpl.countUnLooked(user1.getId()) +
+                                                likesServiceImpl.countUnLooked(user1.getId()));
+            String token = TokenInfo.postToken(user1, infos);
             hashMap.put("token", token);
             return new Result(hashMap, "登录成功");
         } else {

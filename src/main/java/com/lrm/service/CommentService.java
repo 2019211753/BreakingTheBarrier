@@ -37,4 +37,6 @@ public interface CommentService {
 
     void listReceivedComments(Comment comment);
 
+    Integer countUnLooked(Long userId);
+
 }

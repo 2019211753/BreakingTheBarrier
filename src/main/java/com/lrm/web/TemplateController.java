@@ -217,6 +217,7 @@ public class TemplateController {
         Blog frontBlog = new Blog();
 
         frontBlog = getTemplate(userId, backBlog, frontBlog, blogServiceImpl);
+        frontBlog.setWechatPayCode(backBlog.getUser().getWechatPayCode());
         hashMap.put("template", new BlogShow(frontBlog));
 
         User receiveUser = frontBlog.getUser();

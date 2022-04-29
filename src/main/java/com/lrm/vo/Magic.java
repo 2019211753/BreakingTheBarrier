@@ -28,7 +28,7 @@ public class Magic {
     public static final long MAX_UPLOAD_DOCUMENT_SIZE_MBYTES = 5;
     public static final int HIDE_STANDARD1 = 6;
     public static final int HIDE_STANDARD2 = 2;
-    public static final int BRIEF_COMMENT_COMMENT_LENGTH = 3;
+    public static final int BRIEF_COMMENT_COMMENT_LENGTH = 5;
 
     public static final Map<String, List<String>> ACADEMIES = createMap();
 

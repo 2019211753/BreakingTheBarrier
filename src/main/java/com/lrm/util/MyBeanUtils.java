@@ -83,6 +83,7 @@ public class MyBeanUtils {
 
     /**
      * 用于将实体类字段按需转换成前端vo类需要的字段 省去无意义的get set
+     * 具体转换哪些字段由vo类的set方法决定
      *
      * @param cls 传入对象的class
      * @param source 源对象
@@ -90,7 +91,7 @@ public class MyBeanUtils {
      * @param <T> 泛型类型
      */
     public static <T, U> void copyVo(Class<U> cls, U source, Class<T> cls1, T dest) {
-        //获得vo类的所有方法
+        //获得vo类的所有方法 不包括父类的方法
         Method[] mods = cls1.getDeclaredMethods();
         for(Method mod : mods) {
             //获取该方法对象所代表的方法名

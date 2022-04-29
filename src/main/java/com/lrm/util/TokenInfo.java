@@ -7,6 +7,7 @@ import com.lrm.po.User;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 解析token令牌
@@ -60,14 +61,21 @@ public class TokenInfo {
 
     /**
      * @param user 当前用户对象
+     * @param infos 在业务层查询到的信息
      * @return token
      */
-    public static String postToken(User user) {
+    public static String postToken(User user, Map<String, Object> infos) {
         Map<String, String> map = new HashMap<>(5);
 
         //把这些字段放在请求头里 其他东西在需要的时候可以另外返回
         //注意！！！这里放进去map是什么数据类型，取出来就得是什么类型！！
-
+        Map<String, String> newInfos = new HashMap<>(infos.size());
+        Set<Map.Entry<String, Object>> entry = infos.entrySet();
+        for (Map.Entry<String, Object> stringObjectEntry : entry) {
+            Object val = stringObjectEntry.getValue();
+            newInfos.put(String.valueOf(stringObjectEntry), val.toString());
+        }
+        map.putAll(newInfos);
         map.put("userId", user.getId().toString());
         map.put("nickname", user.getNickname());
         map.put("admin", user.getAdmin().toString());

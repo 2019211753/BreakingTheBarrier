@@ -95,14 +95,19 @@ public class MessageController {
      * @param commentId 评论id
      */
     @GetMapping("/comment/{commentId}/read")
-    public Result readComment(@PathVariable Long commentId) {
+    public Result readComment(@PathVariable Long commentId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(1);
+        Long userId = TokenInfo.getCustomUserId(request);
+        User currentUser = userServiceImpl.getUser(userId);
+
         Comment comment = commentServiceImpl.getComment(commentId);
         if (comment == null) {
             throw new NotFoundException("未查询到该评论");
         }
         comment.setLooked(true);
         commentServiceImpl.saveComment(comment);
-        return new Result(null, "已读成功");
+
+        return getResult(hashMap, currentUser, commentServiceImpl.countUnLooked(userId), userId);
     }
 
     /**
@@ -111,14 +116,20 @@ public class MessageController {
      * @param likesId 点赞id
      */
     @GetMapping("/likes/{likesId}/read")
-    public Result readLikes(@PathVariable Long likesId) {
+    public Result readLikes(@PathVariable Long likesId, HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(1);
+        Long userId = TokenInfo.getCustomUserId(request);
+        User currentUser = userServiceImpl.getUser(userId);
+
         Likes likes = likesServiceImpl.get(likesId);
         if (likes == null) {
             throw new NotFoundException("未查询到该点赞");
         }
         likes.setLooked(true);
         likesServiceImpl.save(likes);
-        return new Result(null, "已读成功");
+
+        return getResult(hashMap, currentUser, likesServiceImpl.countUnLooked(userId), userId);
+
     }
 
     /**
@@ -128,13 +139,16 @@ public class MessageController {
      */
     @GetMapping("/readAllComments")
     public Result readAllComments(HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(1);
         Long userId = TokenInfo.getCustomUserId(request);
+        User currentUser = userServiceImpl.getUser(userId);
+
         List<Comment> comments = commentServiceImpl.listComments(userId, false);
         for (Comment comment : comments) {
             comment.setLooked(true);
             commentServiceImpl.saveComment(comment);
         }
-        return new Result(null, "已读成功");
+        return getResult(hashMap, currentUser, commentServiceImpl.countUnLooked(userId), userId);
     }
 
     /**
@@ -144,14 +158,24 @@ public class MessageController {
      */
     @GetMapping("/readAllLikes")
     public Result readAllLikes(HttpServletRequest request) {
+        Map<String, Object> hashMap = new HashMap<>(1);
         Long userId = TokenInfo.getCustomUserId(request);
+        User currentUser = userServiceImpl.getUser(userId);
 
         List<Likes> likes = likesServiceImpl.list(userId, false);
         for (Likes likes1 : likes) {
             likes1.setLooked(true);
             likesServiceImpl.save(likes1);
         }
-        return new Result(null, "已读成功");
+        return getResult(hashMap, currentUser, likesServiceImpl.countUnLooked(userId), userId);
+    }
+
+    private Result getResult(Map<String, Object> hashMap, User currentUser, Integer integer, Long userId) {
+        Map<String, Object> infos = new HashMap<>(1);
+        infos.put("unLookedInforms", integer);
+        String token = TokenInfo.postToken(currentUser, infos);
+        hashMap.put("token", token);
+        return new Result(hashMap, "已读成功");
     }
 }
 

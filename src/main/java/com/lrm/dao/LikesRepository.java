@@ -12,6 +12,7 @@ import java.util.List;
 public interface LikesRepository extends EmotionRepository<Likes> {
     /**
      * 已/未读的点赞记录
+     * 可考虑对发布时间限制 AndCreateTimeAfter
      *
      * @param receiveUserId 当前用户ID
      * @param isLooked      是否已读
@@ -19,4 +20,11 @@ public interface LikesRepository extends EmotionRepository<Likes> {
      */
     List<Likes> findByReceiveUserIdAndLooked(Long receiveUserId, Boolean isLooked);
 
+    /**
+     * 查询某用户当前的未读点赞数量
+     *
+     * @param receiveUserId 收信者id
+     * @return 数量
+     */
+    Integer countAllByLookedFalseAndReceiveUserId(Long receiveUserId);
 }
