@@ -1,30 +1,19 @@
-package com.lrm.po;
+package com.lrm.dto;
+
+import com.lrm.po.EntryTag;
+import com.lrm.po.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
 
-@Entity
-@Table(name = "t_infoEntry")
-public class InfoEntry {
-    /**
-     * 主键
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id = 0l;
-
+public class CreateInfoEntryDTO {
     /**
      * 标题
      * 前端必填
      */
-    @NotBlank(message = "请输入标题")
     private String title;
 
     /**
@@ -33,32 +22,27 @@ public class InfoEntry {
 //    @NotBlank(message = "请输入别名")
     private String alias;
 
-    /**
-     * 简介
-     */
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
     private String discription;
 
-    /**
-     * 词条对应标签
-     */
-    @ManyToMany
-    private List<EntryTag> entryTags = new ArrayList<>();
+    public String getEntryTags() {
+        return entryTags;
+    }
+
+    public void setEntryTags(String entryTags) {
+        this.entryTags = entryTags;
+    }
+
+    private String entryTags;
     /**
      * 懒加载
      * 内容
      * 前端必填
      */
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
     private String newContent;
 
     /**
      * 要显示的
      */
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
     private String currentContent;
 
     /**
@@ -76,16 +60,6 @@ public class InfoEntry {
      */
     private Timestamp lastApprovedTime;
 
-    @ManyToMany
-    private List<User> contributors = new ArrayList<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -135,28 +109,12 @@ public class InfoEntry {
         this.lastApprovedTime = lastApprovedTime;
     }
 
-    public List<User> getContributors() {
-        return contributors;
-    }
-
-    public void setContributors(List<User> contributors) {
-        this.contributors = contributors;
-    }
-
     public String getDiscription() {
         return discription;
     }
 
     public void setDiscription(String discription) {
         this.discription = discription;
-    }
-
-    public List<EntryTag> getEntryTags() {
-        return entryTags;
-    }
-
-    public void setEntryTags(List<EntryTag> entryTags) {
-        this.entryTags = entryTags;
     }
 
     public String getAlias() {

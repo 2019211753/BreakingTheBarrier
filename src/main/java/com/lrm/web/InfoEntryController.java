@@ -1,5 +1,6 @@
 package com.lrm.web;
 
+import com.lrm.dto.CreateInfoEntryDTO;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.InfoEntry;
@@ -9,6 +10,7 @@ import com.lrm.util.LockHolder;
 import com.lrm.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -34,16 +36,22 @@ public class InfoEntryController {
 
     /**
      * 创建词条
-     * @param infoEntry json格式的词条
      * @return 带有消息的Result
      */
     @PostMapping("/create")
-    public Result create(@RequestBody @Valid InfoEntry infoEntry, @RequestParam("entryTagName") String entryTagName, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new IllegalParameterException(IllegalParameterException.getMessage(bindingResult));
-        }
-        String realTagNames = entryTagName.substring(1, entryTagName.length() - 1);
+    public Result create(@RequestBody CreateInfoEntryDTO createInfoEntryDTO) {
+//        if (bindingResult.hasErrors()) {
+//            throw new IllegalParameterException(IllegalParameterException.getMessage(bindingResult));
+//        }
+
+        String realTagNames = createInfoEntryDTO.getEntryTags().substring(1, createInfoEntryDTO.getEntryTags().length() - 1);
         String[] tagNames = realTagNames.split(",");
+        InfoEntry infoEntry = new InfoEntry();
+        infoEntry.setCurrentContent(createInfoEntryDTO.getCurrentContent());
+        infoEntry.setAlias(createInfoEntryDTO.getAlias());
+        infoEntry.setNewContent(createInfoEntryDTO.getNewContent());
+        infoEntry.setTitle(createInfoEntryDTO.getTitle());
+        infoEntry.setDiscription(createInfoEntryDTO.getDiscription());
         for (int i = 0; i < tagNames.length; i++) {
             tagNames[i] = tagNames[i].substring(1, tagNames[i].length() - 1);
         }
