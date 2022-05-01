@@ -31,7 +31,7 @@ public class InfoEntryServiceImpl implements InfoEntryService {
 
     @Override
     public InfoEntry saveInfoEntry(InfoEntry infoEntry, String[] tagNames) {
-        if (infoEntryRepository.findByTitle(infoEntry.getTitle(), PageRequest.of(0, 5)).getSize() != 0) {
+        if (infoEntryRepository.findByTitle(infoEntry.getTitle(), PageRequest.of(0, 5)).getNumberOfElements() > 0) {
             throw new FailedOperationException("同名词条已存在");
         }
         for (int i = 0; i < tagNames.length; i++) {
@@ -57,7 +57,7 @@ public class InfoEntryServiceImpl implements InfoEntryService {
     @Override
     public Page<InfoEntry> searchEntry(int pageIndex, String title) {
         if (title == null) return null;
-        return infoEntryRepository.findByTitle(title, PageRequest.of(pageIndex, 30));
+        return infoEntryRepository.searchByTitle(title, PageRequest.of(pageIndex, 30));
     }
 
     @Override

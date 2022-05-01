@@ -14,6 +14,8 @@ public interface InfoEntryRepository extends JpaRepository<InfoEntry, Long> {
     Page<InfoEntry> findUnapproved(Pageable pageable);
 
     @Query("select ie from InfoEntry ie where ie.title like %?1%")
+    Page<InfoEntry> searchByTitle(String title, Pageable pageable);
+
     Page<InfoEntry> findByTitle(String title, Pageable pageable);
 
     Page<InfoEntry> findAllByisApprovedOrderByLastApprovedTimeDesc(Boolean isApproved, Pageable pageable);
