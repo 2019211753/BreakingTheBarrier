@@ -27,8 +27,9 @@
         </router-link>
       </li>
     </ul>
+    <div class="btb-logo"><img src="../../assets/logo.png" alt="logo"></div>
     <ul class="navBox">
-      <li><div class="btb-logo"><img src="../../assets/logo.png" alt="logo"></div></li>
+<!--      <li></li>-->
       <li>
         <a href="">
           <router-link to="/BreakingTheBarrier/home">
@@ -121,9 +122,8 @@ export default {
         console.log('为空');
         /*即当前menu未显示，应该去显示*/
         menu.style.cssText = 'z-index: 999;display: flex;'
+        $('.m-navBox').animate({top: '-15px'})
       }
-
-
     }
   },
   created() {
@@ -152,10 +152,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 .menuBtn {
   display: none;
-  position: fixed;
+  position: absolute;
   right: 1vw;
   top: 20px;
   cursor: pointer;
@@ -175,13 +174,14 @@ export default {
   align-items: center;
   height: 100%;
   .m-navBox {
-    display: none;
+    //display: none;
     box-sizing: border-box;
-    padding: 0 10vw;
+    padding: 9px 10vw;
     width: 100vw;
-    //display: flex;
+    display: flex;
     justify-content: space-around;
-    position: fixed;
+    position: absolute;
+    top: -80px;
     background-color: rgba(5,11,19,0.92);
     height: 67px;
     z-index: -1;
@@ -208,6 +208,9 @@ export default {
     }
   }
   .navBox {
+    position: relative;
+    left: -14vw;
+    padding-left: 0;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -236,9 +239,16 @@ export default {
     :nth-child(2) {
       margin-left: 10px;
     }
+    i {
+      color: gray;
+    }
   }
 }
 @media screen and (max-width: 1163px){
+  .btb-header .navBox {
+    //position: relative;
+    left: -10vw;
+  }
   .navBox li:last-child {
     //display: none;
   }
@@ -247,6 +257,10 @@ export default {
   }
 }
 @media screen and (max-width: 990px) {
+  .btb-header .navBox {
+    //position: relative;
+    left: -5vw;
+  }
   .navBox li:nth-child(5) {
     //display: none;
   }
@@ -266,8 +280,15 @@ export default {
   }
 }
 @media screen and (max-width: 570px){
+  .btb-header .btb-logo {
+    width: 30px;
+  }
   .menuBtn {
     display: block;
+  }
+  .btb-header .navBox {
+    //position: relative;
+    left: -4vw;
   }
   .navBox li:nth-child(n+4):nth-child(-n+6) {
     display: none;
