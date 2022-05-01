@@ -56,7 +56,12 @@ public class InfoEntryController {
             tagNames[i] = tagNames[i].substring(1, tagNames[i].length() - 1);
         }
         //等待管理员检查
-        infoEntryServiceImpl.saveInfoEntry(infoEntry, tagNames);
+        try {
+            infoEntryServiceImpl.saveInfoEntry(infoEntry, tagNames);
+        } catch (FailedOperationException e) {
+            logger.error("title duplicated", e);
+            return new Result(null, "同名词条已经存在");
+        }
         return new Result(null, "已提交，正在审核中");
     }
 

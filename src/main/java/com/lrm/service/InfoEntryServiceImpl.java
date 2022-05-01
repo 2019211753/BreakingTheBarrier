@@ -31,7 +31,9 @@ public class InfoEntryServiceImpl implements InfoEntryService {
 
     @Override
     public InfoEntry saveInfoEntry(InfoEntry infoEntry, String[] tagNames) {
-        if (infoEntryRepository.findByTitle(infoEntry.getTitle(), PageRequest.of(0, 5)).getSize() != 0)
+        if (infoEntryRepository.findByTitle(infoEntry.getTitle(), PageRequest.of(0, 5)).getSize() != 0) {
+            throw new FailedOperationException("同名词条已存在");
+        }
         for (int i = 0; i < tagNames.length; i++) {
             EntryTag found = entryTagRepository.findByName(tagNames[i]);
             //如果用户输入的tagName不存在，那么创建一个新的tag
