@@ -11,9 +11,11 @@
                 </el-col>
                 <el-col :span="10"
                   ><div class="ui small fluid icon input">
-                    <input type="text" placeholder="搜索..." />
+                    <input type="text" placeholder="搜索..." v-model="entryQuery"/>
                     <i
+                      id="entrySearch"
                       class="inverted circular search link icon"
+                      @click="entrySearch"
                     ></i></div></el-col
                 ><el-col :span="7" style="height: 1px"></el-col
                 ><el-col :span="4"
@@ -118,12 +120,26 @@
 </template>
 
 <script>
+import infoSearch from "../../../../request/api/information/infoSearch";
+
 export default {
   name: "wikipedia",
+  data() {
+    return {
+      entryQuery: ''
+    }
+  },
   methods: {
     more() {
-      this.$router.push("/BreakingTheBarrier/wikipedia");
+      this.$router.push("/BreakingTheBarrier/literature/information");
     },
+    entrySearch() {
+      this.$api.infoSearch.infoSearch(this.entryQuery)
+      .then(res => {
+        console.log(res);
+      })
+      .catch()
+    }
   },
 };
 </script>

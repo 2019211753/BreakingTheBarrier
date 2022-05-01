@@ -6,11 +6,11 @@ import base from "../../base";
 import instance from "../../http";
 
 
-const infoShow = {
-  infoShow(pageIndex) {
+const infoSearch = {
+  infoSearch(query) {
     return instance
-      .get("/infoEntry/show?pageIndex=" + pageIndex)
+      .get(`/infoEntry/search?pageIndex=0&query=${query}`)
   }
 }
 
-export default infoShow;
+export default infoSearch;

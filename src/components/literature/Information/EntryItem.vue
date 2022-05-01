@@ -1,5 +1,6 @@
 <template>
   <div class="ui segment" style="width: 500px;margin-left: 150px">
+    <v-md-preview-html :html="currentContent" preview-class="vuepress-markdown-body"></v-md-preview-html>
     <div class="ui right rail">
       <div class="ui segment">
         <h3 class="ui header">目录</h3>

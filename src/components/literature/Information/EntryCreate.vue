@@ -51,26 +51,6 @@
         </div>
       </div>
     </div>
-
-    <!--弹窗-->
-    <div class="ui basic modal">
-      <div class="ui icon header">
-        <i class="archive icon"></i>
-        提示
-      </div>
-      <div class="content">
-        <p>
-          {{submitMsg}}
-        </p>
-      </div>
-      <div class="actions">
-
-        <div class="ui green ok inverted button">
-          <i class="checkmark icon"></i>
-          是的
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -100,19 +80,22 @@
 
     },
     methods: {
-      createEntry(entryTagName, title, description, newContent) {
+      createEntry(entryTagName, title, description) {
         // console.log(this.title);
-        if (this.id === undefined) { //为undefined -> 是创建
-          // console.log('进来');
-          if (this.newContent && this.title && this.description && this.entryTagName) {//若表单各项参数都不为空
+        if (this.id === undefined) {
+          //为undefined -> 是创建
+          if (this.$store.state.text && this.title && this.description && this.entryTagName) {//若表单各项参数都不为空
             let data = {
-              'entryTagName': entryTagName,
+              entryTagName: entryTagName,
               body: {
-                'title': title,
-                'description': description,
-                'newContent': newContent
+                title: title,
+                alias: 'none',
+                description: description,
+                newContent: this.$store.state.text,
               }
             }
+            console.log(this.$store.state.text);
+            console.log(this.$store.state);
             let that = this
             that.$api.infoCreate
               .createEntry(data)
@@ -128,9 +111,9 @@
               })
           }
           else
-            this.submitMsg = '标题或简介或标签或内容不能为空'
+            this.$message.error('标题或简介或标签或内容不能为空')
         }
-        else { //更新词条
+        else { //是更新词条
           console.log(this.id);
           let data = {
             id: this.id,
@@ -148,14 +131,8 @@
         }
       },
       btnClick() {
-        this.createEntry(this.entryTagName, this.title, this.description, this.newContent)
-
-        $('.ui.modal')
-          .modal('show')
+        this.createEntry(this.entryTagName, this.title, this.description)
       },
-      forceUpdate() {
-
-      }
     }
   }
 </script>

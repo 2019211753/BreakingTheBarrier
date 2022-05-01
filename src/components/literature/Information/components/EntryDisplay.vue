@@ -24,6 +24,12 @@
   .info-item {
     width: 215px;
     height: 200px;
+    /*overflow: hidden;*/
+    border: 1px solid rgba(.5,.5,.5,.2);
+    box-sizing: border-box;
+    padding: 5px;
+    text-overflow: ellipsis;
     overflow: hidden;
+    /*white-space: nowrap;*/
   }
 </style>

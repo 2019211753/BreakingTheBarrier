@@ -1,7 +1,7 @@
 <template>
   <div class="ui container">
 <!--    <router-link to="/BreakingTheBarrier/literature/information/EntryDisplay">词条展示</router-link>-->
-    <router-link to=""></router-link>
+<!--    <router-link to=""></router-link>-->
     <div style="margin-bottom: 30px;">
       <sec-menu>
         <h3 slot="titleH3" style="letter-spacing: 5px;">信息百科</h3>
@@ -26,15 +26,14 @@
 
       </entry-display>
 
-      <hot-file class="hot-box">
-          <h3 slot="titleH3">近期竞赛</h3>
-          <div slot="item" class="ui tall stacked segment" id="recentRace">
-            <p>ACM国际大学生程序设计竞赛世界总决赛</p>
-          </div>
-          <span slot="upFile"></span>
-        </hot-file>
     </div>
-
+    <div class="el-page">
+      <el-pagination
+        layout="prev, pager, next"
+        :total="pageNum"
+        hide-on-single-page>
+      </el-pagination>
+    </div>
 <!--展示未审核-->
     <div class="ui container">
       <h2>未审核词条</h2>
@@ -49,10 +48,6 @@
         </li>
       </ul>
     </div>
-
-    <div class="ui container">
-      <update-entry :showUpdateFlag="showUpdateFlag" :id="entry.id"></update-entry>
-    </div>
   </div>
 </template>
 
@@ -61,13 +56,9 @@
   import FileDisplay from "../FileDisplay";
   import FileDisplayCItem from "./FileDisplayCItem";
   import HotFile from "../HotFile";
-  import Headbar from "../../basic/headbar";
-  import Bottom from "../../basic/bottom";
   import SearchFile from "../components/SearchFile";
   import $ from 'jquery'
-  import axios from "axios";
   import ShowUnproved from "./components/ShowUnproved";
-  // import UpdateEntry from "./components/UpdateEntry";
   import EntryDisplay from "./components/EntryDisplay";
   export default {
     name: "Information",
@@ -76,6 +67,7 @@
     },
     data() {
       return {
+        pageNum: 0,
         entry: {
           content: [],
           id: 0
@@ -85,7 +77,6 @@
         },
         flag: 1,
         showUpdateFlag: false,
-
       }
     },
     mounted() {
@@ -110,13 +101,16 @@
         .infoShow(pageIndex)
         .then(res => {
           let content = res.data.data.entries.content
+          this.pageNum = res.data.data.entries.totalPages;
+          console.log(res.data.data.entries.totalPages);
           for(let i in content)
             this.approvedEntry.content.push(content[i])
           // this.approvedEntry = res.data.data.entries.content
-          console.log(this.approvedEntry.content);
+          // console.log(this.approvedEntry.content);
         }).catch(err => {
+          this.$message.error('发生了错误')
         // alert(err)
-        console.log(err);
+        // console.log(err);
       })
     },
     computed: {
@@ -161,15 +155,12 @@
     },
 
     components: {
-      Bottom,
-      Headbar,
       SecMenu,
       FileDisplay,
       FileDisplayCItem,
       HotFile,
       SearchFile,
       ShowUnproved,
-      // UpdateEntry,
       EntryDisplay
     }
   }
@@ -181,7 +172,7 @@
     width: 1200px;
     margin: 0 auto;
     box-sizing: border-box;
-    justify-content: flex-end;
+    /*justify-content: flex-end;*/
   }
   .info-box {
     display: flex;

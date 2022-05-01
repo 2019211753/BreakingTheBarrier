@@ -23,6 +23,7 @@
     "scriptjs": "^2.5.9",
     "scss": "^0.2.4",
     "semantic-ui-css": "^2.4.1",
+    "vite-plugin-vue2": "^2.0.0",
     "vue": "^2.5.2",
     "vue-elementui-skeleton": "^1.0.2",
     "vue-router": "^3.0.1",
