@@ -1,7 +1,7 @@
 <template>
   <el-container class="el-container">
-    <el-header height="40px"><headbar></headbar></el-header>
-    <el-main
+    <el-header><headbar></headbar></el-header>
+    <el-main class="el-main"
       ><div>
         <router-view :key="$router.currentRoute.fullPath"></router-view></div
     ></el-main>
@@ -30,6 +30,11 @@ export default {
 
 <style scoped>
 .el-container {
-  width: 1200px;
+  /*width: 1200px;*/
+}
+@media screen and (max-width: 1900px){
+  .el-main {
+    padding-top: 0;
+  }
 }
 </style>

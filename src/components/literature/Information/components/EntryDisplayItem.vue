@@ -1,11 +1,14 @@
 <template>
-  <div style="text-align: center;margin: 20px 0;min-width: 200px" @click="itemClick">
+  <div
+    class="itemBox"
+    style="" @click="itemClick">
 <!--    <span>{{contentItem}}</span>-->
-    <a href="javascript:;">
+    <div class="imgItem"></div>
+    <div>
       <h2 >{{contentItem.title}}</h2>
       <span>{{contentItem.currentContent}}</span>
       <i style="display: none">{{contentItem.id}}</i>
-    </a>
+    </div>
   </div>
 </template>
 
@@ -37,6 +40,10 @@
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .itemBox {
+    text-align: center;
+    margin: 20px 0;
+    min-width: 200px;
+  }
 </style>
