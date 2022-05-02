@@ -17,4 +17,15 @@ export default {
 ::-webkit-scrollbar {
   display: none;
 }
+
+@media screen and (max-width: 570px) {
+  .btb-h3 {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 375px){
+  .btb-h3 {
+    font-size: 14px;
+  }
+}
 </style>

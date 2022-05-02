@@ -32,9 +32,13 @@ export default {
 .el-container {
   /*width: 1200px;*/
 }
+.el-main {
+  padding: 0;
+}
 @media screen and (max-width: 1900px){
   .el-main {
-    padding-top: 0;
+    /*padding-top: 0;*/
+    padding: 0;
   }
 }
 </style>

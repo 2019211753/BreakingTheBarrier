@@ -5,7 +5,6 @@
     <div class="home">
       <div class="ui basic segment">
         <div class="header">
-          <div class="logo"></div>
           <div class="nav">
             <ul>
               <li>
@@ -24,7 +23,7 @@
                 >
               </li>
               <li>
-                <a href="javascript:;" @click="turnWikipedia()"
+                <a href="" @click="turnInformation()"
                   ><i class="paw icon"></i>信息百科</a
                 >
               </li>
@@ -54,7 +53,7 @@ export default {
   name: "home",
   components: { carousel, questionnaire, team, database, wikipedia },
   methods: {
-    turnWikipedia() {
+    turnInformation() {
       this.$router.push("/BreakingTheBarrier/literature/information");
     },
     turnTeam() {
@@ -72,19 +71,28 @@ export default {
 
 <style scoped>
 .carousel {
-  height: 300px;
   margin: auto;
+  height: 33vw;
+  max-height: 300px;
 }
 .nav {
-  float: left;
-  margin-left: 3%;
+  /*float: left;*/
+  /*margin-left: 3%;*/
 }
-
+.nav ul {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  position: relative;
+  left: -10px;
+}
 .nav ul li {
-  float: left;
-  margin: -15px 10px;
+  /*float: left;*/
+  /*margin: -15px 10px;*/
+  white-space: nowrap;
+  text-align: center;
+  list-style: none;
 }
-
 .nav ul li a {
   display: block;
   height: 42px;
@@ -93,41 +101,35 @@ export default {
   font-size: 16px;
   color: black;
   font-weight: 600;
-}
-
-.nav ul a:hover {
-  border-bottom: 4px solid orange;
-}
-
-a {
   text-decoration: none;
 }
-
+.nav ul li:hover {
+  border-bottom: 4px solid orange;
+}
 .header {
   height: 40px;
-
-  width: 50%;
+  /*width: 50%;*/
   margin: auto;
-}
-
-.logo {
-  float: left;
-  width: 6%;
-  height: 100%;
-}
-
-li {
-  list-style: none;
 }
 .body {
   height: 800px;
   margin-top: -20px;
   z-index: -1;
 }
-
 .main {
   width: 80%;
   margin: auto;
-  margin-top: -50px;
+  /*margin-top: -50px;*/
+}
+
+@media screen and (max-width: 570px){
+  .nav ul li a {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 374px) {
+  .nav ul li a {
+    font-size: 13px;
+  }
 }
 </style>
