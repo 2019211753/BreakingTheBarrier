@@ -1,8 +1,8 @@
 <template>
-  <div class="ui basic segment">
+  <div class="ui basic segment" style="padding: 0">
     <div class="ui segment">
       <div class="frameworkBody">
-        <h3 class="ui left floated header">热门话题</h3>
+        <h3 class="btb-h3 ">热门话题</h3>
         <el-skeleton
           style="width: 240px"
           :loading="loading"

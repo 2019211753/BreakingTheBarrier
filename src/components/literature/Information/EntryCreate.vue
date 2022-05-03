@@ -86,13 +86,11 @@
           //为undefined -> 是创建
           if (this.$store.state.text && this.title && this.description && this.entryTagName) {//若表单各项参数都不为空
             let data = {
-              entryTagName: entryTagName,
-              body: {
-                title: title,
-                alias: 'testAlias',
-                description: description,
-                newContent: this.$store.state.text,
-              }
+              entryTags: "['养生']",
+              title: title,
+              alias: 'testAlias',
+              discription: description,
+              newContent: this.$store.state.text,
             }
             console.log(this.$store.state.text);
             console.log(this.$store.state);

@@ -25,6 +25,8 @@ export default {
 
 <style scoped lang="scss">
   div.btb-h5 {
+    //display: flex;
+    //align-items: baseline;
     box-sizing: border-box;
     padding: 0 0.5vw;
     color: #606266;
@@ -33,7 +35,7 @@ export default {
     > span {
       white-space: nowrap;
       text-overflow: ellipsis;
-      overflow: hidden;
+      //overflow: hidden;
     }
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="ui segment" style="margin-left: 0px">
+  <div class="ui segment" style="margin-left: 0">
     <v-md-preview-html :html="currentContent" preview-class="vuepress-markdown-body"></v-md-preview-html>
     <div class="ui right rail">
       <div class="ui segment">

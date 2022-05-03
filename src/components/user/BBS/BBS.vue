@@ -63,7 +63,7 @@ export default {
 }
 @media screen and (max-width: 570px){
   .header {
-    height: 15px;
+    //height: 15px;
   }
   .header .nav > ul > li a {
     font-size: 14px;
