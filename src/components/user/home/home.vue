@@ -23,9 +23,8 @@
                 >
               </li>
               <li>
-                <a href="" @click="turnInformation()"
-                  ><i class="paw icon"></i>信息百科</a
-                >
+                <router-link to="/BreakingTheBarrier/literature/information"
+                  ><i class="paw icon"></i>信息百科</router-link>
               </li>
             </ul>
           </div>

@@ -62,7 +62,7 @@
     components: {Editor},
     data() {
       return {
-        id: 20,
+        id: undefined,
         entryTagName: '科普',
         title: '',
         description: '',
@@ -89,15 +89,14 @@
               entryTagName: entryTagName,
               body: {
                 title: title,
-                alias: 'none',
+                alias: 'testAlias',
                 description: description,
                 newContent: this.$store.state.text,
               }
             }
             console.log(this.$store.state.text);
             console.log(this.$store.state);
-            let that = this
-            that.$api.infoCreate
+            this.$api.infoCreate
               .createEntry(data)
               .then(res => {
                 this.submitMsg = res.data.msg
@@ -108,6 +107,7 @@
               })
               .catch(err => {
                 this.submitMsg = err
+                this.$message.error(err)
               })
           }
           else

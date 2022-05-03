@@ -3,23 +3,22 @@
     <div style="width: 100%; float: left">
       <div class="ui basic segment">
         <el-row :gutter="24">
-          <el-col :span="24"
-            ><div class="ui basic segment">
+          <el-col :span="24">
+            <div class="ui basic segment">
               <el-row :gutter="24">
                 <el-col :span="3">
                   <h3 style="margin-top: 5px">信息百科</h3>
                 </el-col>
-                <el-col :span="10"
-                  ><div class="ui small fluid icon input">
+                <el-col :span="10"><div class="ui small fluid icon input">
                     <input type="text" placeholder="搜索..." v-model="entryQuery"/>
                     <i
                       id="entrySearch"
                       class="inverted circular search link icon"
-                      @click="entrySearch"
-                    ></i></div></el-col
-                ><el-col :span="7" style="height: 1px"></el-col
-                ><el-col :span="4"
-                  ><button
+                      @click="entrySearch">
+
+                    </i>
+                </div>
+                </el-col><el-col :span="7" style="height: 1px"></el-col><el-col :span="4"><button
                     class="ui mini right labeled icon button"
                     style="background-color: white; margin-top: 2px"
                     @click="more()"
@@ -32,47 +31,43 @@
                   </button></el-col
                 >
               </el-row>
-            </div></el-col
-          > </el-row
-        ><br />
-        <el-row :gutter="24">
+            </div></el-col> </el-row>
+        <br />
+        <el-row  :gutter="24">
           <el-col :span="12">
             <div class="ui segment">
               <el-row :gutter="24" style="height: 200px">
                 <el-col :span="12">
                   <img
                     class="ui fluid rounded image"
-                    src="../../../../assets/message3.jpg"
-                /></el-col>
+                    src="../../../../assets/message3.jpg"/></el-col>
                 <el-col :span="12">
                   <h5 style="text-align: center">t</h5>
-                  <el-descriptions>
+                  <el-descriptions class="text-box">
                     <el-descriptions-item>表示测试贴</el-descriptions-item>
                   </el-descriptions></el-col
                 >
               </el-row>
-            </div></el-col
-          >
-          <el-col :span="12"
-            ><div class="ui segment">
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="ui segment">
               <el-row :gutter="24" style="height: 200px">
                 <el-col :span="12">
                   <img
                     class="ui fluid rounded image"
-                    src="../../../../assets/message4.png"
-                /></el-col>
+                    src="../../../../assets/message4.png"/>
+                </el-col>
                 <el-col :span="12">
                   <h5 style="text-align: center">元宇宙</h5>
-                  <el-descriptions>
-                    <el-descriptions-item
-                      >利用科技手段进行链接与创造的，与现实世界映射与交互的虚拟世界，具备新型社会体系的数字生活空间。元宇宙本质上是对现实世界的虚拟化、数字化过程，需要对内容生产、经济系统、用户体验以及实体...</el-descriptions-item
-                    >
-                  </el-descriptions></el-col
-                >
+                  <el-descriptions class="text-box">
+                    <el-descriptions-item class="text-box">利用科技手段进行链接与创造的，与现实世界映射与交互的虚拟世界，具备新型社会体系的数字生活空间。元宇宙本质上是对现实世界的虚拟化、数字化过程，需要对内容生产、经济系统、用户体验以及实体...</el-descriptions-item>
+                  </el-descriptions></el-col>
               </el-row>
-            </div></el-col
-          > </el-row
-        ><br />
+            </div>
+          </el-col>
+        </el-row>
+        <br />
         <el-row :gutter="24">
           <el-col :span="12">
             <div class="ui segment">
@@ -145,4 +140,10 @@ export default {
 </script>
 
 <style scoped>
+  .text-box {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
 </style>

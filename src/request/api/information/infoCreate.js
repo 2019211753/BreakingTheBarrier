@@ -9,7 +9,7 @@ import instance from "../../http";
 const infoCreate = {
   createEntry(data) {
     return instance
-      .post("/infoEntry/create?entryTagName=" + data.entryTagName, data.body)
+      .post("/infoEntry/create?entryTagName=", data)
   }
 }
 

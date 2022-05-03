@@ -214,7 +214,7 @@ export default {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    :nth-child(n+2):hover {
+    :nth-child(n+1):hover {
       border-bottom: 1px solid grey;
     }
     li {

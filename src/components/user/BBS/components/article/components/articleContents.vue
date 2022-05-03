@@ -1,5 +1,5 @@
 <template>
-  <div class="ui basic segment">
+  <div class="btb-container ui basic segment">
     <div class="ui segment" v-for="(item, index) in contentList">
       <div class="ui middle aligned grid">
         <div class="ten wide column">
@@ -34,7 +34,7 @@
             <div class="sixteen wide column" style="margin-top: -20px">
               <div class="ui mini horizontal link list">
                 <div class="item">
-                  <i class="calendar icon"></i>
+                  <i class="clock icon"></i>
                   <span style="margin-left: 2px">{{ item.createTime }}</span>
                 </div>
                 <div class="item">
@@ -65,17 +65,8 @@
               </div>
             </div>
           </div>
-          <div class="ui grid">
-            <!-- <div class="right aligned five wide column">
-              <a
-                href="/types/2"
-                class="ui teal basic label m-padded-tb-tiny m-text-thin"
-                >JavaSE</a
-              >
-            </div> -->
-          </div>
         </div>
-        <div class="six wide column">
+        <div class="btb-m-img six wide column">
           <a target="_blank">
             <img
               :src='getImgUrl(index)'
@@ -86,7 +77,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="ui segment"></div> -->
     <div class="ui segment" v-if="loading == false && !contentList.length">
       <el-empty image-size="200" description="暂无内容"></el-empty>
     </div>
@@ -174,36 +164,16 @@ export default {
 };
 </script>
 
-<style scoped>
-.framework {
-  margin-top: 20px;
-  height: 240px;
+<style scoped lang="scss">
+.btb-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
-.frameworkBody {
-  width: 90%;
-  margin: auto;
-}
-
-.title {
-  margin-top: 0px;
-}
-
-.ui.label {
-  margin-top: 5px;
-}
-
-img {
-  height: 120px;
-}
-
-.el-pagination {
-  margin-top: 20px;
-  margin-left: 25%;
-}
-
-.ui.basic.very.padded.segment {
-  font-size: 15px;
-  font-weight: 900;
+@media screen and (max-width: 750px){
+  div.segment > div.middle > .btb-m-img {
+    display: none;
+  }
 }
 </style>

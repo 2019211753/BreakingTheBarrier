@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style>
+@import "./assets/css/btb.scss";
 .ui.container {
   /*width: 1200px;*/
 }
@@ -18,14 +19,5 @@ export default {
   display: none;
 }
 
-@media screen and (max-width: 570px) {
-  .btb-h3 {
-    font-size: 16px;
-  }
-}
-@media screen and (max-width: 375px){
-  .btb-h3 {
-    font-size: 14px;
-  }
-}
+
 </style>

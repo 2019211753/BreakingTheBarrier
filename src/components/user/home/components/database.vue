@@ -24,22 +24,22 @@
       </el-col>
       <el-col >
         <div class="imgBox">
-          <img class="" src="../../../../assets/P.png" alt="" />
+          <img class="" src="../../../../assets/p.jpg" alt="" />
         </div>
       </el-col>
       <el-col >
         <div class="imgBox">
-          <img class="" src="../../../../assets/P.png" alt="" />
+          <img class="" src="../../../../assets/x.jpg" alt="" />
         </div>
       </el-col>
       <el-col >
         <div class="imgBox">
-          <img class="" src="../../../../assets/P.png" alt="" />
+          <img class="" src="../../../../assets/ppt.jpg" alt="" />
         </div>
       </el-col>
       <el-col >
         <div class="imgBox">
-          <img class="" src="../../../../assets/P.png" alt="" />
+          <img class="" src="../../../../assets/x.jpg" alt="" />
         </div>
       </el-col>
     </el-row>

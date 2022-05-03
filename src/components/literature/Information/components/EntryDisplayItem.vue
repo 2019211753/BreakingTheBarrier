@@ -1,20 +1,16 @@
 <template>
-  <div
-    class="itemBox"
-    style="" @click="itemClick">
-<!--    <span>{{contentItem}}</span>-->
-    <div class="imgItem"></div>
-    <div>
-      <h2 >{{contentItem.title}}</h2>
-      <span>{{contentItem.currentContent}}</span>
-      <i style="display: none">{{contentItem.id}}</i>
-    </div>
-  </div>
+  <btb-description>
+
+<!--    <btb-description-item></btb-description-item>-->
+  </btb-description>
 </template>
 
 <script>
+import btbDescription from "../../../user/home/components/btbDescription";
+import btbDescriptionItem from "../../../user/home/components/btbDescriptionItem";
   export default {
     name: "EntryDisplayItem",
+    components: { btbDescription, btbDescriptionItem },
     data() {
       return {
         showUpdateFlag: false
@@ -34,9 +30,6 @@
         document.getElementById('link').click()
       }
     },
-    components: {
-      // UpdateEntry
-    }
   }
 </script>
 

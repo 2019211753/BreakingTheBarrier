@@ -1,29 +1,22 @@
 <template>
   <div>
     <div class="header">
-      <div class="logo"></div>
       <div class="nav">
         <ul>
           <li>
-            <a href=""
-              ><router-link to="/BreakingTheBarrier/BBS/questions"
-                ><i class="home icon"></i>问答</router-link
-              ></a
-            >
+            <router-link to="/BreakingTheBarrier/BBS/questions">
+              <i class="home icon"></i>问答
+            </router-link>
           </li>
           <li>
-            <a href=""
-              ><router-link to="/BreakingTheBarrier/BBS/blogs"
-                ><i class="home icon"></i>博客</router-link
-              ></a
-            >
+            <router-link to="/BreakingTheBarrier/BBS/blogs">
+              <i class="home icon"></i>博客
+            </router-link>
           </li>
           <li>
-            <a href=""
-              ><router-link to="/BreakingTheBarrier/BBS/rank"
-                ><i class="home icon"></i>排行榜</router-link
-              ></a
-            >
+            <router-link to="/BreakingTheBarrier/BBS/rank">
+              <i class="home icon"></i>排行榜
+            </router-link>
           </li>
         </ul>
       </div>
@@ -38,43 +31,42 @@ export default {
 };
 </script>
 
-<style scoped>
-.nav {
-  float: left;
-  margin-left: 3%;
-}
-
-.nav ul li {
-  float: left;
-  margin: -15px 10px;
-}
-
-.nav ul li a {
-  display: block;
-  height: 42px;
-  padding: 0 10px;
-  line-height: 42px;
-  font-size: 16px;
-  color: black;
-  font-weight: 600;
-}
-
-.nav ul a:hover {
-  border-bottom: 4px solid orange;
-}
-
-a {
-  text-decoration: none;
-}
-
+<style scoped lang="scss">
 .header {
   height: 40px;
   width: 40%;
-  margin: auto;
-  margin-top: 20px;
+  margin: 20px auto 0 auto;
+  .nav {
+    > ul {
+      display: flex;
+      justify-content: center;
+      flex-wrap: nowrap;
+      > li {
+        white-space: nowrap;
+        margin: -15px 2vw;
+        list-style: none;
+        a {
+          display: block;
+          height: 42px;
+          padding: 0 10px;
+          line-height: 42px;
+          font-size: 16px;
+          color: black;
+          font-weight: 600;
+        }
+        a:hover {
+          border-bottom: 4px solid orange;
+        }
+      }
+    }
+  }
 }
-
-li {
-  list-style: none;
+@media screen and (max-width: 570px){
+  .header {
+    height: 15px;
+  }
+  .header .nav > ul > li a {
+    font-size: 14px;
+  }
 }
 </style>

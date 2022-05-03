@@ -1,31 +1,39 @@
 <template>
-  <div class="ui container">
-<!--    <router-link to="/BreakingTheBarrier/literature/information/EntryDisplay">词条展示</router-link>-->
-<!--    <router-link to=""></router-link>-->
-    <div style="margin-bottom: 30px;">
+  <div>
+    <div style="margin-bottom: 0;">
       <sec-menu>
         <h3 slot="titleH3" style="letter-spacing: 5px;">信息百科</h3>
         <span slot="item"></span>
         <span slot="space">&nbsp;&nbsp;</span>
-        <span slot="search" style="position: relative;top: -6px;height: 20px;">
-          <div class="ui container" style="width: fit-content; margin: 5px;">
+        <div slot="search" style="position: relative;top: -6px;height: 20px;">
+          <div class="" style="width: fit-content; margin: 5px;">
           <button class="ui button">
             <router-link to="/BreakingTheBarrier/literature/information/EntryCreate">创建词条</router-link>
           </button>
         </div>
-        </span>
+        </div>
       </sec-menu>
     </div>
 
 <!--词条展示-->
-    <div class="main-box">
-      <entry-display
-        class="info-box"
-        id=""
-        :content="approvedEntry.content">
-
-      </entry-display>
-
+    <div class="mainBox">
+      <div class="ui segment"
+        v-for="(item,index) in approvedEntry.content"
+           :key="index">
+        <a class="ui red ribbon label">
+              <span v-for="(tags,index) in item.entryTags">
+                {{ tags.name }}
+              </span>
+        </a>
+        <btb-description
+          class="xxx">
+          <btb-description-item :label="item.title" :flag="false" icon="bookmark" class="entryBox"></btb-description-item>
+          <btb-description-item icon="quote left" :flag="false">{{item.currentContent}}</btb-description-item>
+        </btb-description>
+        <div @click="toEntry(item.id)" class="more">
+          <btb-description-item icon="arrow circle right" label="" :flag="false"></btb-description-item>
+        </div>
+      </div>
     </div>
     <div class="el-page">
       <el-pagination
@@ -35,7 +43,7 @@
       </el-pagination>
     </div>
 <!--展示未审核-->
-    <div class="ui container">
+    <div class="" style="display: none">
       <h2>未审核词条</h2>
       <ul>
         <li v-for="(item, index) in entry.content"
@@ -53,15 +61,16 @@
 
 <script>
   import SecMenu from "../SecMenu";
-  import FileDisplay from "../FileDisplay";
-  import FileDisplayCItem from "./FileDisplayCItem";
-  import HotFile from "../HotFile";
-  import SearchFile from "../components/SearchFile";
   import $ from 'jquery'
   import ShowUnproved from "./components/ShowUnproved";
   import EntryDisplay from "./components/EntryDisplay";
+  import btbDescription from "../../user/home/components/btbDescription";
+  import btbDescriptionItem from "../../user/home/components/btbDescriptionItem";
   export default {
     name: "Information",
+    components: {
+      SecMenu, ShowUnproved, EntryDisplay, btbDescription, btbDescriptionItem
+    },
     props: {
       path: String
     },
@@ -81,28 +90,28 @@
     },
     mounted() {
       //请求到的entry对象储存到data里
-      let that = this
-      that.$api.infoGetUnapro
-        .infoGetUnapro()
-        .then(res => {
-              let content = res.data.data.entries.content
-              for(let i in content) {
-                this.entry.content.push(content[i])
-              }
-              // console.log(content);
-            })
-        .catch(err => {
-          console.log(err);
-          // alert(err)
-        })
+      // let that = this
+      // that.$api.infoGetUnapro
+      //   .infoGetUnapro()
+      //   .then(res => {
+      //         let content = res.data.data.entries.content
+      //         for(let i in content) {
+      //           this.entry.content.push(content[i])
+      //         }
+      //         // console.log(content);
+      //       })
+      //   .catch(err => {
+      //     console.log(err);
+      //     // alert(err)
+      //   })
       //把请求到的approvedEntry存储下来
       let pageIndex = 0;
-      that.$api.infoShow
+      this.$api.infoShow
         .infoShow(pageIndex)
         .then(res => {
           let content = res.data.data.entries.content
           this.pageNum = res.data.data.entries.totalPages;
-          console.log(res.data.data.entries.totalPages);
+          // console.log(res.data.data.entries.totalPages);
           for(let i in content)
             this.approvedEntry.content.push(content[i])
           // this.approvedEntry = res.data.data.entries.content
@@ -123,6 +132,10 @@
         $('#createDiv')
           .transition('scale')
         ;
+      },
+      toEntry(item) {
+        console.log('点击');
+        this.$router.push(`/BreakingTheBarrier/literature/information/EntryItem?id=${item}`)
       },
       createEntry(title, newContent) {
         let data = {
@@ -153,40 +166,49 @@
           .sidebar('toggle');
       }
     },
-
-    components: {
-      SecMenu,
-      FileDisplay,
-      FileDisplayCItem,
-      HotFile,
-      SearchFile,
-      ShowUnproved,
-      EntryDisplay
-    }
   }
 </script>
 
-<style scoped>
-  .main-box {
-    display: flex;
-    width: 1200px;
-    margin: 0 auto;
-    box-sizing: border-box;
-    /*justify-content: flex-end;*/
+<style scoped lang="scss">
+.mainBox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: baseline;
+  > div {
+    width: 30%;
+    height: 235px;
+    .xxx {
+      position: relative;
+      > div {
+        width: 100%;
+        justify-content: center;
+        border: none;
+        span {
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+      :nth-child(2) {
+        -webkit-line-clamp: 5;
+        line-height: 150%;
+      }
+    }
+    .more {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      cursor: pointer;
+      > div {
+        border: none;
+      }
+    }
   }
-  .info-box {
-    display: flex;
-    width: 775px;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    box-sizing: border-box;
-    border: 1px solid #ededed;
-    border-radius: 5px;
+}
+@media screen and (max-width: 568px){
+  .mainBox > div {
+    height: 200px;
   }
-  .hot-box {
-    width: 400px;
-    box-sizing: border-box;
-    border: 1px solid #ededed;
-    border-radius: 5px;
-  }
+
+}
 </style>

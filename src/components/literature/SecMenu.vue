@@ -1,7 +1,6 @@
 <template>
   <div class="ui secondary pointing menu"
-       style="width: 668px;
-                   margin: 0 auto">
+       style="margin: 0 auto">
     <slot name="titleH3">
       <h3 style="letter-spacing: 5px">资料文献</h3>
     </slot>
