@@ -29,7 +29,6 @@
     </ul>
     <div class="btb-logo"><img src="../../assets/logo.png" alt="logo"></div>
     <ul class="navBox">
-<!--      <li></li>-->
       <li>
         <a href="">
           <router-link to="/BreakingTheBarrier/home">
@@ -99,6 +98,15 @@ export default {
       isActive: false
     };
   },
+  mounted() {
+    window.addEventListener('resize',() => {
+      if(window.innerWidth > 570 ) {
+        /*>570px时使m-menu不显示*/
+        const menu = document.querySelector('.m-navBox')
+        menu.style.cssText = 'display: none;z-index: -1;'
+      }
+    })
+  },
   methods: {
     logOut() {
       sessionStorage.clear();
@@ -115,11 +123,11 @@ export default {
       const menuBtn = document.querySelector('.m-menu')
       if(menu.style.cssText !== '') {
         /*即当前menu已显示，应关闭显示*/
-        console.log('不为空');
+        // console.log('不为空');
         menu.style.cssText = ''
       }
       else {
-        console.log('为空');
+        // console.log('为空');
         /*即当前menu未显示，应该去显示*/
         menu.style.cssText = 'z-index: 999;display: flex;'
         $('.m-navBox').animate({top: '-15px'})
@@ -139,14 +147,6 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
-
-    window.addEventListener('resize',() => {
-      if(window.innerWidth > 570 ) {
-        /*>570px时使m-menu不显示*/
-        const menu = document.querySelector('.m-navBox')
-        menu.style.cssText = 'display: none;z-index: -1;'
-      }
-    })
   },
 };
 </script>
@@ -155,7 +155,7 @@ export default {
 .menuBtn {
   display: none;
   position: absolute;
-  right: 1vw;
+  right: -6.5vw;
   top: 20px;
   cursor: pointer;
   z-index: 99999;
@@ -173,19 +173,20 @@ export default {
   justify-content: space-around;
   align-items: center;
   height: 100%;
+  position: relative;
   .m-navBox {
     //display: none;
     box-sizing: border-box;
     padding: 9px 10vw;
     width: 100vw;
-    display: flex;
+    //display: flex;
     justify-content: space-around;
     position: absolute;
     top: -80px;
     background-color: rgba(5,11,19,0.92);
     height: 67px;
     z-index: -1;
-    //display: none;
+    display: none;
     li {
       cursor: pointer;
       list-style: none;
@@ -282,6 +283,9 @@ export default {
 @media screen and (max-width: 570px){
   .btb-header .btb-logo {
     width: 30px;
+  }
+  .btb-header .m-navBox {
+    display: flex;
   }
   .menuBtn {
     display: block;

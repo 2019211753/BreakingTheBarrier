@@ -7,26 +7,15 @@
     </div>
     <div class="hot" id="hot">
       <hotArticle></hotArticle>
-      <div class="ui basic segment">
-        <div class="ui segment">
-          <div class="ui fluid input">
-            <input type="text" placeholder="搜索..." v-model="searchContent" />
-            <router-link
-              :to="{
-                path: '/BreakingTheBarrier/BBS/searchArticleResult',
-                query: { searchContent: this.searchContent },
-              }"
-            >
-              <button class="ui teal button" v-if="this.searchContent">
-                搜索
-              </button>
-            </router-link>
-          </div>
-          <br />
-          <div class="ui teal fluid button" @click="turnToAddArticle()">
-            发布内容
-          </div>
+      <div class="mainBox">
+        <div class="ui icon input">
+          <input type="text" placeholder="搜索..." v-model="searchContent">
+          <i class="inverted circular search link icon" @click="turnToRes"></i>
         </div>
+        <button class="ui right labeled blue icon button" @click="turnToAddArticle()">
+          <i class="right arrow icon"></i>
+          发布内容
+        </button>
       </div>
     </div>
   </div>
@@ -62,11 +51,17 @@ export default {
       var that = this;
       that.$router.push("/BreakingTheBarrier/BBS/article/addArticle");
     },
+    turnToRes() {
+      this.$router.push(`/BreakingTheBarrier/BBS/searchArticleResult?searchContent=${this.searchContent}`)
+    },
     openHot() {
+      let mask = document.getElementsByClassName('mask')[0]
       if (!this.isShow) {
+        mask.style.cssText = 'z-index: 1'
         $('div.hot').animate({
-          right: '0',
-          opacity: 1
+          top: '30px',
+          opacity: '1',
+          zIndex: '2'
         })
         $('div.mask').animate({
           opacity: '1'
@@ -75,11 +70,12 @@ export default {
       }
       else if(this.isShow){
         $('div.hot').animate({
-          right: '-380px',
+          top: '-520px',
           opacity: 0
         })
         $('div.mask').animate({
-          opacity: '0'
+          opacity: '0',
+          zIndex: '-1'
         })
         this.isShow = false
       }
@@ -98,14 +94,14 @@ export default {
   box-sizing: border-box;
   padding: 0 120px;
   > button.button {
-    z-index: 2;
+    z-index: 10;
     top: 0;
     display: none;
     margin-bottom: 5px;
   }
   .mask {
     position: fixed;
-    z-index: 1;
+    z-index: -1;
     top: 0;
     left: 0;
     width: 100vw;
@@ -119,6 +115,13 @@ export default {
   .hot {
     width: 300px;
     z-index: 2;
+  }
+  .mainBox {
+    display: flex;
+    flex-direction: column;
+    > div {
+      margin: 5px 0;
+    }
   }
 }
 @media screen and (max-width: 989px){
@@ -143,8 +146,8 @@ export default {
     .hot {
       width: 100%;
       position: absolute;
-      top: 33px;
-      right: -380px;
+      top: 0px;
+      //right: -380px;
       opacity: 0;
     }
   }

@@ -51,7 +51,7 @@ export default {
           padding: 0 10px;
           line-height: 42px;
           font-size: 16px;
-          color: black;
+          color: grey;
           font-weight: 600;
         }
         a:hover {
