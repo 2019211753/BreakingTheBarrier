@@ -31,7 +31,6 @@ export default {
     return {
       searchContent: "" ,
       isShow: false,
-      moreThan550: true
     };
   },
   mounted() {
@@ -146,25 +145,11 @@ export default {
     .hot {
       width: 100%;
       position: absolute;
-      top: 0px;
+      top: 0;
       //right: -380px;
       opacity: 0;
+      z-index: -1;
     }
   }
 }
-/*.body {*/
-/*  width: 80%;*/
-
-/*  margin: auto;*/
-/*  margin-top: 20px;*/
-/*}*/
-/*.main {*/
-/*  width: 64%;*/
-/*  float: left;*/
-/*}*/
-/*.hot {*/
-/*  width: 35%;*/
-/*  float: left;*/
-/*  margin-left: 1%;*/
-/*}*/
 </style>

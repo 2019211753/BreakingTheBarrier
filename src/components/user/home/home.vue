@@ -17,11 +17,11 @@
                   ><i class="server icon"></i>资料库</a
                 >
               </li>
-              <li>
-                <a href="" @click="turnTeam()"
-                  ><i class="handshake icon"></i>组队</a
-                >
-              </li>
+<!--              <li>-->
+<!--                <a href="" @click="turnTeam()"-->
+<!--                  ><i class="handshake icon"></i>组队</a-->
+<!--                >-->
+<!--              </li>-->
               <li>
                 <router-link to="/BreakingTheBarrier/literature/information"
                   ><i class="paw icon"></i>信息百科</router-link>
@@ -75,15 +75,13 @@ export default {
   max-height: 300px;
 }
 .nav {
-  /*float: left;*/
-  /*margin-left: 3%;*/
+  width: 55%;
+  margin: 5px 0;
 }
 .nav ul {
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  position: relative;
-  left: -10px;
+  padding: 0;
+  justify-content: space-around;
 }
 .nav ul li {
   /*float: left;*/

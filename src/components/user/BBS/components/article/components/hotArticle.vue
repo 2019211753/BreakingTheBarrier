@@ -26,9 +26,9 @@
         </el-skeleton>
         <div>
           <div class="ui feed">
-            <div class="event" v-for="item in impactList">
-              <div class="label">
-                <img :src="item.avatar" alt="" />
+            <div class="event" style="margin: 5px 0" v-for="item in impactList">
+              <div class="label" style="height: 35px">
+                <img :src="item.avatar" alt="" style="height: 100%" />
               </div>
               <div class="content">
                 <div class="summary">

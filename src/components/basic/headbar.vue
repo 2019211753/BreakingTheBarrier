@@ -3,12 +3,12 @@
     <ul class="m-navBox">
       <li>
         <router-link to="/BreakingTheBarrier/home">
-          <i class="sticky note outline icon"></i>首页
+          <i class="home icon"></i>首页
         </router-link>
       </li>
       <li>
         <router-link to="/BreakingTheBarrier/BBS/questions">
-          <i class="home icon"></i>论坛
+          <i class="bullhorn icon"></i>论坛
         </router-link>
       </li>
       <li>
@@ -16,11 +16,11 @@
           <i class="server icon"></i>资料库
         </router-link>
       </li>
-      <li>
-        <router-link to="/BreakingTheBarrier/team">
-          <i class="handshake icon"></i>组队
-        </router-link>
-      </li>
+<!--      <li>-->
+<!--        <router-link to="/BreakingTheBarrier/team">-->
+<!--          <i class="handshake icon"></i>组队-->
+<!--        </router-link>-->
+<!--      </li>-->
       <li>
         <router-link to="/BreakingTheBarrier/literature/information">
           <i class="paw icon"></i>信息百科
@@ -39,7 +39,7 @@
       <li>
         <a href="">
           <router-link to="/BreakingTheBarrier/BBS/questions">
-            <i class="sticky note outline icon"></i>论坛
+            <i class="bullhorn icon"></i>论坛
           </router-link>
         </a>
       </li>
@@ -50,13 +50,13 @@
           </router-link>
         </a>
       </li>
-      <li>
-        <a href="">
-          <router-link to="/BreakingTheBarrier/team">
-            <i class="handshake icon"></i>组队
-          </router-link>
-        </a>
-      </li>
+<!--      <li>-->
+<!--        <a href="">-->
+<!--          <router-link to="/BreakingTheBarrier/team">-->
+<!--            <i class="handshake icon"></i>组队-->
+<!--          </router-link>-->
+<!--        </a>-->
+<!--      </li>-->
       <li>
         <a href="">
           <router-link to="/BreakingTheBarrier/literature/information">
