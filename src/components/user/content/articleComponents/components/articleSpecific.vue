@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-skeleton :loading="questionLoading" animated style="margin-top: 14px">
+    <el-skeleton :loading="questionLoading" animated>
       <template slot="template">
         <div>
           <div class="ui segment">
@@ -35,14 +35,19 @@
         </div>
       </template>
     </el-skeleton>
-    <div class="ui segment" v-if="questionLoading == false">
+    <div class="ui segment" v-if="questionLoading == false" style="margin: 0">
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="template.avatar" alt=""/>
+            <div style="width: 40px;height: 40px"><img
+              style="height: 100%;width: 100%"
+              class="ui tiny centered circular image"
+              :src="$store.state.others.avatar"
+              alt="avatar"
+            /></div>
           </div>
           <div class="content">
-            <div class="summary">
+            <div class="summary" id="isSolveBox">
               <a class="user">
                 <router-link
                   v-if="$store.state.me.id == postUserId"
@@ -57,15 +62,15 @@
                   }"
                 >{{ template.nickname }}
                 </router-link>
-              </a>
+              </a >
               <div
-                v-if="template.solved == true"
+                v-if="template.solved === true"
                 class="ui teal top right attached label"
               >
                 已解决
               </div>
               <div
-                v-if="template.solved == false"
+                v-if="template.solved === false"
                 class="ui red top right attached label"
               >
                 未解决
@@ -83,8 +88,9 @@
         <el-col :span="7">
           <div style="height: 1px"></div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="12" style="display: flex;justify-content: center">
           <div
+            style="white-space: nowrap"
             @click="likeArticle(template.id)"
             :class="articleApproved == true ? articleLikeIsActive : button"
           >
@@ -92,6 +98,7 @@
             {{ articleLikeNumber }}
           </div>
           <div
+            style="white-space: nowrap"
             class="ui button"
             :class="collected == true ? articleCollectIsActive : button"
             @click="collected == false ? openCollections() : collectArticle()"
@@ -99,7 +106,10 @@
             <i class="star icon"></i>
             {{ articleCollectNumber }}
           </div>
-          <div class="ui icon blue button" @click="dialogFormVisible1 = true">
+          <div
+            style="white-space: nowrap"
+            class="ui icon blue button"
+            @click="dialogFormVisible1 = true">
             <i class="comment icon"></i>
           </div>
         </el-col>
@@ -953,5 +963,10 @@ export default {
 <style scoped>
 h3:nth-child(2) {
   text-align: center;
+}
+@media screen and (max-width: 410px){
+  div#isSolveBox > div.label {
+    padding: 5px;
+  }
 }
 </style>

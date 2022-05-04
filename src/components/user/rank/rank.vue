@@ -18,21 +18,35 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .body {
   width: 80%;
   margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
-
 .main {
   margin-top: 20px;
   width: 60%;
-  float: left;
 }
 .side {
   margin-top: 20px;
   width: 35%;
-  float: left;
-  margin-left: 5%;
+  //margin-left: 5%;
+}
+@media screen and (max-width: 580px) {
+  .body {
+    width: 95%;
+    flex-direction: column-reverse;
+    justify-content: space-around;
+    .main {
+      width: 100%;
+    }
+    .side {
+      width: 100%;
+      //display: none;
+    }
+  }
 }
 </style>

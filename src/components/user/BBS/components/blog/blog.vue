@@ -30,6 +30,19 @@ export default {
   data() {
     return { searchContent: "" };
   },
+  mounted() {
+    window.addEventListener('resize', () => {
+      if(this.$route.path.lastIndexOf('blogs') !== -1) {
+        let mask = document.getElementsByClassName('mask')[0]
+        let hot = document.getElementsByClassName('hot')[0]
+        if (window.innerWidth > 550) {
+          mask.style.cssText = 'opacity: 0;z-index:-1'
+          hot.style.cssText = ''
+        } else
+          mask.style.cssText = ''
+      }
+    })
+  },
   methods: {
     turnToAddBlog() {
       var that = this;
@@ -77,6 +90,7 @@ export default {
   margin: 0 auto;
   box-sizing: border-box;
   padding: 0 120px;
+  min-height: 80vh;
   > button.button {
     z-index: 10;
     top: 0;
@@ -124,6 +138,7 @@ export default {
 @media screen and (max-width: 550px){
   .body {
     flex-direction: column;
+    justify-content: flex-start;
     > button.button {
       display: block;
     }

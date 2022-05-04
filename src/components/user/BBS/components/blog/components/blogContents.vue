@@ -16,9 +16,9 @@
             <div class="info">
               <h3 class="title btb-h3"><router-link
                 :to="{
-                  path: '/BreakingTheBarrier/BBS/articleContent',
+                  path: '/BreakingTheBarrier/BBS/blogContent',
                   query: {
-                    articleId: item.id,
+                    blogId: item.id,
                     postUserId: item.postUserId,
                   },
                 }"
@@ -31,8 +31,10 @@
             </div>
           </div>
           <div class="solve">
-            <a style="margin: 5px 0" class="ui teal basic label" v-if="item.solved === true">已解决</a>
-            <a class="ui red basic label" v-else>未解决</a>
+            <a class="ui orange basic label" v-if="item.origin === true"
+            >原创</a
+            >
+            <a class="ui blue basic label" v-else>转载</a>
           </div>
         </div>
         <div class="divider"></div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="ui basic segment">
+  <div class="ui basic segment" style="padding: 0">
     <div class="ui segment" v-if="loading == true">
       <el-skeleton :loading="loading" animated>
         <template slot="template"
@@ -21,10 +21,12 @@
       <el-skeleton-item variant="text" /><el-skeleton-item variant="text" />
     </div>
     <div class="ui segment" v-else>
-      <img
+      <div style="width: 50px;height: 50px;margin: 0 auto"><img
+        style="height: 100%;width: 100%"
         class="ui tiny centered circular image"
         :src="$store.state.others.avatar"
-      />
+        alt="avatar"
+      /></div>
       <h3 style="text-align: center">
         <a href=""
           ><router-link
@@ -78,11 +80,22 @@
           :key="index"
         >
           <div class="label">
-            <img :src="$store.state.others.avatar" />
+            <div style="width: 30px;height: 30px;margin: 0 auto"><img
+              style="height: 100%;width: 100%"
+              class="ui tiny centered circular image"
+              :src="$store.state.others.avatar"
+              alt="avatar"
+            /></div>
           </div>
           <div class="content">
             <div class="summary">
-              <a class="user" href="">
+              <a class="user" href="" style="
+              -webkit-line-clamp: 3;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              width: 100%;">
                 <router-link
                   :to="{
                     path: '/BreakingTheBarrier/BBS/articleContent',

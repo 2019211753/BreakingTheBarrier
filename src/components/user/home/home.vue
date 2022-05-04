@@ -76,7 +76,7 @@ export default {
 }
 .nav {
   width: 55%;
-  margin: 5px 0;
+  margin: 5px auto;
 }
 .nav ul {
   display: flex;

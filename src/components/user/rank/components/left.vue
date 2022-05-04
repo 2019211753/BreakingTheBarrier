@@ -45,8 +45,8 @@
           <el-col :span="16">
             <div class="ui large feed">
               <div class="event">
-                <div class="label">
-                  <img :src="item.avatar"/>
+                <div class="label" style="width: 40px;height: 40px">
+                  <img :src="item.avatar" alt="avatar" height="100%"/>
                 </div>
                 <div class="content">
                   <div class="summary">
@@ -138,5 +138,22 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+div.content > div.summary > div.date {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 21vw;
+}
+
+@media screen and (max-width: 580px){
+  div.content > div.summary > div.date {
+    width: 44vw;
+  }
+}
+@media screen and (max-width: 370px){
+  div.content > div.summary > div.date {
+    width: 37vw;
+  }
+}
 </style>

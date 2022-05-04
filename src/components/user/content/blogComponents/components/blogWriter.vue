@@ -21,10 +21,12 @@
       <el-skeleton-item variant="text" /><el-skeleton-item variant="text" />
     </div>
     <div class="ui segment" v-else>
-      <img
+      <div style="width: 50px;height: 50px;margin: 0 auto"><img
+        style="height: 100%;width: 100%"
         class="ui tiny centered circular image"
         :src="$store.state.others.avatar"
-      />
+        alt="avatar"
+      /></div>
       <h3 style="text-align: center">
         <router-link
           v-if="$store.state.me.id == postUserId"
@@ -76,7 +78,12 @@
           :key="index"
         >
           <div class="label">
-            <img :src="$store.state.others.avatar" />
+            <div style="width: 30px;height: 30px;margin: 0 auto"><img
+              style="height: 100%;width: 100%"
+              class="ui tiny centered circular image"
+              :src="$store.state.others.avatar"
+              alt="avatar"
+            /></div>
           </div>
           <div class="content">
             <div class="summary">

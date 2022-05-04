@@ -200,9 +200,10 @@ export default {
     }
   }
   .btb-logo {
-    width: 60px;
+    width: 35px;
     display: flex;
     align-items: center;
+    //margin-right: 36px;
     //height: 20px;
     img {
       width: 100%
@@ -245,7 +246,10 @@ export default {
     }
   }
 }
-@media screen and (max-width: 1163px){
+@media screen and (max-width: 1198px){
+  .btb-header .btb-logo {
+    margin-right: 10px;
+  }
   .btb-header .navBox {
     //position: relative;
     left: -10vw;
@@ -271,7 +275,7 @@ export default {
     margin-left: 5px;
   }
   .btb-header .btb-logo {
-    width: 50px;
+    //width: 50px;
   }
   .navBox li:nth-child(4) {
     //display: none;
@@ -317,13 +321,19 @@ export default {
 @media screen and (max-width: 375px) {
   .btb-header {
     .btb-logo {
-      width: 30px;
+      width: 25px;
     }
     .navBox {
       li:nth-child(1) {
 
       }
     }
+  }
+}
+@media screen and (max-width: 360px){
+  .btb-header .btb-logo {
+    width: 20px;
+    margin-right: 15px;
   }
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="ui basic segment" style="margin-top: 10px;">
+    <div class="ui basic segment" style="margin-top: 30px;">
       <img
+        style="margin-bottom: 20px"
         class="ui centered medium circular image"
         src="../assets/logo.jpg"
         alt=""
@@ -16,7 +17,7 @@
           v-model="userName"
         />
       </div>
-      <div class="ui fluid labeled input"style="margin-top: 20px">
+      <div class="ui fluid labeled input" style="margin-top: 20px">
         <div class="ui teal label">
           密码
         </div>

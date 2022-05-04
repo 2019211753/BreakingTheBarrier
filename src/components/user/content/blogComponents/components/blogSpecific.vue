@@ -35,7 +35,7 @@
         </div>
       </template>
     </el-skeleton>
-    <div class="ui segment" v-if="blogLoading == false">
+    <div class="ui segment" v-if="blogLoading === false">
       <div class="ui large feed">
         <div class="event">
           <div class="label">
@@ -81,11 +81,11 @@
         转载声明： {{ template.transferStatement }}
       </p>
       <br/>
-      <el-row>
-        <el-col :span="6">
-          <div style="height: 1px"></div>
-        </el-col>
-        <el-col :span="12">
+      <el-row style="white-space: nowrap">
+        <el-col style="display: flex;
+                justify-content: center;
+                width: 100%;"
+                :span="12">
           <div
             @click="likeArticle(template.id)"
             :class="articleApproved == true ? articleLikeIsActive : button"
@@ -122,9 +122,6 @@
           >
             <i class="hand spock icon"></i> 赞赏
           </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple"></div>
         </el-col>
       </el-row>
 

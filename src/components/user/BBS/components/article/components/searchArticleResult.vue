@@ -63,6 +63,7 @@
         </div>
       </div>
     </div>
+
     <el-skeleton style="width: 50vw" :loading="loading" animated :count="7">
       <template slot="template">
         <div class="ui segment">
