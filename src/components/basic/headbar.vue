@@ -73,12 +73,12 @@
             ><el-skeleton-item variant="circle image" />
             </template>
           </el-skeleton>
-          <img
-            v-else
+          <div style="width: 30px;height: 30px;margin: 0 auto"><img
+            style="height: 100%;width: 100%"
+            class="ui tiny centered circular image"
             :src="$store.state.me.avatar"
-            alt=""
-            class="ui avatar image"
-          />
+            alt="avatar"
+          /></div>
         </router-link>
       </div>
       <div @click="logOut()">

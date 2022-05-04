@@ -70,7 +70,7 @@ export default {
 
 <style scoped lang="scss">
 .body {
-  width: 80vw;
+  //width: 73vw;
   margin: auto;
   display: flex;
   flex-direction: row;
