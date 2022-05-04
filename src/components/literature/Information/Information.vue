@@ -1,20 +1,24 @@
 <template>
   <div>
-    <div style="margin-bottom: 0;">
-      <sec-menu>
-        <h3 slot="titleH3" style="letter-spacing: 5px;">信息百科</h3>
-        <span slot="item"></span>
-        <span slot="space">&nbsp;&nbsp;</span>
-        <div slot="search" style="position: relative;top: -6px;height: 20px;">
-          <div class="" style="width: fit-content; margin: 5px;">
-          <button class="ui button">
-            <router-link to="/BreakingTheBarrier/literature/information/EntryCreate">创建词条</router-link>
-          </button>
+    <div class="title">
+      <h1 class="btb-h1">信息百科</h1>
+      <div class="operate">
+        <div class="ui small inverted buttons">
+          <div class="ui pink inverted button"><i class="pencil alternate icon"></i>创建</div>
+          <div class="or"></div>
+          <div class="ui blue inverted button" @click="showSearchInput">
+            <i class="search icon"></i>搜索
+          </div>
         </div>
-        </div>
-      </sec-menu>
+      </div>
+      <div class="ui icon input" id="input">
+        <input type="text" placeholder="搜索...">
+        <i class="inverted circular search link icon"></i>
+      </div>
     </div>
-
+<!--    <button class="ui button">-->
+<!--      <router-link to="/BreakingTheBarrier/literature/information/EntryCreate">创建词条</router-link>-->
+<!--    </button>-->
 <!--词条展示-->
     <div class="mainBox">
       <div class="ui segment"
@@ -28,7 +32,17 @@
         <btb-description
           class="xxx">
           <btb-description-item :label="item.title" :flag="false" icon="bookmark" class="entryBox"></btb-description-item>
-          <btb-description-item icon="quote left" :flag="false">{{item.currentContent}}</btb-description-item>
+          <btb-description-item
+            v-if="(item.discription !== null)"
+            icon="quote left"
+            :flag="false">{{item.discription}}
+          </btb-description-item>
+          <btb-description-item
+            v-else
+            icon="quote left"
+            :flag="false">
+            暂无简介
+          </btb-description-item>
         </btb-description>
         <div @click="toEntry(item.id)" class="more">
           <btb-description-item icon="arrow circle right" label="" :flag="false"></btb-description-item>
@@ -86,6 +100,7 @@
         },
         flag: 1,
         showUpdateFlag: false,
+        isShowSearch: false
       }
     },
     mounted() {
@@ -128,6 +143,24 @@
       }
     },
     methods: {
+      showSearchInput() {
+        if (!this.isShowSearch) {
+          $('#input').animate({
+            top: '0',
+            opacity: '1',
+            // zIndex: '1'
+          })
+          this.isShowSearch = true
+        }
+        else {
+          $('#input').animate({
+            top: '-80px',
+            opacity: '0',
+            // zIndex: '-1'
+          })
+          this.isShowSearch = false
+        }
+      },
       showInput() {
         $('#createDiv')
           .transition('scale')
@@ -170,6 +203,24 @@
 </script>
 
 <style scoped lang="scss">
+#input {
+  margin-left: 10px;
+  position: relative;
+  top: -80px;
+  opacity: 0;
+  //z-index: 1;
+}
+.title {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  padding-bottom: 5px;
+  border-bottom: 1px solid grey;
+  > h1 {
+    margin-right: 10px;
+    white-space: nowrap;
+  }
+}
 .mainBox {
   display: flex;
   flex-wrap: wrap;
@@ -209,6 +260,5 @@
   .mainBox > div {
     height: 200px;
   }
-
 }
 </style>

@@ -100,10 +100,12 @@ export default {
   },
   mounted() {
     window.addEventListener('resize',() => {
-      if(window.innerWidth > 570 ) {
-        /*>570px时使m-menu不显示*/
-        const menu = document.querySelector('.m-navBox')
-        menu.style.cssText = 'display: none;z-index: -1;'
+      if (this.$route.path.indexOf('logIn') !== -1 || this.$route.path === '\\') {
+        if (window.innerWidth > 570) {
+          /*>570px时使m-menu不显示*/
+          const menu = document.querySelector('.m-navBox')
+          menu.style.cssText = 'display: none;z-index: -1;'
+        }
       }
     })
   },

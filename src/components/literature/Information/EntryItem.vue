@@ -1,64 +1,157 @@
 <template>
-  <div class="ui segment" style="margin-left: 0">
-    <v-md-preview-html :html="currentContent" preview-class="vuepress-markdown-body"></v-md-preview-html>
-    <div class="ui right rail">
-      <div class="ui segment">
-        <h3 class="ui header">目录</h3>
+  <div>
+    <el-skeleton :rows="6" animated :loading="isLoading"/>
+    <div class="mainBox">
+      <div class="title">
+        <header><i class="heading icon"></i></header>
+        <h1 class="content ui header">{{entry.title}}</h1>
       </div>
-    </div>
-
-    <h5 class="ui header">{{title}}</h5>
-<!--    <button class="ui button mini">修改词条</button>-->
-    <router-link
-      :to="{
-        path: '/BreakingTheBarrier/literature/information/EntryCreate',
-        query: {
-          id: this.id,
-          title: this.title,
-          currentContent: this.currentContent
-        }
-    }" class="ui button blue mini">修改词条</router-link>
-    <br>
-    <br>
-    <div>
-<!--      <p>至于计算方法，因为计算机是离散的，无法直接处理非离散的数学问题，将两者联系起来就是计算方法要研究的，简单说就是运用电子计算机处理数学-->
-<!--      问题的方法。</p>-->
-      {{currentContent}}
-    </div>
-
-    <h3 class="ui horizontal divider header">
-      <i class="tag icon blue" style="margin-left: 0"></i>描述
-    </h3>
-
-    <div class="ui vertical segment">
-      <p>1、 掌握数学物理方程的基本概念，如线性、非线性、拟线性、阶数等；了解典型二阶线性偏微分方程如弦、杆、膜、振动，电磁场、热传导、反应
-        扩散，平稳状态、守恒律等方程的建立与定解条件的提法。掌握二阶线性偏微分方程的分类方法。</p>
-      <p>2、 明确固有值及固有函数系的作用，熟练运用分离变量法处理椭圆型、抛物型、双曲型的齐次与非齐次方程及其第一、二、三类边界条件，了解
-        Legendre多项式、Bessel函数等特殊函数在偏微分方程中的应用及Sturm-Liouville方程的固有值问题。</p>
-      <p>3、掌握波动方程的D'Alembert解法；熟练掌握Fourier、Laplace等积分变换并运用于解偏微分方程。掌握调和函数的性质及Green函数法在球域、
-        半空间等特殊区域上的运用。数理方程归根结底就是研究如何运用偏微分方程求解物理问题。</p>
+      <div class="operate">
+        <div class="ui small inverted buttons">
+          <div class="ui red inverted button"><i class="edit icon"></i>编辑</div>
+          <div class="or"></div>
+          <div class="ui yellow inverted button"><i class="eraser icon"></i>删除</div>
+          <div class="or"></div>
+          <div class="ui pink inverted button"><i class="pencil alternate icon"></i>创建</div>
+        </div>
+      </div>
+      <div class="alias">
+        <header><i class="book icon"></i>别名</header>
+        <div class="content">{{ entry.alias }}</div>
+      </div>
+      <div class="tags">
+        <header><i class="tags icon"></i></header>
+        <el-tag v-if="item.name !== undefined"
+          v-for="(item,index) in entry.entryTags" :key="index">{{item.name}}</el-tag>
+        <el-tag v-else>暂无</el-tag>
+      </div>
+      <div class="description">
+        <header><i class="info icon"></i>简述</header>
+        <div class="content">{{ entry.description }}</div>
+      </div>
+      <div class="currentContent">
+        <header><i class="bars icon"></i>正文</header>
+        <div class="content">
+          <v-md-preview-html :html="entry.currentContent" preview-class="vuepress-markdown-body">
+          </v-md-preview-html>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import editor from "../../user/BBS/components/editor/editor";
   export default {
     name: "EntryItem",
+    components: {editor},
     data() {
       return {
         id: '',
-        title: '',
-        currentContent: ''
+        entry: '',
+        isLoading: true
       }
     },
     created() {
       this.id = this.$route.query.id
-      this.title = this.$route.query.title
-      this.currentContent = this.$route.query.currentContent
+      this.$api.infoSearchById.infoSearchById(this.id)
+      .then(res => {
+        this.entry = res.data.data.entries
+        this.isLoading = false
+      })
+      .catch(err => {
+        this.$message.error(err)
+      })
     }
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+i.quote {
+  position: relative;
+  font-weight: 300;
+  font-size: 10px;
+  top: -14px;
+}
+  .mainBox {
+    display: flex;
+    flex-direction: column;
+    color: grey;
+    header {
+      display: flex;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      margin-right: 10px;
+    }
+    .content {
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      line-height: 20px;
+      color: #316ea2;
+    }
+    > div {
+      margin-bottom: 10px;
+    }
+    .title {
+      font-size: 25px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      .content {
+        color: #316ea2;
+        cursor: pointer;
+        padding-bottom: 5px;
+        line-height: 27px;
+      }
+      h1:hover {
+        border-bottom: 3px solid #316ea2;
+      }
 
+    }
+    .alias {
+      display: flex;
+      font-size: 14px;
+      i {
+        font-size: x-large;
+      }
+      .content {
+        color: #316ea2;
+        cursor: pointer;
+        padding-bottom: 5px;
+      }
+      .content:hover {
+        border-bottom: 1px solid #316ea2;
+      }
+    }
+    .tags {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      i {
+        font-size: x-large;
+      }
+      > span {
+        margin-left: 5px;
+      }
+    }
+    .description {
+      display: flex;
+      flex-direction: column;
+      i {
+        font-size: x-large;
+      }
+      .content {
+        padding: 5px 20px;
+      }
+    }
+    .currentContent {
+      display: flex;
+      flex-direction: column;
+      i {
+        font-size: x-large;
+      }
+    }
+
+  }
 </style>
