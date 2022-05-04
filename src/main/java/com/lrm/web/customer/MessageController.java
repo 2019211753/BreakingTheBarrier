@@ -107,7 +107,7 @@ public class MessageController {
         comment.setLooked(true);
         commentServiceImpl.saveComment(comment);
 
-        return getResult(hashMap, currentUser, commentServiceImpl.countUnLooked(userId), userId);
+        return getResult(hashMap, currentUser);
     }
 
     /**
@@ -128,7 +128,7 @@ public class MessageController {
         likes.setLooked(true);
         likesServiceImpl.save(likes);
 
-        return getResult(hashMap, currentUser, likesServiceImpl.countUnLooked(userId), userId);
+        return getResult(hashMap, currentUser);
 
     }
 
@@ -148,7 +148,7 @@ public class MessageController {
             comment.setLooked(true);
             commentServiceImpl.saveComment(comment);
         }
-        return getResult(hashMap, currentUser, commentServiceImpl.countUnLooked(userId), userId);
+        return getResult(hashMap, currentUser);
     }
 
     /**
@@ -167,12 +167,13 @@ public class MessageController {
             likes1.setLooked(true);
             likesServiceImpl.save(likes1);
         }
-        return getResult(hashMap, currentUser, likesServiceImpl.countUnLooked(userId), userId);
+        return getResult(hashMap, currentUser);
     }
 
-    private Result getResult(Map<String, Object> hashMap, User currentUser, Integer integer, Long userId) {
+    private Result getResult(Map<String, Object> hashMap, User currentUser) {
         Map<String, Object> infos = new HashMap<>(1);
-        infos.put("unLookedInforms", integer);
+        Long userId = currentUser.getId();
+        infos.put("unLookedInforms", commentServiceImpl.countUnLooked(userId) + likesServiceImpl.countUnLooked(userId));
         String token = TokenInfo.postToken(currentUser, infos);
         hashMap.put("token", token);
         return new Result(hashMap, "已读成功");

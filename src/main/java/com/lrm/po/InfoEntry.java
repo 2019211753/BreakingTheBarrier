@@ -2,13 +2,9 @@ package com.lrm.po;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
 
 @Entity
 @Table(name = "t_infoEntry")
@@ -18,7 +14,7 @@ public class InfoEntry {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id = 0l;
+    private Long id;
 
     /**
      * 标题

@@ -264,7 +264,7 @@ public class ProfileController {
         }
 
         User newUser = userServiceImpl.updateUser(user);
-        hashMap.put("token", TokenInfo.postToken(newUser, null));
+        hashMap.put("token", TokenInfo.postToken(newUser, new HashMap<>(0)));
 
         if (errorMessage != null) {
             errorMessage.append("其他信息修改成功；");
