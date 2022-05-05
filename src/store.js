@@ -44,6 +44,7 @@ export default new Vuex.Store({
       followingUserNum: "",
       followedUserNum: ""
     },
+    maxAdminId: 10
   },
   mutations: {
     getWXToken(state, wxToken) {

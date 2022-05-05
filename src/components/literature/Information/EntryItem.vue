@@ -4,15 +4,15 @@
     <div class="mainBox">
       <div class="title">
         <header><i class="heading icon"></i></header>
-        <h1 class="content ui header">{{entry.title}}</h1>
+        <h1 class="content">{{entry.title}}</h1>
       </div>
       <div class="operate">
         <div class="ui small inverted buttons">
-          <div class="ui red inverted button"><i class="edit icon"></i>编辑</div>
+          <div class="ui red inverted button" @click="editEntry"><i class="edit icon"></i>编辑</div>
           <div class="or"></div>
-          <div class="ui yellow inverted button"><i class="eraser icon"></i>删除</div>
+          <div class="ui yellow inverted button" @click="deleteEntry"><i class="eraser icon"></i>删除</div>
           <div class="or"></div>
-          <div class="ui pink inverted button"><i class="pencil alternate icon"></i>创建</div>
+          <div class="ui pink inverted button" @click="turnToCreate"><i class="pencil alternate icon"></i>创建</div>
         </div>
       </div>
       <div class="alias">
@@ -27,7 +27,7 @@
       </div>
       <div class="description">
         <header><i class="info icon"></i>简述</header>
-        <div class="content">{{ entry.description }}</div>
+        <div class="content">{{ entry.discription }}</div>
       </div>
       <div class="currentContent">
         <header><i class="bars icon"></i>正文</header>
@@ -62,17 +62,24 @@ import editor from "../../user/BBS/components/editor/editor";
       .catch(err => {
         this.$message.error(err)
       })
-    }
+    },
+    methods: {
+      editEntry() {
+
+      },
+      deleteEntry() {
+        if(parseInt(this.$store.state.me.id) > this.$store.state.maxAdminId) {
+          this.$
+        }
+      },
+      turnToCreate() {
+
+      }
+    },
   }
 </script>
 
 <style scoped lang="scss">
-i.quote {
-  position: relative;
-  font-weight: 300;
-  font-size: 10px;
-  top: -14px;
-}
   .mainBox {
     display: flex;
     flex-direction: column;
@@ -101,20 +108,21 @@ i.quote {
       .content {
         color: #316ea2;
         cursor: pointer;
-        padding-bottom: 5px;
-        line-height: 27px;
+        padding-bottom: 10px;
+        line-height: 36px;
+        font-size: 36px;
       }
       h1:hover {
         border-bottom: 3px solid #316ea2;
       }
 
     }
+    .operate {
+      margin-bottom: 40px;
+    }
     .alias {
       display: flex;
       font-size: 14px;
-      i {
-        font-size: x-large;
-      }
       .content {
         color: #316ea2;
         cursor: pointer;
@@ -128,9 +136,6 @@ i.quote {
       display: flex;
       flex-direction: row;
       align-items: baseline;
-      i {
-        font-size: x-large;
-      }
       > span {
         margin-left: 5px;
       }
@@ -138,9 +143,6 @@ i.quote {
     .description {
       display: flex;
       flex-direction: column;
-      i {
-        font-size: x-large;
-      }
       .content {
         padding: 5px 20px;
       }
@@ -148,9 +150,6 @@ i.quote {
     .currentContent {
       display: flex;
       flex-direction: column;
-      i {
-        font-size: x-large;
-      }
     }
 
   }

@@ -9,7 +9,6 @@ const information = () =>
     import ("../components/literature/Information/Information");
 const literature = () =>
     import ("../components/literature/literature");
-
 export default new Router({
     mode: "hash",
     routes: [{
@@ -352,6 +351,10 @@ export default new Router({
                       {
                         path: "/BreakingTheBarrier/literature/information/EntryItem",
                         component: () => import("../components/literature/Information/EntryItem")
+                      },
+                      {
+                        path: "/BreakingTheBarrier/literature/information/EntryCheck",
+                        component: () => import("../components/literature/Information/EntryCheck")
                       }
 
                     ]

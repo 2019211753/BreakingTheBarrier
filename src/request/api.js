@@ -33,6 +33,7 @@ import infoApprove from "./api/information/infoApprove";
 import infoUpdate from "./api/information/infoUpdate";
 import infoSearch from "./api/information/infoSearch";
 import infoSearchById from "./api/information/infoSearchById";
+import infoDisapprove from "./api/information/infoReject";
 
 // 导出接口
 export default {
@@ -67,4 +68,5 @@ export default {
   infoUpdate,
   infoSearch,
   infoSearchById,
+  infoDisapprove
 }
