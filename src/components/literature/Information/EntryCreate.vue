@@ -170,11 +170,13 @@
         let isHave = this.tags.some(item => {
           return item === this.tag_input
         })
-        if (!isHave) {
+        if (!isHave && (this.tag_input !== '')) {//输入的标签不为空且没有重复
           this.tags.push(this.tag_input)
           this.tag_input = ''
         }
-      else
+        else if(this.tag_input === '')
+          this.$message.warning('不能添加空标签')
+        else
           this.$message.error('该标签已存在')
       },
       delCurrentTag(index) {

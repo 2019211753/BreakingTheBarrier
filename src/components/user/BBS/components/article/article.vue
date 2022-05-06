@@ -9,7 +9,7 @@
       <hotArticle></hotArticle>
       <div class="mainBox">
         <div class="ui icon input">
-          <input type="text" placeholder="搜索..." v-model="searchContent">
+          <input type="text" placeholder="搜索..." v-model="searchContent" @keyup.enter="turnToRes">
           <i class="inverted circular search link icon" @click="turnToRes"></i>
         </div>
         <button class="ui right labeled blue icon button" @click="turnToAddArticle()">

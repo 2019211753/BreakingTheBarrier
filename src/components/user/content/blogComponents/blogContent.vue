@@ -116,7 +116,7 @@ export default {
       width: 100%;
     }
     .main {
-      width: 100%;
+      width: 98%;
       margin-top: 0;
     }
     .side {

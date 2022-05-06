@@ -38,7 +38,6 @@ export default {
     }
   },
   created() {
-    console.log(this.coverIndex);
     this.coverList = []
     for(let i = 1;i < 24;i++) {
       let cover = require("../../../assets/img/cover/cover (" + `${i}).jpg`)

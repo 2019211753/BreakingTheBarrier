@@ -401,7 +401,12 @@
     </div>
     <el-dialog width="400px" title="" :visible.sync="dialogFormVisible4">
       <div>
-        <img class="ui tiny circular centered image" :src="template.avatar">
+        <div style="width: 70px;height: 70px;margin: 0 auto"><img
+          style="height: 100%;width: 100%"
+          class="ui tiny centered circular image"
+          :src="template.avatar"
+          alt="avatar"
+        /></div>
         <h4 style="text-align: center">thanks!</h4>
         <img class="ui  centered image" :src="template.wechatPayCode">
       </div>

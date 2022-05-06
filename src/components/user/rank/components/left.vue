@@ -46,7 +46,12 @@
             <div class="ui large feed">
               <div class="event">
                 <div class="label" style="width: 40px;height: 40px">
-                  <img :src="item.avatar" alt="avatar" height="100%"/>
+                  <div style="width: 40px;height: 40px;margin: 0 auto"><img
+                    style="height: 100%;width: 100%"
+                    class="ui tiny centered circular image"
+                    :src="item.avatar"
+                    alt="avatar"
+                  /></div>
                 </div>
                 <div class="content">
                   <div class="summary">

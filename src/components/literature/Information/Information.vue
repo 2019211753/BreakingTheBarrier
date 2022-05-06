@@ -68,16 +68,13 @@
 </template>
 
 <script>
-  import SecMenu from "../SecMenu";
   import $ from 'jquery'
-  import ShowUnproved from "./components/ShowUnproved";
-  import EntryDisplay from "./components/EntryDisplay";
   import btbDescription from "../../user/home/components/btbDescription";
   import btbDescriptionItem from "../../user/home/components/btbDescriptionItem";
   export default {
     name: "Information",
     components: {
-      SecMenu, ShowUnproved, EntryDisplay, btbDescription, btbDescriptionItem
+      btbDescription, btbDescriptionItem
     },
     data() {
       return {
@@ -118,7 +115,7 @@
         }
         else {
           $('#input').animate({
-            top: '-80px',
+            top: '-200px',
             opacity: '0',
             // zIndex: '-1'
           })
@@ -156,9 +153,11 @@
 <style scoped lang="scss">
 #input {
   margin-left: 10px;
-  position: relative;
-  top: -80px;
+  position: absolute;
+  top: -200px;
   opacity: 0;
+  //right: 0;
+  left: 373px;
   //z-index: 1;
 }
 .el-page {
@@ -172,6 +171,7 @@
   align-items: baseline;
   padding-bottom: 5px;
   border-bottom: 1px solid grey;
+  position: relative;
   > h1 {
     margin-right: 10px;
     white-space: nowrap;
@@ -213,6 +213,23 @@
     }
   }
 }
+@media screen and (max-width: 670px){
+  .title {
+    flex-direction: column;
+    //height: 75px;
+    > h1 {
+      //margin-right: 0;
+    }
+    .operate {
+      margin-top: 10px;
+    }
+  }
+  #input {
+    right: 0;
+    left: auto;
+    width: 120px;
+  }
+}
 @media screen and (max-width: 568px){
   .mainBox > div {
     //height: 200px;
@@ -222,6 +239,15 @@
 @media screen and (max-width: 550px){
   .mainBox > div {
     width: 100%;
+  }
+}
+@media screen and (max-width: 410px){
+  .title {
+    flex-direction: column;
+    //height: 75px;
+    > h1 {
+      margin-right: 0;
+    }
   }
 }
 </style>

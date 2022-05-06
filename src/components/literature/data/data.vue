@@ -90,7 +90,7 @@
                 {{ tags.name }}&nbsp
               </span>
           </a>
-          <FilesCover :file-info="item" :cover-index="Math.floor(Math.random() * files.length)">
+          <FilesCover :file-info="item" :cover-index="Math.floor(Math.random() * fileCoverSum)">
 
           </FilesCover>
         </div>
@@ -131,6 +131,7 @@
         fileName: '',
         flagUpload: false,
         uploading: false,
+        fileCoverSum: 23,//随机图片的数量
       }
     },
     created() {
@@ -148,7 +149,7 @@
         }
         else {
           $('#input').animate({
-            top: '-80px',
+            top: '-200px',
             opacity: '0',
             // zIndex: '-1'
           })
@@ -196,10 +197,12 @@
         let isHave = this.tags.some(item => {
           return item === this.tag_input
         })
-        if (!isHave) {
+        if (!isHave && (this.tag_input !== '')) {
           this.tags.push(this.tag_input)
           this.tag_input = ''
         }
+        else if(this.tag_input === '')
+          this.$message.warning('不能添加空标签')
         else
           this.$message.error('该标签已存在')
       },
@@ -356,9 +359,11 @@
 }
 #input {
   margin-left: 10px;
-  position: relative;
-  top: -80px;
+  position: absolute;
+  top: -200px;
   opacity: 0;
+  //right: 0;
+  left: 373px;
   //z-index: 1;
 }
 .el-page {
@@ -372,6 +377,7 @@
   align-items: baseline;
   padding-bottom: 5px;
   border-bottom: 1px solid grey;
+  position: relative;
   > h1 {
     margin-right: 10px;
     white-space: nowrap;
@@ -412,6 +418,23 @@
         border: none;
       }
     }
+  }
+}
+@media screen and (max-width: 670px){
+  .title {
+    flex-direction: column;
+    //height: 75px;
+    > h1 {
+      //margin-right: 0;
+    }
+    .operate {
+      margin-top: 10px;
+    }
+  }
+  #input {
+    right: 0;
+    left: auto;
+    width: 120px;
   }
 }
 @media screen and (max-width: 568px){

@@ -109,7 +109,7 @@ export default {
   margin: auto;
 }
 .body {
-  height: 800px;
+  /*height: 800px;*/
   margin-top: -20px;
   z-index: -1;
 }
