@@ -26,6 +26,7 @@ export default {
   display: flex;
   justify-content: space-between;
   color: grey;
+  margin-top: 50px;
   margin-bottom: 20px;
   box-sizing: border-box;
   .text {

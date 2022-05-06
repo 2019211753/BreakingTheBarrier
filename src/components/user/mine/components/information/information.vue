@@ -12,7 +12,7 @@
         </div>
       </div>
       <div>
-        <span><i class="dot circle icon"></i>性别</span>
+        <span><i class="venus mars icon"></i>性别</span>
         <div class="ui fluid selection dropdown">
           <input type="hidden" name="gender"/>
           <i class="dropdown icon"></i>

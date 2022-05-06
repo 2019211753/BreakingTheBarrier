@@ -111,7 +111,7 @@
         // console.log(this.title);
         if (this.id === undefined) {
           //为undefined -> 是创建
-          if (this.$store.state.text && this.title && this.description) {
+          if (this.$store.state.text && this.title && this.description && this.tags.length > 0) {
             //若表单各项参数都不为空
             let data = {
               entryTags: JSON.stringify(this.tags),

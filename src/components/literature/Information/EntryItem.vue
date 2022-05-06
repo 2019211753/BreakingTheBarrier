@@ -69,12 +69,27 @@ import editor from "../../user/BBS/components/editor/editor";
       },
       deleteEntry() {
         if(parseInt(this.$store.state.me.id) > this.$store.state.maxAdminId) {
-          this.$
+          this.$message.warning('您不是管理员哦')
         }
+        else {
+          this.$api.infoDelete.infoDelete(this.id)
+          .then(res => {
+            if(res.data.code === 200) {
+              this.$message.success('删除成功')
+              this.$router.push('/BreakingTheBarrier/literature/information')
+            }
+            else
+              this.$message.error(res.data.msg)
+          })
+          .catch(err => {
+            this.$message.error(err)
+          })
+        }
+
       },
       turnToCreate() {
-
-      }
+        this.$router.push('/BreakingTheBarrier/literature/information/EntryCreate')
+      },
     },
   }
 </script>
