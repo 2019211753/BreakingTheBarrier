@@ -2,6 +2,7 @@ package com.lrm.service;
 
 import com.lrm.dao.EntryTagRepository;
 import com.lrm.dao.InfoEntryRepository;
+import com.lrm.dto.UpdateInfoEntryDTO;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.NotFoundException;
 import com.lrm.po.EntryTag;
@@ -114,18 +115,8 @@ public class InfoEntryServiceImpl implements InfoEntryService {
 
     @Override
     @Transactional
-    public InfoEntry update(InfoEntry newEntry, String[] tagNames) {
-        List<EntryTag> list = new ArrayList<>();
-        for (int i = 0; i < tagNames.length; i++) {
-            EntryTag found = entryTagRepository.findByName(tagNames[i]);
-            //如果用户输入的tagName不存在，那么创建一个新的tag
-            if (found == null) {
-                found = new EntryTag(tagNames[i]);
-                entryTagRepository.save(found);
-            }
-            list.add(found);
-        }
-        Optional<InfoEntry> found = infoEntryRepository.findById(newEntry.getId());
+    public InfoEntry update(UpdateInfoEntryDTO updateInfoEntryDTO, String[] tagNames) {
+        Optional<InfoEntry> found = infoEntryRepository.findById(updateInfoEntryDTO.getId());
         if (!found.isPresent()) {
             throw new NotFoundException("此词条不存在");
         }
@@ -133,10 +124,23 @@ public class InfoEntryServiceImpl implements InfoEntryService {
         if (infoEntry.isLocked()) {
             throw new FailedOperationException("词条被锁住");
         }
-        infoEntry.setNewContent(newEntry.getNewContent());
+        List<EntryTag> tags = new ArrayList<>();
+        for (int i = 0; i < tagNames.length; i++) {
+            EntryTag tag = entryTagRepository.findByName(tagNames[i]);
+            //如果用户输入的tagName不存在，那么创建一个新的tag
+            if (tag == null) {
+                tag = new EntryTag(tagNames[i]);
+                entryTagRepository.save(tag);
+            }
+            tags.add(tag);
+        }
+        infoEntry.setEntryTags(tags);
+        infoEntry.setTitle(updateInfoEntryDTO.getTitle());
+        infoEntry.setDiscription(updateInfoEntryDTO.getDiscription());
+        infoEntry.setAlias(updateInfoEntryDTO.getAlias());
+        infoEntry.setNewContent(updateInfoEntryDTO.getNewContent());
         infoEntry.setApproved(false);//更新后有待审核
         infoEntry.setLocked(true);//暂时锁住
-        infoEntry.setEntryTags(list);
         return infoEntry;
     }
 

@@ -1,6 +1,7 @@
 package com.lrm.web;
 
 import com.lrm.dto.CreateInfoEntryDTO;
+import com.lrm.dto.UpdateInfoEntryDTO;
 import com.lrm.exception.FailedOperationException;
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.InfoEntry;
@@ -70,28 +71,14 @@ public class InfoEntryController {
      * @param infoEntry json格式的词条
      * @return 带有消息的Result
      */
-    @PostMapping("/{entryId}/update")
-    public Result update(@RequestBody InfoEntry infoEntry, @PathVariable("entryId") Long entryId, @RequestParam("entryTagName") String entryTagName) {
-        String realTagNames = entryTagName.substring(1, entryTagName.length() - 1);
+    @PostMapping("/update")
+    public Result update(@RequestBody UpdateInfoEntryDTO updateInfoEntryDTO) {
+        String realTagNames = updateInfoEntryDTO.getEntryTags().substring(1, updateInfoEntryDTO.getEntryTags().length() - 1);
         String[] tagNames = realTagNames.split(",");
         for (int i = 0; i < tagNames.length; i++) {
             tagNames[i] = tagNames[i].substring(1, tagNames[i].length() - 1);
         }
-        infoEntry.setId(entryId);
-        // 处理多用户修改同一id的词条时
-        if (volatileId == entryId) {
-            lock.lock();
-            try {
-                infoEntryServiceImpl.update(infoEntry, tagNames);
-            } catch (FailedOperationException failedOperationException) {
-                throw new FailedOperationException("词条被锁定");
-            } finally{
-                lock.unlock();
-            }
-        } else {//无冲突
-            volatileId = entryId;
-            infoEntryServiceImpl.update(infoEntry, tagNames);
-        }
+        infoEntryServiceImpl.update(updateInfoEntryDTO, tagNames);
         return new Result(null, "已提交，正在审核中");
     }
 
