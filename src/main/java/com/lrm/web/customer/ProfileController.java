@@ -2,6 +2,8 @@ package com.lrm.web.customer;
 
 import com.lrm.exception.IllegalParameterException;
 import com.lrm.po.User;
+import com.lrm.service.CommentServiceImpl;
+import com.lrm.service.LikesServiceImpl;
 import com.lrm.service.UserServiceImpl;
 import com.lrm.util.*;
 import com.lrm.vo.Magic;
@@ -45,6 +47,12 @@ public class ProfileController {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
+
+    @Autowired
+    private CommentServiceImpl commentServiceImpl;
+
+    @Autowired
+    private LikesServiceImpl likesServiceImpl;
 
     /**
      * 返回个人信息
@@ -263,8 +271,11 @@ public class ProfileController {
             }
         }
 
-        User newUser = userServiceImpl.updateUser(user);
-        hashMap.put("token", TokenInfo.postToken(newUser, new HashMap<>(0)));
+        Map<String, Object> infos = new HashMap<>(1);
+        infos.put("unLookedInforms", commentServiceImpl.countUnLooked(user1.getId()) +
+                likesServiceImpl.countUnLooked(user1.getId()));
+        String token = TokenInfo.postToken(user1, infos);
+        hashMap.put("token", token);
 
         if (errorMessage != null) {
             errorMessage.append("其他信息修改成功；");
