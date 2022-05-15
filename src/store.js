@@ -19,6 +19,7 @@ export default new Vuex.Store({
       id: "",
       /* admin: "", */
       canSpeak: "",
+      unLookedInforms: "",
       avatar: "",
       payCode: "",
       nickname: "",
@@ -67,6 +68,9 @@ export default new Vuex.Store({
             }, */
     getMyAvatar(state, avatar) {
       state.me.avatar = avatar;
+    },
+    getUnLookedInforms(state, unLookedInforms) {
+      state.me.unLookedInforms = unLookedInforms;
     },
     getMyPayCode(state, payCode) {
       state.me.payCode = payCode;

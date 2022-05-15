@@ -192,7 +192,7 @@
                   <router-link
                     v-if="$store.state.me.id == item.postUserId"
                     to="/BreakingTheBarrier/mine/contents/questionFiles"
-                  >{{ template.nickname }}
+                  >{{item.nickname }}
                   </router-link>
                   <router-link
                     v-else
@@ -208,7 +208,7 @@
                 style="margin-left: 5px"
                 v-if="item.postUserId == postUserId"
               >发布者</a
-              >
+              ><a v-if="item.parentCommentName"> @ {{item.parentCommentName}}</a>
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span>
                 </div>
@@ -282,7 +282,7 @@
                 <router-link
                   v-if="$store.state.me.id == item.postUserId"
                   to="/BreakingTheBarrier/mine/contents/questionFiles"
-                >{{ template.nickname }}
+                >{{ item.nickname }}
                 </router-link>
                 <router-link
                   v-else
@@ -298,7 +298,7 @@
               style="margin-left: 5px"
               v-if="item.postUserId == postUserId"
             >发布者</a
-            >
+            ><a v-if="item.parentCommentName"> @ {{item.parentCommentName}}</a>
               <div class="metadata">
                 <span class="date">{{ item.createTime }}</span>
               </div>
@@ -608,6 +608,7 @@ export default {
             postUserId,
             questionId,
             selected,
+            parentCommentName,
             receiveComments = [],
           }
         ) =>
@@ -631,6 +632,7 @@ export default {
                 parentCommentId,
                 postUserId,
                 questionId,
+                parentCommentName,
                 selected,
               },
             ],

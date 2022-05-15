@@ -177,7 +177,7 @@
                   <router-link
                     v-if="$store.state.me.id == item.postUserId"
                     to="/BreakingTheBarrier/mine/contents/questionFiles"
-                  >{{ template.nickname }}
+                  >{{ item.nickname }}
                   </router-link>
                   <router-link
                     v-else
@@ -193,10 +193,13 @@
                 style="margin-left: 5px"
                 v-if="item.postUserId == postUserId"
               >发布者</a
-              >
+              ><a v-if="item.parentCommentName"> @ {{ item.parentCommentName }}</a>
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini teal label">精选评论</a>
+                </div>
+                <div class="ui message" v-if="item.parentCommentContent">
+                    <v-md-preview-html :html="item.parentCommentContent" preview-class="vuepress-markdown-body"></v-md-preview-html>
                 </div>
                 <div class="text">
                   <v-md-preview-html :html="item.content" preview-class="vuepress-markdown-body"></v-md-preview-html>
@@ -213,7 +216,7 @@
                   <router-link
                     v-if="$store.state.me.id == item.postUserId"
                     to="/BreakingTheBarrier/mine/contents/questionFiles"
-                  >{{ template.nickname }}
+                  >{{ item.nickname }}
                   </router-link>
                   <router-link
                     v-else
@@ -229,10 +232,13 @@
                 style="margin-left: 5px"
                 v-if="item.postUserId == postUserId"
               >发布者</a
-              >
+              ><a v-if="item.parentCommentName"> @ {{ item.parentCommentName }}</a>
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span
                   ><a class="ui mini red label">优质评论</a>
+                </div>
+                <div class="ui message" v-if="item.parentCommentContent">
+                  <v-md-preview-html :html="item.parentCommentContent" preview-class="vuepress-markdown-body"></v-md-preview-html>
                 </div>
                 <div class="text">
                   <v-md-preview-html :html="item.content" preview-class="vuepress-markdown-body"></v-md-preview-html>
@@ -253,7 +259,7 @@
                   <router-link
                     v-if="$store.state.me.id == item.postUserId"
                     to="/BreakingTheBarrier/mine/contents/questionFiles"
-                  >{{ template.nickname }}
+                  >{{ item.nickname }}
                   </router-link>
                   <router-link
                     v-else
@@ -270,7 +276,7 @@
                   style="margin-left: 5px"
                   v-if="item.postUserId == postUserId"
                 >发布者</a
-                >
+                ><a v-if="item.parentCommentName"> @ {{ item.parentCommentName }}</a>
                 <div class="metadata">
                   <span class="date">{{ item.createTime }}</span>
                 </div>
@@ -375,7 +381,7 @@
                 <router-link
                   v-if="$store.state.me.id == item.postUserId"
                   to="/BreakingTheBarrier/mine/contents/questionFiles"
-                >{{ template.nickname }}
+                >{{ item.nickname }}
                 </router-link>
                 <router-link
                   v-else
@@ -391,7 +397,7 @@
               style="margin-left: 5px"
               v-if="item.postUserId == postUserId"
             >发布者</a
-            >
+            ><a v-if="item.parentCommentName"> @ {{ item.parentCommentName }}</a>
               <div class="metadata">
                 <span class="date">{{ item.createTime }}</span>
               </div>
@@ -702,6 +708,7 @@ export default {
             postUserId,
             questionId,
             selected,
+            parentCommentName,
             receiveComments = [],
           }
         ) =>
@@ -726,6 +733,7 @@ export default {
                 postUserId,
                 questionId,
                 selected,
+                parentCommentName
               },
             ],
             that.flatten(receiveComments)
@@ -739,8 +747,11 @@ export default {
         .getAllQuestionComments(that.$route.query.articleId)
         .then(function (response) {
           that.commentLoading = false;
+
           var data = response.data.data.comments2;
+
           that.commentList = that.flatten(data);
+          console.log(that.commentList);
           that.bestComments = response.data.data.bestComments;
           that.selectedComments = response.data.data.selectedComments;
         })

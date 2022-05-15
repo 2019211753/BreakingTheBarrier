@@ -147,6 +147,11 @@ export default {
       that.$api.personalMessage
         .readLike(id)
         .then(function (response) {
+          var token = response.data.data.token;  //在请求头中获取token
+          let strings = token.split("."); //截取token，获取载体
+          var userinfo = JSON.parse(decodeURIComponent(escape(window.atob(strings[1].replace(/-/g, "+").replace(/_/g, "/"))))); //解析，需要吧‘_’,'-'进行转换否则会无法解析
+          console.log(userinfo);
+          that.$store.commit("getUnLookedInforms", userinfo.unLookedInforms);
         })
         .catch(function (error) {
           console.log(error);
@@ -157,6 +162,11 @@ export default {
       that.$api.personalMessage
         .readComment(id)
         .then(function (response) {
+          var token = response.data.data.token;  //在请求头中获取token
+          let strings = token.split("."); //截取token，获取载体
+          var userinfo = JSON.parse(decodeURIComponent(escape(window.atob(strings[1].replace(/-/g, "+").replace(/_/g, "/"))))); //解析，需要吧‘_’,'-'进行转换否则会无法解析
+          console.log(userinfo);
+          that.$store.commit("getUnLookedInforms", userinfo.unLookedInforms);
         })
         .catch(function (error) {
           console.log(error);
@@ -187,6 +197,7 @@ export default {
       });
 
       Promise.all([p1, p2]).then((res) => {
+        that.$store.commit("getUnLookedInforms", 0);
       });
     },
   },

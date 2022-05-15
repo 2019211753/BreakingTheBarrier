@@ -25,13 +25,13 @@
               </router-link>
             </a>
           </li>
-          <li>
-            <a href="">
-              <router-link to="/BreakingTheBarrier/team">
-                <i class="handshake icon"></i>组队
-              </router-link>
-            </a>
-          </li>
+          <!--          <li>
+                      <a href="">
+                        <router-link to="/BreakingTheBarrier/team">
+                          <i class="handshake icon"></i>组队
+                        </router-link>
+                      </a>
+                    </li>-->
           <li>
             <a href="">
               <router-link to="/BreakingTheBarrier/literature/information">
@@ -39,12 +39,13 @@
               </router-link>
             </a>
           </li>
-          <li style="margin-left: 180px">
-            <a href="">
-              <router-link to="/BreakingTheBarrier/mine/contents/questionFiles">
-                <el-skeleton :loading="loading" animated v-if="loading == true">
+          <li style="margin-left: 230px">
+            <a>
+              <el-dropdown>
+  <span class="el-dropdown-link">
+         <el-skeleton :loading="loading" animated v-if="loading == true">
                   <template slot="template"
-                    ><el-skeleton-item variant="circle image" />
+                  ><el-skeleton-item variant="circle image"/>
                   </template>
                 </el-skeleton>
                 <img
@@ -53,13 +54,24 @@
                   alt=""
                   class="ui avatar image"
                 />
-              </router-link>
+  </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>
+                    <router-link to="/BreakingTheBarrier/mine/contents/questionFiles"><i class="home icon"></i> 个人空间
+                    </router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <router-link to="/"><i class="sign out icon" @click="logOut()"></i> 退出登录</router-link>
+                  </el-dropdown-item>
+
+                </el-dropdown-menu>
+              </el-dropdown>
             </a>
           </li>
-          <li style="margin-left: 20px">
-            <a href="" @click="logOut()">
-              <router-link to="/"><i class="sign out icon"></i></router-link>
-            </a>
+          <li style="margin-left: 20px ">
+            <!--            <a class="ui floating mini red circular label">2</a>--> <a href="">
+            <router-link to="/BreakingTheBarrier/mine/message/unread"><i class="envelope icon"></i> <span>{{ $store.state.me.unLookedInforms }}</span></router-link>
+          </a>
           </li>
         </ul>
       </div>

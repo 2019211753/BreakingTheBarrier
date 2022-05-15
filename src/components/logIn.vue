@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="ui basic segment"style="margin-top: 150px;">
+    <div class="ui basic segment" style="margin-top: 150px;">
       <img
         class="ui centered medium circular image"
         src="../assets/logo.jpg"
@@ -16,7 +16,7 @@
           v-model="userName"
         />
       </div>
-      <div class="ui fluid labeled input"style="margin-top: 20px">
+      <div class="ui fluid labeled input" style="margin-top: 20px">
         <div class="ui teal label">
           密码
         </div>
@@ -96,6 +96,13 @@ export default {
               /*that.$store.commit("getWXToken");*/
               that.$api.adminTop.getWXToken();
               that.resetSetItem("token", response.data.data.token);
+
+              var token = response.data.data.token;  //在请求头中获取token
+              let strings = token.split("."); //截取token，获取载体
+              var userinfo = JSON.parse(decodeURIComponent(escape(window.atob(strings[1].replace(/-/g, "+").replace(/_/g, "/"))))); //解析，需要吧‘_’,'-'进行转换否则会无法解析
+              console.log(userinfo);
+              that.$store.commit("getUnLookedInforms", userinfo.unLookedInforms);
+
               that.$router.push("/BreakingTheBarrier/home");
               history.pushState(null, null, document.URL);
               window.addEventListener("popstate", function () {
