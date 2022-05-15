@@ -1,5 +1,6 @@
 package com.lrm.service;
 
+import com.lrm.dto.UpdateInfoEntryDTO;
 import com.lrm.po.InfoEntry;
 import org.springframework.data.domain.Page;
 
@@ -18,7 +19,7 @@ public interface InfoEntryService {
 
     InfoEntry disapprove(Long entryId);
 
-    InfoEntry update(InfoEntry newEntry, String[] tagNames);
+    InfoEntry update(UpdateInfoEntryDTO updateInfoEntryDTO, String[] tagNames);
 
     InfoEntry getInfoEntry(Long entryId);
 
