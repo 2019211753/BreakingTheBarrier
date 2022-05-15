@@ -3,12 +3,21 @@
     <div class="ui feed">
       <div class="event" v-for="item in contentList">
         <div class="label">
-          <img :src="$store.state.me.avatar" alt=""/>
+          <div style="width: 30px;height: 30px;margin: 0 auto"><img
+            style="height: 100%;width: 100%"
+            class="ui tiny centered circular image"
+            :src="$store.state.me.avatar"
+            alt="avatar"
+          /></div>
         </div>
         <div class="content">
           <div class="summary">
             我赞了{{ item.parentType }}：
-            <a href=""
+            <a href="" style="display: -webkit-box;
+              -webkit-box-orient: vertical;
+              text-overflow: ellipsis;
+              -webkit-line-clamp: 2;
+              overflow: hidden;"
             >
               <router-link
                 v-if="

@@ -14,6 +14,9 @@ Vue.use(semantic);
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
+/*引入btb样式*/
+import './assets/css/btb.scss'
+
 Vue.use(ElementUI);
 
 //监听sessionStorge

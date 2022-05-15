@@ -35,11 +35,16 @@
         </div>
       </template>
     </el-skeleton>
-    <div class="ui segment" v-if="blogLoading == false">
+    <div class="ui segment" v-if="blogLoading === false">
       <div class="ui large feed">
         <div class="event">
           <div class="label">
-            <img :src="template.avatar" alt=""/>
+            <div style="width: 30px;height: 30px;margin: 0 auto"><img
+              style="height: 100%;width: 100%"
+              class="ui tiny centered circular image"
+              :src="template.avatar"
+              alt="avatar"
+            /></div>
           </div>
 
           <div class="content">
@@ -81,11 +86,11 @@
         转载声明： {{ template.transferStatement }}
       </p>
       <br/>
-      <el-row>
-        <el-col :span="6">
-          <div style="height: 1px"></div>
-        </el-col>
-        <el-col :span="12">
+      <el-row style="white-space: nowrap">
+        <el-col style="display: flex;
+                justify-content: center;
+                width: 100%;"
+                :span="12">
           <div
             @click="likeArticle(template.id)"
             :class="articleApproved == true ? articleLikeIsActive : button"
@@ -122,9 +127,6 @@
           >
             <i class="hand spock icon"></i> 赞赏
           </div>
-        </el-col>
-        <el-col :span="5">
-          <div class="grid-content bg-purple"></div>
         </el-col>
       </el-row>
 
@@ -399,7 +401,12 @@
     </div>
     <el-dialog width="400px" title="" :visible.sync="dialogFormVisible4">
       <div>
-        <img class="ui tiny circular centered image" :src="template.avatar">
+        <div style="width: 70px;height: 70px;margin: 0 auto"><img
+          style="height: 100%;width: 100%"
+          class="ui tiny centered circular image"
+          :src="template.avatar"
+          alt="avatar"
+        /></div>
         <h4 style="text-align: center">thanks!</h4>
         <img class="ui  centered image" :src="template.wechatPayCode">
       </div>

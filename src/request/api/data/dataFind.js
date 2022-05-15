@@ -7,9 +7,9 @@ import instance from "../../http";
 
 
 const dataFind = {
-  findFiles(data) {
+  findFiles(query, pageIndex) {
     return instance
-      .get("/files/find?query=" + data.query + "&pageIndex=" + data.pageIndex)
+      .get("/files/find?query=" + query + "&pageIndex=" + pageIndex)
   }
 }
 

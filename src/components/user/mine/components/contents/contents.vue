@@ -58,37 +58,34 @@ export default {
 };
 </script>
 
-<style scoped>
-.nav ul li {
-  float: left;
-  margin: -20px 15px;
-}
-
-.nav ul li a {
-  display: block;
-  height: 42px;
-  padding: 0 1px;
-  line-height: 42px;
-  font-size: 16px;
-  color: black;
-  font-weight: 600;
-}
-
-.nav ul a:hover {
-  border-bottom: 4px solid orange;
-}
-
-a {
-  text-decoration: none;
-}
-
+<style scoped lang="scss">
 .header {
   width: 100%;
-  height: 30px;
+  //height: 30px;
   float: left;
-}
-
-li {
-  list-style: none;
+  .nav ul {
+    display: flex;
+    white-space: nowrap;
+    justify-content: space-around;
+    padding: 0;
+    align-items: center;
+  }
+  .nav ul li {
+    //float: left;
+    //margin: -20px 15px;
+    list-style: none;
+    a {
+      //height: 42px;
+      padding: 0 1px;
+      //line-height: 42px;
+      font-size: 16px;
+      color: black;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      border-bottom: 4px solid orange;
+    }
+  }
 }
 </style>

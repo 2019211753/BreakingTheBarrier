@@ -7,9 +7,9 @@ import instance from "../../http";
 
 
 const infoApprove = {
-  entryApprove(data) {
+  entryApprove(entryId) {
     return instance
-      .post("/infoEntry/" + data + "/approve")
+      .post("/infoEntry/" + entryId + "/approve")
   }
 }
 

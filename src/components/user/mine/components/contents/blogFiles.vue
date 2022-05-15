@@ -32,11 +32,12 @@
     <div class="ui segment" v-for="(item, index) in contentList[0]">
       <el-container>
         <el-aside width="45px"
-          ><img
-            class="ui medium circular image"
-            style="width: 40px"
-            :src="$store.state.me.avatar"
-        /></el-aside>
+          ><div style="width: 30px;height: 30px;margin: 0 auto"><img
+          style="height: 100%;width: 100%"
+          class="ui tiny centered circular image"
+          :src="$store.state.me.avatar"
+          alt="avatar"
+        /></div></el-aside>
         <el-main>
           <h4 style="margin-top: -20px">{{ $store.state.me.nickname }}</h4>
           <p
@@ -66,9 +67,14 @@
         >
       </el-row>
       <el-row :gutter="20" style="margin-top: 5px">
-        <el-col :span="8"><img class="ui rounded fluid image" /></el-col>
-        <el-col :span="16"
-          ><h5 style="color: grey">
+<!--        <el-col :span="8"><img class="ui rounded fluid image" /></el-col>-->
+        <el-col :span="16" style="width: 100%"
+          ><h5 style="color: grey;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          text-overflow: ellipsis;
+          -webkit-line-clamp: 4;
+          overflow: hidden;">
             {{ item.description }}
           </h5></el-col
         >

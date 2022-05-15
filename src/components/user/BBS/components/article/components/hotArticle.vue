@@ -1,8 +1,8 @@
 <template>
-  <div class="ui basic segment">
+  <div class="ui basic segment" style="padding: 0">
     <div class="ui segment">
       <div class="frameworkBody">
-        <h3 class="ui left floated header">热门话题</h3>
+        <h3 class="btb-h3 ">热门话题</h3>
         <el-skeleton
           style="width: 240px"
           :loading="loading"
@@ -26,9 +26,9 @@
         </el-skeleton>
         <div>
           <div class="ui feed">
-            <div class="event" v-for="item in impactList">
-              <div class="label">
-                <img :src="item.avatar" alt="" />
+            <div class="event" style="margin: 5px 0" v-for="item in impactList">
+              <div class="label" style="height: 35px">
+                <img :src="item.avatar" alt="" style="height: 100%" />
               </div>
               <div class="content">
                 <div class="summary">
@@ -77,5 +77,13 @@ export default {
 .frameworkBody {
   width: 90%;
   margin: auto;
+}
+
+.summary > a{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>

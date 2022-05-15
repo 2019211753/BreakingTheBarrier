@@ -1,48 +1,45 @@
 <template>
   <div class="ui basic segment">
-    <div class="ui basic segment">
-      <h3 style="margin-top: 10px">
-        资料库<button
-          class="ui mini right labeled icon button"
-          style="margin-left: 720px; background-color: white"
-          @click="more()"
-        >
-          <i
-            class="angle double right icon"
-            style="background-color: white"
-          ></i>
-          更多
-        </button>
+    <div class="btb-header">
+      <h3 class="btb-h3">
+        资料库
       </h3>
+      <button
+        class="ui mini right labeled icon button"
+        style="background: none"
+        @click="more()"
+      >
+        <i
+          class="angle double right icon"
+          style="background-color: white"
+        ></i>
+        更多
+      </button>
     </div>
-    <el-row :gutter="24">
-      <el-col :span="4">
-        <div class="ui basic segment" style="height: 120px">
-          <img class="ui rounded image" src="../../../../assets/P.png" alt="" />
+    <el-row type="flex" justify="space-around">
+      <el-col >
+        <div class="imgBox">
+          <img class="" src="../../../../assets/P.png" alt="" />
         </div>
       </el-col>
-      <el-col :span="5">
-        <div class="ui basic segment" style="height: 120px">
-          <img class="ui rounded image" src="../../../../assets/a.jpg" alt="" />
+      <el-col >
+        <div class="imgBox">
+          <img class="" src="../../../../assets/p.jpg" alt="" />
         </div>
       </el-col>
-      <el-col :span="5">
-        <div class="ui basic segment" style="height: 120px">
-          <img class="ui rounded image" src="../../../../assets/p.jpg" alt="" />
+      <el-col >
+        <div class="imgBox">
+          <img class="" src="../../../../assets/x.jpg" alt="" />
         </div>
       </el-col>
-      <el-col :span="5">
-        <div class="ui basic segment" style="height: 120px">
-          <img
-            class="ui rounded image"
-            src="../../../../assets/ppt.jpg"
-            alt=""
-          />
+      <el-col >
+        <div class="imgBox">
+          <img class="" src="../../../../assets/ppt.jpg" alt="" />
         </div>
       </el-col>
-      <el-col :span="5">
-        <div class="ui basic segment" style="height: 120px">
-          <img class="ui rounded image" src="../../../../assets/x.jpg" alt="" />
+      <el-col >
+        <div class="imgBox">
+          <img class="" src="../../../../assets/x.jpg" alt="" />
         </div>
       </el-col>
     </el-row>
@@ -54,11 +51,26 @@ export default {
   name: "database",
   methods: {
     more() {
-      this.$router.push("/BreakingTheBarrier/database");
+      this.$router.push("/BreakingTheBarrier/literature");
     },
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+img {
+  width: 100%;
+}
+.btb-header {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  h3 {
+    //font-size: 16px;
+  }
+}
+.imgBox {
+  //width: 20%;
+  padding: 5px 1vw;
+}
 </style>

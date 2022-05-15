@@ -1,9 +1,6 @@
 <template>
-  <div class="file-display ui three column divided grid">
-    <entry-display-item class="column" style="
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;"
+  <div class="info-box">
+    <entry-display-item class="info-item"
       v-for="(item, index) in content"
       :key="index" :contentItem="item">
     </entry-display-item>
@@ -12,6 +9,8 @@
 
 <script>
   import EntryDisplayItem from "./EntryDisplayItem";
+  import btbDescription from "../../../user/home/components/btbDescription";
+  import btbDescriptionItem from "../../../user/home/components/btbDescriptionItem";
   export default {
     name: "EntryDisplay",
     props: {
@@ -24,12 +23,16 @@
 </script>
 
 <style scoped>
-  div.file-display {
-    position: relative;
-    left: 200px;
-    background-color: aliceblue;
-    padding: 0 40px;
-    width: 505px;
-    display: inline-block;
+
+  .info-item {
+    width: 215px;
+    height: 200px;
+    /*overflow: hidden;*/
+    border: 1px solid rgba(.5,.5,.5,.2);
+    box-sizing: border-box;
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    /*white-space: nowrap;*/
   }
 </style>

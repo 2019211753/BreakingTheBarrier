@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="ui basic segment"style="margin-top: 150px;">
+    <div class="ui basic segment" style="margin-top: 30px;">
       <img
         class="ui centered medium circular image"
         src="../assets/logo.jpg"

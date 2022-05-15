@@ -7,9 +7,9 @@ import instance from "../../http";
 
 
 const infoGetUnapro = {
-  infoGetUnapro(data) {
+  infoGetUnapro(pageIndex) {
     return instance
-      .get("/infoEntry/unapprovedEntries")
+      .get(`/infoEntry/unapprovedEntries?pageIndex=${pageIndex}`)
   }
 }
 

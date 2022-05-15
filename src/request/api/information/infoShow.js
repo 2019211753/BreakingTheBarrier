@@ -7,9 +7,9 @@ import instance from "../../http";
 
 
 const infoShow = {
-  infoShow() {
+  infoShow(pageIndex) {
     return instance
-      .get("/infoEntry/show")
+      .get("/infoEntry/show?pageIndex=" + pageIndex)
   }
 }
 

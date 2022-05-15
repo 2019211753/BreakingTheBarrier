@@ -1,167 +1,142 @@
 <template>
   <div>
-    <div class="ui segment">
-      <h3>基本资料</h3>
-      <div class="ui divider"></div>
-      <br/>
-      <el-row :gutter="24">
-        <el-col :span="4"
-        ><h4 style="margin-left: 10px; margin-top: 10px">用户昵称</h4></el-col
-        >
-        <el-col :span="8">
-          <div class="ui fluid input">
-            <input
-              type="text"
-              :placeholder="$store.state.me.nickname"
-              v-model="nickname"
-            />
-          </div>
-        </el-col>
-        <el-col :span="3"
-        ><h4 style="margin-left: 15px; margin-top: 10px">性别</h4></el-col
-        >
-        <el-col :span="8">
-          <div class="ui fluid selection dropdown" style="width: 175px">
-            <input type="hidden" name="gender"/>
-            <i class="dropdown icon"></i>
-            <div class="default text" v-if="$store.state.me.sex">
-              <div v-if="$store.state.me.sex == 'true'">男</div>
-              <div v-if="$store.state.me.sex == 'false'">女</div>
-            </div>
-            <div class="default text" v-else>无</div>
-            <div class="menu">
-              <div class="item" @click="boy()">男</div>
-              <div class="item" @click="girl()">女</div>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-      <br/>
-      <el-row :gutter="24">
-        <el-col :span="4"
-        ><h4 style="margin-left: 10px; margin-top: 10px">修改密码</h4></el-col
-        >
-        <el-col :span="8">
-          <div class="ui fluid input">
-            <input type="text" placeholder="长度为7至11" v-model="passWord"/>
-          </div>
-        </el-col>
-        <el-col :span="4"><h4 style="margin-top: 10px">确认密码</h4></el-col>
-        <el-col :span="8">
-          <div class="ui fluid input" style="margin-left: -26px; width: 173px">
-            <input
-              type="text"
-              placeholder="再次输入确认"
-              v-model="surePassWord"
-            />
-          </div>
-        </el-col>
-      </el-row>
-      <br/>
-      <el-row :gutter="24">
-        <el-col :span="4"
-        ><h4 style="margin-left: 10px; margin-top: 10px">邮箱</h4></el-col
-        >
-        <el-col :span="8">
-          <div class="ui fluid input">
-            <input
-              type="text"
-              :placeholder="$store.state.me.email"
-              v-model="email"
-            />
-          </div>
-        </el-col>
-        <el-col :span="3"
-        ><h4 style="margin-left: 15px; margin-top: 10px">QQ</h4></el-col
-        >
-        <el-col :span="8">
-          <div class="ui fluid input">
-            <input
-              type="text"
-              style="margin-left: -3px"
-              :placeholder="$store.state.me.qqId"
-              v-model="QQ"
-            />
-          </div>
-        </el-col>
-      </el-row>
-      <br/>
-      <el-row :gutter="20">
-        <el-col :span="4"
-        ><h4 style="margin-left: 10px; margin-top: 10px">学院</h4></el-col
-        >
-        <el-col :span="8">
-          <div class="ui fluid selection dropdown" style="width: 175px">
-            <input type="hidden" name="gender"/>
-            <i class="dropdown icon"></i>
-            <div class="default text" v-if="$store.state.me.academy">
-              {{ $store.state.me.academy }}
-            </div>
-            <div class="default text" v-else>无</div>
-            <div class="menu">
-              <div
-                v-for="(item, index) in academyList"
-                class="item"
-                @click="selectAcademy(index)"
-              >
-                {{ index }}
-              </div>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="3"
-        ><h4 style="margin-left: 15px; margin-top: 10px">专业</h4></el-col
-        >
-        <el-col :span="8">
-          <div class="ui fluid selection dropdown" style="width: 175px">
-            <input type="hidden" name="gender"/>
-            <i class="dropdown icon"></i>
-            <div class="default text" v-if="$store.state.me.major">
-              {{ $store.state.me.major }}
-            </div>
-            <div class="default text" v-else>无</div>
-            <div class="menu">
-              <div
-                class="item"
-                v-for="(item, index) in majorList"
-                @click="selectMajor(item)"
-              >
-                {{ item }}
-              </div>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-      <br/>
-      <el-row :gutter="24">
-        <el-col :span="4"
-        ><h4 style="margin-left: 10px; margin-top: 10px">签名</h4></el-col
-        >
-        <el-col :span="19">
-          <div class="ui fluid input">
-            <input
-              type="text"
-              :placeholder="$store.state.me.personalSignature"
-              v-model="personalSignature"
-            />
-          </div>
-        </el-col>
-      </el-row>
-      <br/>
-      <div class="ui right floated teal button" @click="sure()">
-        确定
-      </div>
-      <el-upload
-        class="avatar-uploader"
-        action=""
-        :before-upload="beforeAvatarUpload"
-        :http-request="handleTestSuccess"
-        :show-file-list="false"
-      >
-        <div class="ui icon teal button" @click="uploadWX()">
-          <i class="ui plus icon"></i>
+    <div class="mainContainer">
+      <div>
+        <span><i class="user icon"></i>用户昵称</span>
+        <div class="ui fluid input">
+          <input
+            type="text"
+            :placeholder="$store.state.me.nickname"
+            v-model="nickname"
+          />
         </div>
-      </el-upload>
+      </div>
+      <div>
+        <span><i class="venus mars icon"></i>性别</span>
+        <div class="ui fluid selection dropdown">
+          <input type="hidden" name="gender"/>
+          <i class="dropdown icon"></i>
+          <div class="default text" v-if="$store.state.me.sex">
+            <div v-if="$store.state.me.sex === 'true'">男</div>
+            <div v-if="$store.state.me.sex === 'false'">女</div>
+          </div>
+          <div class="default text" v-else>无</div>
+          <div class="menu">
+            <div class="item" @click="boy()">男</div>
+            <div class="item" @click="girl()">女</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span><i class="envelope icon"></i>邮箱</span>
+        <div class="ui fluid input">
+          <input
+            type="text"
+            :placeholder="$store.state.me.email"
+            v-model="email"
+          />
+        </div>
+      </div>
+      <div>
+        <span><i class="qq icon"></i>QQ</span>
+        <div class="ui fluid input">
+          <input
+            type="text"
+            style="margin-left: -3px"
+            :placeholder="$store.state.me.qqId"
+            v-model="QQ"
+          />
+        </div>
+      </div>
+      <div>
+        <span><i class="users icon"></i>学院</span>
+        <div class="ui fluid selection dropdown">
+          <input type="hidden" name="gender"/>
+          <i class="dropdown icon"></i>
+          <div class="default text" v-if="$store.state.me.academy">
+            {{ $store.state.me.academy }}
+          </div>
+          <div class="default text" v-else>无</div>
+          <div class="menu">
+            <div
+              v-for="(item, index) in academyList"
+              class="item"
+              @click="selectAcademy(index)"
+            >
+              {{ index }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span><i class="user md icon"></i>专业</span>
+        <div class="ui fluid selection dropdown">
+          <input type="hidden" name="gender"/>
+          <i class="dropdown icon"></i>
+          <div class="default text" v-if="$store.state.me.major">
+            {{ $store.state.me.major }}
+          </div>
+          <div class="default text" v-else>无</div>
+          <div class="menu">
+            <div
+              class="item"
+              v-for="(item, index) in majorList"
+              @click="selectMajor(item)"
+            >
+              {{ item }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span><i class="key icon"></i>修改密码</span>
+        <div class="ui fluid input">
+          <input type="text" placeholder="长度为7至11" v-model="passWord"/>
+        </div>
+      </div>
+      <div>
+        <span><i class="shield alternate icon"></i>确认密码</span>
+        <div class="ui fluid input">
+          <input
+            type="text"
+            placeholder="再次输入确认"
+            v-model="surePassWord"
+          />
+        </div>
+      </div>
+      <div>
+        <span><i class="flag icon"></i>签名</span>
+        <div class="ui fluid input">
+          <input
+            type="text"
+            :placeholder="$store.state.me.personalSignature"
+            v-model="personalSignature"
+          />
+        </div>
+      </div>
+      <div>
+        <div class="upQrCode">
+          <el-upload
+            class="avatar-uploader"
+            action=""
+            :before-upload="beforeAvatarUpload"
+            :http-request="handleTestSuccess"
+            :show-file-list="false"
+          >
+            <button class="ui compact labeled icon button" @click="uploadWX()">
+              <i class="upload icon"></i>
+              上传收款码
+            </button>
+
+          </el-upload>
+        </div>
+        <div class="sure" @click="sure()">
+          <button class="ui right labeled icon button">
+            <i class="right arrow icon"></i>
+            确定
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -186,6 +161,7 @@ export default {
       passWord: "",
       surePassWord: "",
       value: "",
+      leseThan700: false
     };
   },
   created() {
@@ -352,5 +328,37 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  > div {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    align-items: center;
+    > span {
+      width: fit-content;
+      margin-right: 10px;
+      color: grey;
+      > i {
+        color: grey;
+      }
+    }
+    > div {
+      flex: 1;
+    }
+    .upQrCode {
+      width: 50%;
+    }
+
+  }
+  > div:last-child {
+    margin-top: 10px;
+    .sure {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
 </style>

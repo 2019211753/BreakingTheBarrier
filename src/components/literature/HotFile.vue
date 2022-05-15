@@ -12,7 +12,7 @@
         </a>
       </slot>
     </div>
-    <div class="ui divider"></div> <!--分隔线-->
+<!--    <div class="ui divider"></div> &lt;!&ndash;分隔线&ndash;&gt;-->
     <div>
       <slot name="item">
         <a href="javascript:;" class="" src="../../assets/img/fileCategory/pdf.png">
@@ -24,7 +24,7 @@
         </a>
       </slot>
     </div>
-    <div class="ui divider"></div> <!--分隔线-->
+<!--    <div class="ui divider"></div> &lt;!&ndash;分隔线&ndash;&gt;-->
     <div>
       <slot name="item">
         <a href="javascript:;" class="" src="../../assets/img/fileCategory/pdf.png">
@@ -61,13 +61,6 @@
 </script>
 
 <style scoped>
-  div.hot-file {
-    width: 250px;
-    display: inline-block;
-    vertical-align: top;
-    position: relative;
-    left: 220px;
-  }
   b + img {
     width: 50px;
     margin: 0 2px;

@@ -1,0 +1,68 @@
+
+/*盒子类*/
+.btb-container-start {
+  display: flex;
+  align-items: flex-start;
+  > div {
+    margin: 0 0.8vw;
+  }
+}
+.btb-imgBox {
+  width: 100px;
+  height: 200px;
+}
+.btb-img {
+  width: 100%;
+  //height: 100%;
+  overflow: hidden;
+}
+
+/*文本类*/
+.btb-h1 {
+  font-size: 25px;
+  letter-spacing: 2px;
+}
+.btb-h3 {
+  font-size: 18px;
+  border: none;
+  white-space: nowrap;
+}
+.btb-h4 {
+  font-size: 14px;
+}
+.btb-h5 {
+  font-size: 14px;
+}
+@media screen and (max-width: 570px) {
+  .btb-h1 {
+    font-size: 18px;
+  }
+  .btb-h3 {
+    font-size: 16px;
+  }
+  .btb-h4 {
+    font-size: 12px;
+  }
+  .btb-h5 {
+    font-size: 10px;
+  }
+}
+@media screen and (max-width: 375px){
+  .btb-h1 {
+    font-size: 16px;
+  }
+  .btb-h4 {
+    font-size: 10px;
+  }
+  .btb-h3 {
+    font-size: 14px;
+  }
+  .btb-h5 {
+    font-size: 8px;
+  }
+}
+@media screen and (max-width: 670px) {
+  .btb-m-container {
+    display: none;
+  }
+}

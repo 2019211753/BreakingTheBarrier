@@ -7,9 +7,9 @@ import instance from "../../http";
 
 
 const dataDown = {
-  downFile(data) {
+  downFile(fileId) {
     return instance
-      .get("/files/download?fileId=" + data.query)
+      .get("/files/download?fileId=" + fileId, {responseType: 'blob'})
   }
 }
 

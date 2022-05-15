@@ -1,127 +1,101 @@
 <template>
-  <div class="ui container">
-<!--    <router-link to="/BreakingTheBarrier/literature/information/EntryDisplay">词条展示</router-link>-->
-    <router-link to=""></router-link>
-    <div style="margin-bottom: 30px;">
-      <sec-menu>
-        <h3 slot="titleH3" style="letter-spacing: 5px;">信息百科</h3>
-        <span slot="item"></span>
-        <span slot="space">&nbsp;&nbsp;</span>
-        <span slot="search" style="position: relative;top: -6px;height: 20px;">
-          <div class="ui container" style="width: fit-content; margin: 5px;">
-<!--          <button class="ui button" @click="showInput">创建词条</button>-->
-          <button class="ui button">
-            <router-link to="/BreakingTheBarrier/literature/information/EntryCreate">创建词条</router-link>
-          </button>
+  <div>
+    <div class="title">
+      <h1 class="btb-h1">信息百科</h1>
+      <div class="operate">
+        <div class="ui small inverted buttons">
+          <div class="ui pink inverted button" @click="turnToCreate">
+            <i class="pencil alternate icon"></i>创建
+          </div>
+          <div class="or"></div>
+          <div class="ui blue inverted button" @click="showSearchInput">
+            <i class="search icon"></i>搜索
+          </div>
+          <div class="or"></div>
+          <div class="ui red inverted button" @click="turnToCheck">
+            <i class="tasks icon"></i>审核
+          </div>
         </div>
-        </span>
-      </sec-menu>
-      <div class="ui container" style="width: fit-content;display: none;margin: 5px 0 10px 0" id="createDiv">
-        <create @create="createEntry"></create>
+      </div>
+      <div class="ui icon input" id="input">
+        <input type="text" placeholder="搜索..." @keyup.enter="searchEntry" v-model="query">
+        <i class="inverted circular search link icon" @click="searchEntry"></i>
       </div>
     </div>
-    <div style="width: fit-content;margin: -20px auto 25px auto;">
-    </div>
-
-<!--词条展示-->
-    <div class="ui container" style="display: inline-block">
-      <entry-display
-        id=""
-        class="column"
-        :content="approvedEntry.content">
-
-      </entry-display>
-
-      <hot-file class="column">
-          <h3 slot="titleH3">近期竞赛</h3>
-          <div slot="item" class="ui tall stacked segment" id="recentRace">
-            <p>ACM国际大学生程序设计竞赛世界总决赛</p>
+    <el-empty v-if="entries.length <= 0"></el-empty>
+    <div v-else>
+      <el-skeleton :rows="6" animated :loading="isLoading"/>
+      <div class="mainBox">
+        <div class="ui segment"
+             v-for="(item,index) in entries"
+             :key="index">
+          <a class="ui red ribbon label">
+              <span v-for="(tags,index) in item.entryTags" style="margin-right: 3px">
+                {{ tags.name }}
+              </span>
+          </a>
+          <btb-description
+            class="xxx">
+            <btb-description-item :label="item.title" :flag="false" icon="bookmark"
+                                  class="entryBox"></btb-description-item>
+            <btb-description-item
+              v-if="(item.discription !== null)"
+              icon="quote left"
+              :flag="false">{{ item.discription }}
+            </btb-description-item>
+            <btb-description-item
+              v-else
+              icon="quote left"
+              :flag="false">
+              暂无简介
+            </btb-description-item>
+          </btb-description>
+          <div @click="toEntry(item.id)" class="more">
+            <btb-description-item icon="arrow circle right" label="" :flag="false"></btb-description-item>
           </div>
-          <span slot="upFile"></span>
-        </hot-file>
-    </div>
-
-<!--展示未审核-->
-    <div class="ui container">
-      <h2>未审核词条</h2>
-      <ul>
-        <li v-for="(item, index) in entry.content"
-            :key="index">
-          <show-unproved
-            @showUpdateInput="showUpdateInput"
-            :content="item"
-            v-if="!item.approved">
-          </show-unproved>
-        </li>
-      </ul>
-    </div>
-
-    <div class="ui container">
-      <update-entry :showUpdateFlag="showUpdateFlag" :id="entry.id"></update-entry>
+        </div>
+      </div>
+      <div class="el-page">
+        <el-pagination
+          class="el-page"
+          layout="prev, pager, next"
+          :total="pageNum"
+        >
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import SecMenu from "../SecMenu";
-  import FileDisplay from "../FileDisplay";
-  import FileDisplayCItem from "./FileDisplayCItem";
-  import HotFile from "../HotFile";
-  import Headbar from "../../basic/headbar";
-  import Bottom from "../../basic/bottom";
-  import Create from "./components/Create";
-  import SearchFile from "../components/SearchFile";
   import $ from 'jquery'
-  import axios from "axios";
-  import ShowUnproved from "./components/ShowUnproved";
-  import UpdateEntry from "./components/UpdateEntry";
-  import EntryDisplay from "./components/EntryDisplay";
+  import btbDescription from "../../user/home/components/btbDescription";
+  import btbDescriptionItem from "../../user/home/components/btbDescriptionItem";
   export default {
     name: "Information",
-    props: {
-      path: String
+    components: {
+      btbDescription, btbDescriptionItem
     },
     data() {
       return {
-        entry: {
-          content: [],
-          id: 0
-        },
-        approvedEntry: {
-          content: [],
-        },
-        flag: 1,
-        showUpdateFlag: false,
-
+        isLoading: true,
+        pageNum: 0,
+        entries: [],
+        isShowSearch: false,
+        query: ''
       }
     },
     mounted() {
-      //请求到的entry对象储存到data里
-      let that = this
-      that.$api.infoGetUnapro
-        .infoGetUnapro()
-        .then(res => {
-              let content = res.data.data.entries.content
-              for(let i in content) {
-                this.entry.content.push(content[i])
-              }
-              // console.log(content);
-            })
-        .catch(err => {
-          // console.log(err);
-          alert(err)
-        })
       //把请求到的approvedEntry存储下来
-      that.$api.infoShow
-        .infoShow()
+      let pageIndex = 0;
+      this.$api.infoShow
+        .infoShow(pageIndex)
         .then(res => {
-          let content = res.data.data.entries.content
-          for(let i in content)
-            this.approvedEntry.content.push(content[i])
-          // this.approvedEntry = res.data.data.entries.content
-          console.log(this.approvedEntry.content);
+          this.isLoading = false
+          this.pageNum = res.data.data.entries.totalPages;
+          this.entries = res.data.data.entries.content
         }).catch(err => {
-        alert(err)
+          this.$message.error('发生了错误')
       })
     },
     computed: {
@@ -130,68 +104,150 @@
       }
     },
     methods: {
-      showInput() {
-        $('#createDiv')
-          .transition('scale')
-        ;
-      },
-      createEntry(title, newContent) {
-        let data = {
-          'title': title,
-          'newContent': newContent
+      showSearchInput() {
+        if (!this.isShowSearch) {
+          $('#input').animate({
+            top: '0',
+            opacity: '1',
+            // zIndex: '1'
+          })
+          this.isShowSearch = true
         }
-        let that = this
-        that.$api.infoCreate
-          .createEntry(data)
-          .then(res => {
-            console.log(res);
-            alert(res.data.msg)
+        else {
+          $('#input').animate({
+            top: '-200px',
+            opacity: '0',
+            // zIndex: '-1'
           })
-          .catch(err => {
-            alert(err)
-          })
+          this.isShowSearch = false
+        }
       },
-      showUpdateInput(id) {
-        // console.log('监听到子组件（ShowUnproved）的‘更新’按钮点击');
-        this.showUpdateFlag = !this.showUpdateFlag
-        // console.log(id);
-        this.entry.id = id
+      turnToCreate() {
+        this.$router.push('/BreakingTheBarrier/literature/information/EntryCreate')
       },
-      btnClick() {
-        $('.ui.sidebar')
-          .sidebar('toggle');
+      toEntry(item) {
+        this.$router.push(`/BreakingTheBarrier/literature/information/EntryItem?id=${item}`)
+      },
+      turnToCheck() {
+        if(parseInt(this.$store.state.me.id) > this.$store.state.maxAdminId) {
+          this.$message.warning('您不是管理员哦')
+        }
+        else
+          this.$router.push('/BreakingTheBarrier/literature/information/EntryCheck')
+      },
+      searchEntry() {
+        this.isLoading = true
+        this.$api.infoSearch.infoSearch(this.query)
+        .then(res => {
+          this.isLoading = false
+          if(res.data.data.entries.content.length >= 1) {
+            // this.entries = []
+            this.entries = res.data.data.entries.content
+          }
+        })
       }
     },
-
-    components: {
-      Bottom,
-      Headbar,
-      SecMenu,
-      FileDisplay,
-      FileDisplayCItem,
-      HotFile,
-      Create,
-      SearchFile,
-      ShowUnproved,
-      UpdateEntry,
-      EntryDisplay
-    }
   }
 </script>
 
-<style scoped>
-  div.segment p {
-    overflow: hidden;
-    text-overflow: ellipsis;
+<style scoped lang="scss">
+#input {
+  margin-left: 10px;
+  position: absolute;
+  top: -200px;
+  opacity: 0;
+  //right: 0;
+  left: 373px;
+  //z-index: 1;
+}
+.el-page {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.title {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  padding-bottom: 5px;
+  border-bottom: 1px solid grey;
+  position: relative;
+  > h1 {
+    margin-right: 10px;
     white-space: nowrap;
+    color: grey;
   }
-  div.segment {
-    max-width: 254px;
+}
+.mainBox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: baseline;
+  > div {
+    width: 30%;
+    height: 240px;
+    .xxx {
+      position: relative;
+      > div {
+        width: 100%;
+        justify-content: center;
+        border: none;
+        span {
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+      :nth-child(2) {
+        -webkit-line-clamp: 5;
+        line-height: 150%;
+      }
+    }
+    .more {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      cursor: pointer;
+      > div {
+        border: none;
+      }
+    }
   }
-  #recentRace {
-    max-width: 254px;
+}
+@media screen and (max-width: 670px){
+  .title {
+    flex-direction: column;
+    //height: 75px;
+    > h1 {
+      //margin-right: 0;
+    }
+    .operate {
+      margin-top: 10px;
+    }
   }
-  #x {
-    width: 800px;
+  #input {
+    right: 0;
+    left: auto;
+    width: 120px;
   }
+}
+@media screen and (max-width: 568px){
+  .mainBox > div {
+    //height: 200px;
+    //width: 46%;
+  }
+}
+@media screen and (max-width: 550px){
+  .mainBox > div {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 410px){
+  .title {
+    flex-direction: column;
+    //height: 75px;
+    > h1 {
+      margin-right: 0;
+    }
+  }
+}
 </style>
