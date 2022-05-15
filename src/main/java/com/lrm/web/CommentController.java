@@ -229,23 +229,23 @@ public class CommentController
 
         //分别返回两类评论和对应点赞
         List<Comment> comments1 = commentServiceImpl.listCommentByQuestionId(questionId, false);
-        hashMap.put("comments1", CommentShow.getCommentsShow(dealComment(comments1, userId)));
+        hashMap.put("comments1", CommentShow.getCommentsNormShow(dealComment(comments1, userId)));
 
         List<Comment> comments2 = commentServiceImpl.listCommentByQuestionId(questionId, true);
-        hashMap.put("comments2", CommentShow.getCommentsShow(dealComment(comments2, userId)));
+        hashMap.put("comments2", CommentShow.getCommentsNormShow(dealComment(comments2, userId)));
 
         List<Comment> selectedComments = commentServiceImpl.listSelectedAnswerByQuestionId(questionId);
         for (Comment comment : selectedComments) {
             insertAttribute(comment, userId);
         }
-        hashMap.put("selectedComments",  CommentShow.getCommentsShow(selectedComments));
+        hashMap.put("selectedComments",  CommentShow.getCommentsSpecShow(selectedComments));
 
         List<Comment> bestComments = commentServiceImpl.listBestComments(questionId);
         bestComments.removeAll(selectedComments);
         for (Comment comment : bestComments) {
             insertAttribute(comment, userId);
         }
-        hashMap.put("bestComments",  CommentShow.getCommentsShow(bestComments));
+        hashMap.put("bestComments",  CommentShow.getCommentsSpecShow(bestComments));
 
         return new Result(hashMap, "");
     }
@@ -265,11 +265,11 @@ public class CommentController
 
         List<Comment> comments1 = commentServiceImpl.listCommentByBlogId(blogId, false);
 
-        hashMap.put("comments1",  CommentShow.getCommentsShow(dealComment(comments1, userId)));
+        hashMap.put("comments1",  CommentShow.getCommentsNormShow(dealComment(comments1, userId)));
 
         List<Comment> comments2 = commentServiceImpl.listCommentByBlogId(blogId, true);
 
-        hashMap.put("comments2",  CommentShow.getCommentsShow(dealComment(comments2, userId)));
+        hashMap.put("comments2",  CommentShow.getCommentsNormShow(dealComment(comments2, userId)));
 
         return new Result(hashMap, "");
     }
@@ -285,7 +285,7 @@ public class CommentController
         for (Comment comment1 : receiveComments) {
             insertAttribute(comment1, userId);
         }
-        hashMap.put("receiveComments",  CommentShow.getCommentsShow(receiveComments));
+        hashMap.put("receiveComments",  CommentShow.getCommentsNormShow(receiveComments));
 
         return new Result(hashMap, "");
     }

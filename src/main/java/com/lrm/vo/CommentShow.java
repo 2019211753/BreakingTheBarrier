@@ -51,6 +51,8 @@ public class CommentShow {
 
     public String parentCommentName;
 
+    public String parentCommentContent;
+
     public Boolean approved;
 
     public Boolean disapproved;
@@ -109,12 +111,13 @@ public class CommentShow {
         this.disapproved = disapproved;
     }
 
-    public CommentShow() {
-    }
-
     public void setParentCommentName(String parentCommentName) {
         this.parentCommentName = parentCommentName;
     }
+
+    public CommentShow() {
+    }
+
 
     public CommentShow(Comment comment) {
         MyBeanUtils.copyVo(Comment.class, comment, CommentShow.class, this);
@@ -132,18 +135,35 @@ public class CommentShow {
         }
     }
 
-    public static List<CommentShow> getCommentsShow(List<Comment> comments) {
+    /**
+     * 普通评论
+     */
+    public static List<CommentShow> getCommentsNormShow(List<Comment> comments) {
         List<CommentShow> showList = new ArrayList<>(comments.size());
         for (Comment comment : comments) {
             CommentShow show = new CommentShow(comment);
+            show.receiveComments = getCommentsNormShow(comment.getReceiveComments());
+            showList.add(show);
+        }
+
+        return showList;
+    }
+
+    /**
+     * 需要特殊展示出来的评论 如精选评论和最佳评论
+     */
+    public static List<CommentShow> getCommentsSpecShow(List<Comment> comments) {
+        List<CommentShow> showList = new ArrayList<>(comments.size());
+        for (Comment comment : comments) {
+            CommentShow show = new CommentShow(comment);
+            show.parentCommentContent = comment.getParentComment().getContent();
             showList.add(show);
         }
         return showList;
     }
 
-    public void setReceiveComments(List<Comment> receiveComments) {
-        this.receiveComments = getCommentsShow(receiveComments);
-    }
+
+
 
 
 
